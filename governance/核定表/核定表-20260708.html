@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head><meta charset="utf-8"><title>規則核定表 2026-07-08</title><style>
+body { font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; margin: 1.5rem; color: #222; }
+h1 { font-size: 1.25rem; } .meta { color: #555; font-size: .85rem; margin-bottom: .8rem; }
+.howto { background: #f6f8fa; border: 1px solid #ccc; padding: .8rem 1rem; font-size: .9rem; margin-bottom: 1rem; }
+table { border-collapse: collapse; width: 100%; font-size: .85rem; }
+th, td { border: 1px solid #888; padding: 6px 8px; vertical-align: top; text-align: left; }
+th { background: #efefef; }
+pre { margin: 0; white-space: pre-wrap; font-size: .8rem; }
+.quote { font-size: .8rem; color: #333; } .quote .pg { color: #777; }
+td.check { white-space: nowrap; }
+.line { display: inline-block; border-bottom: 1px solid #444; min-width: 8rem; }
+.sig td { height: 3.5rem; }
+.footer { margin-top: 1rem; font-size: .8rem; color: #a00; }
+@media print { .howto { background: #f6f8fa !important; } tr { page-break-inside: avoid; } }
+</style></head>
+<body>
+<h1>消防設備規則核定表</h1>
+<div class="meta">匯出日期：2026-07-08｜法規版本：開發示例版（版本日期待核定，正式使用前依全國法規資料庫現行條文重建）｜
+本表 11 條規則（僅未核定）</div>
+<div class="howto">
+<b>核定方式（給消防專業人員）：</b>
+逐列對照右方「法條原文引用」與您手上的法條清單，檢查「系統目前參數」是否正確。
+正確請勾「☐ 正確」；有誤請勾「☐ 錯誤」並寫上正確數值與依據（條號或函釋文號）。
+有補充說明（但書、實務認定、函釋差異）請寫在「備註」欄。完成後於表末簽名，回傳紙本或掃描檔即可，
+<b>不需要操作任何系統</b>。
+</div>
+<table>
+<thead><tr><th>#</th><th>設備／條號</th><th>系統目前參數</th><th>法條原文引用（頁碼）</th><th>核定結果</th><th>備註／函釋補充</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><b>滅火器</b><br>§14<br><small>extinguisher-threshold｜未核定</small></td><td><pre>{
+ &quot;always_required_uses&quot;: [
+  &quot;甲&quot;
+ ],
+ &quot;total_area_threshold_other_uses&quot;: {
+  &quot;value&quot;: 150,
+  &quot;scope&quot;: &quot;total&quot;,
+  &quot;unit&quot;: &quot;㎡&quot;,
+  &quot;applies_to&quot;: [
+   &quot;乙&quot;,
+   &quot;丙&quot;,
+   &quot;丁&quot;
+  ]
+ },
+ &quot;basement_or_windowless_area_threshold&quot;: {
+  &quot;value&quot;: 50,
+  &quot;scope&quot;: &quot;per_floor&quot;,
+  &quot;unit&quot;: &quot;㎡&quot;
+ }
+}</pre><small>甲類場所應設；其他類別依總樓地板面積門檻；地下層/無開口樓層另有較低門檻。示例參數，以現行條文為準。</small></td><td><span class="quote"><span class="pg">[T-extinguisher-threshold-other｜p.？]</span> 【示例占位】待以法條 PDF 原文逐字替換（總樓地板面積一五〇平方公尺以上）</span></td><td class="check">☐ 正確<br><br>☐ 錯誤，更正為：<br><span class="line"></span><br><span class="line"></span></td><td></td></tr>
+<tr><td>2</td><td><b>滅火器</b><br>§31<br><small>extinguisher-count｜未核定</small></td><td><pre>{
+ &quot;effectiveness_area_per_unit&quot;: {
+  &quot;甲&quot;: 100,
+  &quot;乙&quot;: 200,
+  &quot;丙&quot;: 200,
+  &quot;丁&quot;: 200
+ },
+ &quot;scope&quot;: &quot;per_floor&quot;,
+ &quot;max_walking_distance_m&quot;: 20
+}</pre><small>每 N ㎡ 一滅火效能值（依用途類別），且任一點步行距離 20m 內。步行距離需圖面動線檢核，工具僅算效能值。</small></td><td><span class="quote"><span class="pg">[T-extinguisher-param-甲｜p.？]</span> 【示例占位】待以法條 PDF 原文逐字替換（甲類場所每一〇〇平方公尺有一滅火效能值）</span><br><span class="quote"><span class="pg">[T-extinguisher-param-walking｜p.？]</span> 【示例占位】待以法條 PDF 原文逐字替換（步行距離在二十公尺以下）</span><br><span class="quote"><span class="pg">[T-extinguisher-calc-450｜p.？]</span> 【示例占位】450㎡ ÷ 100㎡/效能值，無條件進位 = 5</span></td><td class="check">☐ 正確<br><br>☐ 錯誤，更正為：<br><span class="line"></span><br><span class="line"></span></td><td></td></tr>
+<tr><td>3</td><td><b>室內消防栓</b><br>§15<br><small>indoor-hydrant-threshold｜未核定</small></td><td><pre>{
+ &quot;low_rise&quot;: {
+  &quot;max_floors&quot;: 5,
+  &quot;per_floor_area_threshold&quot;: {
+   &quot;甲&quot;: 300,
+   &quot;other&quot;: 500
+  }
+ },
+ &quot;mid_rise&quot;: {
+  &quot;min_floors&quot;: 6,
+  &quot;per_floor_area_threshold&quot;: {
+   &quot;甲&quot;: 150,
+   &quot;other&quot;: 300
+  }
+ },
+ &quot;scope&quot;: &quot;per_floor&quot;
+}</pre><small>五層以下與六層以上門檻不同。示例參數；學校等另有特別門檻，未納入。</small></td><td><span class="quote"><span class="pg">[T-hydrant-threshold-lowrise-甲｜p.？]</span> 【示例占位】待以法條 PDF 原文逐字替換（任何一層樓地板面積三〇〇平方公尺以上）</span></td><td class="check">☐ 正確<br><br>☐ 錯誤，更正為：<br><span class="line"></span><br><span class="line"></span></td><td></td></tr>
+<tr><td>4</td><td><b>室內消防栓</b><br>§34<br><small>indoor-hydrant-coverage｜未核定</small></td><td><pre>{
+ &quot;type1_horizontal_distance_m&quot;: 25,
+ &quot;type2_horizontal_distance_m&quot;: 15
+}</pre><small>第一種/第二種消防栓水平距離。歷次修法對第二種距離有調整，核定時特別確認現行值。</small></td><td><span class="quote"><span class="pg">[T-hydrant-param-type1｜p.？]</span> 【示例占位】待以法條 PDF 原文逐字替換（第一種消防栓水平距離二十五公尺以下）</span></td><td class="check">☐ 正確<br><br>☐ 錯誤，更正為：<br><span class="line"></span><br><span class="line"></span></td><td></td></tr>
+<tr><td>5</td><td><b>自動撒水設備</b><br>§17<br><small>sprinkler-threshold｜未核定</small></td><td><pre>{
+ &quot;low_rise_total_area_threshold&quot;: {
+  &quot;value&quot;: 1500,
+  &quot;scope&quot;: &quot;total&quot;,
+  &quot;applies_to&quot;: [
+   &quot;甲&quot;
+  ],
+  &quot;max_floors&quot;: 10
+ },
+ &quot;high_rise_per_floor_threshold&quot;: {
+  &quot;value&quot;: 100,
+  &quot;scope&quot;: &quot;per_floor&quot;,
+  &quot;min_floor_index&quot;: 11
+ }
+}</pre><small>十層以下甲類合計面積門檻；十一層以上樓層另有較低門檻。舞台、地下建築物等特別規定未納入示例。</small></td><td><span class="quote"><span class="pg">[T-sprinkler-threshold-lowrise｜p.？]</span> 【示例占位】待以法條 PDF 原文逐字替換（樓地板面積合計一五〇〇平方公尺以上）</span></td><td class="check">☐ 正確<br><br>☐ 錯誤，更正為：<br><span class="line"></span><br><span class="line"></span></td><td></td></tr>
+<tr><td>6</td><td><b>撒水頭</b><br>§46<br><small>sprinkler-head-spacing｜未核定</small></td><td><pre>{
+ &quot;horizontal_distance_m&quot;: {
+  &quot;standard_nonfireproof&quot;: 2.1,
+  &quot;standard_fireproof&quot;: 2.3,
+  &quot;fast_response&quot;: 2.6
+ },
+ &quot;square_layout_coverage_formula&quot;: &quot;每頭涵蓋 = 2 × r²（正方形配置）&quot;
+}</pre><small>撒水頭水平距離依構造與撒水頭種類。工具以正方形配置估算下限。</small></td><td><span class="quote"><span class="pg">[T-sprinkler-calc-fireproof｜p.？]</span> 【示例占位】耐火構造水平距離2.3m，正方形配置每頭2×2.3²=10.58㎡ → ceil(450/10.58)=43</span></td><td class="check">☐ 正確<br><br>☐ 錯誤，更正為：<br><span class="line"></span><br><span class="line"></span></td><td></td></tr>
+<tr><td>7</td><td><b>火警自動警報設備</b><br>§19<br><small>fire-alarm-threshold｜未核定</small></td><td><pre>{
+ &quot;low_rise&quot;: {
+  &quot;max_floors&quot;: 5,
+  &quot;per_floor_area_threshold&quot;: {
+   &quot;甲&quot;: 300,
+   &quot;other&quot;: 500
+  }
+ },
+ &quot;mid_rise&quot;: {
+  &quot;min_floors&quot;: 6,
+  &quot;max_floors&quot;: 10,
+  &quot;per_floor_area_threshold&quot;: {
+   &quot;any&quot;: 300
+  }
+ },
+ &quot;high_rise&quot;: {
+  &quot;min_floors&quot;: 11,
+  &quot;rule&quot;: &quot;全部應設&quot;
+ },
+ &quot;basement_windowless_threshold&quot;: {
+  &quot;甲&quot;: 100,
+  &quot;other&quot;: 300
+ }
+}</pre><small>示例參數。十一層以上建築物全部應設。</small></td><td><span class="quote"><span class="pg">[T-alarm-param-highrise｜p.？]</span> 【示例占位】待以法條 PDF 原文逐字替換（十一層以上建築物全部應設）</span></td><td class="check">☐ 正確<br><br>☐ 錯誤，更正為：<br><span class="line"></span><br><span class="line"></span></td><td></td></tr>
+<tr><td>8</td><td><b>火警探測器</b><br>§115-§120（示例條號，核定時確認）<br><small>detector-coverage｜未核定</small></td><td><pre>{
+ &quot;coverage_sqm&quot;: {
+  &quot;heat-diff-1&quot;: {
+   &quot;h_lt_4&quot;: {
+    &quot;fireproof&quot;: 90,
+    &quot;other&quot;: 50
+   },
+   &quot;h_4_to_8&quot;: {
+    &quot;fireproof&quot;: 45,
+    &quot;other&quot;: 30
+   }
+  },
+  &quot;heat-diff-2&quot;: {
+   &quot;h_lt_4&quot;: {
+    &quot;fireproof&quot;: 70,
+    &quot;other&quot;: 40
+   },
+   &quot;h_4_to_8&quot;: {
+    &quot;fireproof&quot;: 35,
+    &quot;other&quot;: 25
+   }
+  },
+  &quot;smoke-1&quot;: {
+   &quot;h_lt_4&quot;: {
+    &quot;any&quot;: 150
+   },
+   &quot;h_4_to_20&quot;: {
+    &quot;any&quot;: 75
+   }
+  },
+  &quot;smoke-2&quot;: {
+   &quot;h_lt_4&quot;: {
+    &quot;any&quot;: 150
+   },
+   &quot;h_4_to_15&quot;: {
+    &quot;any&quot;: 75
+   }
+  }
+ }
+}</pre><small>差動式局限型/偵煙式探測器每只有效探測面積，依裝置高度與構造。探測區域劃分（樑深、隔間）需人工判讀。</small></td><td><span class="quote"><span class="pg">[T-detector-calc-smoke2｜p.？]</span> 【示例占位】偵煙式二種，裝置高度未滿四公尺，每一五〇平方公尺一只 → ceil(450/150)=3</span><br><span class="quote"><span class="pg">[T-detector-calc-heatdiff1-nonfireproof｜p.？]</span> 【示例占位】差動式局限型一種，未滿四公尺非耐火構造每五〇平方公尺一只 → ceil(450/50)=9</span></td><td class="check">☐ 正確<br><br>☐ 錯誤，更正為：<br><span class="line"></span><br><span class="line"></span></td><td></td></tr>
+<tr><td>9</td><td><b>出口標示燈・避難方向指示燈</b><br>§23<br><small>exit-light-threshold｜未核定</small></td><td><pre>{
+ &quot;required_uses&quot;: [
+  &quot;甲&quot;,
+  &quot;乙&quot;,
+  &quot;丙&quot;,
+  &quot;丁&quot;
+ ],
+ &quot;placement&quot;: &quot;各出入口上方及避難動線，數量依圖面動線判定&quot;
+}</pre><small>適用範圍廣、免設條件多（步行距離、居室條件），數量無法純面積計算，判定以圖面動線為主 → 配置疑義/需人工判讀。</small></td><td><span class="quote"><span class="pg">[T-exitlight-required-uses｜p.？]</span> 【示例占位】待以法條 PDF 原文逐字替換（適用用途類別）</span></td><td class="check">☐ 正確<br><br>☐ 錯誤，更正為：<br><span class="line"></span><br><span class="line"></span></td><td></td></tr>
+<tr><td>10</td><td><b>緊急照明設備</b><br>§24<br><small>emergency-light-threshold｜未核定</small></td><td><pre>{
+ &quot;required&quot;: &quot;原則各類場所居室及避難動線均應設，除但書免設條件&quot;,
+ &quot;exemption_note&quot;: &quot;採光良好直通避難層等免設條件需人工判讀&quot;
+}</pre><small>原則應設、但書免設；免設判定一律需人工判讀。</small></td><td><span class="quote"><span class="pg">[T-emergency-light-required｜p.？]</span> 【示例占位】待以法條 PDF 原文逐字替換（緊急照明設備應設範圍與但書）</span></td><td class="check">☐ 正確<br><br>☐ 錯誤，更正為：<br><span class="line"></span><br><span class="line"></span></td><td></td></tr>
+<tr><td>11</td><td><b>排煙設備</b><br>§28<br><small>smoke-exhaust-threshold｜未核定</small></td><td><pre>{
+ &quot;total_area_threshold&quot;: {
+  &quot;value&quot;: 500,
+  &quot;scope&quot;: &quot;total&quot;,
+  &quot;applies_to&quot;: [
+   &quot;甲&quot;
+  ]
+ },
+ &quot;smoke_compartment_max_sqm&quot;: 500
+}</pre><small>甲類合計面積門檻為示例；居室開口有效通風面積不足之適用、防煙區劃劃設均需人工判讀。</small></td><td><span class="quote"><span class="pg">[T-smoke-exhaust-threshold｜p.？]</span> 【示例占位】待以法條 PDF 原文逐字替換（樓地板面積合計五〇〇平方公尺以上）</span></td><td class="check">☐ 正確<br><br>☐ 錯誤，更正為：<br><span class="line"></span><br><span class="line"></span></td><td></td></tr>
+</tbody>
+</table>
+<table style="margin-top:1rem; width:60%">
+<tbody class="sig">
+<tr><th style="width:8rem">核定人簽名</th><td></td><th style="width:8rem">日期</th><td></td></tr>
+<tr><th>資格／證號</th><td colspan="3"></td></tr>
+</tbody>
+</table>
+<div class="footer">本表為規則庫核定用文件；簽名後的紙本／掃描檔將存檔於 governance/核定紀錄/，作為每條規則 verified 狀態的責任追溯依據。</div>
+</body>
+</html>

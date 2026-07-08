@@ -1,0 +1,27 @@
+name: rule-tests
+
+# 先紅再綠把關：規則庫與測試不一致的變更，在 PR 階段直接紅燈
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verify-rules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 引擎與規則庫自檢
+        run: python3 tools/fire_code_calc.py self-test
+
+      - name: 規則測試（先紅再綠，含覆蓋率檢查）
+        run: python3 tools/fire_code_calc.py run-tests --strict
+
+      - name: 示範案件門檻判斷煙霧測試
+        run: python3 tools/fire_code_calc.py check-threshold --case "output/示範案件-20260708/case.json"
+
+      - name: 核定表匯出煙霧測試
+        run: |
+          python3 tools/verification_sheet.py export --output /tmp/核定表-ci.html
+          test -s /tmp/核定表-ci.html

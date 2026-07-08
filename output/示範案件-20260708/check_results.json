@@ -1,0 +1,16 @@
+{
+  "case_name": "示範案件",
+  "date": "2026-07-08",
+  "regulation_version": "開發示例版（rules/equipment_rules.json，全部規則 verified: false）",
+  "regulation_html": "../../rules/regulation-checklist.html",
+  "items": [
+    {"article": "§14", "anchor": "art-14", "equipment": "滅火器", "floor": "1F", "requirement": "甲類場所應設；滅火效能值 ceil(450/100)=5", "status": "fail", "finding": "應設滅火效能值 5，圖面僅 2 具（缺口以每具效能值核算後補足）", "source_page": null},
+    {"article": "§15", "anchor": "art-15", "equipment": "室內消防栓", "floor": "1F", "requirement": "六層以上建築物，本層 450≥150 ㎡ 應設", "status": "manual", "finding": "圖面 1 支；水平距離涵蓋需依圖面逐點檢核（配置疑義）", "source_page": null},
+    {"article": "§17", "anchor": "art-17", "equipment": "自動撒水設備", "floor": "1F", "requirement": "甲類樓層合計 830 < 1500 ㎡", "status": "pass", "finding": "免設（計算過程見計算記錄附錄，供覆核）", "source_page": null},
+    {"article": "§19", "anchor": "art-19", "equipment": "火警自動警報設備", "floor": "1F", "requirement": "本層 450≥300 ㎡ 應設；偵煙式二種 ceil(450/150)=3 只（單一探測區域計）", "status": "fail", "finding": "應設 3 只，圖面 2 只，缺 1 只；探測區域劃分需人工判讀", "source_page": null},
+    {"article": "§19", "anchor": "art-19", "equipment": "火警自動警報設備", "floor": "B1", "requirement": "地下層 380≥100 ㎡ 應設；偵煙式二種 ceil(380/150)=3 只", "status": "fail", "finding": "圖面僅定溫式 4 只、無偵煙式；種類與數量均不符", "source_page": null},
+    {"article": "§23", "anchor": "art-23", "equipment": "出口標示燈・避難方向指示燈", "floor": "B1", "requirement": "甲類適用；數量依避難動線", "status": "manual", "finding": "圖面各 1 具，動線涵蓋需人工判讀", "source_page": null},
+    {"article": "§24", "anchor": "art-24", "equipment": "緊急照明設備", "floor": "全棟", "requirement": "原則應設，但書免設條件另核", "status": "pass", "finding": "各層均有配置；免設但書不適用", "source_page": null},
+    {"article": "§28", "anchor": "art-28", "equipment": "排煙設備", "floor": "B1", "requirement": "甲類合計 830≥500 ㎡ 應設；防煙區劃每 500 ㎡", "status": "fail", "finding": "圖面未見排煙口與防煙區劃標示", "source_page": null}
+  ]
+}

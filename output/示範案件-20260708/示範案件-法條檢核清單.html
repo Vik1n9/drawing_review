@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>示範案件 — 法條檢核清單</title>
+<style>
+body { font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; margin: 2rem; color: #222; }
+h1 { font-size: 1.3rem; } .meta { color: #555; font-size: .9rem; margin-bottom: 1rem; }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+th, td { border: 1px solid #999; padding: 6px 8px; text-align: left; vertical-align: top; }
+th { background: #f0f0f0; }
+td.mark { text-align: center; font-size: 1.1rem; width: 3.5rem; white-space: nowrap; }
+tr.fail td { background: #fdecec; } tr.manual td { background: #f5f5f5; }
+.summary { margin: 1rem 0; font-size: .95rem; }
+.disclaimer { margin-top: 1.5rem; font-size: .8rem; color: #a00; border-top: 1px solid #ccc; padding-top: .5rem; }
+a { color: #0645ad; text-decoration: none; }
+@media print { tr.fail td { background: #fdecec !important; } }
+</style>
+</head>
+<body>
+<h1>法條檢核清單 — 示範案件</h1>
+<div class="meta">
+檢核日期：2026-07-08｜
+法規版本：開發示例版（rules/equipment_rules.json，全部規則 verified: false）
+</div>
+<div class="summary">
+共 8 項：☑ 符合 2｜☒ 不符合 4｜⚪ 需人工判讀 2｜— 不適用 0
+</div>
+<table>
+<thead><tr>
+<th>#</th><th>檢核</th><th>法條</th><th>樓層</th><th>設備</th><th>應設要求</th><th>檢核說明</th><th>法條來源頁</th>
+</tr></thead>
+<tbody>
+<tr class="fail"><td>1</td><td class="mark">☒ 不符合</td><td><a href="../../rules/regulation-checklist.html#art-14">§14</a></td><td>1F</td><td>滅火器</td><td>甲類場所應設；滅火效能值 ceil(450/100)=5</td><td>應設滅火效能值 5，圖面僅 2 具（缺口以每具效能值核算後補足）</td><td>—</td></tr>
+<tr class="manual"><td>2</td><td class="mark">⚪ 需人工判讀</td><td><a href="../../rules/regulation-checklist.html#art-15">§15</a></td><td>1F</td><td>室內消防栓</td><td>六層以上建築物，本層 450≥150 ㎡ 應設</td><td>圖面 1 支；水平距離涵蓋需依圖面逐點檢核（配置疑義）</td><td>—</td></tr>
+<tr class="pass"><td>3</td><td class="mark">☑ 符合</td><td><a href="../../rules/regulation-checklist.html#art-17">§17</a></td><td>1F</td><td>自動撒水設備</td><td>甲類樓層合計 830 &lt; 1500 ㎡</td><td>免設（計算過程見計算記錄附錄，供覆核）</td><td>—</td></tr>
+<tr class="fail"><td>4</td><td class="mark">☒ 不符合</td><td><a href="../../rules/regulation-checklist.html#art-19">§19</a></td><td>1F</td><td>火警自動警報設備</td><td>本層 450≥300 ㎡ 應設；偵煙式二種 ceil(450/150)=3 只（單一探測區域計）</td><td>應設 3 只，圖面 2 只，缺 1 只；探測區域劃分需人工判讀</td><td>—</td></tr>
+<tr class="fail"><td>5</td><td class="mark">☒ 不符合</td><td><a href="../../rules/regulation-checklist.html#art-19">§19</a></td><td>B1</td><td>火警自動警報設備</td><td>地下層 380≥100 ㎡ 應設；偵煙式二種 ceil(380/150)=3 只</td><td>圖面僅定溫式 4 只、無偵煙式；種類與數量均不符</td><td>—</td></tr>
+<tr class="manual"><td>6</td><td class="mark">⚪ 需人工判讀</td><td><a href="../../rules/regulation-checklist.html#art-23">§23</a></td><td>B1</td><td>出口標示燈・避難方向指示燈</td><td>甲類適用；數量依避難動線</td><td>圖面各 1 具，動線涵蓋需人工判讀</td><td>—</td></tr>
+<tr class="pass"><td>7</td><td class="mark">☑ 符合</td><td><a href="../../rules/regulation-checklist.html#art-24">§24</a></td><td>全棟</td><td>緊急照明設備</td><td>原則應設，但書免設條件另核</td><td>各層均有配置；免設但書不適用</td><td>—</td></tr>
+<tr class="fail"><td>8</td><td class="mark">☒ 不符合</td><td><a href="../../rules/regulation-checklist.html#art-28">§28</a></td><td>B1</td><td>排煙設備</td><td>甲類合計 830≥500 ㎡ 應設；防煙區劃每 500 ㎡</td><td>圖面未見排煙口與防煙區劃標示</td><td>—</td></tr>
+</tbody>
+</table>
+<div class="disclaimer">
+本清單由 AI 審圖輔助系統產生，僅供審查參考，最終判斷歸屬專業消防人員；法條內容以現行法規原文為準（點擊條號可開啟法條清單 HTML 對照原文）。
+</div>
+</body>
+</html>

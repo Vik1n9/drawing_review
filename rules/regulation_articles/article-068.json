@@ -1,0 +1,27 @@
+{
+  "id": "article-068",
+  "article_no": "68",
+  "legal_basis": "§68",
+  "title": "第 68 條",
+  "heading_level": 5,
+  "source_file": "rules/法規/第3編-第1章-滅火設備.md",
+  "hierarchy": [
+    "第三編 消防安全設計",
+    "第一章 滅火設備",
+    "第四節 水霧滅火設備"
+  ],
+  "markdown": "室內停車空間之水霧滅火設備，應設置排水設備。\n\n---",
+  "snippet": "室內停車空間之水霧滅火設備，應設置排水設備。 ---",
+  "equipment_tags": [
+    "水霧滅火設備"
+  ],
+  "keywords": [
+    "水霧滅火設備",
+    "第一章 滅火設備",
+    "第三編 消防安全設計",
+    "第四節 水霧滅火設備"
+  ],
+  "regulation": "各類場所消防安全設備設置標準",
+  "regulation_version": "民國 113 年 04 月 24 日",
+  "path": "regulation_articles/article-068.json"
+}

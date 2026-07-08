@@ -1,0 +1,27 @@
+{
+  "id": "article-136",
+  "article_no": "136",
+  "legal_basis": "§136",
+  "title": "第 136 條",
+  "heading_level": 5,
+  "source_file": "rules/法規/第3編-第2章-警報設備.md",
+  "hierarchy": [
+    "第三編 消防安全設計",
+    "第二章 警報設備",
+    "第三節 緊急廣播設備"
+  ],
+  "markdown": "緊急廣播設備之啟動裝置，應符合 CNS 一○五二二（火災警報設備用受信總機）之規定。",
+  "snippet": "緊急廣播設備之啟動裝置，應符合 CNS 一○五二二（火災警報設備用受信總機）之規定。",
+  "equipment_tags": [
+    "緊急廣播設備"
+  ],
+  "keywords": [
+    "第三節 緊急廣播設備",
+    "第三編 消防安全設計",
+    "第二章 警報設備",
+    "緊急廣播設備"
+  ],
+  "regulation": "各類場所消防安全設備設置標準",
+  "regulation_version": "民國 113 年 04 月 24 日",
+  "path": "regulation_articles/article-136.json"
+}

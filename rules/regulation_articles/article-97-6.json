@@ -1,0 +1,27 @@
+{
+  "id": "article-97-6",
+  "article_no": "97-6",
+  "legal_basis": "§97-6",
+  "title": "第 97-6 條",
+  "heading_level": 5,
+  "source_file": "rules/法規/第3編-第1章-滅火設備.md",
+  "hierarchy": [
+    "第三編 消防安全設計",
+    "第一章 滅火設備",
+    "第六節之一 鹵化烴滅火設備"
+  ],
+  "markdown": "鹵化烴滅火設備之配管，除準用第89條規定外，其設計壓力應能承受最高使用壓力。",
+  "snippet": "鹵化烴滅火設備之配管，除準用第89條規定外，其設計壓力應能承受最高使用壓力。",
+  "equipment_tags": [
+    "鹵化烴滅火設備"
+  ],
+  "keywords": [
+    "第一章 滅火設備",
+    "第三編 消防安全設計",
+    "第六節之一 鹵化烴滅火設備",
+    "鹵化烴滅火設備"
+  ],
+  "regulation": "各類場所消防安全設備設置標準",
+  "regulation_version": "民國 113 年 04 月 24 日",
+  "path": "regulation_articles/article-97-6.json"
+}

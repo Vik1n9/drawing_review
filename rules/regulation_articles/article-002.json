@@ -1,0 +1,20 @@
+{
+  "id": "article-002",
+  "article_no": "2",
+  "legal_basis": "§2",
+  "title": "第 2 條",
+  "heading_level": 3,
+  "source_file": "rules/法規/第1編-總則.md",
+  "hierarchy": [
+    "第一編 總則"
+  ],
+  "markdown": "（刪除）",
+  "snippet": "（刪除）",
+  "equipment_tags": [],
+  "keywords": [
+    "第一編 總則"
+  ],
+  "regulation": "各類場所消防安全設備設置標準",
+  "regulation_version": "民國 113 年 04 月 24 日",
+  "path": "regulation_articles/article-002.json"
+}

@@ -1,0 +1,22 @@
+{
+  "id": "article-199",
+  "article_no": "199",
+  "legal_basis": "§199",
+  "title": "第 199 條",
+  "heading_level": 5,
+  "source_file": "rules/法規/第4編-公共危險物品等場所.md",
+  "hierarchy": [
+    "第四編 公共危險物品等場所消防設計及消防安全設備",
+    "第一章 消防設計"
+  ],
+  "markdown": "公共危險物品等場所應設有適當之靜電消除設備，以防止因靜電火花引起之火災或爆炸。",
+  "snippet": "公共危險物品等場所應設有適當之靜電消除設備，以防止因靜電火花引起之火災或爆炸。",
+  "equipment_tags": [],
+  "keywords": [
+    "第一章 消防設計",
+    "第四編 公共危險物品等場所消防設計及消防安全設備"
+  ],
+  "regulation": "各類場所消防安全設備設置標準",
+  "regulation_version": "民國 113 年 04 月 24 日",
+  "path": "regulation_articles/article-199.json"
+}

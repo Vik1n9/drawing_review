@@ -1,0 +1,25 @@
+{
+  "id": "article-225",
+  "article_no": "225",
+  "legal_basis": "§225",
+  "title": "第 225 條",
+  "heading_level": 5,
+  "source_file": "rules/法規/第4編-公共危險物品等場所.md",
+  "hierarchy": [
+    "第四編 公共危險物品等場所消防設計及消防安全設備",
+    "第二章 消防安全設備"
+  ],
+  "markdown": "室外儲槽場所，應於儲槽周圍設置固定式冷卻撒水設備，其撒水量應達儲槽側面積每平方公尺每分鐘五公升以上。",
+  "snippet": "室外儲槽場所，應於儲槽周圍設置固定式冷卻撒水設備，其撒水量應達儲槽側面積每平方公尺每分鐘五公升以上。",
+  "equipment_tags": [
+    "自動撒水設備"
+  ],
+  "keywords": [
+    "第二章 消防安全設備",
+    "第四編 公共危險物品等場所消防設計及消防安全設備",
+    "自動撒水設備"
+  ],
+  "regulation": "各類場所消防安全設備設置標準",
+  "regulation_version": "民國 113 年 04 月 24 日",
+  "path": "regulation_articles/article-225.json"
+}

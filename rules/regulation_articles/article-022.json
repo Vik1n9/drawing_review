@@ -1,0 +1,27 @@
+{
+  "id": "article-022",
+  "article_no": "22",
+  "legal_basis": "§22",
+  "title": "第 22 條",
+  "heading_level": 3,
+  "source_file": "rules/法規/第2編-消防設計.md",
+  "hierarchy": [
+    "第二編 消防設計"
+  ],
+  "markdown": "依第十九條或前條規定設有火警自動警報或瓦斯漏氣火警自動警報設備之建築物，應設置緊急廣播設備。",
+  "snippet": "依第十九條或前條規定設有火警自動警報或瓦斯漏氣火警自動警報設備之建築物，應設置緊急廣播設備。",
+  "equipment_tags": [
+    "火警自動警報設備",
+    "緊急廣播設備",
+    "瓦斯漏氣火警自動警報設備"
+  ],
+  "keywords": [
+    "火警自動警報設備",
+    "瓦斯漏氣火警自動警報設備",
+    "第二編 消防設計",
+    "緊急廣播設備"
+  ],
+  "regulation": "各類場所消防安全設備設置標準",
+  "regulation_version": "民國 113 年 04 月 24 日",
+  "path": "regulation_articles/article-022.json"
+}

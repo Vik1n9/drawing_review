@@ -1,0 +1,22 @@
+{
+  "id": "article-201",
+  "article_no": "201",
+  "legal_basis": "§201",
+  "title": "第 201 條",
+  "heading_level": 5,
+  "source_file": "rules/法規/第4編-公共危險物品等場所.md",
+  "hierarchy": [
+    "第四編 公共危險物品等場所消防設計及消防安全設備",
+    "第一章 消防設計"
+  ],
+  "markdown": "公共危險物品等場所應設有適當之洩漏檢測及警報設備，並能於洩漏發生時自動發出警報。",
+  "snippet": "公共危險物品等場所應設有適當之洩漏檢測及警報設備，並能於洩漏發生時自動發出警報。",
+  "equipment_tags": [],
+  "keywords": [
+    "第一章 消防設計",
+    "第四編 公共危險物品等場所消防設計及消防安全設備"
+  ],
+  "regulation": "各類場所消防安全設備設置標準",
+  "regulation_version": "民國 113 年 04 月 24 日",
+  "path": "regulation_articles/article-201.json"
+}

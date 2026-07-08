@@ -1,0 +1,23 @@
+{
+  "id": "article-020",
+  "article_no": "20",
+  "legal_basis": "§20",
+  "title": "第 20 條",
+  "heading_level": 3,
+  "source_file": "rules/法規/第2編-消防設計.md",
+  "hierarchy": [
+    "第二編 消防設計"
+  ],
+  "markdown": "下列場所應設置手動報警設備：\n- 一、三層以上建築物，任何一層樓地板面積在二百平方公尺以上者。\n- 二、第十二條第一款第三目之場所。",
+  "snippet": "下列場所應設置手動報警設備： - 一、三層以上建築物，任何一層樓地板面積在二百平方公尺以上者。 - 二、第十二條第一款第三目之場所。",
+  "equipment_tags": [
+    "手動報警設備"
+  ],
+  "keywords": [
+    "手動報警設備",
+    "第二編 消防設計"
+  ],
+  "regulation": "各類場所消防安全設備設置標準",
+  "regulation_version": "民國 113 年 04 月 24 日",
+  "path": "regulation_articles/article-020.json"
+}

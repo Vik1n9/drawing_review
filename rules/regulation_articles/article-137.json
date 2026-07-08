@@ -1,0 +1,27 @@
+{
+  "id": "article-137",
+  "article_no": "137",
+  "legal_basis": "§137",
+  "title": "第 137 條",
+  "heading_level": 5,
+  "source_file": "rules/法規/第3編-第2章-警報設備.md",
+  "hierarchy": [
+    "第三編 消防安全設計",
+    "第二章 警報設備",
+    "第三節 緊急廣播設備"
+  ],
+  "markdown": "緊急廣播設備，應能於火災發生時，自動遮斷其他非緊急廣播。",
+  "snippet": "緊急廣播設備，應能於火災發生時，自動遮斷其他非緊急廣播。",
+  "equipment_tags": [
+    "緊急廣播設備"
+  ],
+  "keywords": [
+    "第三節 緊急廣播設備",
+    "第三編 消防安全設計",
+    "第二章 警報設備",
+    "緊急廣播設備"
+  ],
+  "regulation": "各類場所消防安全設備設置標準",
+  "regulation_version": "民國 113 年 04 月 24 日",
+  "path": "regulation_articles/article-137.json"
+}

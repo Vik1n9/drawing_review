@@ -1,0 +1,23 @@
+{
+  "id": "article-029",
+  "article_no": "29",
+  "legal_basis": "§29",
+  "title": "第 29 條",
+  "heading_level": 3,
+  "source_file": "rules/法規/第2編-消防設計.md",
+  "hierarchy": [
+    "第二編 消防設計"
+  ],
+  "markdown": "下列場所應設置緊急電源插座：\n- 一、十一層以上建築物之各樓層。\n- 二、總樓地板面積在一千平方公尺以上之地下建築物。\n- 三、依建築技術規則應設置之緊急昇降機間。",
+  "snippet": "下列場所應設置緊急電源插座： - 一、十一層以上建築物之各樓層。 - 二、總樓地板面積在一千平方公尺以上之地下建築物。 - 三、依建築技術規則應設置之緊急昇降機間。",
+  "equipment_tags": [
+    "緊急電源插座"
+  ],
+  "keywords": [
+    "第二編 消防設計",
+    "緊急電源插座"
+  ],
+  "regulation": "各類場所消防安全設備設置標準",
+  "regulation_version": "民國 113 年 04 月 24 日",
+  "path": "regulation_articles/article-029.json"
+}

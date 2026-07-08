@@ -1,0 +1,24 @@
+{
+  "id": "article-078",
+  "article_no": "78",
+  "legal_basis": "§78",
+  "title": "第 78 條",
+  "heading_level": 5,
+  "source_file": "rules/法規/第3編-第1章-滅火設備.md",
+  "hierarchy": [
+    "第三編 消防安全設計",
+    "第一章 滅火設備",
+    "第五節 泡沫滅火設備"
+  ],
+  "markdown": "泡沫原液之儲存量，不得小於計算上最大一個泡沫放出口，放射泡沫體積之二十倍所需之泡沬原液量。",
+  "snippet": "泡沫原液之儲存量，不得小於計算上最大一個泡沫放出口，放射泡沫體積之二十倍所需之泡沬原液量。",
+  "equipment_tags": [],
+  "keywords": [
+    "第一章 滅火設備",
+    "第三編 消防安全設計",
+    "第五節 泡沫滅火設備"
+  ],
+  "regulation": "各類場所消防安全設備設置標準",
+  "regulation_version": "民國 113 年 04 月 24 日",
+  "path": "regulation_articles/article-078.json"
+}

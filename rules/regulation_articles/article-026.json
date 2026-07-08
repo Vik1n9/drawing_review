@@ -1,0 +1,23 @@
+{
+  "id": "article-026",
+  "article_no": "26",
+  "legal_basis": "§26",
+  "title": "第 26 條",
+  "heading_level": 3,
+  "source_file": "rules/法規/第2編-消防設計.md",
+  "hierarchy": [
+    "第二編 消防設計"
+  ],
+  "markdown": "下列場所應設置連結送水管：\n- 一、五層或六層建築物總樓地板面積在六千平方公尺以上者及七層以上建築物。\n- 二、總樓地板面積在一千平方公尺以上之地下建築物。",
+  "snippet": "下列場所應設置連結送水管： - 一、五層或六層建築物總樓地板面積在六千平方公尺以上者及七層以上建築物。 - 二、總樓地板面積在一千平方公尺以上之地下建築物。",
+  "equipment_tags": [
+    "連結送水管"
+  ],
+  "keywords": [
+    "第二編 消防設計",
+    "連結送水管"
+  ],
+  "regulation": "各類場所消防安全設備設置標準",
+  "regulation_version": "民國 113 年 04 月 24 日",
+  "path": "regulation_articles/article-026.json"
+}

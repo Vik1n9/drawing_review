@@ -19,7 +19,8 @@
 
 ### 改 `rules/`（規則庫）
 
-- **必須走先紅再綠**：先在 `rule_tests.json` 寫測試（expected 逐字抄錄法條 PDF、附頁碼與 quote）→ `run-tests` 確認紅 → 編碼參數 → 轉綠
+- **必須走先紅再綠**（完整紀律見 `skills/red-green.md`，改編自 obra/superpowers 的 TDD skill）：先在 `rule_tests.json` 寫測試（expected 逐字抄錄法條 PDF、附頁碼與 quote）→ `run-tests --verify-red {測試ID}` 確認紅得正確 → 編碼最小參數 → `run-tests --strict` 轉綠
+- **鐵律**：發現參數先於測試被寫入，刪除該參數重來，不保留當參考
 - `verified: true` 只能經 `tools/verification_sheet.py apply` 產生，且 results JSON 必附簽名存證路徑
 - PR 說明必附法條依據（條號＋頁碼）
 

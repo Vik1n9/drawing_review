@@ -29,22 +29,27 @@
 
 ### 第三步：先紅再綠——規則編碼（防幻覺核心機制）
 
-對每一條要進規則庫的參數，**嚴格依照順序執行，不得跳步**：
+**完整紀律見 `skills/red-green.md`（改編自 obra/superpowers 的 TDD skill），含鐵律、紅旗清單與交付前檢查清單。** 對每一條要進規則庫的參數，嚴格依照順序執行，不得跳步：
 
 ```
-（紅）1. 先寫測試：在 rules/rule_tests.json 新增測試案例——
-        expected 值必須從 PDF 原文「抄錄」，並填入 source.page 與 source.quote（原文引用）
-        ★ 沒有 quote 的測試視為無效，run-tests 會直接判 FAIL
-（紅）2. 跑測試確認是紅的：
-        python3 tools/fire_code_calc.py run-tests
-        此時規則尚未編碼（或參數為占位值），測試必須 FAIL——
-        ★ 如果測試在編碼前就通過，代表測試本身沒有鑑別力，重寫測試
-（綠）3. 編碼規則：把參數寫入 rules/equipment_rules.json，附 legal_basis、source_page
-（綠）4. 再跑測試確認轉綠：run-tests 全部 PASS
-     5. 專業核定後將該規則 verified 改為 true，填 verified_by / verified_date
+（RED）       1. 先寫測試：在 rules/rule_tests.json 新增測試案例——
+                 expected 值必須從 PDF 原文「抄錄」（不能推算），
+                 並填入 source.page 與 source.quote（逐字原文引用）
+                 ★ 沒有 quote 的測試引擎直接判 INVALID
+（Verify RED）2. 看著測試失敗，且必須紅得正確：
+                 python3 tools/fire_code_calc.py run-tests --verify-red {測試ID}
+                 ★ 已綠 = 測試無鑑別力（你測的是既有參數）→ 重寫測試；
+                   若參數先於測試存在 → 刪除該參數重來（鐵律：不留參考）
+                 ★ INVALID = 測試本身壞掉，不是合法的紅 → 先修測試
+（GREEN）     3. 編碼最小參數：只寫入讓這個測試轉綠所需的參數，
+                 附 legal_basis 條號；不順手加其他條文的參數
+（Verify GREEN）4. 確認轉綠且沒弄破其他測試：
+                 python3 tools/fire_code_calc.py run-tests --strict
+                 ★ 紅了是參數錯 → 修參數，不是修測試
+              5. 專業核定後將該規則 verified 改為 true（僅能經 verification_sheet.py apply）
 ```
 
-**為什麼先紅再綠能防幻覺**：expected 值在規則編碼**之前**、直接對著 PDF 原文抄錄並留下頁碼與原文引用——AI 沒有機會「先編一個參數、再編一個會通過的測試」。紅→綠的順序保證測試與實作來自兩次獨立的取數動作，等同投研系統的雙源交叉驗證。
+**為什麼先紅再綠能防幻覺**：expected 值在規則編碼**之前**、直接對著 PDF 原文抄錄並留下頁碼與原文引用——AI 沒有機會「先編一個參數、再編一個會通過的測試」。紅→綠的順序保證測試與實作來自兩次獨立的取數動作，等同投研系統的雙源交叉驗證。而 Verify RED 關卡進一步保證：這個測試確實在測「這個參數」，而不是恰好永遠通過的空測試。
 
 測試案例格式（`rules/rule_tests.json`）：
 

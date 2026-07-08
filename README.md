@@ -64,17 +64,18 @@
 
 ### 4. 先紅再綠：規則庫的防幻覺測試（TDD for 法規）
 
-AI 最危險的失敗模式是**憑訓練記憶編造法規數值**（門檻面積、涵蓋半徑、每只探測面積），且編得極像真的。對策是把 TDD 的紅綠循環搬到法規編碼上：
+AI 最危險的失敗模式是**憑訓練記憶編造法規數值**（門檻面積、涵蓋半徑、每只探測面積），且編得極像真的。對策是把 TDD 的 RED–GREEN 紀律（改編自 [obra/superpowers](https://github.com/obra/superpowers) 的 test-driven-development skill，完整版見 `skills/red-green.md`）搬到法規編碼上：
 
 ```
-（紅）1. 先寫測試：expected 值對著法條清單 PDF「逐字抄錄」，必附頁碼 + 原文引用（quote）
-（紅）2. 跑 run-tests 確認測試是紅的（規則尚未編碼；若未編碼就綠，代表測試無鑑別力，重寫）
-（綠）3. 編碼規則參數到 rules/equipment_rules.json
-（綠）4. 再跑 run-tests 轉綠；--strict 模式要求每條規則至少一個測試覆蓋
-     5. 消防專業人員核定後 verified: true
+（RED）        1. 先寫測試：expected 值對著法條清單 PDF「逐字抄錄」，必附頁碼 + 原文引用（quote）
+（Verify RED） 2. run-tests --verify-red {測試ID}：看著測試失敗，且必須「紅得正確」——
+                  已綠 = 測試無鑑別力（重寫）；INVALID = 測試壞掉（先修測試，不算合法的紅）
+（GREEN）      3. 編碼最小參數到 rules/equipment_rules.json（只讓這個測試轉綠，不順手加別的）
+（Verify GREEN）4. run-tests --strict 轉綠且沒弄破其他測試；紅了修參數、不修測試
+               5. 消防專業人員核定後 verified: true
 ```
 
-紅→綠的順序保證「測試的期望值」與「規則的參數值」來自**兩次獨立的取數動作**，AI 沒有機會先編參數再編一個必然通過的測試——等同投研系統的雙源交叉驗證。無 quote 的測試一律判 FAIL。
+**鐵律**：參數先於測試被寫入規則庫 → 刪除該參數重來，不保留當參考（事後補的測試只是把幻覺抄寫第二遍）。紅→綠的順序保證「測試的期望值」與「規則的參數值」來自**兩次獨立的取數動作**——等同投研系統的雙源交叉驗證。無 quote 的測試一律判 INVALID。
 
 ---
 

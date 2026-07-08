@@ -1,6 +1,6 @@
 # Drawing Review — 消防審圖輔助 Agent 系統
 
-本專案是消防審圖輔助系統：案件輸入以 **DXF 向量圖面資料夾** 與審查依據文件為主，AI 依人工確認後的 `case.json` 與結構化法規規則庫進行工具計算，最後輸出缺失清單、法條檢核表，以及可互動導覽的 SVG 圖面標註網頁。
+本專案是消防審圖輔助系統：案件輸入以 **待審 `平面圖.dxf`** 為主，搭配輔助對照用 `平面圖.pdf` 與相關審查文件；AI 依人工確認後的 `case.json` 與固定法規資料夾中的結構化規則庫進行工具計算，最後輸出缺失清單、法條檢核表，以及可互動導覽的 SVG 圖面標註網頁。
 
 > **定位：輔助專業消防人員審圖，不取代專業判斷。** 每一項「應設／免設／缺失」結論都必須可追溯到法規條文；凡圖面或資料不足以判定之處，一律標註「需人工判讀」。
 
@@ -10,7 +10,7 @@
 
 | 項目 | 內容 |
 |------|------|
-| 輸入 | `input/{案件名}/drawings/` 內的 DXF 圖面，搭配 `input/{案件名}/` 的審查依據文件與 `input/法規/` 的法條清單 |
+| 輸入 | `input/{案件名}/平面圖.dxf` 為審核主圖面，搭配同資料夾內的 `平面圖.pdf` 與相關審查文件；法規不放入案件輸入資料夾 |
 | 正典資料 | 人工確認後的 `output/{案件名}-{YYYYMMDD}/case.json`；DXF 與 PDF/文件只作為證據來源 |
 | 核心能力 1 | 依法條清單計算各類消防設備的應設需求（種類、數量、免設或需人工判讀） |
 | 核心能力 2 | 比對圖面既有設備配置與應設需求，列出缺項、數量不足、配置疑義與需人工判讀項目 |
@@ -25,12 +25,12 @@
 ## 二、工作流程
 
 ```text
-input/{案件名}/drawings/*.dxf
-input/{案件名}/審查依據文件
-input/法規/法條清單.pdf
+input/{案件名}/平面圖.dxf
+input/{案件名}/平面圖.pdf
+input/{案件名}/相關審查文件
         │
         ▼
-/regulation-intake（首次建庫或法規換版）
+/regulation-intake（首次建庫或法規換版；來源固定在 rules/法規/）
         │  先紅再綠：測試 → verify-red → 規則 → strict 綠燈
         ▼
 rules/equipment_rules.json
@@ -38,7 +38,7 @@ rules/regulation_index.json
         │
         ▼
 /plan-intake
-        │  讀取 DXF 圖面與審查文件，建立圖說底稿
+        │  讀取待審 DXF、輔助 PDF 與審查文件，建立圖說底稿
         ▼
 【關卡1：人工確認】
         │  面積、用途、構造、樓層、既有設備、低信心欄位逐項確認
@@ -70,10 +70,10 @@ output/{案件名}-{日期}/
 ```text
 drawing_review/
 ├── input/
-│   ├── {案件名}/
-│   │   ├── drawings/                 — DXF 圖面資料夾（只讀不改）
-│   │   └── 審查依據文件
-│   └── 法規/                         — 核對用法條清單 PDF
+│   └── {案件名}/
+│       ├── 平面圖.dxf                — 需要審核的主圖面（只讀不改）
+│       ├── 平面圖.pdf                — 輔助對照用圖面 PDF（只讀不改）
+│       └── 相關審查文件               — 申請書、審查表、說明書等案件文件
 ├── output/
 │   └── {案件名}-{YYYYMMDD}/
 │       ├── case.json                 — 圖說底稿（正典資料）
@@ -82,14 +82,19 @@ drawing_review/
 │       ├── {案件名}-圖面審查.html
 │       ├── {案件名}-問題清單.md
 │       └── {案件名}-法條檢核清單.html
-├── rules/                            — 結構化法規規則庫
+├── rules/                            — 固定法規資料夾與結構化法規規則庫
+│   ├── equipment_rules.json
+│   ├── rule_tests.json
+│   ├── 法規/                         — 法規 PDF/Markdown 原文（非每案輸入）
+│   ├── regulation_index.json
+│   └── regulation_articles/
 ├── governance/                       — 規則核定責任追溯鏈
 ├── skills/                           — 審圖 workflow 文件
 ├── tests/                            — Python 單元測試
 └── tools/                            — 確定性工具
 ```
 
-`input/` 一律視為只讀；所有案件產出寫入新的 `output/{案件名}-{YYYYMMDD}/` 目錄。
+`input/` 一律視為只讀；每案輸入資料夾只放案件圖面與審查文件，不放法規檔。法規固定維護於 `rules/法規/`，所有案件共用同一套經索引與測試的規則庫。所有案件產出寫入新的 `output/{案件名}-{YYYYMMDD}/` 目錄。
 
 ---
 
@@ -141,12 +146,16 @@ python3 -m pip install -r requirements.txt
   "source_drawings": [
     {
       "drawing_id": "1F",
-      "path": "input/示範案件/drawings/1F.dxf",
+      "path": "input/示範案件/平面圖.dxf",
       "floor": "1F",
       "unit": "mm",
       "model_bbox": [0, 0, 50000, 32000],
       "layers": ["WALL", "DOOR", "FIRE_EQUIPMENT"]
     }
+  ],
+  "source_documents": [
+    {"type": "輔助平面圖", "path": "input/示範案件/平面圖.pdf"},
+    {"type": "審查文件", "path": "input/示範案件/消防安全設備審查表.pdf"}
   ],
   "floors": [
     {
@@ -168,7 +177,7 @@ python3 -m pip install -r requirements.txt
   "case_name": "示範案件",
   "output_html": "output/示範案件-20260708/示範案件-圖面審查.html",
   "source_drawings": [
-    {"drawing_id": "1F", "path": "input/示範案件/drawings/1F.dxf", "floor": "1F", "unit": "mm"}
+    {"drawing_id": "1F", "path": "input/示範案件/平面圖.dxf", "floor": "1F", "unit": "mm"}
   ],
   "annotations": [
     {

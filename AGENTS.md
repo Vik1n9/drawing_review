@@ -1,6 +1,6 @@
 # Fire Review — Codex 審圖行為契約
 
-本專案是消防審圖輔助系統：DXF 向量圖面與審查依據文件輸入後，依法規計算設備需求，列出缺失設備與數量，並以 SVG 網頁標註圖面問題，輔助專業消防人員審圖。輸出只能作為輔助，不能取代專業判斷。
+本專案是消防審圖輔助系統：案件輸入資料夾內放置待審 `平面圖.dxf`、輔助對照用 `平面圖.pdf` 與相關審查文件後，依法規計算設備需求，列出缺失設備與數量，並以 SVG 網頁標註圖面問題，輔助專業消防人員審圖。輸出只能作為輔助，不能取代專業判斷。
 
 ## Codex 執行規則
 
@@ -26,9 +26,10 @@
 ```text
 drawing_review/
 ├── input/                       — 統一輸入資料夾（只讀不改）
-│   ├── {案件名}/                — DXF 圖面資料夾與審查依據文件
-│   │   └── drawings/            — DXF 圖面（只讀不改）
-│   └── 法規/                    — 核對用法條清單 PDF
+│   └── {案件名}/                — 案件輸入資料夾（只讀不改）
+│       ├── 平面圖.dxf           — 需要審核的主圖面
+│       ├── 平面圖.pdf           — 輔助對照用圖面 PDF
+│       └── 相關審查文件          — 申請書、審查表、說明書等案件文件
 ├── output/                      — 統一輸出資料夾
 │   └── {案件名}-{YYYYMMDD}/     — 每次審查建立新目錄分類
 │       ├── case.json                       — 圖說底稿（正典資料）
@@ -40,7 +41,7 @@ drawing_review/
 ├── rules/                       — 結構化法規規則庫
 │   ├── equipment_rules.json     — 規則（每條附條號、verified 旗標）
 │   ├── rule_tests.json          — 先紅再綠測試案例
-│   ├── 法規/                    — 法規 Markdown 原文（依編章分檔）
+│   ├── 法規/                    — 固定法規資料夾（PDF/Markdown 原文，非每案輸入）
 │   ├── regulation_index.json    — 輕量條文索引（不含完整條文）
 │   └── regulation_articles/      — 逐條文 JSON（審查時按需載入）
 ├── governance/                  — 規則核定責任追溯鏈
@@ -66,7 +67,7 @@ drawing_review/
 ## 常用命令
 
 ```bash
-# 法規 Markdown 轉逐條索引（換版或 rules/法規/*.md 更新後執行）
+# 法規 Markdown 轉逐條索引（法規換版或 rules/法規/*.md 更新後執行）
 python3 tools/regulation_index.py build
 
 # 只取用相關條文，不要一次載入全部法規
@@ -104,6 +105,7 @@ python3 tools/verification_sheet.py apply --results governance/核定紀錄/resu
 ## 注意事項
 
 - 本專案輸出僅供審圖輔助，最終判斷歸屬專業消防人員。
+- 案件 `input/{案件名}/` 不放法規檔；法規來源固定維護於 `rules/法規/` 與規則索引中。
 - SVG 標註網頁的圈選位置為 AI 推定時（`position_confidence: low`），以問題清單文字說明為準。
 - 判定「符合」與「不適用」時，也要保留可覆核的計算過程與條文依據。
 - 查法規依據時，優先使用 `rules/regulation_index.json` 與 `tools/regulation_index.py lookup` 載入相關條文；避免把 `rules/法規/*.md` 全部載入上下文。

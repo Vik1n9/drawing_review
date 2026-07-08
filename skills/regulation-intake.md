@@ -1,21 +1,21 @@
 # 法條清單結構化與 HTML 轉換（先紅再綠）
 
-對 $ARGUMENTS（法條清單 PDF 路徑）執行法規結構化。這是規則庫的**唯一合法來源**：所有 `rules/equipment_rules.json` 的參數都必須經由本 skill 從法條清單 PDF 萃取，並通過「先紅再綠」測試後才能供 `/code-requirements` 使用。
+對固定法規資料夾 `rules/法規/` 內的法規來源執行結構化。這是規則庫的**唯一合法來源**：所有 `rules/equipment_rules.json` 的參數都必須經由本 skill 從固定法規資料夾中的 PDF/Markdown 原文萃取，並通過「先紅再綠」測試後才能供 `/code-requirements` 使用。案件審查時不得把法規檔放入 `input/{案件名}/` 當作每案附件。
 
 ## 輸入與輸出
 
 | 項目 | 內容 |
 |------|------|
-| 輸入 | 法條清單 PDF（有具體來源的條文彙編，如設置標準條文＋審查基準） |
+| 輸入 | `rules/法規/` 固定法規資料夾（有具體來源的 PDF/Markdown 條文彙編，如設置標準條文＋審查基準） |
 | 輸出 1 | `rules/equipment_rules.json` — 結構化規則（每條附 PDF 頁碼＋原文引用） |
 | 輸出 2 | `rules/rule_tests.json` — 規則測試案例（先紅再綠的依據） |
 | 輸出 3 | `rules/regulation-checklist.html` — 法條清單 HTML 版（**格式不變**，供審查意見書引用） |
 
 ## 執行流程
 
-### 第一步：讀取法條清單 PDF
+### 第一步：讀取固定法規來源
 
-- 用 Read 工具逐頁讀取 PDF（每次最多 20 頁，分批處理）
+- 從 `rules/法規/` 讀取法規 PDF 或 Markdown 原文；PDF 逐頁讀取（每次最多 20 頁，分批處理），Markdown 依條文章節處理
 - 記錄文件來源資訊：文件名稱、版本／修正日期、總頁數，寫入 rules JSON 的 `regulation_version` 與 `source_document`
 
 ### 第二步：轉換 HTML（格式不變）
@@ -91,7 +91,7 @@ python3 tools/fire_code_calc.py self-test
 
 ### 第五步：修法更新流程
 
-法條清單 PDF 換版時：
+固定法規資料夾中的法條來源換版時：
 1. 重新執行本 skill，`regulation_version` 更新
 2. 受影響規則的 `verified` 重置為 `false`，對應測試的 expected 依新版 PDF 重新抄錄（先改測試→紅→改規則→綠）
 3. 舊版 rules 與 HTML 封存為 `-{版本日期}` 後綴

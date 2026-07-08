@@ -2,14 +2,14 @@
 
 ## 專案定位
 
-消防審圖輔助 Agent 系統：平面圖 PDF 輸入 → 依法規計算設備需求 → 列出缺失設備及數量，輔助專業消防人員審圖。**輔助，不取代。**
+消防審圖輔助 Agent 系統：DXF 向量圖面與審查依據文件輸入 → 依法規計算設備需求 → 列出缺失設備及數量 → 以 SVG 網頁標註圖面問題，輔助專業消防人員審圖。**輔助，不取代。**
 
 ## 審圖最高原則（最高優先級，所有 skill 執行時必須遵守）
 
 1. **法條可追溯**——每一項「應設／免設／缺失」結論必須附法規條號；引用不到條號的結論一律降級為「建議事項」並標明無法源依據
 2. **禁止心算、禁止憑記憶引法規數值**——所有門檻判斷與數量計算必須透過 `python3 tools/fire_code_calc.py`，工具輸出直接嵌入報告作為計算記錄
 3. **先紅再綠（防幻覺核心，完整紀律見 `skills/red-green.md`）**——規則庫的每個參數必須先有測試（expected 從法條 PDF 原文逐字抄錄、附頁碼與 quote），經 `run-tests --verify-red` 確認紅得正確，編碼後轉綠才可使用；參數先於測試存在則刪除重來；`run-tests --strict` 不通過的規則庫不得交付
-4. **正典資料是 case.json**——所有計算以人工確認後的 `case.json` 為準；圖片只是證據來源，不得跳過確認關卡直接從圖片推算
+4. **正典資料是 case.json**——所有計算以人工確認後的 `case.json` 為準；DXF、SVG 與圖片只是證據來源，不得跳過確認關卡直接從圖面推算
 5. **需人工判讀原則（安全底線）**——圖面判讀不確定、需大樣圖／現場才能確認的項目（防火區劃、排煙開口、夾層面積等），一律標註「需人工判讀」，嚴禁用推測填充
 6. **未核定規則必附警語**——`rules/*.json` 中 `verified: false` 的規則參數，輸出時必須附「本參數未經消防專業人員核定，以現行法規為準」
 7. **法規版本注記**——報告標頭必須注明所依據的法規版本（`rules` 檔案的 `regulation_version` 欄位）
@@ -20,14 +20,15 @@
 ```
 drawing_review/
 ├── input/                       — 統一輸入資料夾（只讀不改）
-│   ├── {案件名}/                — 平面圖 PDF 等待審資料
+│   ├── {案件名}/                — DXF 圖面資料夾與審查依據文件
+│   │   └── drawings/            — DXF 圖面（只讀不改）
 │   └── 法規/                    — 核對用法條清單 PDF
 ├── output/                      — 統一輸出資料夾
 │   └── {案件名}-{YYYYMMDD}/     — 每次審查建立新目錄分類
 │       ├── case.json                       — 圖說底稿（正典資料）
-│       ├── annotations.json                — 紅圈標註定義
+│       ├── annotations.json                — SVG 標註定義
 │       ├── check_results.json              — 檢核結果（供 HTML 產生）
-│       ├── {案件名}-標註圖.pdf              — 交付物1：原圖紅圈標註＋簡短解釋
+│       ├── {案件名}-圖面審查.html           — 交付物1：DXF 轉 SVG 標註＋缺失導覽
 │       ├── {案件名}-問題清單.md             — 交付物2：缺失清單（詳列違反法條）
 │       └── {案件名}-法條檢核清單.html       — 交付物3：打勾檢核表（標準表格格式）
 ├── rules/                       — 結構化法規規則庫
@@ -43,7 +44,7 @@ drawing_review/
 
 | # | 交付物 | 產生方式 |
 |---|--------|---------|
-| 1 | **標註圖 PDF** | `/gap-analysis` 產出 `annotations.json`（缺失位置＋簡短解釋＋嚴重度），`pdf_annotate.py` 在原圖上畫紅圈輸出 |
+| 1 | **圖面審查 HTML** | `/gap-analysis` 產出 `annotations.json`（缺失位置＋簡短解釋＋嚴重度），`dxf_svg_review.py` 將 DXF 轉 SVG 並標註缺失 |
 | 2 | **問題清單** | 缺失四級分類（重大／一般／配置疑義／需人工判讀），每項詳列違反法條、應設要求、圖面現況、缺口 |
 | 3 | **法條檢核清單 HTML** | `checklist_html.py` 依 `check_results.json` 產出標準表格，逐項打勾（☑符合／☒不符合／⚪需人工判讀／—不適用），條號深連結到 `regulation-checklist.html` 錨點 |
 
@@ -75,7 +76,7 @@ python3 tools/fire_code_calc.py occupancy --components '[{"name":"客席","area"
 python3 tools/fire_code_calc.py calc --expr '450 / 100'
 
 # 交付物產生
-python3 tools/pdf_annotate.py --annotations output/{案件名}-{日期}/annotations.json   # 需 pip install pymupdf
+python3 tools/dxf_svg_review.py --annotations output/{案件名}-{日期}/annotations.json
 python3 tools/checklist_html.py --results output/{案件名}-{日期}/check_results.json
 
 # 規則核定（消防專業人員協作，見 governance/README.md）
@@ -88,4 +89,4 @@ python3 tools/verification_sheet.py apply --results governance/核定紀錄/resu
 - 本專案輸出僅供審圖輔助，最終判斷歸屬專業消防人員
 - `input/` 只讀不改；所有產出寫入 `output/{案件名}-{YYYYMMDD}/`
 - 修改 `rules/*.json` 後必須重跑 `self-test` 與 `run-tests --strict`
-- 標註圖的圈選位置為 AI 推定時（`position_confidence: low`），以問題清單文字說明為準
+- SVG 標註網頁的圈選位置為 AI 推定時（`position_confidence: low`），以問題清單文字說明為準

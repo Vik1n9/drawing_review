@@ -3,7 +3,32 @@
   "created": "2026-07-08",
   "intake_grade": "A",
   "regulation_version": "開發示例版（見 rules/equipment_rules.json）",
-  "source_plans": ["plans/示範案件-平面圖.pdf（示例，未附）"],
+  "source_drawings": [
+    {
+      "drawing_id": "1F",
+      "path": "input/示範案件/drawings/1F.dxf",
+      "floor": "1F",
+      "unit": "mm",
+      "model_bbox": [0, 0, 12000, 9000],
+      "layers": ["WALL", "DOOR", "FIRE_EQUIPMENT"]
+    },
+    {
+      "drawing_id": "B1",
+      "path": "input/示範案件/drawings/B1.dxf",
+      "floor": "B1",
+      "unit": "mm",
+      "model_bbox": [0, 0, 12000, 9000],
+      "layers": ["WALL", "DOOR", "FIRE_EQUIPMENT"]
+    },
+    {
+      "drawing_id": "3F",
+      "path": "input/示範案件/drawings/3F.dxf",
+      "floor": "3F",
+      "unit": "mm",
+      "model_bbox": [0, 0, 12000, 9000],
+      "layers": ["WALL", "DOOR", "FIRE_EQUIPMENT"]
+    }
+  ],
   "building": {
     "construction": {"value": "耐火", "confidence": "high", "source": "manual"},
     "floors_above": 8,
@@ -22,7 +47,8 @@
         "smoke_detector": 2, "heat_detector": 2,
         "exit_light": 2, "direction_light": 3, "emergency_light": 8
       },
-      "occupancy_basis": {"fixed_seats": 40, "components": [{"name": "客席", "area": 120, "per_sqm": 3}]}
+      "occupancy_basis": {"fixed_seats": 40, "components": [{"name": "客席", "area": 120, "per_sqm": 3}]},
+      "layout_index": {"drawing_id": "1F", "bbox": [3200, 4000, 5800, 6200], "position_confidence": "medium"}
     },
     {
       "floor": "3F",
@@ -35,7 +61,8 @@
         "smoke_detector": 3, "heat_detector": 0,
         "exit_light": 2, "direction_light": 2, "emergency_light": 6
       },
-      "occupancy_basis": {"fixed_seats": 0, "components": [{"name": "辦公區", "area": 350, "per_sqm": 3}]}
+      "occupancy_basis": {"fixed_seats": 0, "components": [{"name": "辦公區", "area": 350, "per_sqm": 3}]},
+      "layout_index": {"drawing_id": "3F", "bbox": [0, 0, 12000, 9000], "position_confidence": "low"}
     },
     {
       "floor": "B1",
@@ -48,7 +75,8 @@
         "smoke_detector": 0, "heat_detector": 4,
         "exit_light": 1, "direction_light": 1, "emergency_light": 4
       },
-      "occupancy_basis": {"fixed_seats": 0, "components": [{"name": "包廂區", "area": 260, "per_sqm": 3}]}
+      "occupancy_basis": {"fixed_seats": 0, "components": [{"name": "包廂區", "area": 260, "per_sqm": 3}]},
+      "layout_index": {"drawing_id": "B1", "bbox": [2000, 3000, 9500, 7000], "position_confidence": "low"}
     }
   ],
   "unrecognized_symbols": [],

@@ -30,7 +30,7 @@
 
 ### 改 `tools/`
 
-- 維持 stdlib-only（`pdf_annotate.py` 的 pymupdf 為唯一例外）
+- 維持 stdlib-only；目前例外為 `dxf_svg_review.py` 使用 `ezdxf` 解析 DXF，以及 legacy `pdf_annotate.py` 使用 `pymupdf`
 - 改動計算邏輯必須有對應測試案例
 
 ## 流程規範

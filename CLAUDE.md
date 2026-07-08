@@ -8,7 +8,7 @@
 
 1. **法條可追溯**——每一項「應設／免設／缺失」結論必須附法規條號；引用不到條號的結論一律降級為「建議事項」並標明無法源依據
 2. **禁止心算、禁止憑記憶引法規數值**——所有門檻判斷與數量計算必須透過 `python3 tools/fire_code_calc.py`，工具輸出直接嵌入報告作為計算記錄
-3. **先紅再綠（防幻覺核心）**——規則庫的每個參數必須先有測試（expected 從法條 PDF 原文逐字抄錄、附頁碼與 quote），測試先紅、編碼後轉綠才可使用；`run-tests --strict` 不通過的規則庫不得交付
+3. **先紅再綠（防幻覺核心，完整紀律見 `skills/red-green.md`）**——規則庫的每個參數必須先有測試（expected 從法條 PDF 原文逐字抄錄、附頁碼與 quote），經 `run-tests --verify-red` 確認紅得正確，編碼後轉綠才可使用；參數先於測試存在則刪除重來；`run-tests --strict` 不通過的規則庫不得交付
 4. **正典資料是 case.json**——所有計算以人工確認後的 `case.json` 為準；圖片只是證據來源，不得跳過確認關卡直接從圖片推算
 5. **需人工判讀原則（安全底線）**——圖面判讀不確定、需大樣圖／現場才能確認的項目（防火區劃、排煙開口、夾層面積等），一律標註「需人工判讀」，嚴禁用推測填充
 6. **未核定規則必附警語**——`rules/*.json` 中 `verified: false` 的規則參數，輸出時必須附「本參數未經消防專業人員核定，以現行法規為準」
@@ -58,6 +58,7 @@ drawing_review/
 ```bash
 # 先紅再綠：規則測試（規則庫交付前必須全綠）
 python3 tools/fire_code_calc.py run-tests --strict
+python3 tools/fire_code_calc.py run-tests --verify-red {測試ID}   # Verify RED：驗證新測試「紅得正確」
 
 # 引擎與規則庫自檢（修改 rules/*.json 後必跑）
 python3 tools/fire_code_calc.py self-test

@@ -346,27 +346,38 @@ def _dig(obj, path):
 
 
 def _run_one_test(rules_doc, t):
-    """回傳 (passed: bool, detail: str)。"""
+    """回傳 (status, detail)。status：
+    pass    — 規則參數與測試期望一致
+    red     — 正當的紅：參數缺失或與法條抄錄值不一致（先紅再綠中「紅得正確」的狀態）
+    invalid — 測試本身無效（缺 quote、未知類型、執行錯誤）——這不是合法的紅
+    """
     src = t.get("source", {})
     if not str(src.get("quote", "")).strip():
-        return False, "測試缺少 source.quote（expected 必須逐字抄錄自法條 PDF）→ 無效測試"
+        return "invalid", "測試缺少 source.quote（expected 必須逐字抄錄自法條 PDF）→ 無效測試"
     ttype = t.get("type")
     if ttype == "param-equals":
-        rule = find_rule(rules_doc, t["rule_id"])
+        try:
+            rule = find_rule(rules_doc, t["rule_id"])
+        except KeyError:
+            return "red", f"規則 {t['rule_id']} 不存在（紅：規則尚未編碼）"
         try:
             actual = _dig(rule, t["path"])
         except KeyError:
-            return False, f"規則 {t['rule_id']} 缺少路徑 {t['path']}（紅：規則尚未編碼）"
+            return "red", f"規則 {t['rule_id']} 缺少路徑 {t['path']}（紅：參數尚未編碼）"
         try:
             ok = exact(actual) == exact(t["expected"])
         except Exception:
             ok = actual == t["expected"]
-        return ok, f"{t['path']} = {actual}，期望 {t['expected']}（來源 p.{src.get('page','?')}）"
+        return ("pass" if ok else "red"), \
+            f"{t['path']} = {actual}，期望 {t['expected']}（來源 p.{src.get('page','?')}）"
     if ttype == "calc-extinguisher":
-        rule = find_rule(rules_doc, t["rule_id"])
-        per = rule["params"]["effectiveness_area_per_unit"][t["input"]["use_category"]]
+        try:
+            rule = find_rule(rules_doc, t["rule_id"])
+            per = rule["params"]["effectiveness_area_per_unit"][t["input"]["use_category"]]
+        except KeyError as e:
+            return "red", f"參數尚未編碼（紅）：{e}"
         got = ceil_div(t["input"]["floor_area"], per)
-        return got == t["expected"]["effectiveness_value"], \
+        return ("pass" if got == t["expected"]["effectiveness_value"] else "red"), \
             f"滅火效能值 {got}，期望 {t['expected']['effectiveness_value']}"
     if ttype == "calc-detector":
         i = t["input"]
@@ -374,14 +385,25 @@ def _run_one_test(rules_doc, t):
             _, coverage, count = compute_detector(rules_doc, i["area"], i["height"],
                                                   i.get("fireproof", False), i["detector_type"])
         except (ValueError, KeyError) as e:
-            return False, f"計算失敗（紅）：{e}"
-        return count == t["expected"]["count"], \
+            return "red", f"參數尚未編碼或不適用（紅）：{e}"
+        return ("pass" if count == t["expected"]["count"] else "red"), \
             f"探測器 {count} 只（每只 {coverage} ㎡），期望 {t['expected']['count']} 只"
     if ttype == "calc-sprinkler":
         i = t["input"]
         _, heads = compute_sprinkler_heads(i["area"], i["radius"])
-        return heads == t["expected"]["heads"], f"撒水頭 {heads} 頭，期望 {t['expected']['heads']} 頭"
-    return False, f"未知測試類型: {ttype}"
+        return ("pass" if heads == t["expected"]["heads"] else "red"), \
+            f"撒水頭 {heads} 頭，期望 {t['expected']['heads']} 頭"
+    return "invalid", f"未知測試類型: {ttype}"
+
+
+_STATUS_ICON = {"pass": "🟢 PASS", "red": "🔴 FAIL", "invalid": "🟡 INVALID"}
+
+
+def _eval_test(rules_doc, t):
+    try:
+        return _run_one_test(rules_doc, t)
+    except Exception as e:  # 測試本身壞掉不是合法的紅
+        return "invalid", f"測試執行錯誤：{e}"
 
 
 def cmd_run_tests(args):
@@ -389,27 +411,46 @@ def cmd_run_tests(args):
     with open(args.tests, encoding="utf-8") as f:
         tests_doc = json.load(f)
     tests = tests_doc["tests"]
-    red, green = [], []
+
+    # --verify-red：Verify RED 關卡——看著測試失敗，且必須紅得正確
+    # （紅 = 參數缺失/不一致；測試壞掉的 INVALID 與已綠的 PASS 都不算合法的紅）
+    if args.verify_red:
+        t = next((x for x in tests if x.get("id") == args.verify_red), None)
+        if t is None:
+            sys.exit(f"找不到測試：{args.verify_red}")
+        status, detail = _eval_test(rules_doc, t)
+        if status == "red":
+            print(f"🔴 verify-RED 通過：{args.verify_red} 紅得正確 — {detail}")
+            print("下一步：編碼規則參數（只編碼讓這個測試轉綠所需的最小參數），再跑 run-tests 確認轉綠")
+            return
+        if status == "pass":
+            print(f"🟢 verify-RED 失敗：{args.verify_red} 已經是綠的 — {detail}")
+            sys.exit("測試無鑑別力：你測的是既有參數，不是新編碼。若參數先於測試被寫入規則庫，"
+                     "刪除該參數（不是保留當參考），重走先紅再綠")
+        print(f"🟡 verify-RED 失敗：{args.verify_red} 是 INVALID，不是紅 — {detail}")
+        sys.exit("紅的原因錯誤：測試本身壞掉（缺 quote／格式錯誤），不是參數缺失。先修測試再驗紅")
+
+    counts = {"pass": 0, "red": 0, "invalid": 0}
     for t in tests:
-        try:
-            ok, detail = _run_one_test(rules_doc, t)
-        except Exception as e:  # 測試本身壞掉也算紅
-            ok, detail = False, f"測試執行錯誤：{e}"
-        (green if ok else red).append((t["id"], detail))
-        print(f"{'🟢 PASS' if ok else '🔴 FAIL'}  {t['id']}  —  {detail}")
+        status, detail = _eval_test(rules_doc, t)
+        counts[status] += 1
+        print(f"{_STATUS_ICON[status]}  {t['id']}  —  {detail}")
 
     if args.strict:
         covered = {t.get("rule_id") for t in tests}
         for r in rules_doc["rules"]:
             if r["id"] not in covered:
-                red.append((r["id"], "strict：規則無任何測試覆蓋"))
+                counts["red"] += 1
                 print(f"🔴 FAIL  [coverage] {r['id']}  —  規則無任何測試覆蓋（--strict）")
 
+    failures = counts["red"] + counts["invalid"]
     print()
-    print(f"結果：🟢 {len(green)} PASS / 🔴 {len(red)} FAIL（共 {len(tests)} 個測試）")
-    if red:
+    print(f"結果：🟢 {counts['pass']} PASS / 🔴 {counts['red']} FAIL / 🟡 {counts['invalid']} INVALID"
+          f"（共 {len(tests)} 個測試）")
+    if failures:
         print("【紅】規則庫不得交付使用。若為新規則的首次執行，這是預期的紅——"
-              "接著編碼規則參數使測試轉綠；若為既有規則，表示規則與法條 PDF 抄錄值不一致，必須查原文。")
+              "接著編碼規則參數使測試轉綠；若為既有規則，表示規則與法條 PDF 抄錄值不一致，必須查原文。"
+              "INVALID 表示測試本身無效（缺 quote／格式錯誤），先修測試。")
         sys.exit(1)
     print("【綠】全部測試通過。提醒：綠 ≠ 已核定，verified: false 的規則仍須專業人員核定。")
 
@@ -488,6 +529,8 @@ def build_parser():
     s.add_argument("--rules", default=default_rules)
     s.add_argument("--tests", default="rules/rule_tests.json")
     s.add_argument("--strict", action="store_true", help="要求每條規則至少一個測試覆蓋")
+    s.add_argument("--verify-red", metavar="TEST_ID",
+                   help="Verify RED 關卡：驗證指定測試「紅得正確」（參數缺失/不一致，而非測試壞掉或已綠）")
     s.set_defaults(func=cmd_run_tests)
 
     s = sub.add_parser("self-test", help="規則庫與引擎自檢")

@@ -38,7 +38,7 @@ rules/regulation_index.json
         │
         ▼
 /plan-intake
-        │  讀取待審 DXF、輔助 PDF 與審查文件，建立圖說底稿
+        │  讀取待審 DXF、輔助 PDF 與審查文件，依 skills/place-use-classification.md 建立第12條用途候選與圖說底稿
         ▼
 【關卡1：人工確認】
         │  面積、用途、構造、樓層、既有設備、低信心欄位逐項確認

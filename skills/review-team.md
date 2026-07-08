@@ -107,7 +107,7 @@ Prompt 模板：
 
 ### 第八步：產出交付物與清理
 
-- 依 `/gap-analysis` 第六步的流程，產出三項交付物到 `output/{案件名}-{YYYYMMDD}/`：標註圖 PDF（`pdf_annotate.py`）、問題清單、法條檢核清單 HTML（`checklist_html.py`）
+- 依 `/gap-analysis` 第六步的流程，產出三項交付物到 `output/{案件名}-{YYYYMMDD}/`：圖面審查 HTML（`dxf_svg_review.py`）、問題清單、法條檢核清單 HTML（`checklist_html.py`）
 - TeamDelete 清理團隊資源
 
 ## 重要注意事項

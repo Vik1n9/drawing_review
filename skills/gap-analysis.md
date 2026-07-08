@@ -2,7 +2,7 @@
 
 對 $ARGUMENTS（案件名）執行「應設 vs 既有」比對，產出三項固定交付物到 `output/{案件名}-{YYYYMMDD}/`：
 
-1. **標註圖 PDF**——原圖上紅圈標出有問題的部分＋簡短解釋
+1. **圖面審查 HTML**——DXF 轉 SVG，於向量圖面上標出有問題的部分並提供缺失導覽
 2. **問題清單**——缺失四級分類，詳列違反哪些法條
 3. **法條檢核清單 HTML**——標準表格格式，逐項打勾
 
@@ -79,11 +79,12 @@
 
 全部寫入 `output/{案件名}-{YYYYMMDD}/`：
 
-**交付物 1：標註圖 PDF（原圖紅圈＋簡短解釋）**
+**交付物 1：圖面審查 HTML（DXF 轉 SVG＋缺失導覽）**
 
-1. 依缺失清單與 case.json 的 `layout_index`，產出 `annotations.json`：每筆含 `issue_id`（對應問題清單編號）、`page`、`rect`（相對座標）、`label`（簡短解釋）、`note`（完整說明＋法條）、`severity`、`position_confidence`
-2. 位置只能來自 `layout_index` 或圖面明確標注；推定位置一律標 `position_confidence: low`
-3. 執行：`python3 tools/pdf_annotate.py --annotations {輸出目錄}/annotations.json`（需 `pip install pymupdf`）
+1. 依缺失清單、case.json 的 `source_drawings` 與 `layout_index`，產出 `annotations.json`：頂層含 `case_name`、`output_html`、`source_drawings`；每筆標註含 `issue_id`（對應問題清單編號）、`drawing_id`、`bbox`（DXF model-space 座標）、`label`（簡短解釋）、`note`（完整說明＋法條）、`severity`、`position_confidence`
+2. 位置只能來自 `layout_index` 或 DXF/審查文件明確標注；推定位置一律標 `position_confidence: low`
+3. 執行：`python3 tools/dxf_svg_review.py --annotations {輸出目錄}/annotations.json`
+4. 產出的 `{案件名}-圖面審查.html` 必須顯示 DXF 轉成的 SVG、缺失清單導覽、點選定位與高亮；若有 `position_confidence: low`，頁面須顯示「位置僅供參考，以問題清單文字說明為準」
 
 **交付物 2：問題清單（`{案件名}-問題清單.md`）**
 

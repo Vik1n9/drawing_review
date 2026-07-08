@@ -12,6 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: 安裝 Python 相依套件
+        run: python3 -m pip install -r requirements.txt
+
+      - name: Python 單元測試
+        run: python3 -m unittest discover tests
+
       - name: 引擎與規則庫自檢
         run: python3 tools/fire_code_calc.py self-test
 

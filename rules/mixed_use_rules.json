@@ -1,0 +1,379 @@
+{
+  "regulation": "複合用途建築物判斷基準",
+  "regulation_version": "使用者提供之附表 PDF（發布日期／文號待人工補注，核定時確認現行版本）",
+  "source_document": "rules/法規/建築物主用途及從屬用途關係對照表.pdf",
+  "disclaimer": "本檔為附表「建築物主用途及從屬用途關係對照表」之結構化抄錄，全部 verified: false，未經消防專業人員核定不得作為審查依據。判斷基準本文（從屬認定要件、面積比例門檻）尚未提供，未入庫；量化判定一律需人工判讀。",
+  "transcription_notes": [
+    "PDF 為直式掃描轉出，部分文字經程式萃取可能有跨欄/跨頁歸屬誤差與疑似錯漏字；各該項以 transcription_note 標注，核定時須對照原件逐字確認。",
+    "use_codes 為 use_ref 之機械對應（如 甲類（一）→ 甲1），供引擎比對用，非原文欄位。",
+    "convenience_parts／close_relation_parts 為附表 (C)「供工作者、使用者便於使用者」／(D)「具有密切之關係」兩欄；main_parts 為 (B)「主要用途部分」。"
+  ],
+  "table_remark": "備考：電氣室係指有關播帶、監控等處所。（附表 p.1）",
+  "rules": [
+    {
+      "id": "subordinate-table",
+      "equipment": "主從用途對照表",
+      "category": "用途分類",
+      "legal_basis": "複合用途建築物判斷基準 附表「建築物主用途及從屬用途關係對照表」",
+      "params": {
+        "entry_count": 31,
+        "entries": [
+          {
+            "no": 1,
+            "use_ref": "甲類（一）",
+            "use_codes": ["甲1"],
+            "place": "電影片映演場所（戲院、電影院）",
+            "main_parts": ["舞台", "座席", "放映室", "大廳", "售票室", "電氣室", "道具室", "衣物室", "練習室", "儲藏室"],
+            "convenience_parts": ["販賣部", "專用停車場", "休息室", "辦公室", "展示室", "及其他相關場所"],
+            "close_relation_parts": ["製片廠（室）"],
+            "remark": null,
+            "source": {"page": 1}
+          },
+          {
+            "no": 2,
+            "use_ref": "甲類（一）",
+            "use_codes": ["甲1"],
+            "place": "歌廳、舞廳、夜總會、俱樂部",
+            "main_parts": ["座席區", "吧台", "舞池", "舞台", "烹調室", "更衣室", "儲藏室", "更氣室"],
+            "convenience_parts": ["休息室", "專用停車場", "辦公室", "及其他相關場所"],
+            "close_relation_parts": [],
+            "remark": null,
+            "source": {"page": 1},
+            "transcription_note": "「更氣室」疑為「電氣室」，待人工核對原件"
+          },
+          {
+            "no": 3,
+            "use_ref": "甲類（一）",
+            "use_codes": ["甲1"],
+            "place": "理容院（觀光理髮、視廳理容等）指壓按摩場所",
+            "main_parts": ["包廂", "理容椅", "按摩座", "蒸氣室", "烹調室"],
+            "convenience_parts": ["大廳", "辦公室", "休息室", "專用停車場", "及其他相關場所"],
+            "close_relation_parts": [],
+            "remark": null,
+            "source": {"page": 1},
+            "transcription_note": "「視廳理容」疑為「視聽理容」，待人工核對原件"
+          },
+          {
+            "no": 4,
+            "use_ref": "甲類（一）",
+            "use_codes": ["甲1"],
+            "place": "錄影節目帶播映場所（MTV 等）、視廳歌唱場所（KTV 等）",
+            "main_parts": ["座席區", "包廂", "電氣室", "吧台", "櫃台", "烹調室"],
+            "convenience_parts": ["大廳", "休息室", "辦公室", "專用停車場", "及其他相關場所"],
+            "close_relation_parts": [],
+            "remark": null,
+            "source": {"page": 1},
+            "transcription_note": "「視廳歌唱場所」疑為「視聽歌唱場所」，待人工核對原件"
+          },
+          {
+            "no": 5,
+            "use_ref": "甲類（一）",
+            "use_codes": ["甲1"],
+            "place": "酒家、酒吧、酒店（廊）",
+            "main_parts": ["座席區", "包廂", "舞台", "櫃台", "吧台", "廚房", "電氣室", "更衣室", "儲藏室"],
+            "convenience_parts": ["專用停車場", "大廳", "休息室", "辦公室", "及其他相關場所"],
+            "close_relation_parts": [],
+            "remark": null,
+            "source": {"page": 1}
+          },
+          {
+            "no": 6,
+            "use_ref": "甲類（二）",
+            "use_codes": ["甲2"],
+            "place": "保齡球館、撞球場、室內螢幕式高爾夫練習場",
+            "main_parts": ["球道區", "休息區", "機械室", "球台區", "作業區", "更衣室", "等待區", "遊藝室", "儲藏室", "包廂", "櫃台", "電氣室"],
+            "convenience_parts": ["飯廳", "咖啡廳", "販賣部", "專用停車場", "辦公室", "及其他相關場所"],
+            "close_relation_parts": ["三溫暖", "體育館"],
+            "remark": null,
+            "source": {"page": 1}
+          },
+          {
+            "no": 7,
+            "use_ref": "甲類（二）",
+            "use_codes": ["甲2"],
+            "place": "集會堂",
+            "main_parts": ["集合室", "會議室", "大廳", "宴會場", "廚房", "兼具本表第一欄用途者並適用其主從關係"],
+            "convenience_parts": ["飯廳", "販賣部", "專用停車場", "及其他相關場所"],
+            "close_relation_parts": ["展示室", "圖書室", "體育室", "遊藝室", "托兒室", "醫護室", "招待室"],
+            "remark": null,
+            "source": {"page": 1},
+            "transcription_note": "本項跨頁（p.1→p.2），「醫護室、招待室」之欄位歸屬待人工核對原件"
+          },
+          {
+            "no": 8,
+            "use_ref": "甲類（二）",
+            "use_codes": ["甲2"],
+            "place": "健身休閒中心（含提供指壓、三溫暖等設施之美容瘦身場所）",
+            "main_parts": ["健身室", "韻律室", "游泳區", "三溫暖", "浴室", "更衣室"],
+            "convenience_parts": ["大廳", "咖啡廳", "販賣部", "專用停車場", "辦公室", "及其他相關場所"],
+            "close_relation_parts": [],
+            "remark": null,
+            "source": {"page": 2}
+          },
+          {
+            "no": 9,
+            "use_ref": "甲類（二）",
+            "use_codes": ["甲2"],
+            "place": "遊藝場所、電子遊戲場、資訊休閒場所",
+            "main_parts": ["遊藝室（區）", "遊戲室（區）", "休閒室（區）", "櫃台"],
+            "convenience_parts": ["販賣部", "辦公室", "專用停車場", "及其他相關場所"],
+            "close_relation_parts": [],
+            "remark": null,
+            "source": {"page": 2}
+          },
+          {
+            "no": 10,
+            "use_ref": "甲類（三）",
+            "use_codes": ["甲3"],
+            "place": "觀光旅館、飯店、旅館、招待所（限有寢室客房者）",
+            "main_parts": ["寢室", "櫃台", "大廳", "廚房", "餐廳", "浴室", "接待室（區）", "洗衣室", "配餐室", "蒸氣室"],
+            "convenience_parts": ["娛樂室", "吧台", "飲食區", "兌幣處", "專用停車場", "美（理）容室", "醫務室", "咖啡廳", "電信室", "電氣室", "及其他相關場所"],
+            "close_relation_parts": ["展示室（區）（含連續式形態）", "會議室", "展望設施", "游泳池", "遊藝室"],
+            "remark": null,
+            "source": {"page": 2}
+          },
+          {
+            "no": 11,
+            "use_ref": "甲類（四）",
+            "use_codes": ["甲4"],
+            "place": "商場、市場、百貨適場、超集市場、零售市場、展覽場",
+            "main_parts": ["販賣部", "貨物處理室", "商品倉庫", "美食街", "辦公室", "展示室（區）", "衣服專賣店"],
+            "convenience_parts": ["專用停車場", "攝影室", "遊藝室", "美（理）容室", "醫務室", "集會室", "電氣室", "及其他相關場所"],
+            "close_relation_parts": ["飲食美容等教室", "自動提款機室"],
+            "remark": "拍賣場原則上視為本類。",
+            "source": {"page": 2},
+            "transcription_note": "「百貨適場、超集市場」疑為「百貨商場、超級市場」（§12 甲類第4目用語），待人工核對原件"
+          },
+          {
+            "no": 12,
+            "use_ref": "甲類（五）",
+            "use_codes": ["甲5"],
+            "place": "餐廳、飲食店、咖啡廳、茶藝館",
+            "main_parts": ["座席區", "包廂", "廚房", "接待室", "吧台"],
+            "convenience_parts": ["專用停車場", "結婚廣場", "大廳", "辦公室", "及其他相關場所"],
+            "close_relation_parts": ["娛樂室", "會議室"],
+            "remark": null,
+            "source": {"page": 2}
+          },
+          {
+            "no": 13,
+            "use_ref": "甲類（六）",
+            "use_codes": ["甲6"],
+            "place": "醫療機構（醫院診所）、療養院",
+            "main_parts": ["診療室", "急診室", "病房", "產房", "手術室", "檢驗室", "藥局", "辦公室", "機能訓練室", "會客室", "談話室", "研究室", "廚房", "洗衣（滌）室", "醫師值日室", "候診室（區）", "技工室", "圖書館"],
+            "convenience_parts": ["飯廳", "販賣部", "專用停車場", "娛樂室", "托兒室", "理容室", "浴室", "茶室", "美食街", "及其他相關場所"],
+            "close_relation_parts": ["臨床研究室"],
+            "remark": "醫院附設之護士宿舍及護士學校一部份視為寄宿舍及學校。",
+            "source": {"page": 2}
+          },
+          {
+            "no": 14,
+            "use_ref": "甲類（六）",
+            "use_codes": ["甲6"],
+            "place": "長期照護機構、養護機構、安養機構、老人服務機構（限供日間照顧及安置使用者）、兒童福利設施、育嬰中心、護理之家機構、產後護理機構",
+            "main_parts": ["起居室", "集會室", "機械訓練室", "會客室", "飯廳", "廚房", "診療室", "作業室", "洗衣部", "浴室"],
+            "convenience_parts": ["飯廳", "販賣部", "專用停車場", "及其他相關場所"],
+            "close_relation_parts": [],
+            "remark": null,
+            "source": {"page": 2},
+            "transcription_note": "本項跨頁（p.2→p.3），欄位銜接待人工核對原件"
+          },
+          {
+            "no": 15,
+            "use_ref": "甲類（六）／乙類（十二）",
+            "use_codes": ["甲6", "乙12"],
+            "place": "啟明、啟智、啟聰等特殊學校；幼稚園、托兒所",
+            "main_parts": ["教室", "遊藝室", "休息室", "講堂", "廚房", "體育室", "診療室", "圖書室"],
+            "convenience_parts": ["飯廳", "販賣部", "辦公室", "及其他相關場所"],
+            "close_relation_parts": ["才藝教室"],
+            "remark": null,
+            "source": {"page": 3}
+          },
+          {
+            "no": 16,
+            "use_ref": "甲類（七）",
+            "use_codes": ["甲7"],
+            "place": "三溫暖、公共浴室",
+            "main_parts": ["更衣室", "浴室", "蒸氣室", "休息室", "體育室", "等候室", "按摩室", "衣櫃室", "洗衣室", "閱覽室", "美（理）容室", "視聽賞區", "櫃台", "烹調室"],
+            "convenience_parts": ["飯廳", "販賣部", "專用停車場", "茶室", "娛樂室", "托兒室", "小型三溫暖", "及其他相關場所"],
+            "close_relation_parts": ["自費洗衣部"],
+            "remark": null,
+            "source": {"page": 3}
+          },
+          {
+            "no": 17,
+            "use_ref": "乙類（一）",
+            "use_codes": ["乙1"],
+            "place": "車站、飛機場大廈、候船室",
+            "main_parts": ["起降區", "等待室", "操控室", "電力控制室", "行李領取區", "暫時寄物處", "衣帽間", "小睡室", "救護室"],
+            "convenience_parts": ["飯廳", "販賣部", "咖啡廳", "旅行社接待室", "及其他相關場所"],
+            "close_relation_parts": ["理容室", "兌幣處"],
+            "remark": null,
+            "source": {"page": 3}
+          },
+          {
+            "no": 18,
+            "use_ref": "乙類（二）",
+            "use_codes": ["乙2"],
+            "place": "期貨經紀業、證券交易所、金融機構",
+            "main_parts": ["座席", "大廳", "看板區", "櫃台", "銀行辦事處", "辦公室", "保管箱室", "金庫"],
+            "convenience_parts": ["談話室", "專用停車場", "咖啡室", "及其他相關場所"],
+            "close_relation_parts": [],
+            "remark": null,
+            "source": {"page": 3}
+          },
+          {
+            "no": 19,
+            "use_ref": "乙類（三）",
+            "use_codes": ["乙3"],
+            "place": "兒童及少年福利機構、學校教室、補習班、訓練班、Ｋ書中心、安親（才藝）班",
+            "main_parts": ["教室", "職員室", "講堂", "會議室", "圖書室", "研究室", "用功室", "保健室"],
+            "convenience_parts": ["飯廳", "談話室", "及其他相關場所"],
+            "close_relation_parts": ["學生會館之集會室", "宿舍", "學童保育室"],
+            "remark": null,
+            "source": {"page": 3}
+          },
+          {
+            "no": 20,
+            "use_ref": "乙類（四）",
+            "use_codes": ["乙4"],
+            "place": "圖書室、博物館、美術館、陳列館、史蹟資料館、紀念館及其他類似場所",
+            "main_parts": ["閱覽室", "展示室", "陳列區", "書庫", "衣帽間", "大廳", "工作室", "物品保管室", "資料室", "研究室", "會議室", "休息室", "放映室", "觀賞室", "辦公室"],
+            "convenience_parts": ["飯廳", "販賣部", "咖啡廳", "專用停車場", "及其他相關場所"],
+            "close_relation_parts": [],
+            "remark": null,
+            "source": {"page": 4}
+          },
+          {
+            "no": 21,
+            "use_ref": "乙類（五）",
+            "use_codes": ["乙5"],
+            "place": "寺廟、宗祠、教堂、靈骨塔及其他類似場所",
+            "main_parts": ["本殿", "旁殿", "禮拜堂", "納骨塔（室）", "辦公室", "集會室", "休息室", "陳列室"],
+            "convenience_parts": ["飯廳", "販賣部", "咖啡廳", "專用停車場", "圖書室", "及其他相關場所"],
+            "close_relation_parts": ["宴會場", "廚房", "寢室", "客房", "娛樂室"],
+            "remark": null,
+            "source": {"page": 4},
+            "transcription_note": "(D) 欄「寢室、客房」為直式萃取之跨欄文字，歸屬待人工核對原件"
+          },
+          {
+            "no": 22,
+            "use_ref": "乙類（六）",
+            "use_codes": ["乙6"],
+            "place": "辦公室、前款第六目以外之老人服務機構、老人文康機構",
+            "main_parts": ["辦公室", "休息室", "會議室", "大廳", "檔案室", "儲物室", "談話室", "作業室", "資料室"],
+            "convenience_parts": ["飯廳", "販賣部", "咖啡廳", "娛樂室", "體育室", "理容室", "專用停車場", "診療至", "及其他相關場所"],
+            "close_relation_parts": ["展示室"],
+            "remark": null,
+            "source": {"page": 4},
+            "transcription_note": "「診療至」疑為「診療室」，待人工核對原件"
+          },
+          {
+            "no": 23,
+            "use_ref": "乙類（七）",
+            "use_codes": ["乙7"],
+            "place": "集合住宅、寄宿舍",
+            "main_parts": ["起居室", "寢室", "廚房", "飯廳", "教養室", "休息室", "浴室", "共同烹調室", "洗衣室", "置物室", "管理人員室"],
+            "convenience_parts": ["販賣部", "專用停車場", "大廳", "會面室", "及其他相關場所"],
+            "close_relation_parts": [],
+            "remark": null,
+            "source": {"page": 4}
+          },
+          {
+            "no": 24,
+            "use_ref": "乙類（八）",
+            "use_codes": ["乙8"],
+            "place": "體育館、活動中心",
+            "main_parts": ["座席", "運動區", "健身室", "各項運動器具室", "辦公室", "置物室", "更衣室", "浴室", "圖書室", "展示室", "活動室", "閱覽室", "大廳"],
+            "convenience_parts": ["飯廳", "販賣部", "遊藝室", "視聽覺教室", "專用停車場", "訓練室", "表演台", "診療室", "及其他相關場所"],
+            "close_relation_parts": ["宴會場", "結婚廣場"],
+            "remark": null,
+            "source": {"page": 4}
+          },
+          {
+            "no": 25,
+            "use_ref": "乙類（九）",
+            "use_codes": ["乙9"],
+            "place": "室內溜冰場、室內游泳池",
+            "main_parts": ["大廳", "櫃台", "寄（置）物室", "溜冰場", "游泳池", "休息區", "浴室", "換衣室", "設備區"],
+            "convenience_parts": ["販賣部", "遊藝室", "專用停車場", "咖啡廳", "及其他相關場所"],
+            "close_relation_parts": [],
+            "remark": null,
+            "source": {"page": 4}
+          },
+          {
+            "no": 26,
+            "use_ref": "乙類（十）",
+            "use_codes": ["乙10"],
+            "place": "電影攝影場、電視播送場",
+            "main_parts": ["攝影室", "舞台", "錄音室", "道具室", "衣物室", "休息室", "觀眾席", "大廳", "排練室"],
+            "convenience_parts": ["飯廳", "販賣部", "咖啡廳", "專用停車場", "休息室", "及其他相關場所"],
+            "close_relation_parts": [],
+            "remark": null,
+            "source": {"page": 4}
+          },
+          {
+            "no": 27,
+            "use_ref": "乙類（十一）",
+            "use_codes": ["乙11"],
+            "place": "倉庫、傢俱展示販售場",
+            "main_parts": ["物品食庫", "貨物處理室", "辦公室", "休息室", "作業室（與商品保管相關之作業）"],
+            "convenience_parts": ["飯廳", "販賣部", "專用停車場", "展示室", "及其他相關場所"],
+            "close_relation_parts": [],
+            "remark": null,
+            "source": {"page": 4},
+            "transcription_note": "「物品食庫」疑為「物品倉庫」，待人工核對原件；本項跨頁（p.4→p.5）"
+          },
+          {
+            "no": 28,
+            "use_ref": "丙類（一）",
+            "use_codes": ["丙1"],
+            "place": "電信機器室",
+            "main_parts": ["電信機房", "電器室", "電腦室", "作業室", "辦公室", "休息室", "器材室"],
+            "convenience_parts": ["專用停車場", "及其他相關場所"],
+            "close_relation_parts": [],
+            "remark": null,
+            "source": {"page": 5}
+          },
+          {
+            "no": 29,
+            "use_ref": "丙類（二）",
+            "use_codes": ["丙2"],
+            "place": "汽車修護場、飛機修理廠、飛機庫",
+            "main_parts": ["車庫", "車道", "修理場", "器具室", "飛機修理場", "飛機庫", "休息室", "更衣室"],
+            "convenience_parts": ["飯廳", "販賣部", "專用停車場", "及其他相關場所"],
+            "close_relation_parts": [],
+            "remark": null,
+            "source": {"page": 5}
+          },
+          {
+            "no": 30,
+            "use_ref": "丙類（三）",
+            "use_codes": ["丙3"],
+            "place": "室內停車場、建築物依法附設之室內停車空間",
+            "main_parts": ["車庫", "車道"],
+            "convenience_parts": [],
+            "close_relation_parts": [],
+            "remark": null,
+            "source": {"page": 5}
+          },
+          {
+            "no": 31,
+            "use_ref": "丁類（一）（二）（三）",
+            "use_codes": ["丁1", "丁2", "丁3"],
+            "place": "高度危險工作場所、中度危險工作場所、低度危險工作場所",
+            "main_parts": ["作業區", "設計室", "研究室", "辦公室", "更衣室", "物品室", "展示室", "會議室", "圖書室"],
+            "convenience_parts": ["飯廳", "販賣部", "專用停車場", "托兒室", "診療室", "及其他相關場所"],
+            "close_relation_parts": [],
+            "remark": null,
+            "source": {"page": 5}
+          }
+        ]
+      },
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "note": "附表逐列結構化抄錄（31 項）。僅供從屬用途「候選」比對：判斷基準本文之從屬認定要件與面積比例門檻未入庫，最終主從判定一律需人工確認（原則 5）。"
+    }
+  ]
+}

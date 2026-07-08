@@ -21,6 +21,7 @@ Usage:
 import argparse
 import json
 import math
+import os
 import re
 import sys
 from decimal import Decimal, Context, ROUND_HALF_EVEN
@@ -90,21 +91,23 @@ def get_value(field):
 # check-threshold — 逐層逐設備門檻判斷
 # ---------------------------------------------------------------------------
 
-def cmd_check_threshold(args):
-    rules_doc = load_rules(args.rules)
-    with open(args.case, encoding="utf-8") as f:
-        case = json.load(f)
-
+def threshold_results(rules_doc, case):
+    """逐層逐設備門檻判斷，回傳 (meta, results)。
+    results 每項：{floor, floor_use, equipment, rule_id, legal_basis, verdict, reason, verified}
+    """
     building = case.get("building", {})
     floors_above = building.get("floors_above", 0)
     total_area = exact(get_value(building.get("total_floor_area", 0)) or 0)
     floors = case.get("floors", [])
 
-    print(f"# 門檻判斷：{case.get('case_name', '(未命名案件)')}")
-    print(f"法規版本：{rules_doc.get('regulation_version', '未注明')}")
-    print(f"地上 {floors_above} 層 / 地下 {building.get('floors_below', 0)} 層，"
-          f"總樓地板面積 {total_area} ㎡")
-    print()
+    meta = {
+        "case_name": case.get("case_name", "(未命名案件)"),
+        "regulation_version": rules_doc.get("regulation_version", "未注明"),
+        "floors_above": floors_above,
+        "floors_below": building.get("floors_below", 0),
+        "total_floor_area": total_area,
+    }
+    results = []
 
     # 甲類樓層合計面積（撒水、排煙等 total 門檻用）
     total_area_by_cat = {}
@@ -121,7 +124,18 @@ def cmd_check_threshold(args):
         windowless = get_value(fl.get("windowless", None))
         is_basement = idx is not None and idx < 0
 
-        print(f"## {label}（用途 {get_value(fl.get('use_category','?'))}，{area} ㎡）")
+        def add(name, rule, verdict, why):
+            results.append({
+                "floor": label,
+                "floor_use": get_value(fl.get("use_category", "?")),
+                "floor_area": area,
+                "equipment": name,
+                "rule_id": rule["id"],
+                "legal_basis": rule.get("legal_basis"),
+                "verdict": verdict,
+                "reason": why,
+                "verified": bool(rule.get("verified", False)),
+            })
 
         # 滅火器 §14
         r = find_rule(rules_doc, "extinguisher-threshold")
@@ -139,7 +153,7 @@ def cmd_check_threshold(args):
                 verdict, why = "免設", f"總樓地板面積 {total_area} < {th} ㎡"
         else:
             verdict, why = "需人工判讀", "用途類別不在示例規則涵蓋範圍"
-        _emit("滅火器", r, verdict, why)
+        add("滅火器", r, verdict, why)
 
         # 室內消防栓 §15
         r = find_rule(rules_doc, "indoor-hydrant-threshold")
@@ -147,9 +161,9 @@ def cmd_check_threshold(args):
         tier = p["low_rise"] if floors_above <= p["low_rise"]["max_floors"] else p["mid_rise"]
         th = exact(tier["per_floor_area_threshold"].get(cat, tier["per_floor_area_threshold"].get("other")))
         if area >= th:
-            _emit("室內消防栓", r, "應設", f"本層面積 {area} ≥ {th} ㎡（scope: per_floor，{'五層以下' if tier is p['low_rise'] else '六層以上'}門檻）")
+            add("室內消防栓", r, "應設", f"本層面積 {area} ≥ {th} ㎡（scope: per_floor，{'五層以下' if tier is p['low_rise'] else '六層以上'}門檻）")
         else:
-            _emit("室內消防栓", r, "免設", f"本層面積 {area} < {th} ㎡")
+            add("室內消防栓", r, "免設", f"本層面積 {area} < {th} ㎡")
 
         # 自動撒水 §17
         r = find_rule(rules_doc, "sprinkler-threshold")
@@ -157,43 +171,43 @@ def cmd_check_threshold(args):
         if idx is not None and idx >= p["high_rise_per_floor_threshold"]["min_floor_index"]:
             th = exact(p["high_rise_per_floor_threshold"]["value"])
             v = "應設" if area >= th else "免設"
-            _emit("自動撒水設備", r, v, f"十一層以上樓層，本層面積 {area} vs 門檻 {th} ㎡")
+            add("自動撒水設備", r, v, f"十一層以上樓層，本層面積 {area} vs 門檻 {th} ㎡")
         elif cat in p["low_rise_total_area_threshold"]["applies_to"]:
             th = exact(p["low_rise_total_area_threshold"]["value"])
             cat_total = total_area_by_cat.get(cat, Decimal(0))
             v = "應設" if cat_total >= th else "免設"
-            _emit("自動撒水設備", r, v, f"{cat}類使用樓層合計 {cat_total} vs 門檻 {th} ㎡（scope: total）")
+            add("自動撒水設備", r, v, f"{cat}類使用樓層合計 {cat_total} vs 門檻 {th} ㎡（scope: total）")
         else:
-            _emit("自動撒水設備", r, "需人工判讀", "非甲類且非高樓層，特別規定（舞台/地下建築物等）未納入示例規則")
+            add("自動撒水設備", r, "需人工判讀", "非甲類且非高樓層，特別規定（舞台/地下建築物等）未納入示例規則")
 
         # 火警自動警報 §19
         r = find_rule(rules_doc, "fire-alarm-threshold")
         p = r["params"]
         if floors_above >= p["high_rise"]["min_floors"]:
-            _emit("火警自動警報設備", r, "應設", f"建築物達 {p['high_rise']['min_floors']} 層以上，{p['high_rise']['rule']}")
+            add("火警自動警報設備", r, "應設", f"建築物達 {p['high_rise']['min_floors']} 層以上，{p['high_rise']['rule']}")
         elif is_basement or windowless is True:
             th = exact(p["basement_windowless_threshold"].get(cat, p["basement_windowless_threshold"]["other"]))
             v = "應設" if area >= th else "免設"
-            _emit("火警自動警報設備", r, v, f"地下層/無開口樓層，本層面積 {area} vs 門檻 {th} ㎡")
+            add("火警自動警報設備", r, v, f"地下層/無開口樓層，本層面積 {area} vs 門檻 {th} ㎡")
         else:
             if floors_above <= p["low_rise"]["max_floors"]:
                 th = exact(p["low_rise"]["per_floor_area_threshold"].get(cat, p["low_rise"]["per_floor_area_threshold"].get("other")))
             else:
                 th = exact(p["mid_rise"]["per_floor_area_threshold"]["any"])
             v = "應設" if area >= th else "免設"
-            _emit("火警自動警報設備", r, v, f"本層面積 {area} vs 門檻 {th} ㎡（scope: per_floor）")
+            add("火警自動警報設備", r, v, f"本層面積 {area} vs 門檻 {th} ㎡（scope: per_floor）")
 
         # 標示設備 §23
         r = find_rule(rules_doc, "exit-light-threshold")
         if cat in r["params"]["required_uses"]:
-            _emit("出口標示燈・避難方向指示燈", r, "應設",
-                  "適用用途；數量與位置依避難動線判定 → 配置需圖面逐點檢核（配置疑義）")
+            add("出口標示燈・避難方向指示燈", r, "應設",
+                "適用用途；數量與位置依避難動線判定 → 配置需圖面逐點檢核（配置疑義）")
         else:
-            _emit("出口標示燈・避難方向指示燈", r, "需人工判讀", "用途不在示例規則涵蓋範圍")
+            add("出口標示燈・避難方向指示燈", r, "需人工判讀", "用途不在示例規則涵蓋範圍")
 
         # 緊急照明 §24
         r = find_rule(rules_doc, "emergency-light-threshold")
-        _emit("緊急照明設備", r, "應設（但書免設需人工判讀）", r["params"]["exemption_note"])
+        add("緊急照明設備", r, "應設（但書免設需人工判讀）", r["params"]["exemption_note"])
 
         # 排煙設備 §28
         r = find_rule(rules_doc, "smoke-exhaust-threshold")
@@ -202,17 +216,50 @@ def cmd_check_threshold(args):
             th = exact(p["total_area_threshold"]["value"])
             cat_total = total_area_by_cat.get(cat, Decimal(0))
             if cat_total >= th:
-                _emit("排煙設備", r, "應設", f"{cat}類合計 {cat_total} ≥ {th} ㎡；防煙區劃（每 {p['smoke_compartment_max_sqm']} ㎡）劃設需人工判讀")
+                add("排煙設備", r, "應設", f"{cat}類合計 {cat_total} ≥ {th} ㎡；防煙區劃（每 {p['smoke_compartment_max_sqm']} ㎡）劃設需人工判讀")
             else:
-                _emit("排煙設備", r, "需人工判讀", f"{cat}類合計 {cat_total} < {th} ㎡，但居室開口有效通風面積條件未檢核")
+                add("排煙設備", r, "需人工判讀", f"{cat}類合計 {cat_total} < {th} ㎡，但居室開口有效通風面積條件未檢核")
         else:
-            _emit("排煙設備", r, "需人工判讀", "居室開口有效通風面積條件需大樣圖/開口計算書")
+            add("排煙設備", r, "需人工判讀", "居室開口有效通風面積條件需大樣圖/開口計算書")
 
+    return meta, results
+
+
+def cmd_check_threshold(args):
+    rules_doc = load_rules(args.rules)
+    with open(args.case, encoding="utf-8") as f:
+        case = json.load(f)
+
+    meta, results = threshold_results(rules_doc, case)
+    manual_items = case.get("manual_review_items", [])
+
+    if getattr(args, "format", "text") == "json":
+        doc = {"meta": meta, "results": results, "manual_review_items": manual_items,
+               "unverified_warning": UNVERIFIED_WARNING}
+        print(json.dumps(doc, ensure_ascii=False, indent=2, default=str))
+        return
+
+    print(f"# 門檻判斷：{meta['case_name']}")
+    print(f"法規版本：{meta['regulation_version']}")
+    print(f"地上 {meta['floors_above']} 層 / 地下 {meta['floors_below']} 層，"
+          f"總樓地板面積 {meta['total_floor_area']} ㎡")
+    print()
+
+    current_floor = None
+    for i, item in enumerate(results):
+        if i == 0 or item["floor"] != current_floor:
+            if i > 0:
+                print()
+            current_floor = item["floor"]
+            print(f"## {item['floor']}（用途 {item['floor_use']}，{item['floor_area']} ㎡）")
+        _emit(item["equipment"], {"legal_basis": item["legal_basis"], "verified": item["verified"]},
+              item["verdict"], item["reason"])
+    if results:
         print()
 
-    if case.get("manual_review_items"):
+    if manual_items:
         print("## 案件層級需人工判讀事項")
-        for item in case["manual_review_items"]:
+        for item in manual_items:
             print(f"- ⚪ {item}")
 
 
@@ -221,6 +268,188 @@ def _emit(name, rule, verdict, why):
     print(f"- {mark} **{name}**：{verdict}｜{rule.get('legal_basis')}｜{why}")
     if not rule.get("verified", False):
         print(f"  - {UNVERIFIED_WARNING}")
+
+
+# ---------------------------------------------------------------------------
+# check-applicability — §13 增建/改建/變更用途之新舊標準適用判斷
+# ---------------------------------------------------------------------------
+
+def cmd_check_applicability(args):
+    rules_doc = load_rules(args.rules)
+    with open(args.case, encoding="utf-8") as f:
+        case = json.load(f)
+    rule = find_rule(rules_doc, "applicability-article-13")
+    p = rule["params"]
+
+    print(f"# §13 適用標準判斷：{case.get('case_name', '(未命名案件)')}")
+    for line in rule_header(rule):
+        print(line)
+    print(f"預設：{p['default_rule']}")
+    print()
+
+    change = case.get("change_of_use", {}) or {}
+    reno = case.get("interior_renovation", {}) or {}
+    building = case.get("building", {})
+    occurred = get_value(change.get("occurred", None))
+    works_type = get_value(reno.get("works_type", None))
+    alteration_area = get_value(reno.get("area", None))
+    original_total = get_value((case.get("use_permit", {}) or {}).get("total_floor_area", None)) \
+        or get_value(building.get("total_floor_area", None))
+
+    if occurred is None and not reno:
+        print("⚪ 案件資料無 change_of_use / interior_renovation 區塊："
+              "是否涉及增建、改建或變更用途 → 需人工判讀（請於 /plan-intake 補齊證照文件萃取）")
+        return
+
+    # 款一：七類設備一律適用新標準
+    print(f"- 🔴 款一｜下列設備一律適用變更後（現行）標準：{'、'.join(p['always_new_standard_equipment'])}")
+
+    # 款二：增建/改建面積門檻（逾 1000 ㎡ 或占原總樓地板面積 1/2 以上 → 全棟適用新標準）
+    if alteration_area is None:
+        print("- ⚪ 款二｜增建/改建（含裝修）部分樓地板面積未登載 → 需人工判讀")
+    else:
+        a = exact(alteration_area)
+        th = exact(p["extension_area_threshold_sqm"])
+        hits = []
+        if a > th:
+            hits.append(f"面積 {a} ㎡ 逾 {th} ㎡")
+        if original_total:
+            t = exact(original_total)
+            half = _CTX.divide(t, Decimal(2))
+            if a >= half:
+                hits.append(f"面積 {a} ㎡ ≥ 原總樓地板面積 {t} ㎡ 之二分之一（{half} ㎡）")
+        else:
+            print("- ⚪ 款二｜原建築物總樓地板面積未登載（use_permit.total_floor_area），比例門檻無法計算 → 需人工判讀")
+        if hits:
+            print(f"- 🔴 款二｜{'；'.join(hits)} → 該建築物（全部）之消防安全設備適用變更後標準")
+        else:
+            print(f"- 🟢 款二｜面積 {a} ㎡ 未逾 {th} ㎡"
+                  + (f"，且未達原總樓地板面積二分之一" if original_total else "")
+                  + " → 款二不該當")
+        if works_type == "室內裝修":
+            print("  - ⚪ 本案為室內裝修：是否構成§13所稱「增建或改建」→ 需人工判讀")
+
+    # 款三：變更為甲類場所
+    after_use = get_value(change.get("after", None))
+    if occurred is True and after_use:
+        if main_category(after_use) == p["change_to_use_category"]:
+            print(f"- 🔴 款三｜變更後用途 {after_use} 屬{p['change_to_use_category']}類場所 → 該變更後用途之消防安全設備適用變更後標準")
+        else:
+            print(f"- 🟢 款三｜變更後用途 {after_use} 非{p['change_to_use_category']}類場所 → 款三不該當")
+    elif occurred is False:
+        print("- 🟢 款三｜無用途變更 → 款三不該當")
+    else:
+        print("- ⚪ 款三｜用途變更情形或變更後用途未登載 → 需人工判讀")
+
+    # 款四：變更前未符合變更前規定之設備
+    prior = get_value(change.get("prior_compliant", None))
+    if prior is True:
+        print("- 🟢 款四｜變更前設備符合變更前規定（登載值）→ 款四不該當")
+    elif prior is False:
+        print(f"- 🔴 款四｜{p['prior_noncompliance_rule']}")
+    else:
+        print("- ⚪ 款四｜變更前設備是否符合變更前規定：無登載 → 需人工判讀（需查歷次檢查/竣工資料）")
+
+    print()
+    print("結論：上列 🔴 該當款次之設備適用變更後（現行）標準；其餘設備適用變更前標準；⚪ 項目需人工判讀後方可定案。")
+
+
+# ---------------------------------------------------------------------------
+# classify-mixed-use — 主從用途對照表比對（只產候選，最終人工確認）
+# ---------------------------------------------------------------------------
+
+def _match_parts(name, parts):
+    """房名/用途名與對照表欄位的雙向子字串比對；回傳命中的欄位值清單。"""
+    hits = []
+    for p in parts:
+        if p == "及其他相關場所":
+            continue
+        if p and name and (p in name or name in p):
+            hits.append(p)
+    return hits
+
+
+def cmd_classify_mixed_use(args):
+    with open(args.case, encoding="utf-8") as f:
+        case = json.load(f)
+
+    print(f"# 主從用途對照表比對：{case.get('case_name', '(未命名案件)')}")
+    if not os.path.exists(args.mixed_rules):
+        print(f"⚪ 規則檔 {args.mixed_rules} 不存在（對照表未入庫）——"
+              "主從用途判定全部需人工判讀，請依《複合用途建築物判斷基準》附表人工比對後回填 case.json")
+        return
+
+    doc = load_rules(args.mixed_rules)
+    rule = find_rule(doc, "subordinate-table")
+    for line in rule_header(rule):
+        print(line)
+    print("⚠️ 判斷基準本文（從屬認定要件、面積比例門檻）未入庫：本工具僅依附表比對產生「候選」，"
+          "管理權、使用形態與面積比例之從屬認定一律需人工判讀（原則 5）")
+    print()
+
+    entries = rule["params"]["entries"]
+    by_code = {}
+    for e in entries:
+        for code in e.get("use_codes", []):
+            by_code.setdefault(code, []).append(e)
+
+    floors = case.get("floors", [])
+    floor_codes = {}
+    for fl in floors:
+        code = get_value(fl.get("use_category", None))
+        floor_codes[fl.get("floor", "?")] = code
+    distinct = sorted({c for c in floor_codes.values() if c})
+
+    if len(distinct) <= 1:
+        print(f"單一用途建築物（{distinct[0] if distinct else '用途未登載'}）→ 非複合用途；"
+              "如有未登載樓層仍需人工確認")
+        return
+
+    print(f"全棟出現 {len(distinct)} 種 §12 用途：{'、'.join(distinct)} → 逐層比對對照表：")
+    print()
+
+    independent = []
+    for fl in floors:
+        label = fl.get("floor", "?")
+        code = floor_codes[label]
+        use = fl.get("use_category", {}) or {}
+        use_label = use.get("label", "") if isinstance(use, dict) else ""
+        names = [use_label] + [r.get("name", "") for r in fl.get("rooms", [])]
+        names = [n for n in names if n]
+        print(f"## {label}（用途 {code or '未登載'}{'：' + use_label if use_label else ''}）")
+        if code is None:
+            print("- ⚪ 用途未登載 → 需人工判讀")
+            independent.append(label)
+            continue
+
+        hits_any = False
+        for other in distinct:
+            if other == code:
+                continue
+            for e in by_code.get(other, []):
+                cols = [("主要用途部分", e.get("main_parts", [])),
+                        ("便利從屬欄(C)", e.get("convenience_parts", [])),
+                        ("密切關係欄(D)", e.get("close_relation_parts", []))]
+                for col_name, parts in cols:
+                    hit_parts = sorted({h for n in names for h in _match_parts(n, parts)})
+                    if hit_parts:
+                        hits_any = True
+                        note = f"；{e['transcription_note']}" if e.get("transcription_note") else ""
+                        print(f"- ⚪ 從屬候選：可能構成第({e['no']})項 {e['use_ref']}（{e['place']}）之從屬部分"
+                              f"｜命中{col_name}：{'、'.join(hit_parts)}{note}")
+        if not hits_any:
+            print("- ⚪ 未命中對照表任何從屬欄位 → 獨立用途候選（傾向構成複合用途）")
+            independent.append(label)
+        print()
+
+    has_jia = any(c and c[0] == "甲" for c in distinct)
+    candidate = "戊1（§12 第5款第1目：複合用途建築物中，有供第一款用途者）" if has_jia \
+        else "戊2（§12 第5款第2目：前目以外供第二款至前款用途之複合用途建築物）"
+    print("## 整棟結論（候選，需人工確認後回填 case.json）")
+    print(f"- ⚪ 若各用途間不構成從屬 → {candidate}")
+    print("- ⚪ 若經人工確認全部構成單一主用途之從屬 → 以主用途單一分類")
+    print("- 從屬認定（管理權、使用形態、面積比例）依《複合用途建築物判斷基準》本文，"
+          "本文未入庫 → 需人工判讀；確認後將 use_relation / mixed_use_assessment 改 source: manual")
 
 
 # ---------------------------------------------------------------------------
@@ -338,10 +567,17 @@ def cmd_calc(args):
 # ---------------------------------------------------------------------------
 
 def _dig(obj, path):
-    """依 'params.effectiveness_area_per_unit.甲' 取值；缺鍵拋 KeyError。"""
+    """依 'params.effectiveness_area_per_unit.甲' 取值；缺鍵拋 KeyError。
+    路徑段為數字時視為 list 索引（如 'params.entries.0.use_ref'）。"""
     cur = obj
     for key in path.split("."):
-        cur = cur[key]
+        if isinstance(cur, list):
+            try:
+                cur = cur[int(key)]
+            except (ValueError, IndexError):
+                raise KeyError(key)
+        else:
+            cur = cur[key]
     return cur
 
 
@@ -400,10 +636,15 @@ _STATUS_ICON = {"pass": "🟢 PASS", "red": "🔴 FAIL", "invalid": "🟡 INVALI
 
 
 def _eval_test(rules_doc, t):
+    if rules_doc is None:  # rules_file 指定的規則檔不存在＝參數尚未編碼
+        return "red", f"規則檔 {t.get('rules_file')} 不存在（紅：規則尚未編碼）"
     try:
         return _run_one_test(rules_doc, t)
     except Exception as e:  # 測試本身壞掉不是合法的紅
         return "invalid", f"測試執行錯誤：{e}"
+
+
+MIXED_RULES_PATH = "rules/mixed_use_rules.json"
 
 
 def cmd_run_tests(args):
@@ -412,13 +653,24 @@ def cmd_run_tests(args):
         tests_doc = json.load(f)
     tests = tests_doc["tests"]
 
+    # 測試可用選填欄位 rules_file 指向第二規則檔（如 rules/mixed_use_rules.json）
+    extra_docs = {}
+
+    def doc_for(t):
+        rf = t.get("rules_file")
+        if not rf:
+            return rules_doc
+        if rf not in extra_docs:
+            extra_docs[rf] = load_rules(rf) if os.path.exists(rf) else None
+        return extra_docs[rf]
+
     # --verify-red：Verify RED 關卡——看著測試失敗，且必須紅得正確
     # （紅 = 參數缺失/不一致；測試壞掉的 INVALID 與已綠的 PASS 都不算合法的紅）
     if args.verify_red:
         t = next((x for x in tests if x.get("id") == args.verify_red), None)
         if t is None:
             sys.exit(f"找不到測試：{args.verify_red}")
-        status, detail = _eval_test(rules_doc, t)
+        status, detail = _eval_test(doc_for(t), t)
         if status == "red":
             print(f"🔴 verify-RED 通過：{args.verify_red} 紅得正確 — {detail}")
             print("下一步：編碼規則參數（只編碼讓這個測試轉綠所需的最小參數），再跑 run-tests 確認轉綠")
@@ -432,16 +684,31 @@ def cmd_run_tests(args):
 
     counts = {"pass": 0, "red": 0, "invalid": 0}
     for t in tests:
-        status, detail = _eval_test(rules_doc, t)
+        status, detail = _eval_test(doc_for(t), t)
         counts[status] += 1
         print(f"{_STATUS_ICON[status]}  {t['id']}  —  {detail}")
 
     if args.strict:
-        covered = {t.get("rule_id") for t in tests}
+        covered_default = {t.get("rule_id") for t in tests if not t.get("rules_file")}
         for r in rules_doc["rules"]:
-            if r["id"] not in covered:
+            if r["id"] not in covered_default:
                 counts["red"] += 1
                 print(f"🔴 FAIL  [coverage] {r['id']}  —  規則無任何測試覆蓋（--strict）")
+        # 第二規則檔覆蓋檢查：被測試引用者＋已存在的 mixed_use_rules.json
+        extra_files = {t.get("rules_file") for t in tests if t.get("rules_file")}
+        if os.path.exists(MIXED_RULES_PATH):
+            extra_files.add(MIXED_RULES_PATH)
+        for rf in sorted(extra_files):
+            doc = extra_docs.get(rf) if rf in extra_docs else (load_rules(rf) if os.path.exists(rf) else None)
+            if doc is None:
+                counts["red"] += 1
+                print(f"🔴 FAIL  [coverage] {rf}  —  測試引用之規則檔不存在（--strict）")
+                continue
+            covered_rf = {t.get("rule_id") for t in tests if t.get("rules_file") == rf}
+            for r in doc["rules"]:
+                if r["id"] not in covered_rf:
+                    counts["red"] += 1
+                    print(f"🔴 FAIL  [coverage] {rf}:{r['id']}  —  規則無任何測試覆蓋（--strict）")
 
     failures = counts["red"] + counts["invalid"]
     print()
@@ -460,11 +727,14 @@ def cmd_run_tests(args):
 # ---------------------------------------------------------------------------
 
 def cmd_self_test(args):
-    rules_doc = load_rules(args.rules)
-    # 規則庫結構檢查
-    for r in rules_doc["rules"]:
-        for field in ("id", "equipment", "category", "legal_basis", "params", "verified"):
-            assert field in r, f"規則 {r.get('id','?')} 缺少欄位 {field}"
+    docs = [(args.rules, load_rules(args.rules))]
+    if os.path.exists(MIXED_RULES_PATH):
+        docs.append((MIXED_RULES_PATH, load_rules(MIXED_RULES_PATH)))
+    # 規則庫結構檢查（含 mixed_use_rules.json，如存在）
+    for path, doc in docs:
+        for r in doc["rules"]:
+            for field in ("id", "equipment", "category", "legal_basis", "params", "verified"):
+                assert field in r, f"{path} 規則 {r.get('id','?')} 缺少欄位 {field}"
     # 計算檢查
     assert ceil_div(450, 100) == 5
     assert ceil_div(400, 100) == 4
@@ -473,8 +743,11 @@ def cmd_self_test(args):
     assert ceil_div(450, per_head) == 43, ceil_div(450, per_head)
     assert floor_index("B1") == -1 and floor_index("12F") == 12
     assert main_category("甲5") == "甲"
-    unverified = sum(1 for r in rules_doc["rules"] if not r["verified"])
-    print(f"✅ self-test 通過：規則 {len(rules_doc['rules'])} 條（未核定 {unverified} 條），計算引擎正常")
+    assert _dig({"a": [{"b": 7}]}, "a.0.b") == 7
+    total_rules = sum(len(doc["rules"]) for _, doc in docs)
+    unverified = sum(1 for _, doc in docs for r in doc["rules"] if not r["verified"])
+    print(f"✅ self-test 通過：規則 {total_rules} 條"
+          f"（{'＋'.join(path for path, _ in docs)}；未核定 {unverified} 條），計算引擎正常")
     if unverified:
         print(f"⚠️ 尚有 {unverified} 條規則 verified: false，正式使用前須由消防專業人員核定")
 
@@ -489,7 +762,19 @@ def build_parser():
     s = sub.add_parser("check-threshold", help="逐層逐設備門檻判斷")
     s.add_argument("--rules", default=default_rules)
     s.add_argument("--case", required=True)
+    s.add_argument("--format", choices=["text", "json"], default="text",
+                   help="輸出格式：text（預設，人讀）/ json（供 article_checklist.py 等工具串接）")
     s.set_defaults(func=cmd_check_threshold)
+
+    s = sub.add_parser("check-applicability", help="§13 增建/改建/變更用途之新舊標準適用判斷")
+    s.add_argument("--rules", default=default_rules)
+    s.add_argument("--case", required=True)
+    s.set_defaults(func=cmd_check_applicability)
+
+    s = sub.add_parser("classify-mixed-use", help="主從用途對照表比對（只產候選，最終人工確認）")
+    s.add_argument("--mixed-rules", default=MIXED_RULES_PATH)
+    s.add_argument("--case", required=True)
+    s.set_defaults(func=cmd_classify_mixed_use)
 
     s = sub.add_parser("extinguisher", help="滅火效能值需求")
     s.add_argument("--rules", default=default_rules)

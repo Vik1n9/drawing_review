@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>示範案件 — 複合用途建築物及樓層屬性檢討</title>
+<style>
+body { font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; margin: 2rem; color: #222; }
+h1 { font-size: 1.3rem; } h2 { font-size: 1.05rem; margin-top: 1.5rem; }
+.meta { color: #555; font-size: .9rem; margin-bottom: 1rem; }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+th, td { border: 1px solid #999; padding: 6px 8px; text-align: left; vertical-align: top; }
+th { background: #f0f0f0; }
+td.num { text-align: right; white-space: nowrap; }
+tr.total td { font-weight: bold; background: #f7f7f7; }
+td.manual { color: #666; }
+ol.verdict { font-size: .95rem; line-height: 1.7; }
+.disclaimer { margin-top: 1.5rem; font-size: .8rem; color: #a00; border-top: 1px solid #ccc; padding-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>複合用途建築物及樓層屬性檢討 — 示範案件</h1>
+<div class="meta">
+產出日期：2026-07-08｜法規版本：開發示例版（見 rules/equipment_rules.json）｜
+資料來源：case.json（人工確認後之正典資料）
+</div>
+<table>
+<thead><tr>
+<th>樓層</th><th>各層用途</th><th>樓地板面積(㎡)</th><th>本次申請範圍<br>樓地板面積(㎡)</th><th>樓層屬性</th>
+<th>§12 款目</th><th>法條依據</th><th>主/從角色</th><th>判定依據</th><th>來源／信心度</th>
+</tr></thead>
+<tbody>
+<tr><td>1F</td><td>餐飲場所</td><td class="num">450 ㎡</td><td class="num"></td><td>一般樓層</td><td>甲5</td><td></td><td class="manual">⚪需人工判讀</td><td>主從關係未判定，待 /mixed-use-review 依對照表確認</td><td>derived／low</td></tr>
+<tr><td>3F</td><td>辦公室</td><td class="num">420 ㎡</td><td class="num">350 ㎡</td><td>一般樓層</td><td>乙6</td><td>§12 第2款第6目</td><td class="manual">⚪需人工判讀</td><td>主從關係未判定，待 /mixed-use-review 依對照表確認</td><td>derived／low</td></tr>
+<tr><td>B1</td><td>視聽歌唱場所</td><td class="num">380 ㎡</td><td class="num"></td><td>地下層</td><td>甲2</td><td></td><td class="manual">⚪需人工判讀</td><td>主從關係未判定，待 /mixed-use-review 依對照表確認</td><td>derived／low</td></tr>
+<tr class="total"><td colspan="2">樓地板面積合計</td><td class="num">1250 ㎡</td><td class="num">350 ㎡</td><td colspan="6"></td></tr>
+</tbody>
+</table>
+<h2>複合用途建築物判定：</h2>
+<ol class="verdict">
+<li>本建物 1F 之用途為 甲5（餐飲場所）。</li>
+<li>本建物 3F 之用途為 乙6（辦公室）。</li>
+<li>本建物 B1 之用途為 甲2（視聽歌唱場所）。</li>
+<li>主用途：⚪需人工判讀——各層用途分屬 甲5（餐飲）/乙6（辦公）/甲2（視聽歌唱），主從關係尚未依對照表判定，需 /mixed-use-review 人工確認。</li>
+<li>是否構成複合用途建築物：⚪需人工判讀——同棟有甲類（甲2、甲5）與乙類（乙6）用途且從屬關係未確認 → 戊類第一目候選（§12 第5款第1目）；是否構成從屬需依對照表人工判讀；候選分類 戊1。</li>
+</ol>
+<div class="disclaimer">
+本表由 AI 審圖輔助系統依 case.json 產生，僅供審查參考，最終判斷歸屬專業消防人員。
+「⚪需人工判讀」欄位嚴禁以推測填充；主用途／從屬用途之判定基準依內政部消防署
+《複合用途建築物判斷基準》及其附表「建築物主用途及從屬用途關係對照表」
+（rules/法規/建築物主用途及從屬用途關係對照表.pdf），經人工確認後回填 case.json 方可定案。
+</div>
+</body>
+</html>

@@ -7,7 +7,7 @@
     "甲2": "夜總會、視聽歌唱場所等（示例）",
     "甲5": "餐廳、飲食店等餐飲場所（示例）",
     "乙1": "車站、航空站等（示例）",
-    "乙7": "辦公室、事務所（示例，實際分類依第12條）",
+    "乙6": "辦公室、事務所（示例，實際分類依第12條第2款第6目）",
     "note": "完整用途分類表依設置標準第12條建置，此處僅為引擎測試用示例"
   },
   "rules": [
@@ -159,6 +159,28 @@
       "verified_by": null,
       "verified_date": null,
       "note": "原則應設、但書免設；免設判定一律需人工判讀。"
+    },
+    {
+      "id": "applicability-article-13",
+      "equipment": "適用標準判斷（增建・改建・變更用途）",
+      "category": "消防設計",
+      "legal_basis": "§13",
+      "params": {
+        "default_rule": "各類場所於增建、改建或變更用途時，其消防安全設備之設置，適用增建、改建或用途變更前之標準",
+        "always_new_standard_equipment": ["滅火器", "火警自動警報設備", "手動報警設備", "緊急廣播設備", "標示設備", "避難器具", "緊急照明設備"],
+        "extension_area_threshold_sqm": 1000,
+        "extension_area_comparator": "gt",
+        "extension_ratio_threshold": 0.5,
+        "extension_ratio_comparator": "gte",
+        "extension_scope_note": "增建或改建部分達門檻時，該建築物（全部）之消防安全設備適用新標準",
+        "change_to_use_category": "甲",
+        "change_to_scope_note": "用途變更為甲類場所使用時，該變更後用途之消防安全設備適用新標準",
+        "prior_noncompliance_rule": "用途變更前，未符合變更前規定之消防安全設備，適用變更後之標準"
+      },
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "note": "§13 新舊標準適用判斷：預設適用變更前標準，四款但書適用變更後（新）標準。「逾一千平方公尺」為嚴格大於（gt）、「二分之一以上」為大於等於（gte）。室內裝修是否構成「增建或改建」需人工判讀。"
     },
     {
       "id": "smoke-exhaust-threshold",

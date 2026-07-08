@@ -5,11 +5,22 @@
 ## 前置檢查
 
 1. 確認 `output/{案件名}-{YYYYMMDD}/case.json` 存在且關鍵欄位 `confidence` 均為 `high`（即已通過人工確認關卡）；否則退回 `/plan-intake`
+1-1. 確認 §12 場所分類已經 `/mixed-use-review` 定案（`building.mixed_use_assessment` 非 `null` 且 `source: manual`）；複合用途未定案則先執行 `/mixed-use-review`——戊類複合用途之面積合計方式（以各目為單元）直接影響門檻判斷
 2. 讀取 `rules/equipment_rules.json` 的 `regulation_version`，寫入報告標頭
 3. 執行 `python3 tools/fire_code_calc.py self-test` 確認規則引擎正常
 4. 執行 `python3 tools/fire_code_calc.py run-tests --strict` ——**先紅再綠關卡：任一測試紅，規則庫不得用於本次計算**，先回 `/regulation-intake` 修復
 
 ## 執行流程
+
+### 第零步：§13 適用標準判斷（增建・改建・變更用途）
+
+案件涉及增建、改建、室內裝修或變更用途時（`case.json` 的 `interior_renovation`／`change_of_use` 區塊，由 `/plan-intake` 證照文件萃取產生），先判斷各設備適用新標準或變更前標準：
+
+```bash
+python3 tools/fire_code_calc.py check-applicability --case output/{案件名}-{YYYYMMDD}/case.json
+```
+
+工具依 §13 逐款輸出：款一（七類設備一律新標準）、款二（增建/改建面積逾 1000 ㎡ 或達原總樓地板面積 1/2 → 全棟新標準）、款三（變更為甲類 → 變更後用途設備新標準）、款四（變更前未符規定之設備）。**工具輸出原文嵌入報告**；「室內裝修是否構成增建/改建」與款四之歷史符合性為需人工判讀項。另本步結論（哪些設備適用舊標準）必須在報告標頭注明，否則後續門檻判斷一律視為適用現行標準。
 
 ### 第一步：門檻判斷（應設哪些設備）
 

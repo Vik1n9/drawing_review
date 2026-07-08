@@ -1,0 +1,183 @@
+{
+  "regulation": "各類場所消防安全設備設置標準",
+  "regulation_version": "開發示例版（版本日期待核定，正式使用前依全國法規資料庫現行條文重建）",
+  "disclaimer": "本檔所有參數為架構開發示例，verified 均為 false，未經消防專業人員核定不得作為審查依據。",
+  "use_categories_example": {
+    "甲1": "電影片映演場所、演藝場所等（示例）",
+    "甲2": "夜總會、視聽歌唱場所等（示例）",
+    "甲5": "餐廳、飲食店等餐飲場所（示例）",
+    "乙1": "車站、航空站等（示例）",
+    "乙7": "辦公室、事務所（示例，實際分類依第12條）",
+    "note": "完整用途分類表依設置標準第12條建置，此處僅為引擎測試用示例"
+  },
+  "rules": [
+    {
+      "id": "extinguisher-threshold",
+      "equipment": "滅火器",
+      "category": "滅火設備",
+      "legal_basis": "§14",
+      "params": {
+        "always_required_uses": ["甲"],
+        "total_area_threshold_other_uses": {"value": 150, "scope": "total", "unit": "㎡", "applies_to": ["乙", "丙", "丁"]},
+        "basement_or_windowless_area_threshold": {"value": 50, "scope": "per_floor", "unit": "㎡"}
+      },
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "note": "甲類場所應設；其他類別依總樓地板面積門檻；地下層/無開口樓層另有較低門檻。示例參數，以現行條文為準。"
+    },
+    {
+      "id": "extinguisher-count",
+      "equipment": "滅火器",
+      "category": "滅火設備",
+      "legal_basis": "§31",
+      "params": {
+        "effectiveness_area_per_unit": {"甲": 100, "乙": 200, "丙": 200, "丁": 200},
+        "scope": "per_floor",
+        "max_walking_distance_m": 20
+      },
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "note": "每 N ㎡ 一滅火效能值（依用途類別），且任一點步行距離 20m 內。步行距離需圖面動線檢核，工具僅算效能值。"
+    },
+    {
+      "id": "indoor-hydrant-threshold",
+      "equipment": "室內消防栓",
+      "category": "滅火設備",
+      "legal_basis": "§15",
+      "params": {
+        "low_rise": {"max_floors": 5, "per_floor_area_threshold": {"甲": 300, "other": 500}},
+        "mid_rise": {"min_floors": 6, "per_floor_area_threshold": {"甲": 150, "other": 300}},
+        "scope": "per_floor"
+      },
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "note": "五層以下與六層以上門檻不同。示例參數；學校等另有特別門檻，未納入。"
+    },
+    {
+      "id": "indoor-hydrant-coverage",
+      "equipment": "室內消防栓",
+      "category": "滅火設備",
+      "legal_basis": "§34",
+      "params": {
+        "type1_horizontal_distance_m": 25,
+        "type2_horizontal_distance_m": 15
+      },
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "note": "第一種/第二種消防栓水平距離。歷次修法對第二種距離有調整，核定時特別確認現行值。"
+    },
+    {
+      "id": "sprinkler-threshold",
+      "equipment": "自動撒水設備",
+      "category": "滅火設備",
+      "legal_basis": "§17",
+      "params": {
+        "low_rise_total_area_threshold": {"value": 1500, "scope": "total", "applies_to": ["甲"], "max_floors": 10},
+        "high_rise_per_floor_threshold": {"value": 100, "scope": "per_floor", "min_floor_index": 11}
+      },
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "note": "十層以下甲類合計面積門檻；十一層以上樓層另有較低門檻。舞台、地下建築物等特別規定未納入示例。"
+    },
+    {
+      "id": "sprinkler-head-spacing",
+      "equipment": "撒水頭",
+      "category": "滅火設備",
+      "legal_basis": "§46",
+      "params": {
+        "horizontal_distance_m": {"standard_nonfireproof": 2.1, "standard_fireproof": 2.3, "fast_response": 2.6},
+        "square_layout_coverage_formula": "每頭涵蓋 = 2 × r²（正方形配置）"
+      },
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "note": "撒水頭水平距離依構造與撒水頭種類。工具以正方形配置估算下限。"
+    },
+    {
+      "id": "fire-alarm-threshold",
+      "equipment": "火警自動警報設備",
+      "category": "警報設備",
+      "legal_basis": "§19",
+      "params": {
+        "low_rise": {"max_floors": 5, "per_floor_area_threshold": {"甲": 300, "other": 500}},
+        "mid_rise": {"min_floors": 6, "max_floors": 10, "per_floor_area_threshold": {"any": 300}},
+        "high_rise": {"min_floors": 11, "rule": "全部應設"},
+        "basement_windowless_threshold": {"甲": 100, "other": 300}
+      },
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "note": "示例參數。十一層以上建築物全部應設。"
+    },
+    {
+      "id": "detector-coverage",
+      "equipment": "火警探測器",
+      "category": "警報設備",
+      "legal_basis": "§115-§120（示例條號，核定時確認）",
+      "params": {
+        "coverage_sqm": {
+          "heat-diff-1": {"h_lt_4": {"fireproof": 90, "other": 50}, "h_4_to_8": {"fireproof": 45, "other": 30}},
+          "heat-diff-2": {"h_lt_4": {"fireproof": 70, "other": 40}, "h_4_to_8": {"fireproof": 35, "other": 25}},
+          "smoke-1": {"h_lt_4": {"any": 150}, "h_4_to_20": {"any": 75}},
+          "smoke-2": {"h_lt_4": {"any": 150}, "h_4_to_15": {"any": 75}}
+        }
+      },
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "note": "差動式局限型/偵煙式探測器每只有效探測面積，依裝置高度與構造。探測區域劃分（樑深、隔間）需人工判讀。"
+    },
+    {
+      "id": "exit-light-threshold",
+      "equipment": "出口標示燈・避難方向指示燈",
+      "category": "避難逃生設備",
+      "legal_basis": "§23",
+      "params": {
+        "required_uses": ["甲", "乙", "丙", "丁"],
+        "placement": "各出入口上方及避難動線，數量依圖面動線判定"
+      },
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "note": "適用範圍廣、免設條件多（步行距離、居室條件），數量無法純面積計算，判定以圖面動線為主 → 配置疑義/需人工判讀。"
+    },
+    {
+      "id": "emergency-light-threshold",
+      "equipment": "緊急照明設備",
+      "category": "避難逃生設備",
+      "legal_basis": "§24",
+      "params": {
+        "required": "原則各類場所居室及避難動線均應設，除但書免設條件",
+        "exemption_note": "採光良好直通避難層等免設條件需人工判讀"
+      },
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "note": "原則應設、但書免設；免設判定一律需人工判讀。"
+    },
+    {
+      "id": "smoke-exhaust-threshold",
+      "equipment": "排煙設備",
+      "category": "消防搶救上之必要設備",
+      "legal_basis": "§28",
+      "params": {
+        "total_area_threshold": {"value": 500, "scope": "total", "applies_to": ["甲"]},
+        "smoke_compartment_max_sqm": 500
+      },
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "note": "甲類合計面積門檻為示例；居室開口有效通風面積不足之適用、防煙區劃劃設均需人工判讀。"
+    }
+  ],
+  "occupancy_ratios_example": {
+    "餐飲場所客席": {"per_sqm": 3, "note": "示例比率，實際依設置標準收容人員計算規定核定"},
+    "辦公室": {"per_sqm": 3, "note": "示例比率"},
+    "集會堂站席": {"per_sqm": 0.2, "note": "示例比率"}
+  }
+}

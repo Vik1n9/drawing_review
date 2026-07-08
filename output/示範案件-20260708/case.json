@@ -1,0 +1,56 @@
+{
+  "case_name": "示範案件",
+  "created": "2026-07-08",
+  "intake_grade": "A",
+  "regulation_version": "開發示例版（見 rules/equipment_rules.json）",
+  "source_plans": ["plans/示範案件-平面圖.pdf（示例，未附）"],
+  "building": {
+    "construction": {"value": "耐火", "confidence": "high", "source": "manual"},
+    "floors_above": 8,
+    "floors_below": 1,
+    "total_floor_area": {"value": 3200, "unit": "㎡", "confidence": "high", "source": "manual"}
+  },
+  "floors": [
+    {
+      "floor": "1F",
+      "area": {"value": 450, "unit": "㎡", "confidence": "high", "source": "manual"},
+      "use_category": {"value": "甲5", "label": "餐飲場所", "confidence": "high", "source": "manual"},
+      "windowless": {"value": false, "confidence": "medium", "source": "drawing"},
+      "rooms": [{"name": "客席區", "area": 280, "ceiling_height": 3.2}, {"name": "廚房", "area": 90, "ceiling_height": 3.2}],
+      "existing_equipment": {
+        "extinguisher": 2, "indoor_hydrant": 1, "sprinkler_head": 0,
+        "smoke_detector": 2, "heat_detector": 2,
+        "exit_light": 2, "direction_light": 3, "emergency_light": 8
+      },
+      "occupancy_basis": {"fixed_seats": 40, "components": [{"name": "客席", "area": 120, "per_sqm": 3}]}
+    },
+    {
+      "floor": "3F",
+      "area": {"value": 420, "unit": "㎡", "confidence": "high", "source": "manual"},
+      "use_category": {"value": "乙7", "label": "辦公室", "confidence": "high", "source": "manual"},
+      "windowless": {"value": false, "confidence": "high", "source": "manual"},
+      "rooms": [{"name": "開放辦公區", "area": 350, "ceiling_height": 2.8}],
+      "existing_equipment": {
+        "extinguisher": 2, "indoor_hydrant": 1, "sprinkler_head": 0,
+        "smoke_detector": 3, "heat_detector": 0,
+        "exit_light": 2, "direction_light": 2, "emergency_light": 6
+      },
+      "occupancy_basis": {"fixed_seats": 0, "components": [{"name": "辦公區", "area": 350, "per_sqm": 3}]}
+    },
+    {
+      "floor": "B1",
+      "area": {"value": 380, "unit": "㎡", "confidence": "high", "source": "manual"},
+      "use_category": {"value": "甲2", "label": "視聽歌唱場所", "confidence": "high", "source": "manual"},
+      "windowless": {"value": null, "confidence": "low", "source": "drawing"},
+      "rooms": [{"name": "包廂區", "area": 260, "ceiling_height": 2.6}],
+      "existing_equipment": {
+        "extinguisher": 1, "indoor_hydrant": 0, "sprinkler_head": 0,
+        "smoke_detector": 0, "heat_detector": 4,
+        "exit_light": 1, "direction_light": 1, "emergency_light": 4
+      },
+      "occupancy_basis": {"fixed_seats": 0, "components": [{"name": "包廂區", "area": 260, "per_sqm": 3}]}
+    }
+  ],
+  "unrecognized_symbols": [],
+  "manual_review_items": ["B1 是否為無開口樓層需依開口計算確認"]
+}

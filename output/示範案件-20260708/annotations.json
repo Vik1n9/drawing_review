@@ -1,0 +1,34 @@
+{
+  "_comment": "示範標註檔（schema demo）。source_pdf 為 input 內的原圖；執行 python3 tools/pdf_annotate.py --annotations 本檔 即產出紅圈標註 PDF。本示範案件未附實際圖檔。",
+  "source_pdf": "input/示範案件/平面圖.pdf",
+  "output_pdf": "output/示範案件-20260708/示範案件-標註圖.pdf",
+  "annotations": [
+    {
+      "issue_id": 1,
+      "page": 1,
+      "rect": [0.32, 0.4, 0.58, 0.62],
+      "label": "滅火器數量不足",
+      "note": "1F 甲類場所應設滅火效能值 5，圖面僅 2 具（§14、§31）",
+      "severity": "一般缺失",
+      "position_confidence": "medium"
+    },
+    {
+      "issue_id": 2,
+      "page": 3,
+      "rect": [0.2, 0.3, 0.75, 0.7],
+      "label": "B1 缺偵煙式探測器",
+      "note": "地下層 380㎡ 應設火警自動警報設備，偵煙式二種約 3 只，圖面僅定溫式（§19）",
+      "severity": "重大缺失",
+      "position_confidence": "low"
+    },
+    {
+      "issue_id": 3,
+      "page": 3,
+      "rect": [0.55, 0.1, 0.95, 0.35],
+      "label": "未見排煙設備",
+      "note": "甲類合計 830㎡ ≥ 500㎡ 應設排煙設備，圖面未見排煙口與防煙區劃（§28）",
+      "severity": "重大缺失",
+      "position_confidence": "low"
+    }
+  ]
+}

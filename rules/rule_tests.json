@@ -1,0 +1,118 @@
+{
+  "description": "規則測試案例（先紅再綠）。expected 值必須從法條清單 PDF 原文逐字抄錄，並填入 source.page / source.quote。本檔目前為架構示例：quote 均為占位文字，接入實際法條 PDF 後須逐條以原文替換並重跑 run-tests。",
+  "workflow": "新增規則時：1) 先寫測試（抄錄 PDF 原文）→ 2) run-tests 確認紅 → 3) 編碼規則參數 → 4) run-tests 轉綠 → 5) 專業核定後 verified: true",
+  "tests": [
+    {
+      "id": "T-extinguisher-param-甲",
+      "rule_id": "extinguisher-count",
+      "type": "param-equals",
+      "path": "params.effectiveness_area_per_unit.甲",
+      "expected": 100,
+      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（甲類場所每一〇〇平方公尺有一滅火效能值）"}
+    },
+    {
+      "id": "T-extinguisher-param-walking",
+      "rule_id": "extinguisher-count",
+      "type": "param-equals",
+      "path": "params.max_walking_distance_m",
+      "expected": 20,
+      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（步行距離在二十公尺以下）"}
+    },
+    {
+      "id": "T-extinguisher-calc-450",
+      "rule_id": "extinguisher-count",
+      "type": "calc-extinguisher",
+      "input": {"use_category": "甲", "floor_area": 450},
+      "expected": {"effectiveness_value": 5},
+      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】450㎡ ÷ 100㎡/效能值，無條件進位 = 5"}
+    },
+    {
+      "id": "T-hydrant-param-type1",
+      "rule_id": "indoor-hydrant-coverage",
+      "type": "param-equals",
+      "path": "params.type1_horizontal_distance_m",
+      "expected": 25,
+      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（第一種消防栓水平距離二十五公尺以下）"}
+    },
+    {
+      "id": "T-detector-calc-smoke2",
+      "rule_id": "detector-coverage",
+      "type": "calc-detector",
+      "input": {"area": 450, "height": 3.5, "fireproof": true, "detector_type": "smoke-2"},
+      "expected": {"count": 3},
+      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】偵煙式二種，裝置高度未滿四公尺，每一五〇平方公尺一只 → ceil(450/150)=3"}
+    },
+    {
+      "id": "T-detector-calc-heatdiff1-nonfireproof",
+      "rule_id": "detector-coverage",
+      "type": "calc-detector",
+      "input": {"area": 450, "height": 3.5, "fireproof": false, "detector_type": "heat-diff-1"},
+      "expected": {"count": 9},
+      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】差動式局限型一種，未滿四公尺非耐火構造每五〇平方公尺一只 → ceil(450/50)=9"}
+    },
+    {
+      "id": "T-sprinkler-calc-fireproof",
+      "rule_id": "sprinkler-head-spacing",
+      "type": "calc-sprinkler",
+      "input": {"area": 450, "radius": 2.3},
+      "expected": {"heads": 43},
+      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】耐火構造水平距離2.3m，正方形配置每頭2×2.3²=10.58㎡ → ceil(450/10.58)=43"}
+    },
+    {
+      "id": "T-alarm-param-highrise",
+      "rule_id": "fire-alarm-threshold",
+      "type": "param-equals",
+      "path": "params.high_rise.min_floors",
+      "expected": 11,
+      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（十一層以上建築物全部應設）"}
+    },
+    {
+      "id": "T-extinguisher-threshold-other",
+      "rule_id": "extinguisher-threshold",
+      "type": "param-equals",
+      "path": "params.total_area_threshold_other_uses.value",
+      "expected": 150,
+      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（總樓地板面積一五〇平方公尺以上）"}
+    },
+    {
+      "id": "T-hydrant-threshold-lowrise-甲",
+      "rule_id": "indoor-hydrant-threshold",
+      "type": "param-equals",
+      "path": "params.low_rise.per_floor_area_threshold.甲",
+      "expected": 300,
+      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（任何一層樓地板面積三〇〇平方公尺以上）"}
+    },
+    {
+      "id": "T-sprinkler-threshold-lowrise",
+      "rule_id": "sprinkler-threshold",
+      "type": "param-equals",
+      "path": "params.low_rise_total_area_threshold.value",
+      "expected": 1500,
+      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（樓地板面積合計一五〇〇平方公尺以上）"}
+    },
+    {
+      "id": "T-exitlight-required-uses",
+      "rule_id": "exit-light-threshold",
+      "type": "param-equals",
+      "path": "params.required_uses",
+      "expected": ["甲", "乙", "丙", "丁"],
+      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（適用用途類別）"}
+    },
+    {
+      "id": "T-emergency-light-required",
+      "rule_id": "emergency-light-threshold",
+      "type": "param-equals",
+      "path": "params.required",
+      "expected": "原則各類場所居室及避難動線均應設，除但書免設條件",
+      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（緊急照明設備應設範圍與但書）"}
+    },
+    {
+      "id": "T-smoke-exhaust-threshold",
+      "rule_id": "smoke-exhaust-threshold",
+      "type": "param-equals",
+      "path": "params.total_area_threshold.value",
+      "expected": 500,
+      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（樓地板面積合計五〇〇平方公尺以上）"}
+    }
+  ]
+}

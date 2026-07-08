@@ -5,6 +5,7 @@
 ## Codex 執行規則
 
 - 執行案件、修改規則、產生報告前，先讀取本檔與相關 `skills/*.md` 流程文件。
+- 判定場所用途、樓層屬性、地下層、屋突層／屋頂層、無開口樓層時，必須讀取 `skills/place-use-classification.md`；用途分類只產生候選，最終以人工確認後的 `case.json` 為準。
 - 不要直接從 DXF、SVG 或圖片推算最終結論；所有計算以人工確認後的 `case.json` 為正典資料。
 - `input/` 視為只讀資料夾；所有案件產出寫入 `output/{案件名}-{YYYYMMDD}/`。
 - 修改 `rules/*.json` 後，必須重跑 `self-test` 與 `run-tests --strict`。

@@ -26,7 +26,7 @@
 對每一樓層萃取以下欄位，每個欄位帶 `value`、`confidence`（high/medium/low）、`source`（drawing/manual/derived）：
 
 1. **基本資料**：案件名、地址、構造種別（耐火／非耐火）、總樓層數（地上／地下）、建築高度
-2. **樓層資料**（逐層）：樓層別、樓地板面積、用途（依設置標準第12條分類建議，標註「待確認」）、是否無開口樓層（標 `需人工判讀` 除非圖面明確）
+2. **樓層資料**（逐層）：樓層別、樓地板面積、用途（必須依 `skills/place-use-classification.md` 產出第12條候選分類，標註「待確認」）、樓層屬性（地下層／一般樓層／屋頂層或屋突層）、是否無開口樓層（依 §4，標 `需人工判讀` 除非圖面與文件明確）
 3. **空間清單**（逐層）：居室名稱、面積、天花板高度（如有標注）
 4. **既有設備**（逐層，依 DXF 圖層/圖例/符號辨識）：滅火器、室內消防栓、撒水頭、探測器、出口標示燈、避難方向指示燈、緊急照明、排煙口等的**種類與數量**；圖例不明者列入 `unrecognized_symbols`
 5. **收容人數計算基礎**：固定席位數、客席／營業面積等（依用途）
@@ -37,9 +37,10 @@
 用表格向使用者逐項展示萃取結果與信心度，**必須確認的欄位**：
 
 - 各層用途分類（法定分類直接決定所有門檻，AI 只給建議）
+- 各層第 12 條用途分類的「條、款、目」法條位階與證據來源（依 `skills/place-use-classification.md`）
 - 各層樓地板面積、總樓地板面積
 - 構造種別（耐火／非耐火——影響探測器與撒水頭涵蓋面積）
-- 地下層／無開口樓層判定
+- 地下層／屋突層或屋頂層／無開口樓層判定
 - `confidence: low` 的全部欄位
 
 使用者確認或修正後，將對應欄位的 `source` 改為 `manual`、`confidence` 改為 `high`。
@@ -82,8 +83,19 @@
     {
       "floor": "1F",
       "area": {"value": 450, "unit": "㎡", "confidence": "high", "source": "manual"},
-      "use_category": {"value": "甲1", "label": "餐飲場所", "confidence": "high", "source": "manual"},
-      "windowless": {"value": false, "confidence": "medium", "source": "drawing"},
+      "floor_position": {"value": "ordinary", "label": "一般樓層", "confidence": "high", "source": "drawing"},
+      "use_category": {
+        "value": "甲5",
+        "category": "甲類場所",
+        "label": "餐廳、飲食店、咖啡廳、茶藝館",
+        "legal_basis": "§12 第1款第5目",
+        "confidence": "high",
+        "source": "manual"
+      },
+      "use_candidates": [
+        {"value": "甲5", "legal_basis": "§12 第1款第5目", "confidence": "medium", "source": "drawing"}
+      ],
+      "windowless": {"value": false, "legal_basis": "§4", "confidence": "medium", "source": "drawing"},
       "rooms": [{"name": "客席區", "area": 280, "ceiling_height": 3.2}],
       "existing_equipment": {
         "extinguisher": 2, "indoor_hydrant": 1, "sprinkler_head": 0,

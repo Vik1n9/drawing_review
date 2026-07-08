@@ -20,6 +20,8 @@
 
 **免責界線**：本系統輸出為審圖輔助草稿，最終審查判斷與法律責任歸屬專業消防人員。所有內建法規參數在正式使用前必須經消防專業人員逐條核定（見 `rules/` 的 `verified` 欄位機制）。
 
+**協作方式**：角色分工與變更規範見 [CONTRIBUTING.md](CONTRIBUTING.md)；消防專業人員的核定循環（不需操作 GitHub／AI，紙本簽名即可）見 [governance/README.md](governance/README.md)。
+
 ---
 
 ## 二、與 ai-berkshire 的架構對照

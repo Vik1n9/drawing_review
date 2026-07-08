@@ -34,6 +34,7 @@ drawing_review/
 │   ├── equipment_rules.json     — 規則（每條附條號、verified 旗標）
 │   ├── rule_tests.json          — 先紅再綠測試案例（expected 抄錄自法條 PDF）
 │   └── regulation-checklist.html — 法條清單 HTML（由法條 PDF 轉換，格式不變，逐條錨點）
+├── governance/                  — 規則核定責任追溯鏈（核定表／簽名紀錄，見 governance/README.md）
 ├── skills/                      — 審圖 skill 定義
 └── tools/                       — 確定性工具
 ```
@@ -75,6 +76,10 @@ python3 tools/fire_code_calc.py calc --expr '450 / 100'
 # 交付物產生
 python3 tools/pdf_annotate.py --annotations output/{案件名}-{日期}/annotations.json   # 需 pip install pymupdf
 python3 tools/checklist_html.py --results output/{案件名}-{日期}/check_results.json
+
+# 規則核定（消防專業人員協作，見 governance/README.md）
+python3 tools/verification_sheet.py export                                            # 匯出核定表 HTML
+python3 tools/verification_sheet.py apply --results governance/核定紀錄/results-{日期}.json  # 回填核定結果
 ```
 
 ## 注意事項

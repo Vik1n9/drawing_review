@@ -11,7 +11,13 @@
 
 ### 第一步：收件與圖說可讀性評級
 
-盤點 `input/{案件名}/` 內的 `平面圖.dxf`、輔助 `平面圖.pdf` 與相關審查文件，先給出**圖說可讀性評級**並告知使用者：
+盤點 `input/{案件名}/` 內的 `平面圖.dxf`、輔助 `平面圖.pdf` 與相關審查文件。審查文件需具名盤點下列類型（有無都要回報）：
+
+- **使用執照**（或變更使用執照、建築物概要表）——用途分類與原核准面積的最高優先證據
+- **室內裝修（合格證明）申請書**——裝修範圍、裝修後用途、本次申請面積；§13 新舊標準適用判斷的必要輸入
+- 消防安全設備審查表、面積計算表、圖例表等其他文件
+
+先給出**圖說可讀性評級**並告知使用者：
 
 | 等級 | 特徵 | 策略調整 |
 |------|------|---------|
@@ -32,6 +38,20 @@
 5. **收容人數計算基礎**：固定席位數、客席／營業面積等（依用途）
 6. **圖面來源索引**：每張 DXF 的 `drawing_id`、路徑、樓層、單位、model-space 外框、圖層清單
 
+### 第二步半：證照文件萃取（使用執照／室內裝修申請書）
+
+自使用執照與室內裝修申請書逐欄萃取，寫入 case.json 的 `use_permit`、`interior_renovation`、`change_of_use` 三個區塊（schema 見第四步）。每欄帶 `value`、`confidence`、`source`（文件路徑寫入 `source_documents`）：
+
+1. **use_permit**：執照字號、核發日期、原核准總樓地板面積、各層原核准用途與面積
+2. **interior_renovation**：裝修樓層、工程類別（增建／改建／室內裝修）、本次申請範圍樓地板面積、裝修後用途
+3. **change_of_use**：是否變更用途、變更前後用途（§12 候選代碼）、變更前設備是否符合變更前規定（如可考）
+
+萃取後必查兩件事：
+- **原核准用途 vs 本次申請用途不一致** → 寫入 `manual_review_items`，並於人工確認關卡標紅提示
+- 任一區塊文件缺件 → 該區塊留 `null` 並記入 `manual_review_items`（§13 適用判斷將輸出「需人工判讀」）
+
+此區塊是 `/mixed-use-review`（主從用途判定）與 `fire_code_calc.py check-applicability`（§13 新舊標準適用）的資料來源，缺漏會使下游全部輸出「需人工判讀」。
+
 ### 第三步：人工確認關卡（強制，不可跳過）
 
 用表格向使用者逐項展示萃取結果與信心度，**必須確認的欄位**：
@@ -41,6 +61,7 @@
 - 各層樓地板面積、總樓地板面積
 - 構造種別（耐火／非耐火——影響探測器與撒水頭涵蓋面積）
 - 地下層／屋突層或屋頂層／無開口樓層判定
+- **證照文件萃取欄位**（use_permit／interior_renovation／change_of_use 全部欄位，特別是原核准用途與本次申請用途是否一致）
 - `confidence: low` 的全部欄位
 
 使用者確認或修正後，將對應欄位的 `source` 改為 `manual`、`confidence` 改為 `high`。
@@ -71,13 +92,47 @@
   ],
   "source_documents": [
     {"type": "輔助平面圖", "path": "input/範例大樓/平面圖.pdf"},
+    {"type": "使用執照", "path": "input/範例大樓/使用執照.pdf"},
+    {"type": "室內裝修申請書", "path": "input/範例大樓/室內裝修申請書.pdf"},
     {"type": "審查文件", "path": "input/範例大樓/消防安全設備審查表.pdf"}
   ],
   "building": {
     "construction": {"value": "耐火", "confidence": "high", "source": "manual"},
     "floors_above": 8,
     "floors_below": 1,
-    "total_floor_area": {"value": 3200, "unit": "㎡", "confidence": "high", "source": "manual"}
+    "total_floor_area": {"value": 3200, "unit": "㎡", "confidence": "high", "source": "manual"},
+    "principal_use": {
+      "value": "甲5", "category": "甲類場所", "label": "餐廳、飲食店、咖啡廳、茶藝館",
+      "legal_basis": "§12 第1款第5目",
+      "basis": "使用執照主要用途欄；各層用途以本用途為主、他層構成從屬（/mixed-use-review 確認）",
+      "confidence": "high", "source": "manual"
+    },
+    "mixed_use_assessment": {
+      "is_mixed_use": false,
+      "category_candidate": null,
+      "basis": "各層用途依對照表均構成主用途之從屬部分（或：構成戊1/戊2 候選，填 legal_basis）",
+      "confidence": "high", "source": "manual"
+    }
+  },
+  "use_permit": {
+    "permit_no": {"value": "○○使字第000000號", "confidence": "high", "source": "manual"},
+    "issued_date": {"value": "2010-05-20", "confidence": "high", "source": "manual"},
+    "total_floor_area": {"value": 3200, "unit": "㎡", "confidence": "high", "source": "manual"},
+    "approved_floor_uses": [
+      {"floor": "1F", "use": "商場", "area": 450, "confidence": "high", "source": "manual"}
+    ]
+  },
+  "interior_renovation": {
+    "floors": {"value": ["3F"], "confidence": "high", "source": "manual"},
+    "works_type": {"value": "室內裝修", "confidence": "high", "source": "manual"},
+    "area": {"value": 350, "unit": "㎡", "confidence": "high", "source": "manual"},
+    "post_renovation_use": {"value": "乙7", "confidence": "medium", "source": "manual"}
+  },
+  "change_of_use": {
+    "occurred": {"value": false, "confidence": "high", "source": "manual"},
+    "before": {"value": null, "confidence": null, "source": null},
+    "after": {"value": null, "confidence": null, "source": null},
+    "prior_compliant": {"value": null, "confidence": null, "source": null}
   },
   "floors": [
     {
@@ -95,6 +150,12 @@
       "use_candidates": [
         {"value": "甲5", "legal_basis": "§12 第1款第5目", "confidence": "medium", "source": "drawing"}
       ],
+      "use_relation": {
+        "role": "principal",
+        "subordinate_to": null,
+        "basis": "依對照表判定（/mixed-use-review 人工確認後填 manual；role: principal|subordinate|independent|null）",
+        "confidence": "high", "source": "manual"
+      },
       "windowless": {"value": false, "legal_basis": "§4", "confidence": "medium", "source": "drawing"},
       "rooms": [{"name": "客席區", "area": 280, "ceiling_height": 3.2}],
       "existing_equipment": {
@@ -113,7 +174,7 @@
 
 ### 第五步：收件摘要
 
-向使用者輸出收件摘要：樓層數、各層用途與面積表、既有設備統計表、`需人工判讀` 清單，並詢問是否接續執行 `/code-requirements`。
+向使用者輸出收件摘要：樓層數、各層用途與面積表、既有設備統計表、證照文件萃取摘要（use_permit／interior_renovation／change_of_use）、`需人工判讀` 清單，並詢問是否接續執行 `/mixed-use-review`（主從用途判定與複合用途檢討表，§12 分類定案後再進 `/code-requirements`）。
 
 ## 重要注意事項
 

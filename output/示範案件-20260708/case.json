@@ -9,76 +9,392 @@
       "path": "input/示範案件/drawings/1F.dxf",
       "floor": "1F",
       "unit": "mm",
-      "model_bbox": [0, 0, 12000, 9000],
-      "layers": ["WALL", "DOOR", "FIRE_EQUIPMENT"]
+      "model_bbox": [
+        0,
+        0,
+        12000,
+        9000
+      ],
+      "layers": [
+        "WALL",
+        "DOOR",
+        "FIRE_EQUIPMENT"
+      ]
     },
     {
       "drawing_id": "B1",
       "path": "input/示範案件/drawings/B1.dxf",
       "floor": "B1",
       "unit": "mm",
-      "model_bbox": [0, 0, 12000, 9000],
-      "layers": ["WALL", "DOOR", "FIRE_EQUIPMENT"]
+      "model_bbox": [
+        0,
+        0,
+        12000,
+        9000
+      ],
+      "layers": [
+        "WALL",
+        "DOOR",
+        "FIRE_EQUIPMENT"
+      ]
     },
     {
       "drawing_id": "3F",
       "path": "input/示範案件/drawings/3F.dxf",
       "floor": "3F",
       "unit": "mm",
-      "model_bbox": [0, 0, 12000, 9000],
-      "layers": ["WALL", "DOOR", "FIRE_EQUIPMENT"]
+      "model_bbox": [
+        0,
+        0,
+        12000,
+        9000
+      ],
+      "layers": [
+        "WALL",
+        "DOOR",
+        "FIRE_EQUIPMENT"
+      ]
     }
   ],
   "building": {
-    "construction": {"value": "耐火", "confidence": "high", "source": "manual"},
+    "construction": {
+      "value": "耐火",
+      "confidence": "high",
+      "source": "manual"
+    },
     "floors_above": 8,
     "floors_below": 1,
-    "total_floor_area": {"value": 3200, "unit": "㎡", "confidence": "high", "source": "manual"}
+    "total_floor_area": {
+      "value": 3200,
+      "unit": "㎡",
+      "confidence": "high",
+      "source": "manual"
+    },
+    "principal_use": {
+      "value": null,
+      "category": null,
+      "label": null,
+      "legal_basis": null,
+      "basis": "各層用途分屬 甲5（餐飲）/乙6（辦公）/甲2（視聽歌唱），主從關係尚未依對照表判定，需 /mixed-use-review 人工確認",
+      "confidence": "low",
+      "source": "derived"
+    },
+    "mixed_use_assessment": {
+      "is_mixed_use": null,
+      "category_candidate": "戊1",
+      "basis": "同棟有甲類（甲2、甲5）與乙類（乙6）用途且從屬關係未確認 → 戊類第一目候選（§12 第5款第1目）；是否構成從屬需依對照表人工判讀",
+      "confidence": "low",
+      "source": "derived"
+    }
+  },
+  "use_permit": {
+    "permit_no": {
+      "value": "示範使字第000000號",
+      "confidence": "high",
+      "source": "manual"
+    },
+    "issued_date": {
+      "value": "2010-05-20",
+      "confidence": "high",
+      "source": "manual"
+    },
+    "total_floor_area": {
+      "value": 3200,
+      "unit": "㎡",
+      "confidence": "high",
+      "source": "manual"
+    },
+    "approved_floor_uses": [
+      {
+        "floor": "1F",
+        "use": "飲食店",
+        "area": 450,
+        "confidence": "high",
+        "source": "manual"
+      },
+      {
+        "floor": "3F",
+        "use": "辦公室",
+        "area": 420,
+        "confidence": "high",
+        "source": "manual"
+      },
+      {
+        "floor": "B1",
+        "use": "視聽歌唱場所",
+        "area": 380,
+        "confidence": "high",
+        "source": "manual"
+      }
+    ]
+  },
+  "interior_renovation": {
+    "floors": {
+      "value": [
+        "3F"
+      ],
+      "confidence": "high",
+      "source": "manual"
+    },
+    "works_type": {
+      "value": "室內裝修",
+      "confidence": "high",
+      "source": "manual"
+    },
+    "area": {
+      "value": 350,
+      "unit": "㎡",
+      "confidence": "high",
+      "source": "manual"
+    },
+    "post_renovation_use": {
+      "value": "乙6",
+      "confidence": "high",
+      "source": "manual"
+    }
+  },
+  "change_of_use": {
+    "occurred": {
+      "value": false,
+      "confidence": "high",
+      "source": "manual"
+    },
+    "before": {
+      "value": null,
+      "confidence": null,
+      "source": null
+    },
+    "after": {
+      "value": null,
+      "confidence": null,
+      "source": null
+    },
+    "prior_compliant": {
+      "value": null,
+      "confidence": null,
+      "source": null
+    }
   },
   "floors": [
     {
       "floor": "1F",
-      "area": {"value": 450, "unit": "㎡", "confidence": "high", "source": "manual"},
-      "use_category": {"value": "甲5", "label": "餐飲場所", "confidence": "high", "source": "manual"},
-      "windowless": {"value": false, "confidence": "medium", "source": "drawing"},
-      "rooms": [{"name": "客席區", "area": 280, "ceiling_height": 3.2}, {"name": "廚房", "area": 90, "ceiling_height": 3.2}],
-      "existing_equipment": {
-        "extinguisher": 2, "indoor_hydrant": 1, "sprinkler_head": 0,
-        "smoke_detector": 2, "heat_detector": 2,
-        "exit_light": 2, "direction_light": 3, "emergency_light": 8
+      "area": {
+        "value": 450,
+        "unit": "㎡",
+        "confidence": "high",
+        "source": "manual"
       },
-      "occupancy_basis": {"fixed_seats": 40, "components": [{"name": "客席", "area": 120, "per_sqm": 3}]},
-      "layout_index": {"drawing_id": "1F", "bbox": [3200, 4000, 5800, 6200], "position_confidence": "medium"}
+      "floor_position": {
+        "value": "ordinary",
+        "label": "一般樓層",
+        "confidence": "high",
+        "source": "manual"
+      },
+      "use_category": {
+        "value": "甲5",
+        "label": "餐飲場所",
+        "confidence": "high",
+        "source": "manual"
+      },
+      "use_relation": {
+        "role": null,
+        "subordinate_to": null,
+        "basis": "主從關係未判定，待 /mixed-use-review 依對照表確認",
+        "confidence": "low",
+        "source": "derived"
+      },
+      "windowless": {
+        "value": false,
+        "confidence": "medium",
+        "source": "drawing"
+      },
+      "rooms": [
+        {
+          "name": "客席區",
+          "area": 280,
+          "ceiling_height": 3.2
+        },
+        {
+          "name": "廚房",
+          "area": 90,
+          "ceiling_height": 3.2
+        }
+      ],
+      "existing_equipment": {
+        "extinguisher": 2,
+        "indoor_hydrant": 1,
+        "sprinkler_head": 0,
+        "smoke_detector": 2,
+        "heat_detector": 2,
+        "exit_light": 2,
+        "direction_light": 3,
+        "emergency_light": 8
+      },
+      "occupancy_basis": {
+        "fixed_seats": 40,
+        "components": [
+          {
+            "name": "客席",
+            "area": 120,
+            "per_sqm": 3
+          }
+        ]
+      },
+      "layout_index": {
+        "drawing_id": "1F",
+        "bbox": [
+          3200,
+          4000,
+          5800,
+          6200
+        ],
+        "position_confidence": "medium"
+      }
     },
     {
       "floor": "3F",
-      "area": {"value": 420, "unit": "㎡", "confidence": "high", "source": "manual"},
-      "use_category": {"value": "乙7", "label": "辦公室", "confidence": "high", "source": "manual"},
-      "windowless": {"value": false, "confidence": "high", "source": "manual"},
-      "rooms": [{"name": "開放辦公區", "area": 350, "ceiling_height": 2.8}],
-      "existing_equipment": {
-        "extinguisher": 2, "indoor_hydrant": 1, "sprinkler_head": 0,
-        "smoke_detector": 3, "heat_detector": 0,
-        "exit_light": 2, "direction_light": 2, "emergency_light": 6
+      "area": {
+        "value": 420,
+        "unit": "㎡",
+        "confidence": "high",
+        "source": "manual"
       },
-      "occupancy_basis": {"fixed_seats": 0, "components": [{"name": "辦公區", "area": 350, "per_sqm": 3}]},
-      "layout_index": {"drawing_id": "3F", "bbox": [0, 0, 12000, 9000], "position_confidence": "low"}
+      "floor_position": {
+        "value": "ordinary",
+        "label": "一般樓層",
+        "confidence": "high",
+        "source": "manual"
+      },
+      "use_category": {
+        "value": "乙6",
+        "label": "辦公室",
+        "confidence": "high",
+        "source": "manual",
+        "legal_basis": "§12 第2款第6目"
+      },
+      "use_relation": {
+        "role": null,
+        "subordinate_to": null,
+        "basis": "主從關係未判定，待 /mixed-use-review 依對照表確認",
+        "confidence": "low",
+        "source": "derived"
+      },
+      "windowless": {
+        "value": false,
+        "confidence": "high",
+        "source": "manual"
+      },
+      "rooms": [
+        {
+          "name": "開放辦公區",
+          "area": 350,
+          "ceiling_height": 2.8
+        }
+      ],
+      "existing_equipment": {
+        "extinguisher": 2,
+        "indoor_hydrant": 1,
+        "sprinkler_head": 0,
+        "smoke_detector": 3,
+        "heat_detector": 0,
+        "exit_light": 2,
+        "direction_light": 2,
+        "emergency_light": 6
+      },
+      "occupancy_basis": {
+        "fixed_seats": 0,
+        "components": [
+          {
+            "name": "辦公區",
+            "area": 350,
+            "per_sqm": 3
+          }
+        ]
+      },
+      "layout_index": {
+        "drawing_id": "3F",
+        "bbox": [
+          0,
+          0,
+          12000,
+          9000
+        ],
+        "position_confidence": "low"
+      }
     },
     {
       "floor": "B1",
-      "area": {"value": 380, "unit": "㎡", "confidence": "high", "source": "manual"},
-      "use_category": {"value": "甲2", "label": "視聽歌唱場所", "confidence": "high", "source": "manual"},
-      "windowless": {"value": null, "confidence": "low", "source": "drawing"},
-      "rooms": [{"name": "包廂區", "area": 260, "ceiling_height": 2.6}],
-      "existing_equipment": {
-        "extinguisher": 1, "indoor_hydrant": 0, "sprinkler_head": 0,
-        "smoke_detector": 0, "heat_detector": 4,
-        "exit_light": 1, "direction_light": 1, "emergency_light": 4
+      "area": {
+        "value": 380,
+        "unit": "㎡",
+        "confidence": "high",
+        "source": "manual"
       },
-      "occupancy_basis": {"fixed_seats": 0, "components": [{"name": "包廂區", "area": 260, "per_sqm": 3}]},
-      "layout_index": {"drawing_id": "B1", "bbox": [2000, 3000, 9500, 7000], "position_confidence": "low"}
+      "floor_position": {
+        "value": "basement",
+        "label": "地下層",
+        "confidence": "high",
+        "source": "manual"
+      },
+      "use_category": {
+        "value": "甲2",
+        "label": "視聽歌唱場所",
+        "confidence": "high",
+        "source": "manual"
+      },
+      "use_relation": {
+        "role": null,
+        "subordinate_to": null,
+        "basis": "主從關係未判定，待 /mixed-use-review 依對照表確認",
+        "confidence": "low",
+        "source": "derived"
+      },
+      "windowless": {
+        "value": null,
+        "confidence": "low",
+        "source": "drawing"
+      },
+      "rooms": [
+        {
+          "name": "包廂區",
+          "area": 260,
+          "ceiling_height": 2.6
+        }
+      ],
+      "existing_equipment": {
+        "extinguisher": 1,
+        "indoor_hydrant": 0,
+        "sprinkler_head": 0,
+        "smoke_detector": 0,
+        "heat_detector": 4,
+        "exit_light": 1,
+        "direction_light": 1,
+        "emergency_light": 4
+      },
+      "occupancy_basis": {
+        "fixed_seats": 0,
+        "components": [
+          {
+            "name": "包廂區",
+            "area": 260,
+            "per_sqm": 3
+          }
+        ]
+      },
+      "layout_index": {
+        "drawing_id": "B1",
+        "bbox": [
+          2000,
+          3000,
+          9500,
+          7000
+        ],
+        "position_confidence": "low"
+      }
     }
   ],
   "unrecognized_symbols": [],
-  "manual_review_items": ["B1 是否為無開口樓層需依開口計算確認"]
+  "manual_review_items": [
+    "B1 是否為無開口樓層需依開口計算確認"
+  ]
 }

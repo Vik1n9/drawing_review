@@ -90,11 +90,17 @@
 
 依第三步格式輸出，每項缺失**詳細說明違反哪些法條**（條號＋應設要求＋圖面現況＋缺口），附 AI 審圖局限性聲明與計算記錄附錄。
 
-**交付物 3：法條檢核清單 HTML（逐項打勾）**
+**交付物 3：法條檢核清單 HTML（§14~§31 逐條窮舉、逐項打勾）**
 
-1. 將全部檢核項（含符合、免設項）整理為 `check_results.json`：每項含 `article`、`anchor`（法條 HTML 錨點）、`equipment`、`floor`、`requirement`、`status`（pass/fail/manual/na）、`finding`、`source_page`
-2. 執行：`python3 tools/checklist_html.py --results {輸出目錄}/check_results.json`
-3. 產出的 HTML 維持標準表格格式，逐項打勾（☑／☒／⚪／—），條號深連結到 `rules/regulation-checklist.html` 的條文錨點供對照原文
+1. 先以工具產生 §14~§31 **逐條窮舉**的 `check_results.json` 骨架（窮舉性由工具保證，每條至少一列；規則未入庫的條號自動列「⚪需人工判讀（規則未入庫）」並帶條文原文 snippet）：
+
+   ```bash
+   python3 tools/article_checklist.py --case {輸出目錄}/case.json
+   ```
+
+2. 依本 skill 第一~四步的比對結果**更新**各已入庫項的 `status`（pass/fail/manual/na）與 `finding`（數量缺口、配置疑義說明）——只可更新既有項目內容，**不得刪除任何條號列**
+3. 執行：`python3 tools/checklist_html.py --results {輸出目錄}/check_results.json`
+4. 產出的 HTML 維持標準表格格式，逐項打勾（☑／☒／⚪／—），條號深連結到 `rules/regulation-checklist.html` 的條文錨點供對照原文；摘要列顯示「規則未入庫 N 條」
 
 ## 重要注意事項
 

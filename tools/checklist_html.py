@@ -79,6 +79,11 @@ def render(results):
         )
 
     total = len(results["items"])
+    not_coded = results.get("not_coded_articles", [])
+    not_coded_note = (f"｜⚪ 規則未入庫 {len(not_coded)} 條（{html.escape('、'.join(not_coded))}）"
+                      if not_coded else "")
+    scope_note = (f"檢核範圍：{html.escape(results['article_range'])}<br>"
+                  if results.get("article_range") else "")
     return f"""<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -93,7 +98,7 @@ def render(results):
 法規版本：{html.escape(results.get('regulation_version', '未注明'))}
 </div>
 <div class="summary">
-共 {total} 項：☑ 符合 {counts['pass']}｜☒ 不符合 {counts['fail']}｜⚪ 需人工判讀 {counts['manual']}｜— 不適用 {counts['na']}
+{scope_note}共 {total} 項：☑ 符合 {counts['pass']}｜☒ 不符合 {counts['fail']}｜⚪ 需人工判讀 {counts['manual']}｜— 不適用 {counts['na']}{not_coded_note}
 </div>
 <table>
 <thead><tr>

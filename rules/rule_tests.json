@@ -107,12 +107,98 @@
       "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（緊急照明設備應設範圍與但書）"}
     },
     {
+      "id": "T-a13-always-new-equipment",
+      "rule_id": "applicability-article-13",
+      "type": "param-equals",
+      "path": "params.always_new_standard_equipment",
+      "expected": ["滅火器", "火警自動警報設備", "手動報警設備", "緊急廣播設備", "標示設備", "避難器具", "緊急照明設備"],
+      "source": {"pdf": "rules/法規/第2編-消防設計.md", "page": null, "quote": "一、其消防安全設備為滅火器、火警自動警報設備、手動報警設備、緊急廣播設備、標示設備、避難器具及緊急照明設備者。"}
+    },
+    {
+      "id": "T-a13-extension-area-threshold",
+      "rule_id": "applicability-article-13",
+      "type": "param-equals",
+      "path": "params.extension_area_threshold_sqm",
+      "expected": 1000,
+      "source": {"pdf": "rules/法規/第2編-消防設計.md", "page": null, "quote": "二、增建或改建部分，以本標準中華民國八十五年七月一日修正條文施行日起，樓地板面積合計逾一千平方公尺或占原建築物總樓地板面積二分之一以上時，該建築物之消防安全設備。"}
+    },
+    {
+      "id": "T-a13-extension-ratio-threshold",
+      "rule_id": "applicability-article-13",
+      "type": "param-equals",
+      "path": "params.extension_ratio_threshold",
+      "expected": 0.5,
+      "source": {"pdf": "rules/法規/第2編-消防設計.md", "page": null, "quote": "二、增建或改建部分，以本標準中華民國八十五年七月一日修正條文施行日起，樓地板面積合計逾一千平方公尺或占原建築物總樓地板面積二分之一以上時，該建築物之消防安全設備。"}
+    },
+    {
+      "id": "T-a13-change-to-category",
+      "rule_id": "applicability-article-13",
+      "type": "param-equals",
+      "path": "params.change_to_use_category",
+      "expected": "甲",
+      "source": {"pdf": "rules/法規/第2編-消防設計.md", "page": null, "quote": "三、用途變更為甲類場所使用時，該變更後用途之消防安全設備。"}
+    },
+    {
       "id": "T-smoke-exhaust-threshold",
       "rule_id": "smoke-exhaust-threshold",
       "type": "param-equals",
       "path": "params.total_area_threshold.value",
       "expected": 500,
       "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（樓地板面積合計五〇〇平方公尺以上）"}
+    },
+    {
+      "id": "T-mixed-entry-count",
+      "rule_id": "subordinate-table",
+      "rules_file": "rules/mixed_use_rules.json",
+      "type": "param-equals",
+      "path": "params.entry_count",
+      "expected": 31,
+      "source": {"pdf": "rules/法規/建築物主用途及從屬用途關係對照表.pdf", "page": 5, "quote": "（31）丁類（一）高度危險工作場所（二）中度危險工作場所（三）低度危險工作場所"}
+    },
+    {
+      "id": "T-mixed-e1-use-ref",
+      "rule_id": "subordinate-table",
+      "rules_file": "rules/mixed_use_rules.json",
+      "type": "param-equals",
+      "path": "params.entries.0.use_ref",
+      "expected": "甲類（一）",
+      "source": {"pdf": "rules/法規/建築物主用途及從屬用途關係對照表.pdf", "page": 1, "quote": "（1）甲類（一）之電影片映演場所（戲院、電影院）"}
+    },
+    {
+      "id": "T-mixed-e1-main-parts",
+      "rule_id": "subordinate-table",
+      "rules_file": "rules/mixed_use_rules.json",
+      "type": "param-equals",
+      "path": "params.entries.0.main_parts",
+      "expected": ["舞台", "座席", "放映室", "大廳", "售票室", "電氣室", "道具室", "衣物室", "練習室", "儲藏室"],
+      "source": {"pdf": "rules/法規/建築物主用途及從屬用途關係對照表.pdf", "page": 1, "quote": "舞台、座席、放映室、大廳、售票室、電氣室、道具室、衣物室、練習室、儲藏室。"}
+    },
+    {
+      "id": "T-mixed-e11-use-ref",
+      "rule_id": "subordinate-table",
+      "rules_file": "rules/mixed_use_rules.json",
+      "type": "param-equals",
+      "path": "params.entries.10.use_ref",
+      "expected": "甲類（四）",
+      "source": {"pdf": "rules/法規/建築物主用途及從屬用途關係對照表.pdf", "page": 2, "quote": "（11）甲類（四）商場、市場、百貨適場、超集市場、零售市場、展覽場"}
+    },
+    {
+      "id": "T-mixed-e30-main-parts",
+      "rule_id": "subordinate-table",
+      "rules_file": "rules/mixed_use_rules.json",
+      "type": "param-equals",
+      "path": "params.entries.29.main_parts",
+      "expected": ["車庫", "車道"],
+      "source": {"pdf": "rules/法規/建築物主用途及從屬用途關係對照表.pdf", "page": 5, "quote": "（30）丙類（三）室內停車場、建築物依法附設之室內停車空間。車庫、車道。"}
+    },
+    {
+      "id": "T-mixed-e31-use-ref",
+      "rule_id": "subordinate-table",
+      "rules_file": "rules/mixed_use_rules.json",
+      "type": "param-equals",
+      "path": "params.entries.30.use_ref",
+      "expected": "丁類（一）（二）（三）",
+      "source": {"pdf": "rules/法規/建築物主用途及從屬用途關係對照表.pdf", "page": 5, "quote": "（31）丁類（一）高度危險工作場所（二）中度危險工作場所（三）低度危險工作場所"}
     }
   ]
 }

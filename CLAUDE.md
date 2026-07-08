@@ -15,7 +15,7 @@
 7. **法規版本注記**——報告標頭必須注明所依據的法規版本（`rules` 檔案的 `regulation_version` 欄位）
 8. **呈現正反兩面**——判定「免設」時同樣列出計算過程與條文依據，讓審查者可以覆核，不是只列缺失
 
-用途分類、樓層屬性、地下層、屋突層／屋頂層與無開口樓層判定，必須讀取 `skills/place-use-classification.md`；第 12 條用途分類只產生候選，最終以人工確認後的 `case.json` 為準。
+用途分類、樓層屬性、地下層、屋突層／屋頂層與無開口樓層判定，必須讀取 `skills/place-use-classification.md`；第 12 條用途分類只產生候選，最終以人工確認後的 `case.json` 為準。複合用途建築物的主從用途判定依 `skills/mixed-use-review.md`（`/mixed-use-review`）：以 `rules/mixed_use_rules.json`（《複合用途建築物判斷基準》附表結構化）比對產生候選，§12 分類經人工定案後才可進入 `/code-requirements`。案件涉及增建、改建、室內裝修或變更用途時，必須先跑 `check-applicability`（§13）判斷各設備適用新舊標準。
 
 ## 目錄結構（統一輸入／統一輸出）
 
@@ -32,23 +32,26 @@ drawing_review/
 │       ├── check_results.json              — 檢核結果（供 HTML 產生）
 │       ├── {案件名}-圖面審查.html           — 交付物1：DXF 轉 SVG 標註＋缺失導覽
 │       ├── {案件名}-問題清單.md             — 交付物2：缺失清單（詳列違反法條）
-│       └── {案件名}-法條檢核清單.html       — 交付物3：打勾檢核表（標準表格格式）
+│       ├── {案件名}-法條檢核清單.html       — 交付物3：打勾檢核表（§14~§31 逐條窮舉）
+│       └── {案件名}-複合用途及樓層屬性檢討.html — 交付物4：主從用途／樓層屬性檢討表
 ├── rules/                       — 結構化法規規則庫
 │   ├── equipment_rules.json     — 規則（每條附條號、verified 旗標）
-│   ├── rule_tests.json          — 先紅再綠測試案例（expected 抄錄自法條 PDF）
+│   ├── mixed_use_rules.json     — 主從用途對照表（判斷基準附表結構化、verified 旗標）
+│   ├── rule_tests.json          — 先紅再綠測試案例（expected 抄錄自法條 PDF；選填 rules_file 指向第二規則檔）
 │   └── regulation-checklist.html — 法條清單 HTML（由法條 PDF 轉換，格式不變，逐條錨點）
 ├── governance/                  — 規則核定責任追溯鏈（核定表／簽名紀錄，見 governance/README.md）
 ├── skills/                      — 審圖 skill 定義
 └── tools/                       — 確定性工具
 ```
 
-## 三項固定交付物（每案件必產出）
+## 四項固定交付物（每案件必產出）
 
 | # | 交付物 | 產生方式 |
 |---|--------|---------|
 | 1 | **圖面審查 HTML** | `/gap-analysis` 產出 `annotations.json`（缺失位置＋簡短解釋＋嚴重度），`dxf_svg_review.py` 將 DXF 轉 SVG 並標註缺失 |
 | 2 | **問題清單** | 缺失四級分類（重大／一般／配置疑義／需人工判讀），每項詳列違反法條、應設要求、圖面現況、缺口 |
-| 3 | **法條檢核清單 HTML** | `checklist_html.py` 依 `check_results.json` 產出標準表格，逐項打勾（☑符合／☒不符合／⚪需人工判讀／—不適用），條號深連結到 `regulation-checklist.html` 錨點 |
+| 3 | **法條檢核清單 HTML** | `article_checklist.py` 依 case.json 產出 §14~§31 **逐條窮舉**的 `check_results.json`（規則未入庫條號列「⚪需人工判讀（規則未入庫）」），`/gap-analysis` 更新比對結果後由 `checklist_html.py` 產出標準表格，逐項打勾（☑符合／☒不符合／⚪需人工判讀／—不適用），條號深連結到 `regulation-checklist.html` 錨點 |
+| 4 | **複合用途及樓層屬性檢討 HTML** | `/mixed-use-review` 人工確認主從用途後，`mixed_use_report.py` 依 case.json 產出（格式對齊 `input/範例/` 實務範例：樓層／各層用途／樓地板面積／本次申請範圍／樓層屬性＋合計＋判定結論） |
 
 ## 報告語言與風格
 
@@ -66,8 +69,14 @@ python3 tools/fire_code_calc.py run-tests --verify-red {測試ID}   # Verify RED
 # 引擎與規則庫自檢（修改 rules/*.json 後必跑）
 python3 tools/fire_code_calc.py self-test
 
-# 門檻判斷：逐層逐設備 應設/免設/需人工判讀
+# 門檻判斷：逐層逐設備 應設/免設/需人工判讀（--format json 供工具串接）
 python3 tools/fire_code_calc.py check-threshold --case output/{案件名}-{日期}/case.json
+
+# §13 新舊標準適用判斷（增建/改建/裝修/變更用途案件必跑）
+python3 tools/fire_code_calc.py check-applicability --case output/{案件名}-{日期}/case.json
+
+# 主從用途對照表比對（只產候選，最終人工確認；/mixed-use-review 使用）
+python3 tools/fire_code_calc.py classify-mixed-use --case output/{案件名}-{日期}/case.json
 
 # 數量計算
 python3 tools/fire_code_calc.py extinguisher --use-category 甲 --floor-area 450
@@ -79,7 +88,9 @@ python3 tools/fire_code_calc.py calc --expr '450 / 100'
 
 # 交付物產生
 python3 tools/dxf_svg_review.py --annotations output/{案件名}-{日期}/annotations.json
+python3 tools/article_checklist.py --case output/{案件名}-{日期}/case.json      # §14~31 逐條窮舉 check_results.json
 python3 tools/checklist_html.py --results output/{案件名}-{日期}/check_results.json
+python3 tools/mixed_use_report.py --case output/{案件名}-{日期}/case.json       # 交付物4：複合用途及樓層屬性檢討
 
 # 規則核定（消防專業人員協作，見 governance/README.md）
 python3 tools/verification_sheet.py export                                            # 匯出核定表 HTML

@@ -6,6 +6,34 @@
 
 ---
 
+## 快速開始（任意 AI 代理 / 本地皆適用）
+
+> **給 AI 代理**：貼上本倉庫網址後，先讀 `AGENTS.md`（跨框架行為契約）或 `CLAUDE.md`（Claude 專用，內容一致），再依 `skills/*.md` 的審圖流程執行。核心行為契約與「審圖最高原則」都在那兩份文件；**所有法規門檻與數量計算一律呼叫 `tools/fire_code_calc.py`，不得憑記憶或心算**。
+
+1. **取得專案**
+   ```bash
+   git clone https://github.com/Vik1n9/drawing_review.git && cd drawing_review
+   ```
+2. **一鍵安裝相依並自檢**（核心計算與索引工具只用 Python 標準庫；以下補齊 DXF／xlsx／PDF 交付物所需套件，引用者不必自行尋找安裝）
+   ```bash
+   bash tools/setup.sh && python3 tools/check_env.py
+   # 需重建或 CLI 查詢法規圖譜時，另加：bash tools/setup.sh --with-graph
+   ```
+3. **驗證環境**（應全綠）
+   ```bash
+   python3 tools/fire_code_calc.py self-test
+   python3 tools/fire_code_calc.py run-tests --strict
+   ```
+4. **開始審一個案件**
+   - 把待審 `平面圖.dxf`（＋輔助 `平面圖.pdf`、審查文件）放到 `input/{案件名}/`
+   - 依 `skills/review-team.md`（總流程）或逐步 `plan-intake → place-use-classification → code-requirements → gap-analysis` 執行
+   - 產出四項固定交付物到 `output/{案件名}-{YYYYMMDD}/`
+   - 查法規先看知識圖譜：瀏覽器直接開 `graphify-out/graph.html`，或 `graphify query "…"`
+
+> 第三方套件與對應工具一覽見 §五「工具層／環境安裝」；完整目錄結構見 §三。核心計算工具（`fire_code_calc.py`、`regulation_index.py`）無需安裝即可執行。
+
+---
+
 ## 一、目標與範圍
 
 | 項目 | 內容 |

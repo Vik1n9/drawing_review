@@ -69,6 +69,23 @@ def compact_text(markdown, limit=180):
     return text if len(text) <= limit else text[: limit - 1] + "…"
 
 
+def snippet_text(markdown, limit=180):
+    """條文預覽：略過標題、引用、圖片與純連結列（如條內「官方補充附件」樣板），
+    以實質條文開頭；若濾除後為空則退回完整內文。"""
+    kept = []
+    for line in markdown.splitlines():
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if stripped.startswith(("#", ">", "![")):
+            continue
+        if re.fullmatch(r"(?:\[[^\]]*\]\([^)]*\)\s*·?\s*)+", stripped):
+            continue
+        kept.append(stripped)
+    cleaned = "\n".join(kept)
+    return compact_text(cleaned or markdown, limit)
+
+
 def detect_equipment_tags(markdown):
     tags = []
     for equipment, aliases in EQUIPMENT_ALIASES.items():
@@ -91,7 +108,7 @@ def parse_regulation_markdown(path):
             return
         markdown = "\n".join(current.pop("body_lines")).strip()
         current["markdown"] = markdown
-        current["snippet"] = compact_text(markdown)
+        current["snippet"] = snippet_text(markdown)
         current["equipment_tags"] = detect_equipment_tags(current["title"] + "\n" + markdown)
         current["keywords"] = sorted(set(current["equipment_tags"] + current["hierarchy"]))
         articles.append(current)
@@ -101,8 +118,13 @@ def parse_regulation_markdown(path):
         heading = HEADING_RE.match(line)
         article_heading = ARTICLE_HEADING_RE.match(line)
         if heading and not article_heading:
-            flush_current()
             level = len(heading.group(1))
+            # 比條文標題更深的標題（如條內「官方補充附件」）屬該條內文，
+            # 不是編/章/節結構標題，保留為 body，避免把後續圖表與本文清掉。
+            if current is not None and level > current["heading_level"]:
+                current["body_lines"].append(line)
+                continue
+            flush_current()
             title = heading.group(2).strip()
             if level == 1 and not law_name:
                 law_name = title

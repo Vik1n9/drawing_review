@@ -97,6 +97,25 @@ python3 tools/verification_sheet.py export                                      
 python3 tools/verification_sheet.py apply --results governance/核定紀錄/results-{日期}.json  # 回填核定結果
 ```
 
+## 法規圖譜（查詢調閱法規先看這裡）
+
+法規全文已建成可查詢的知識圖譜，**後續案件需要查詢／調閱法規時，先查圖譜以定位條號與關聯，再回原文核對**，可大幅加快「哪一條、關聯到哪些設備／用途／條文」的定位。
+
+- **圖譜位置**：`graphify-out/`
+  - `graph.json`——可查詢圖譜（339 節點／369 邊：條號、設備、場所用途分類為節點；`依第X條`／`準用`／設備↔條文為邊）
+  - `graph.html`——互動式視覺化（瀏覽器直接開，免伺服器）
+  - `GRAPH_REPORT.md`——樞紐節點（§12 用途分類、避難器具、自動撒水設備…）、社群分群與跨編關聯導覽
+- **來源**：以 `rules/法規/*.md`（第1~5編）與主從用途對照表 PDF 逐檔語意抽取；`regulation_version` 見 `rules/regulation_index.json`
+- **查詢方式**（工具若未安裝先跑 `uv tool install graphifyy && graphify install`）：
+  ```bash
+  graphify query "哪些條文規範自動撒水設備的設置？"   # BFS 廣度關聯
+  graphify explain "第12條 各類場所用途分類"          # 某條／某設備的引用網
+  graphify path "甲類" "自動撒水設備"                  # 兩概念間最短關聯路徑
+  ```
+  工具不可用時，`graph.json` 為標準 networkx node-link 格式，可直接以 Python 讀取遍歷。
+- **邊界（呼應最高原則 2、4）**：圖譜只是**索引與導覽**，用來定位條號與關聯，**不是門檻數值或計算結果的來源**。任何應設／免設判斷與數量計算，一律仍以 `python3 tools/fire_code_calc.py` ＋人工確認後的 `case.json` 為準，數值須回法條原文核對，不得直接引用圖譜節點標題當作法規數值。
+- **法規更新後重建**：改動 `rules/法規/*.md` 後，重跑 `/graphify rules`（或 `graphify update rules` 做增量更新）刷新圖譜。
+
 ## 注意事項
 
 - 本專案輸出僅供審圖輔助，最終判斷歸屬專業消防人員

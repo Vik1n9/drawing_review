@@ -1,3 +1,10 @@
 .DS_Store
 __pycache__/
 *.pyc
+
+# graphify — 機器相關指標與可重建的抽取快取（不進版控）
+graphify-out/.graphify_python
+graphify-out/.graphify_root
+graphify-out/.needs_update
+**/graphify-out/cache/
+rules/graphify-out/

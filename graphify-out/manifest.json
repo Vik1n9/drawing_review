@@ -1,0 +1,1392 @@
+{
+  "equipment_rules.json": {
+    "mtime": 1784884412.4557674,
+    "ast_hash": "232639015dc61cbbb7ed5a6c558b8927",
+    "semantic_hash": "232639015dc61cbbb7ed5a6c558b8927"
+  },
+  "mixed_use_rules.json": {
+    "mtime": 1784884412.4557674,
+    "ast_hash": "a0044fd33ad2fe50d8569d1ccf33236f",
+    "semantic_hash": "a0044fd33ad2fe50d8569d1ccf33236f"
+  },
+  "regulation_articles/article-001.json": {
+    "mtime": 1784884412.4557674,
+    "ast_hash": "6fdd859c141b9da6de0150e6d31c6fcb",
+    "semantic_hash": "6fdd859c141b9da6de0150e6d31c6fcb"
+  },
+  "regulation_articles/article-002.json": {
+    "mtime": 1784884412.457263,
+    "ast_hash": "7df10395a9bdeb75113455501e710e08",
+    "semantic_hash": "7df10395a9bdeb75113455501e710e08"
+  },
+  "regulation_articles/article-003.json": {
+    "mtime": 1784884412.457263,
+    "ast_hash": "6c453dbc4d1a0381c0542c35529d161e",
+    "semantic_hash": "6c453dbc4d1a0381c0542c35529d161e"
+  },
+  "regulation_articles/article-004.json": {
+    "mtime": 1784884412.457263,
+    "ast_hash": "067af600281588c64ffbfd1be786bf5b",
+    "semantic_hash": "067af600281588c64ffbfd1be786bf5b"
+  },
+  "regulation_articles/article-005.json": {
+    "mtime": 1784884412.457263,
+    "ast_hash": "bcfc1e7fe4060dc2cff0a186c219cea8",
+    "semantic_hash": "bcfc1e7fe4060dc2cff0a186c219cea8"
+  },
+  "regulation_articles/article-006.json": {
+    "mtime": 1784884412.457263,
+    "ast_hash": "e84a867af05d64f386210e57e9315a00",
+    "semantic_hash": "e84a867af05d64f386210e57e9315a00"
+  },
+  "regulation_articles/article-007.json": {
+    "mtime": 1784884412.457263,
+    "ast_hash": "d5f6126af5335ac831451a9b4cc48c5a",
+    "semantic_hash": "d5f6126af5335ac831451a9b4cc48c5a"
+  },
+  "regulation_articles/article-008.json": {
+    "mtime": 1784884412.457263,
+    "ast_hash": "140e206657e292a784dcc6353bdf5776",
+    "semantic_hash": "140e206657e292a784dcc6353bdf5776"
+  },
+  "regulation_articles/article-009.json": {
+    "mtime": 1784884412.457263,
+    "ast_hash": "97bf5caea0ce9a341ded9feb0f597092",
+    "semantic_hash": "97bf5caea0ce9a341ded9feb0f597092"
+  },
+  "regulation_articles/article-010.json": {
+    "mtime": 1784884412.457263,
+    "ast_hash": "1757953dc6e9b3a5e50c6c9751074407",
+    "semantic_hash": "1757953dc6e9b3a5e50c6c9751074407"
+  },
+  "regulation_articles/article-011.json": {
+    "mtime": 1784884412.457263,
+    "ast_hash": "9f25db0291a6b547104c6639756799e3",
+    "semantic_hash": "9f25db0291a6b547104c6639756799e3"
+  },
+  "regulation_articles/article-012.json": {
+    "mtime": 1784884412.457263,
+    "ast_hash": "b8c1705c0fd2d1295654759f8c85275c",
+    "semantic_hash": "b8c1705c0fd2d1295654759f8c85275c"
+  },
+  "regulation_articles/article-013.json": {
+    "mtime": 1784884412.457263,
+    "ast_hash": "7bc7d820a0948cb12bfed2343b4a5ba0",
+    "semantic_hash": "7bc7d820a0948cb12bfed2343b4a5ba0"
+  },
+  "regulation_articles/article-014.json": {
+    "mtime": 1784884412.457263,
+    "ast_hash": "c443fc2e0f0f0886444cae93800a3c23",
+    "semantic_hash": "c443fc2e0f0f0886444cae93800a3c23"
+  },
+  "regulation_articles/article-015.json": {
+    "mtime": 1784884412.457263,
+    "ast_hash": "c93346d283cf16ffd95da344f79a941a",
+    "semantic_hash": "c93346d283cf16ffd95da344f79a941a"
+  },
+  "regulation_articles/article-016.json": {
+    "mtime": 1784884412.457263,
+    "ast_hash": "31a3a9af85ca4bbfcbd1cf686298e9b1",
+    "semantic_hash": "31a3a9af85ca4bbfcbd1cf686298e9b1"
+  },
+  "regulation_articles/article-017.json": {
+    "mtime": 1784884412.457263,
+    "ast_hash": "cc0b513641c43c5497270d9526610159",
+    "semantic_hash": "cc0b513641c43c5497270d9526610159"
+  },
+  "regulation_articles/article-018.json": {
+    "mtime": 1784884412.457263,
+    "ast_hash": "370df182015dee3fea5bb89b0adb1af9",
+    "semantic_hash": "370df182015dee3fea5bb89b0adb1af9"
+  },
+  "regulation_articles/article-019.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "f80247c39c12c9940092d529e22680c5",
+    "semantic_hash": "f80247c39c12c9940092d529e22680c5"
+  },
+  "regulation_articles/article-020.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "691506e35f900d81e11872b49d410a4c",
+    "semantic_hash": "691506e35f900d81e11872b49d410a4c"
+  },
+  "regulation_articles/article-021.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "92e2cf7a2a4ccf9743c557df9a98f1b4",
+    "semantic_hash": "92e2cf7a2a4ccf9743c557df9a98f1b4"
+  },
+  "regulation_articles/article-022.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "6ed96e06d5ca2ac877c16ddbfadff678",
+    "semantic_hash": "6ed96e06d5ca2ac877c16ddbfadff678"
+  },
+  "regulation_articles/article-023.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "2a1d50f35bb3e71be027572f08ca2ef6",
+    "semantic_hash": "2a1d50f35bb3e71be027572f08ca2ef6"
+  },
+  "regulation_articles/article-024.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "e931d637d6710afa45a990cf03a66279",
+    "semantic_hash": "e931d637d6710afa45a990cf03a66279"
+  },
+  "regulation_articles/article-025.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "c895e1651c40a48f9940eda46dfafafc",
+    "semantic_hash": "c895e1651c40a48f9940eda46dfafafc"
+  },
+  "regulation_articles/article-026.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "bb2add84b83bac61cdf56aa1f4d973ca",
+    "semantic_hash": "bb2add84b83bac61cdf56aa1f4d973ca"
+  },
+  "regulation_articles/article-027.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "b8de8326f14f069ae119fb42746484ed",
+    "semantic_hash": "b8de8326f14f069ae119fb42746484ed"
+  },
+  "regulation_articles/article-028.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "9d46fc7563c77fc403e215dfbf52b1da",
+    "semantic_hash": "9d46fc7563c77fc403e215dfbf52b1da"
+  },
+  "regulation_articles/article-029.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "641d6711ec4d7abe6783416d4f5a2cc2",
+    "semantic_hash": "641d6711ec4d7abe6783416d4f5a2cc2"
+  },
+  "regulation_articles/article-030.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "09ba59c96a35272ccfa220f96c2295b5",
+    "semantic_hash": "09ba59c96a35272ccfa220f96c2295b5"
+  },
+  "regulation_articles/article-031.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "afc1a3d86040d886b756a88dbaf02b5a",
+    "semantic_hash": "afc1a3d86040d886b756a88dbaf02b5a"
+  },
+  "regulation_articles/article-032.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "10807d10c511ec380d12fb5c844a2903",
+    "semantic_hash": "10807d10c511ec380d12fb5c844a2903"
+  },
+  "regulation_articles/article-033.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "e755cf7a6ac921c530e5dcf9ae853b05",
+    "semantic_hash": "e755cf7a6ac921c530e5dcf9ae853b05"
+  },
+  "regulation_articles/article-034.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "b7faf3818af7db35ae819397996c5960",
+    "semantic_hash": "b7faf3818af7db35ae819397996c5960"
+  },
+  "regulation_articles/article-035.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "d0199eac668f4530e133f416ee0f9859",
+    "semantic_hash": "d0199eac668f4530e133f416ee0f9859"
+  },
+  "regulation_articles/article-036.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "a43a7ea36725c7afb4d3622f4af106f9",
+    "semantic_hash": "a43a7ea36725c7afb4d3622f4af106f9"
+  },
+  "regulation_articles/article-037.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "6ad95b9f7bde76d7e652891c30d0d611",
+    "semantic_hash": "6ad95b9f7bde76d7e652891c30d0d611"
+  },
+  "regulation_articles/article-038.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "73e3773d232321e8be28b0e6d1c16744",
+    "semantic_hash": "73e3773d232321e8be28b0e6d1c16744"
+  },
+  "regulation_articles/article-039.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "b80a4d9d28a3862f3197bdf4edf64358",
+    "semantic_hash": "b80a4d9d28a3862f3197bdf4edf64358"
+  },
+  "regulation_articles/article-040.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "2eee99b196ee86b580cbd9ecbe7a4cf5",
+    "semantic_hash": "2eee99b196ee86b580cbd9ecbe7a4cf5"
+  },
+  "regulation_articles/article-041.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "644648ef0a8a97b99fbe3eb9db872ed5",
+    "semantic_hash": "644648ef0a8a97b99fbe3eb9db872ed5"
+  },
+  "regulation_articles/article-042.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "40701296fd0c03cc31bd1eec73d8b5cf",
+    "semantic_hash": "40701296fd0c03cc31bd1eec73d8b5cf"
+  },
+  "regulation_articles/article-043.json": {
+    "mtime": 1784884412.4592483,
+    "ast_hash": "161e73c73c3cdd64a4b9da4ec7f3589f",
+    "semantic_hash": "161e73c73c3cdd64a4b9da4ec7f3589f"
+  },
+  "regulation_articles/article-044.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "78c7f611ef0d188cc7dbddc2aae7939e",
+    "semantic_hash": "78c7f611ef0d188cc7dbddc2aae7939e"
+  },
+  "regulation_articles/article-045.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "dc50c12adba58d2e0c8b842502ce3b4d",
+    "semantic_hash": "dc50c12adba58d2e0c8b842502ce3b4d"
+  },
+  "regulation_articles/article-046.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "fd039eda6323b5c6a982c5d54106fcc1",
+    "semantic_hash": "fd039eda6323b5c6a982c5d54106fcc1"
+  },
+  "regulation_articles/article-047.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "793de9279de31b10ab6303561f172b05",
+    "semantic_hash": "793de9279de31b10ab6303561f172b05"
+  },
+  "regulation_articles/article-048.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "80348457e245263a85269a2e7a182c0e",
+    "semantic_hash": "80348457e245263a85269a2e7a182c0e"
+  },
+  "regulation_articles/article-049.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "7592a40e2deaf26e1583a1d220a170da",
+    "semantic_hash": "7592a40e2deaf26e1583a1d220a170da"
+  },
+  "regulation_articles/article-050.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "9d06049e0b46f0a648a9c8a97a739936",
+    "semantic_hash": "9d06049e0b46f0a648a9c8a97a739936"
+  },
+  "regulation_articles/article-051.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "021bce8078fef4b93005cad6f1e2e3d7",
+    "semantic_hash": "021bce8078fef4b93005cad6f1e2e3d7"
+  },
+  "regulation_articles/article-052.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "f3532b782f438fbca11ef1085031eb35",
+    "semantic_hash": "f3532b782f438fbca11ef1085031eb35"
+  },
+  "regulation_articles/article-053.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "67615675281839e41d65bcaf72da39e0",
+    "semantic_hash": "67615675281839e41d65bcaf72da39e0"
+  },
+  "regulation_articles/article-054.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "baeb783b80ba25c6ca1fb5d712220c6a",
+    "semantic_hash": "baeb783b80ba25c6ca1fb5d712220c6a"
+  },
+  "regulation_articles/article-055.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "c996eb9c26a4d2331d1d10f10f987627",
+    "semantic_hash": "c996eb9c26a4d2331d1d10f10f987627"
+  },
+  "regulation_articles/article-056.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "b9773c2ef33288a89cbfd949574dc995",
+    "semantic_hash": "b9773c2ef33288a89cbfd949574dc995"
+  },
+  "regulation_articles/article-057.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "9f9c3e5b397beec7ee05e2db98272f8b",
+    "semantic_hash": "9f9c3e5b397beec7ee05e2db98272f8b"
+  },
+  "regulation_articles/article-058.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "18e4284ed6dc94a36d1976e085f33974",
+    "semantic_hash": "18e4284ed6dc94a36d1976e085f33974"
+  },
+  "regulation_articles/article-059.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "fa7130e960a0e6a32fb9fdb5ac39fe8f",
+    "semantic_hash": "fa7130e960a0e6a32fb9fdb5ac39fe8f"
+  },
+  "regulation_articles/article-060.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "e0c1b2754d688309294b9cecd6718d42",
+    "semantic_hash": "e0c1b2754d688309294b9cecd6718d42"
+  },
+  "regulation_articles/article-061.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "23ddf36ad958eb1de13280e26abaf05b",
+    "semantic_hash": "23ddf36ad958eb1de13280e26abaf05b"
+  },
+  "regulation_articles/article-062.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "3bd8df1b8100872898f2db877f70adfb",
+    "semantic_hash": "3bd8df1b8100872898f2db877f70adfb"
+  },
+  "regulation_articles/article-063.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "e1de11ee85660208ba13c07b26cf5cc4",
+    "semantic_hash": "e1de11ee85660208ba13c07b26cf5cc4"
+  },
+  "regulation_articles/article-064.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "431269c7d000851df6c82648d631c7fc",
+    "semantic_hash": "431269c7d000851df6c82648d631c7fc"
+  },
+  "regulation_articles/article-065.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "a80283c9eab4f2dd6f42e885fca2528e",
+    "semantic_hash": "a80283c9eab4f2dd6f42e885fca2528e"
+  },
+  "regulation_articles/article-066.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "e749b80ff89c2733c9930a5bd2d64d5b",
+    "semantic_hash": "e749b80ff89c2733c9930a5bd2d64d5b"
+  },
+  "regulation_articles/article-067.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "9c1a99fe9e635c337e2bb86ed9e9f713",
+    "semantic_hash": "9c1a99fe9e635c337e2bb86ed9e9f713"
+  },
+  "regulation_articles/article-068.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "0a399f79eebb090ce2de3eae4434c3a0",
+    "semantic_hash": "0a399f79eebb090ce2de3eae4434c3a0"
+  },
+  "regulation_articles/article-069.json": {
+    "mtime": 1784884412.4632483,
+    "ast_hash": "909019c7b247a011570ec9cf7710421c",
+    "semantic_hash": "909019c7b247a011570ec9cf7710421c"
+  },
+  "regulation_articles/article-070.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "4d7c0354d9285e9f0f2c5cffd46b3ce3",
+    "semantic_hash": "4d7c0354d9285e9f0f2c5cffd46b3ce3"
+  },
+  "regulation_articles/article-071.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "6234df1e5c6d210cdffedba11549e1fe",
+    "semantic_hash": "6234df1e5c6d210cdffedba11549e1fe"
+  },
+  "regulation_articles/article-072.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "63e8d3ce591d7916862cd3aa9145486b",
+    "semantic_hash": "63e8d3ce591d7916862cd3aa9145486b"
+  },
+  "regulation_articles/article-073.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "8edaee875e3c190f16980fcbf5a6162e",
+    "semantic_hash": "8edaee875e3c190f16980fcbf5a6162e"
+  },
+  "regulation_articles/article-074.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "1dd3e2b6a15ac77762feffce78af06df",
+    "semantic_hash": "1dd3e2b6a15ac77762feffce78af06df"
+  },
+  "regulation_articles/article-075.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "7af43fe13b166a748863f00fc0162562",
+    "semantic_hash": "7af43fe13b166a748863f00fc0162562"
+  },
+  "regulation_articles/article-076.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "e77fd1ac79ef044b549ecdbadd456ed7",
+    "semantic_hash": "e77fd1ac79ef044b549ecdbadd456ed7"
+  },
+  "regulation_articles/article-077.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "588bccc71e5dc54788e1d53184a9d82a",
+    "semantic_hash": "588bccc71e5dc54788e1d53184a9d82a"
+  },
+  "regulation_articles/article-078.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "de0284bfc165998c46de4b0721cd99fe",
+    "semantic_hash": "de0284bfc165998c46de4b0721cd99fe"
+  },
+  "regulation_articles/article-079.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "6ea930d54b82101b29d1f475021102ba",
+    "semantic_hash": "6ea930d54b82101b29d1f475021102ba"
+  },
+  "regulation_articles/article-080.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "5dad8c51ebd3f448da4ffca3a7fe63d3",
+    "semantic_hash": "5dad8c51ebd3f448da4ffca3a7fe63d3"
+  },
+  "regulation_articles/article-081.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "0d925f24bb9c978430cced21e0424518",
+    "semantic_hash": "0d925f24bb9c978430cced21e0424518"
+  },
+  "regulation_articles/article-082.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "5b5dd47a6bbc93bdfdb071de6bc90250",
+    "semantic_hash": "5b5dd47a6bbc93bdfdb071de6bc90250"
+  },
+  "regulation_articles/article-083.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "04b730eb720b579bb737908b2de8940a",
+    "semantic_hash": "04b730eb720b579bb737908b2de8940a"
+  },
+  "regulation_articles/article-084.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "8096072fc21f13b0e7068db46853a52c",
+    "semantic_hash": "8096072fc21f13b0e7068db46853a52c"
+  },
+  "regulation_articles/article-085.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "d59f46f63c3f39203c82f9d235e49368",
+    "semantic_hash": "d59f46f63c3f39203c82f9d235e49368"
+  },
+  "regulation_articles/article-086.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "30bbf8a45cf0a301b0303a81b97d8622",
+    "semantic_hash": "30bbf8a45cf0a301b0303a81b97d8622"
+  },
+  "regulation_articles/article-087.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "f15657954821524b0935c3e805dea893",
+    "semantic_hash": "f15657954821524b0935c3e805dea893"
+  },
+  "regulation_articles/article-088.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "41de7a9573201ef9e083a78b4b681ecf",
+    "semantic_hash": "41de7a9573201ef9e083a78b4b681ecf"
+  },
+  "regulation_articles/article-089.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "b8630fbb6ee44200db3fd84790d31467",
+    "semantic_hash": "b8630fbb6ee44200db3fd84790d31467"
+  },
+  "regulation_articles/article-090.json": {
+    "mtime": 1784884412.4672482,
+    "ast_hash": "b396e781a018e79461332a49b2ce2c72",
+    "semantic_hash": "b396e781a018e79461332a49b2ce2c72"
+  },
+  "regulation_articles/article-091.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "d5495411ab2cefe4d2326b4a1c4ce29e",
+    "semantic_hash": "d5495411ab2cefe4d2326b4a1c4ce29e"
+  },
+  "regulation_articles/article-092.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "78859243302ae5c53c93e738953fdfba",
+    "semantic_hash": "78859243302ae5c53c93e738953fdfba"
+  },
+  "regulation_articles/article-093.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "003470ba1303bfb044c668ad33e79332",
+    "semantic_hash": "003470ba1303bfb044c668ad33e79332"
+  },
+  "regulation_articles/article-094.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "745911665de07e5844d9a9db0360af88",
+    "semantic_hash": "745911665de07e5844d9a9db0360af88"
+  },
+  "regulation_articles/article-095.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "a25889bdeb562f428bfbeb25f8901bd8",
+    "semantic_hash": "a25889bdeb562f428bfbeb25f8901bd8"
+  },
+  "regulation_articles/article-096.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "d420bae9537a8778fa38ba8bd7331144",
+    "semantic_hash": "d420bae9537a8778fa38ba8bd7331144"
+  },
+  "regulation_articles/article-097.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "4211a96276645707563e5160ccf10061",
+    "semantic_hash": "4211a96276645707563e5160ccf10061"
+  },
+  "regulation_articles/article-098.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "c067f3b852b898eae78495caf2a00239",
+    "semantic_hash": "c067f3b852b898eae78495caf2a00239"
+  },
+  "regulation_articles/article-099.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "34dbc01bc45c97cece46c982d5cb7f55",
+    "semantic_hash": "34dbc01bc45c97cece46c982d5cb7f55"
+  },
+  "regulation_articles/article-100.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "1e0afe800c5760faf6becac5a40b0a9c",
+    "semantic_hash": "1e0afe800c5760faf6becac5a40b0a9c"
+  },
+  "regulation_articles/article-101.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "5d8568edd9d8d5a1274b698d23106b2b",
+    "semantic_hash": "5d8568edd9d8d5a1274b698d23106b2b"
+  },
+  "regulation_articles/article-102.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "622ac8bd40be032a343b3a4a49414a68",
+    "semantic_hash": "622ac8bd40be032a343b3a4a49414a68"
+  },
+  "regulation_articles/article-103.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "a4d0de01bedfc4343a790295ebb2b8d1",
+    "semantic_hash": "a4d0de01bedfc4343a790295ebb2b8d1"
+  },
+  "regulation_articles/article-104.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "596015ddeb2bf25009a489d4c8316933",
+    "semantic_hash": "596015ddeb2bf25009a489d4c8316933"
+  },
+  "regulation_articles/article-105.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "00bea1ea93d0603d5278f0859f8be8a3",
+    "semantic_hash": "00bea1ea93d0603d5278f0859f8be8a3"
+  },
+  "regulation_articles/article-106.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "0cae77f33f525ce99e1ec7e13429da4e",
+    "semantic_hash": "0cae77f33f525ce99e1ec7e13429da4e"
+  },
+  "regulation_articles/article-107.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "eee162dd6f807cadac72e32292ba57f7",
+    "semantic_hash": "eee162dd6f807cadac72e32292ba57f7"
+  },
+  "regulation_articles/article-108.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "1713784b6c6dd545db649ca6738d6576",
+    "semantic_hash": "1713784b6c6dd545db649ca6738d6576"
+  },
+  "regulation_articles/article-109.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "45e7b8e27274e01efe1d9fb4d3f86132",
+    "semantic_hash": "45e7b8e27274e01efe1d9fb4d3f86132"
+  },
+  "regulation_articles/article-110.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "12f4ca7570b613ad7c6e057388358874",
+    "semantic_hash": "12f4ca7570b613ad7c6e057388358874"
+  },
+  "regulation_articles/article-111-1.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "779dd6aa745254e915922aae295d7866",
+    "semantic_hash": "779dd6aa745254e915922aae295d7866"
+  },
+  "regulation_articles/article-111.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "f7f17ddfd0783bfb3af8ba3b397cf573",
+    "semantic_hash": "f7f17ddfd0783bfb3af8ba3b397cf573"
+  },
+  "regulation_articles/article-112.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "3c82582dbad591d28363e34ea2e9b0e0",
+    "semantic_hash": "3c82582dbad591d28363e34ea2e9b0e0"
+  },
+  "regulation_articles/article-113.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "2774e929d9eefc9c3f88bb0375383d80",
+    "semantic_hash": "2774e929d9eefc9c3f88bb0375383d80"
+  },
+  "regulation_articles/article-114.json": {
+    "mtime": 1784884412.4712484,
+    "ast_hash": "9fad17b4fa8a52f4a4910b6e82c8b80b",
+    "semantic_hash": "9fad17b4fa8a52f4a4910b6e82c8b80b"
+  },
+  "regulation_articles/article-115.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "7bb07c808694fa24ecdb39b64529bc58",
+    "semantic_hash": "7bb07c808694fa24ecdb39b64529bc58"
+  },
+  "regulation_articles/article-116.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "d7820e4a3886ca1b412228f9fe196848",
+    "semantic_hash": "d7820e4a3886ca1b412228f9fe196848"
+  },
+  "regulation_articles/article-117.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "bd3f9420d438011a8a7ed268acc70641",
+    "semantic_hash": "bd3f9420d438011a8a7ed268acc70641"
+  },
+  "regulation_articles/article-118.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "a117cca660eb5be0063d9ee0707c8881",
+    "semantic_hash": "a117cca660eb5be0063d9ee0707c8881"
+  },
+  "regulation_articles/article-119.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "707149c616fdbf7aab37d70a818a114e",
+    "semantic_hash": "707149c616fdbf7aab37d70a818a114e"
+  },
+  "regulation_articles/article-120.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "c6749806f062c3975b03e8e9dbb86d6a",
+    "semantic_hash": "c6749806f062c3975b03e8e9dbb86d6a"
+  },
+  "regulation_articles/article-121.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "fd88c85c169460a86533a5993b2af28b",
+    "semantic_hash": "fd88c85c169460a86533a5993b2af28b"
+  },
+  "regulation_articles/article-122.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "ecac274324c1bce203ad2cb13d667c66",
+    "semantic_hash": "ecac274324c1bce203ad2cb13d667c66"
+  },
+  "regulation_articles/article-123.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "f30a5394c231fad394319e227d5c7ad6",
+    "semantic_hash": "f30a5394c231fad394319e227d5c7ad6"
+  },
+  "regulation_articles/article-124.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "7522c3f7a9f1c4c2526ce8ac4a75c812",
+    "semantic_hash": "7522c3f7a9f1c4c2526ce8ac4a75c812"
+  },
+  "regulation_articles/article-125.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "22964c510311fdc70bad4e5c8094fa97",
+    "semantic_hash": "22964c510311fdc70bad4e5c8094fa97"
+  },
+  "regulation_articles/article-126.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "8a9e9d57c8e1cb038bedda919275f693",
+    "semantic_hash": "8a9e9d57c8e1cb038bedda919275f693"
+  },
+  "regulation_articles/article-127.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "615ea3aaaffb17c5d5e52e9c3a8843a9",
+    "semantic_hash": "615ea3aaaffb17c5d5e52e9c3a8843a9"
+  },
+  "regulation_articles/article-128.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "c8fd8bdc1c747ebbcc0ef8d52a61f1b6",
+    "semantic_hash": "c8fd8bdc1c747ebbcc0ef8d52a61f1b6"
+  },
+  "regulation_articles/article-129.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "a95d0583ec90b565fd7d032c75920261",
+    "semantic_hash": "a95d0583ec90b565fd7d032c75920261"
+  },
+  "regulation_articles/article-130.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "47e72c289da525aba66ab1bd2af2f740",
+    "semantic_hash": "47e72c289da525aba66ab1bd2af2f740"
+  },
+  "regulation_articles/article-131.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "7501cc3c1c3e78df6b2963f04a47ea11",
+    "semantic_hash": "7501cc3c1c3e78df6b2963f04a47ea11"
+  },
+  "regulation_articles/article-132.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "42541b92a6a6d517f6c07e4da2595beb",
+    "semantic_hash": "42541b92a6a6d517f6c07e4da2595beb"
+  },
+  "regulation_articles/article-133.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "e03e7378b8d3202b213b105059a9ad11",
+    "semantic_hash": "e03e7378b8d3202b213b105059a9ad11"
+  },
+  "regulation_articles/article-134.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "c6ab5199d362c3c37a04877db4690e2e",
+    "semantic_hash": "c6ab5199d362c3c37a04877db4690e2e"
+  },
+  "regulation_articles/article-135.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "1c9dabcff4fba2801632e832043b4fb2",
+    "semantic_hash": "1c9dabcff4fba2801632e832043b4fb2"
+  },
+  "regulation_articles/article-136.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "7479a9430f776b1c76dc5fae5c86378f",
+    "semantic_hash": "7479a9430f776b1c76dc5fae5c86378f"
+  },
+  "regulation_articles/article-137.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "a85ed4f36352f6ab24dfdf1f32b12681",
+    "semantic_hash": "a85ed4f36352f6ab24dfdf1f32b12681"
+  },
+  "regulation_articles/article-138.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "831a835e91cf438df2bafecb13899bd1",
+    "semantic_hash": "831a835e91cf438df2bafecb13899bd1"
+  },
+  "regulation_articles/article-139.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "53dedc84182c7242699ba304bcf6b8e6",
+    "semantic_hash": "53dedc84182c7242699ba304bcf6b8e6"
+  },
+  "regulation_articles/article-140.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "59620ced65a7dfaf353622ab7ce12a53",
+    "semantic_hash": "59620ced65a7dfaf353622ab7ce12a53"
+  },
+  "regulation_articles/article-141.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "950b1aae4b18a0c2bbb413d9a3576bab",
+    "semantic_hash": "950b1aae4b18a0c2bbb413d9a3576bab"
+  },
+  "regulation_articles/article-142.json": {
+    "mtime": 1784884412.4752483,
+    "ast_hash": "b2067d60a0ffdaf006a06b6e8b90e212",
+    "semantic_hash": "b2067d60a0ffdaf006a06b6e8b90e212"
+  },
+  "regulation_articles/article-143.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "629398eb9f2323300feec53736930396",
+    "semantic_hash": "629398eb9f2323300feec53736930396"
+  },
+  "regulation_articles/article-144.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "11071b5ae7254fc675c6190884790169",
+    "semantic_hash": "11071b5ae7254fc675c6190884790169"
+  },
+  "regulation_articles/article-145-1.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "e30b1b698811e97cc4bdd82bad5bc5cb",
+    "semantic_hash": "e30b1b698811e97cc4bdd82bad5bc5cb"
+  },
+  "regulation_articles/article-145.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "5eeb86b156e7109e73afb54ec1f29265",
+    "semantic_hash": "5eeb86b156e7109e73afb54ec1f29265"
+  },
+  "regulation_articles/article-146-1.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "bc120f36df2becd0b82fbcfe5009e68f",
+    "semantic_hash": "bc120f36df2becd0b82fbcfe5009e68f"
+  },
+  "regulation_articles/article-146-2.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "a8bc1def615273b15b0327e071f551f2",
+    "semantic_hash": "a8bc1def615273b15b0327e071f551f2"
+  },
+  "regulation_articles/article-146-3.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "d19fa688d55bee75948f8e41599cedd6",
+    "semantic_hash": "d19fa688d55bee75948f8e41599cedd6"
+  },
+  "regulation_articles/article-146-4.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "077883dcdf774701164b59a82b77be99",
+    "semantic_hash": "077883dcdf774701164b59a82b77be99"
+  },
+  "regulation_articles/article-146-5.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "844f8e8f3db02962da96d266f51758e2",
+    "semantic_hash": "844f8e8f3db02962da96d266f51758e2"
+  },
+  "regulation_articles/article-146-6.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "4903f8a949fecc0037619b9b6fe6a809",
+    "semantic_hash": "4903f8a949fecc0037619b9b6fe6a809"
+  },
+  "regulation_articles/article-146-7.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "8abc237076f45231734f72dbc1ba2851",
+    "semantic_hash": "8abc237076f45231734f72dbc1ba2851"
+  },
+  "regulation_articles/article-146.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "3961955d1de497fd002dfd15e2c7dfd7",
+    "semantic_hash": "3961955d1de497fd002dfd15e2c7dfd7"
+  },
+  "regulation_articles/article-147.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "9c6aeb8aa72851ec2cb9fd018f0c998c",
+    "semantic_hash": "9c6aeb8aa72851ec2cb9fd018f0c998c"
+  },
+  "regulation_articles/article-148.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "e74c8c7f2e628608d8f67df9927fe8fd",
+    "semantic_hash": "e74c8c7f2e628608d8f67df9927fe8fd"
+  },
+  "regulation_articles/article-149.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "e2ce41647284feee9e3d3c86281a34e9",
+    "semantic_hash": "e2ce41647284feee9e3d3c86281a34e9"
+  },
+  "regulation_articles/article-150.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "c440a689d18e39f837962eda118a789f",
+    "semantic_hash": "c440a689d18e39f837962eda118a789f"
+  },
+  "regulation_articles/article-151.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "22a6879731575e83d151d8de1317c72a",
+    "semantic_hash": "22a6879731575e83d151d8de1317c72a"
+  },
+  "regulation_articles/article-152.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "46712936f272f6bbc4af5a4cfe3b6785",
+    "semantic_hash": "46712936f272f6bbc4af5a4cfe3b6785"
+  },
+  "regulation_articles/article-153.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "d9c47fbfab11ba5294e95af2553aa661",
+    "semantic_hash": "d9c47fbfab11ba5294e95af2553aa661"
+  },
+  "regulation_articles/article-154.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "73e3cbb1c3467efa0e00af752393c696",
+    "semantic_hash": "73e3cbb1c3467efa0e00af752393c696"
+  },
+  "regulation_articles/article-155.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "6c05eaabac4e40ad4ffd5e9a7fab307e",
+    "semantic_hash": "6c05eaabac4e40ad4ffd5e9a7fab307e"
+  },
+  "regulation_articles/article-156.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "e7cda787ed0cb886de5806929a239f1f",
+    "semantic_hash": "e7cda787ed0cb886de5806929a239f1f"
+  },
+  "regulation_articles/article-157.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "f061e6f2458ca8033c7e8b79d77c3bba",
+    "semantic_hash": "f061e6f2458ca8033c7e8b79d77c3bba"
+  },
+  "regulation_articles/article-158.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "b5663905c773ae5e135b950b9ce9e431",
+    "semantic_hash": "b5663905c773ae5e135b950b9ce9e431"
+  },
+  "regulation_articles/article-159.json": {
+    "mtime": 1784884412.4792483,
+    "ast_hash": "e44e57adfca9e0217c44e56eb48feb90",
+    "semantic_hash": "e44e57adfca9e0217c44e56eb48feb90"
+  },
+  "regulation_articles/article-160.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "43d99cfc638830e8e2cf03277939a1cc",
+    "semantic_hash": "43d99cfc638830e8e2cf03277939a1cc"
+  },
+  "regulation_articles/article-161.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "cd0b4669564aab9e8e41b97fae52a310",
+    "semantic_hash": "cd0b4669564aab9e8e41b97fae52a310"
+  },
+  "regulation_articles/article-162.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "87e5edaf48d119082fa59caf61782933",
+    "semantic_hash": "87e5edaf48d119082fa59caf61782933"
+  },
+  "regulation_articles/article-163.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "804ba73ef4609dace4db38b053129bfe",
+    "semantic_hash": "804ba73ef4609dace4db38b053129bfe"
+  },
+  "regulation_articles/article-164.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "911af1689ab0a59c58a93485ce1f0c58",
+    "semantic_hash": "911af1689ab0a59c58a93485ce1f0c58"
+  },
+  "regulation_articles/article-165.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "8f5f8e34c5667019f9de09fe6920a88a",
+    "semantic_hash": "8f5f8e34c5667019f9de09fe6920a88a"
+  },
+  "regulation_articles/article-166.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "0b975a4d4df4259ca8a0a0403cf7325e",
+    "semantic_hash": "0b975a4d4df4259ca8a0a0403cf7325e"
+  },
+  "regulation_articles/article-167.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "f5bda20cbddd58d66fc9bb6eb8f78cb2",
+    "semantic_hash": "f5bda20cbddd58d66fc9bb6eb8f78cb2"
+  },
+  "regulation_articles/article-168.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "40de7b81700cf0707b854ec61a927327",
+    "semantic_hash": "40de7b81700cf0707b854ec61a927327"
+  },
+  "regulation_articles/article-169.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "0c74836bd6db27159982401bf3e7b0a5",
+    "semantic_hash": "0c74836bd6db27159982401bf3e7b0a5"
+  },
+  "regulation_articles/article-170.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "d0028756694ba4f49bb755439e67d728",
+    "semantic_hash": "d0028756694ba4f49bb755439e67d728"
+  },
+  "regulation_articles/article-171.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "c9c280755c6b12b7aba13d4af46c90b9",
+    "semantic_hash": "c9c280755c6b12b7aba13d4af46c90b9"
+  },
+  "regulation_articles/article-172.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "20a9dcecca0e0171bfe7327797aaeb40",
+    "semantic_hash": "20a9dcecca0e0171bfe7327797aaeb40"
+  },
+  "regulation_articles/article-173.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "60daaaf4c7f67b94d2b79a4c683009ea",
+    "semantic_hash": "60daaaf4c7f67b94d2b79a4c683009ea"
+  },
+  "regulation_articles/article-174.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "3e9b3d43b189e172544491b9a49d3f0c",
+    "semantic_hash": "3e9b3d43b189e172544491b9a49d3f0c"
+  },
+  "regulation_articles/article-175.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "ea3ed83380661612afaf6b83d6afef0b",
+    "semantic_hash": "ea3ed83380661612afaf6b83d6afef0b"
+  },
+  "regulation_articles/article-176.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "ece630d0404ffcff0d6405b0f510694a",
+    "semantic_hash": "ece630d0404ffcff0d6405b0f510694a"
+  },
+  "regulation_articles/article-177.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "ae71d2e8f3b9fdba3cf4a09d35c0efe9",
+    "semantic_hash": "ae71d2e8f3b9fdba3cf4a09d35c0efe9"
+  },
+  "regulation_articles/article-178.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "9ece170f0cf758ce03b9d18d98a0a385",
+    "semantic_hash": "9ece170f0cf758ce03b9d18d98a0a385"
+  },
+  "regulation_articles/article-179.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "612b3b2ed3ef92ad50ad220e7c69f426",
+    "semantic_hash": "612b3b2ed3ef92ad50ad220e7c69f426"
+  },
+  "regulation_articles/article-180.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "15a97943558b3d1207c25075ae0f0ee2",
+    "semantic_hash": "15a97943558b3d1207c25075ae0f0ee2"
+  },
+  "regulation_articles/article-181.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "f4a3951c5d1fad5e27b3462ddf93615d",
+    "semantic_hash": "f4a3951c5d1fad5e27b3462ddf93615d"
+  },
+  "regulation_articles/article-182.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "a479f8344243b7aa58577037ea47b97d",
+    "semantic_hash": "a479f8344243b7aa58577037ea47b97d"
+  },
+  "regulation_articles/article-183.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "a6932fb3d42735865cc8c2e6f9795019",
+    "semantic_hash": "a6932fb3d42735865cc8c2e6f9795019"
+  },
+  "regulation_articles/article-184.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "0860c5afde993d5a371dc303d65307cf",
+    "semantic_hash": "0860c5afde993d5a371dc303d65307cf"
+  },
+  "regulation_articles/article-185.json": {
+    "mtime": 1784884412.4832482,
+    "ast_hash": "d063edd48ea80e193361aebd0a34988b",
+    "semantic_hash": "d063edd48ea80e193361aebd0a34988b"
+  },
+  "regulation_articles/article-186.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "e9378b5b694e6f2730f57571f4bc480f",
+    "semantic_hash": "e9378b5b694e6f2730f57571f4bc480f"
+  },
+  "regulation_articles/article-187.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "b7950ea6a936226a22ec5fafd311c3b7",
+    "semantic_hash": "b7950ea6a936226a22ec5fafd311c3b7"
+  },
+  "regulation_articles/article-188.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "d2b32f7c580dfd2da8909f6f339ae41f",
+    "semantic_hash": "d2b32f7c580dfd2da8909f6f339ae41f"
+  },
+  "regulation_articles/article-189.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "4992ca90e111683e4b485cbc34678b55",
+    "semantic_hash": "4992ca90e111683e4b485cbc34678b55"
+  },
+  "regulation_articles/article-190.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "4de4c0c9f46b1f2fbdac792468d744f5",
+    "semantic_hash": "4de4c0c9f46b1f2fbdac792468d744f5"
+  },
+  "regulation_articles/article-191.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "2d2062386c52a3104acd1e0aa8086c34",
+    "semantic_hash": "2d2062386c52a3104acd1e0aa8086c34"
+  },
+  "regulation_articles/article-192-1.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "1bc4b14f45b394fda2bab86f3c71189f",
+    "semantic_hash": "1bc4b14f45b394fda2bab86f3c71189f"
+  },
+  "regulation_articles/article-192.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "3dcfd60a93b10e17238f27cf66399e2c",
+    "semantic_hash": "3dcfd60a93b10e17238f27cf66399e2c"
+  },
+  "regulation_articles/article-193.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "9b917f9acd2fa063c05a667237770c12",
+    "semantic_hash": "9b917f9acd2fa063c05a667237770c12"
+  },
+  "regulation_articles/article-194.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "0b2b74b212f089bbe4428abff3ea18f8",
+    "semantic_hash": "0b2b74b212f089bbe4428abff3ea18f8"
+  },
+  "regulation_articles/article-195.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "229fe089766c8c74fd8d60e383bafeac",
+    "semantic_hash": "229fe089766c8c74fd8d60e383bafeac"
+  },
+  "regulation_articles/article-196.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "cad988fa70aaecbb850f3345917724ad",
+    "semantic_hash": "cad988fa70aaecbb850f3345917724ad"
+  },
+  "regulation_articles/article-197.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "7b6f3f0853d43b5981779a1262fbefcf",
+    "semantic_hash": "7b6f3f0853d43b5981779a1262fbefcf"
+  },
+  "regulation_articles/article-198.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "1f0628329c11145f90c3a4c2a00f38bb",
+    "semantic_hash": "1f0628329c11145f90c3a4c2a00f38bb"
+  },
+  "regulation_articles/article-199.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "924ed6ff33b25b92a96910eb0761c1bc",
+    "semantic_hash": "924ed6ff33b25b92a96910eb0761c1bc"
+  },
+  "regulation_articles/article-200.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "bb629484a399f461d82ac89a027999e3",
+    "semantic_hash": "bb629484a399f461d82ac89a027999e3"
+  },
+  "regulation_articles/article-201.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "b040f73c7e33815908e6d2344a470009",
+    "semantic_hash": "b040f73c7e33815908e6d2344a470009"
+  },
+  "regulation_articles/article-202.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "f7127a4074b7b747ee964e46e9e4ef90",
+    "semantic_hash": "f7127a4074b7b747ee964e46e9e4ef90"
+  },
+  "regulation_articles/article-203.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "05c5c77ce38b232fc8343000a9794022",
+    "semantic_hash": "05c5c77ce38b232fc8343000a9794022"
+  },
+  "regulation_articles/article-204.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "d689bf37b28d56a10c3bee294dd1a889",
+    "semantic_hash": "d689bf37b28d56a10c3bee294dd1a889"
+  },
+  "regulation_articles/article-205.json": {
+    "mtime": 1784884412.4872482,
+    "ast_hash": "157ad0195934dc5eab77469a6be0a6aa",
+    "semantic_hash": "157ad0195934dc5eab77469a6be0a6aa"
+  },
+  "regulation_articles/article-206.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "fed1f59156a1edf8598021ac7cccf116",
+    "semantic_hash": "fed1f59156a1edf8598021ac7cccf116"
+  },
+  "regulation_articles/article-207.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "ff1d9c6192824fa73abf862c8ec1fa96",
+    "semantic_hash": "ff1d9c6192824fa73abf862c8ec1fa96"
+  },
+  "regulation_articles/article-208.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "774976d8ff47e7e225913d7f43070921",
+    "semantic_hash": "774976d8ff47e7e225913d7f43070921"
+  },
+  "regulation_articles/article-209.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "43e27fbd378454f3c2e2d9d689a00dfa",
+    "semantic_hash": "43e27fbd378454f3c2e2d9d689a00dfa"
+  },
+  "regulation_articles/article-210.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "2faba73ca7b906c024a9bf2820fce8df",
+    "semantic_hash": "2faba73ca7b906c024a9bf2820fce8df"
+  },
+  "regulation_articles/article-211.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "d19c7a3748cb6fa28de5a3b8fe191b2c",
+    "semantic_hash": "d19c7a3748cb6fa28de5a3b8fe191b2c"
+  },
+  "regulation_articles/article-212.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "6bbef97be5a22ca5e384d9d6bcb8bbd8",
+    "semantic_hash": "6bbef97be5a22ca5e384d9d6bcb8bbd8"
+  },
+  "regulation_articles/article-213.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "9f4bc6b64d2e6b1eae691e684e245e74",
+    "semantic_hash": "9f4bc6b64d2e6b1eae691e684e245e74"
+  },
+  "regulation_articles/article-214.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "6210d8ee68734ce5033b4afc414ef90b",
+    "semantic_hash": "6210d8ee68734ce5033b4afc414ef90b"
+  },
+  "regulation_articles/article-215.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "221fa248603596800c8d17238a20a11d",
+    "semantic_hash": "221fa248603596800c8d17238a20a11d"
+  },
+  "regulation_articles/article-216.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "1ee3ab7d85e6a9b65cd6d2e8556852f9",
+    "semantic_hash": "1ee3ab7d85e6a9b65cd6d2e8556852f9"
+  },
+  "regulation_articles/article-217.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "e83c325a7b17c98d8d6c3290ebdf258f",
+    "semantic_hash": "e83c325a7b17c98d8d6c3290ebdf258f"
+  },
+  "regulation_articles/article-218.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "e70dab2676677d95e537b6e14ede2dce",
+    "semantic_hash": "e70dab2676677d95e537b6e14ede2dce"
+  },
+  "regulation_articles/article-219.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "d4b6e4c61c39c6e8ce80691a4a5c0312",
+    "semantic_hash": "d4b6e4c61c39c6e8ce80691a4a5c0312"
+  },
+  "regulation_articles/article-22-1.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "0dc1931a20c943729dcf8b83e7994299",
+    "semantic_hash": "0dc1931a20c943729dcf8b83e7994299"
+  },
+  "regulation_articles/article-220.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "36216956d488c2ad80a281bc53580ac2",
+    "semantic_hash": "36216956d488c2ad80a281bc53580ac2"
+  },
+  "regulation_articles/article-221.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "2cac7c1dc9d9e4ad3096374e2c89e4ac",
+    "semantic_hash": "2cac7c1dc9d9e4ad3096374e2c89e4ac"
+  },
+  "regulation_articles/article-222.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "0a6a6f508ec51b544b635b7e9d789f01",
+    "semantic_hash": "0a6a6f508ec51b544b635b7e9d789f01"
+  },
+  "regulation_articles/article-223.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "5588fb98beec9655dea4b3132406cfef",
+    "semantic_hash": "5588fb98beec9655dea4b3132406cfef"
+  },
+  "regulation_articles/article-224.json": {
+    "mtime": 1784884412.4912484,
+    "ast_hash": "782218ec32d3180734b9c5d5dc1fa8f3",
+    "semantic_hash": "782218ec32d3180734b9c5d5dc1fa8f3"
+  },
+  "regulation_articles/article-225.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "e95b7ba87da56b48850c3ca01d906fed",
+    "semantic_hash": "e95b7ba87da56b48850c3ca01d906fed"
+  },
+  "regulation_articles/article-226.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "bbdb329b04153ab20f8ba283d5ea2e3f",
+    "semantic_hash": "bbdb329b04153ab20f8ba283d5ea2e3f"
+  },
+  "regulation_articles/article-227.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "44349d3528445f13fd93b44847fa6e24",
+    "semantic_hash": "44349d3528445f13fd93b44847fa6e24"
+  },
+  "regulation_articles/article-228.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "f5fe0e2b6534b0edb0e76e72c58829bb",
+    "semantic_hash": "f5fe0e2b6534b0edb0e76e72c58829bb"
+  },
+  "regulation_articles/article-229.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "bf03d98549c872aa3ce94dca65db2427",
+    "semantic_hash": "bf03d98549c872aa3ce94dca65db2427"
+  },
+  "regulation_articles/article-230.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "5004cd9b8d838fb65517590fb0b918be",
+    "semantic_hash": "5004cd9b8d838fb65517590fb0b918be"
+  },
+  "regulation_articles/article-231.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "e7565a92367778321e0f76e3b25b2a7a",
+    "semantic_hash": "e7565a92367778321e0f76e3b25b2a7a"
+  },
+  "regulation_articles/article-232.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "4f4b9d7e03fba7bc3250ec8a4d46735b",
+    "semantic_hash": "4f4b9d7e03fba7bc3250ec8a4d46735b"
+  },
+  "regulation_articles/article-233.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "2ed2fa739a187a301f402569452b548b",
+    "semantic_hash": "2ed2fa739a187a301f402569452b548b"
+  },
+  "regulation_articles/article-234.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "a2caab68d07d089035ab1091229b1c1c",
+    "semantic_hash": "a2caab68d07d089035ab1091229b1c1c"
+  },
+  "regulation_articles/article-235.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "9a44c3772406cb0e337929802a01ae45",
+    "semantic_hash": "9a44c3772406cb0e337929802a01ae45"
+  },
+  "regulation_articles/article-236.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "95c6b7dea26a25cba554613a4ce7941a",
+    "semantic_hash": "95c6b7dea26a25cba554613a4ce7941a"
+  },
+  "regulation_articles/article-237.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "2efc800252aacc5bcecbb539c503712e",
+    "semantic_hash": "2efc800252aacc5bcecbb539c503712e"
+  },
+  "regulation_articles/article-238.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "e0ff6ae5fec5a00843c7620aa7372de9",
+    "semantic_hash": "e0ff6ae5fec5a00843c7620aa7372de9"
+  },
+  "regulation_articles/article-239.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "98065a5a859b839b9058876c74130637",
+    "semantic_hash": "98065a5a859b839b9058876c74130637"
+  },
+  "regulation_articles/article-30-1.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "33994fe1579a0db1b0a01494da9585be",
+    "semantic_hash": "33994fe1579a0db1b0a01494da9585be"
+  },
+  "regulation_articles/article-83-1.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "591666dd73af8e616a2ec6bb3c97de31",
+    "semantic_hash": "591666dd73af8e616a2ec6bb3c97de31"
+  },
+  "regulation_articles/article-83-2.json": {
+    "mtime": 1784884412.4952483,
+    "ast_hash": "aa89ffd7f98d9a1a8e7f1e5a642380db",
+    "semantic_hash": "aa89ffd7f98d9a1a8e7f1e5a642380db"
+  },
+  "regulation_articles/article-96-1.json": {
+    "mtime": 1784884412.4992483,
+    "ast_hash": "d4138a86a3e77eb810c9dc7990042052",
+    "semantic_hash": "d4138a86a3e77eb810c9dc7990042052"
+  },
+  "regulation_articles/article-97-1.json": {
+    "mtime": 1784884412.4992483,
+    "ast_hash": "8054c3225ab646c14ff27be9f81b5b77",
+    "semantic_hash": "8054c3225ab646c14ff27be9f81b5b77"
+  },
+  "regulation_articles/article-97-10.json": {
+    "mtime": 1784884412.4992483,
+    "ast_hash": "e6ff355f1fb1696c9ea273883f485477",
+    "semantic_hash": "e6ff355f1fb1696c9ea273883f485477"
+  },
+  "regulation_articles/article-97-2.json": {
+    "mtime": 1784884412.4992483,
+    "ast_hash": "d7bbeeb38bd77837b5b3aaeb018c93f2",
+    "semantic_hash": "d7bbeeb38bd77837b5b3aaeb018c93f2"
+  },
+  "regulation_articles/article-97-3.json": {
+    "mtime": 1784884412.4992483,
+    "ast_hash": "1bc703e9b6ea333c93dd29bbd9d25f4f",
+    "semantic_hash": "1bc703e9b6ea333c93dd29bbd9d25f4f"
+  },
+  "regulation_articles/article-97-4.json": {
+    "mtime": 1784884412.4992483,
+    "ast_hash": "4301c0fcf4d378232600b4dcf3d8d525",
+    "semantic_hash": "4301c0fcf4d378232600b4dcf3d8d525"
+  },
+  "regulation_articles/article-97-5.json": {
+    "mtime": 1784884412.4992483,
+    "ast_hash": "9fadb60cce95331e699b25d5d6d577fd",
+    "semantic_hash": "9fadb60cce95331e699b25d5d6d577fd"
+  },
+  "regulation_articles/article-97-6.json": {
+    "mtime": 1784884412.4992483,
+    "ast_hash": "b02ae9687514933505eab326d2c310c4",
+    "semantic_hash": "b02ae9687514933505eab326d2c310c4"
+  },
+  "regulation_articles/article-97-7.json": {
+    "mtime": 1784884412.4992483,
+    "ast_hash": "6fd3a575e6db2f68d690bb32bc389b59",
+    "semantic_hash": "6fd3a575e6db2f68d690bb32bc389b59"
+  },
+  "regulation_articles/article-97-8.json": {
+    "mtime": 1784884412.4992483,
+    "ast_hash": "48603e62944d29d9ef948209023b3788",
+    "semantic_hash": "48603e62944d29d9ef948209023b3788"
+  },
+  "regulation_articles/article-97-9.json": {
+    "mtime": 1784884412.4992483,
+    "ast_hash": "dc1dabbb71eafd40dd92af3e8fc7ef7f",
+    "semantic_hash": "dc1dabbb71eafd40dd92af3e8fc7ef7f"
+  },
+  "regulation_index.json": {
+    "mtime": 1784884412.5032482,
+    "ast_hash": "e1014368186919b5d81058400a80285a",
+    "semantic_hash": "e1014368186919b5d81058400a80285a"
+  },
+  "rule_tests.json": {
+    "mtime": 1784884412.5032482,
+    "ast_hash": "3ea658ff1facb6053b0f52d53d62926d",
+    "semantic_hash": "3ea658ff1facb6053b0f52d53d62926d"
+  },
+  "README.md": {
+    "mtime": 1784884412.4536107,
+    "ast_hash": "fcba0329a2626d27ba3eec78d6932c4a",
+    "semantic_hash": "fcba0329a2626d27ba3eec78d6932c4a"
+  },
+  "\u6cd5\u898f/\u7b2c1\u7de8-\u7e3d\u5247.md": {
+    "mtime": 1784884412.5075912,
+    "ast_hash": "1d4bdfd217614b0db64f76bfdbcd46ed",
+    "semantic_hash": "1d4bdfd217614b0db64f76bfdbcd46ed"
+  },
+  "\u6cd5\u898f/\u7b2c2\u7de8-\u6d88\u9632\u8a2d\u8a08.md": {
+    "mtime": 1784884412.5075912,
+    "ast_hash": "50a608e5e57669dc45327562199b5bb5",
+    "semantic_hash": "50a608e5e57669dc45327562199b5bb5"
+  },
+  "\u6cd5\u898f/\u7b2c3\u7de8-\u7b2c1\u7ae0-\u6ec5\u706b\u8a2d\u5099.md": {
+    "mtime": 1784884412.5075912,
+    "ast_hash": "2a7ce0a03560281ea2bafa158f4c04a0",
+    "semantic_hash": "2a7ce0a03560281ea2bafa158f4c04a0"
+  },
+  "\u6cd5\u898f/\u7b2c3\u7de8-\u7b2c2\u7ae0-\u8b66\u5831\u8a2d\u5099.md": {
+    "mtime": 1784884412.5075912,
+    "ast_hash": "ecdb3269ab50edb5018df45696dd5dbf",
+    "semantic_hash": "ecdb3269ab50edb5018df45696dd5dbf"
+  },
+  "\u6cd5\u898f/\u7b2c3\u7de8-\u7b2c3\u7ae0-\u907f\u96e3\u9003\u751f\u8a2d\u5099.md": {
+    "mtime": 1784884412.5075912,
+    "ast_hash": "ed78ab7599fe72facaf1d8d214167354",
+    "semantic_hash": "ed78ab7599fe72facaf1d8d214167354"
+  },
+  "\u6cd5\u898f/\u7b2c3\u7de8-\u7b2c4\u7ae0-\u6d88\u9632\u6436\u6551\u4e0a\u4e4b\u5fc5\u8981\u8a2d\u5099.md": {
+    "mtime": 1784884412.5075912,
+    "ast_hash": "c0e3d47695afd31d11cfca9955895f58",
+    "semantic_hash": "c0e3d47695afd31d11cfca9955895f58"
+  },
+  "\u6cd5\u898f/\u7b2c4\u7de8-\u516c\u5171\u5371\u96aa\u7269\u54c1\u7b49\u5834\u6240.md": {
+    "mtime": 1784884412.5075912,
+    "ast_hash": "a816678774d7609e0a6c6d5df3eec602",
+    "semantic_hash": "a816678774d7609e0a6c6d5df3eec602"
+  },
+  "\u6cd5\u898f/\u7b2c5\u7de8-\u9644\u5247.md": {
+    "mtime": 1784884412.5075912,
+    "ast_hash": "3b7ce855c2b5a1a03e455eac5d1e99d8",
+    "semantic_hash": "3b7ce855c2b5a1a03e455eac5d1e99d8"
+  },
+  "\u6cd5\u898f/\u5efa\u7bc9\u7269\u4e3b\u7528\u9014\u53ca\u5f9e\u5c6c\u7528\u9014\u95dc\u4fc2\u5c0d\u7167\u8868.pdf": {
+    "mtime": 1784884412.5032482,
+    "ast_hash": "74fa82d1a346ca1a303f84775ee08408",
+    "semantic_hash": "74fa82d1a346ca1a303f84775ee08408"
+  }
+}

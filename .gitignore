@@ -8,3 +8,14 @@ graphify-out/.graphify_root
 graphify-out/.needs_update
 **/graphify-out/cache/
 rules/graphify-out/
+# graphify 抽取過程的暫存 sidecar（skill Step 9 會清；保留已納管的 .graphify_labels.json）
+graphify-out/.graphify_detect.json
+graphify-out/.graphify_extract.json
+graphify-out/.graphify_ast.json
+graphify-out/.graphify_semantic*.json
+graphify-out/.graphify_analysis.json
+graphify-out/.graphify_incremental.json
+graphify-out/.graphify_old.json
+graphify-out/.graphify_cached.json
+graphify-out/.graphify_uncached.txt
+graphify-out/.graphify_chunk_*.json

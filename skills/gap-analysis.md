@@ -83,7 +83,7 @@
 
 1. 依缺失清單、case.json 的 `source_drawings` 與 `layout_index`，產出 `annotations.json`：頂層含 `case_name`、`output_html`、`source_drawings`；每筆標註含 `issue_id`（對應問題清單編號）、`drawing_id`、`bbox`（DXF model-space 座標）、`label`（簡短解釋）、`note`（完整說明＋法條）、`severity`、`position_confidence`
 2. 位置只能來自 `layout_index` 或 DXF/審查文件明確標注；推定位置一律標 `position_confidence: low`
-3. 執行：`python3 tools/dxf_svg_review.py --annotations {輸出目錄}/annotations.json`
+3. 執行：`python3 tools/dxf_svg_review.py --annotations {輸出目錄}/annotations.json`（此工具需 `ezdxf`；若報缺套件先跑 `bash tools/setup.sh`）
 4. 產出的 `{案件名}-圖面審查.html` 必須顯示 DXF 轉成的 SVG、缺失清單導覽、點選定位與高亮；若有 `position_confidence: low`，頁面須顯示「位置僅供參考，以問題清單文字說明為準」
 
 **交付物 2：問題清單（`{案件名}-問題清單.md`）**

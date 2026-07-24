@@ -62,6 +62,10 @@ drawing_review/
 ## 常用命令
 
 ```bash
+# 首次使用：一鍵安裝交付物所需套件（ezdxf/openpyxl/pymupdf）並自檢
+# 核心計算與索引工具只用標準庫；圖譜重建／查詢另需 graphify（--with-graph）
+bash tools/setup.sh && python3 tools/check_env.py
+
 # 先紅再綠：規則測試（規則庫交付前必須全綠）
 python3 tools/fire_code_calc.py run-tests --strict
 python3 tools/fire_code_calc.py run-tests --verify-red {測試ID}   # Verify RED：驗證新測試「紅得正確」
@@ -102,10 +106,10 @@ python3 tools/verification_sheet.py apply --results governance/核定紀錄/resu
 法規全文已建成可查詢的知識圖譜，**後續案件需要查詢／調閱法規時，先查圖譜以定位條號與關聯，再回原文核對**，可大幅加快「哪一條、關聯到哪些設備／用途／條文」的定位。
 
 - **圖譜位置**：`graphify-out/`
-  - `graph.json`——可查詢圖譜（339 節點／369 邊：條號、設備、場所用途分類為節點；`依第X條`／`準用`／設備↔條文為邊）
+  - `graph.json`——可查詢圖譜（482 節點／830 邊：條號、設備、場所用途分類、**圖表附件**為節點；`依第X條`／`準用`／設備↔條文／條文↔附表圖為邊）
   - `graph.html`——互動式視覺化（瀏覽器直接開，免伺服器）
   - `GRAPH_REPORT.md`——樞紐節點（§12 用途分類、避難器具、自動撒水設備…）、社群分群與跨編關聯導覽
-- **來源**：以 `rules/法規/*.md`（第1~5編）與主從用途對照表 PDF 逐檔語意抽取；`regulation_version` 見 `rules/regulation_index.json`
+- **來源**：以 `rules/法規/` 法規全文 md（各類場所消防安全設備設置標準，§1~§239 共 266 條，含附表圖檔）與主從用途對照表 PDF 語意抽取；`regulation_version` 見 `rules/regulation_index.json`
 - **查詢方式**（工具若未安裝先跑 `uv tool install graphifyy && graphify install`）：
   ```bash
   graphify query "哪些條文規範自動撒水設備的設置？"   # BFS 廣度關聯
@@ -114,7 +118,7 @@ python3 tools/verification_sheet.py apply --results governance/核定紀錄/resu
   ```
   工具不可用時，`graph.json` 為標準 networkx node-link 格式，可直接以 Python 讀取遍歷。
 - **邊界（呼應最高原則 2、4）**：圖譜只是**索引與導覽**，用來定位條號與關聯，**不是門檻數值或計算結果的來源**。任何應設／免設判斷與數量計算，一律仍以 `python3 tools/fire_code_calc.py` ＋人工確認後的 `case.json` 為準，數值須回法條原文核對，不得直接引用圖譜節點標題當作法規數值。
-- **法規更新後重建**：改動 `rules/法規/*.md` 後，重跑 `/graphify rules`（或 `graphify update rules` 做增量更新）刷新圖譜。
+- **法規更新後重建**：改動 `rules/法規/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量，只重抽變更條文）刷新圖譜。註：法規為文字語料，須走 skill 的語意抽取（子代理依編/章切塊）；CLI 的 `graphify update`（純 AST、免 LLM）不適用於法條語意圖譜。跨塊抽取後須以 `graphify.ids.make_id` 統一正規化 node id（條號感知）再合併，避免共用概念無法去重。
 
 ## 注意事項
 

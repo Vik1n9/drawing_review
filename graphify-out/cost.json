@@ -11,6 +11,13 @@
       "input_tokens": 0,
       "output_tokens": 0,
       "files": 268
+    },
+    {
+      "date": "2026-07-24T19:20:02.668911+00:00",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "files": 331,
+      "note": "圖表附件納入圖譜（確定性）"
     }
   ],
   "total_input_tokens": 0,

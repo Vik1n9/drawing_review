@@ -49,7 +49,7 @@ python3 tools/fire_code_calc.py classify-mixed-use --case output/{案件名}-{YY
 
 - 複合用途成立 → 各層 `use_category` 保留各目分類，`building.mixed_use_assessment` 填 `is_mixed_use: true` 與 `category_candidate`（戊1／戊2）＋ `legal_basis`（§12 第5款第1目／第2目）
 - 全部構成從屬 → `building.principal_use` 定案，從屬樓層 `use_relation.role: subordinate`
-- 注意 §12-1（戊類複合用途之設備檢討以各目為單元合計面積，見 `rules/法規/第2編-消防設計.md` 供第十二條第五款使用之複合用途建築物條文）——此影響 `/code-requirements` 的面積合計方式，定案時在 case.json `manual_review_items` 或報告中明確注記
+- 注意 §12-1（戊類複合用途之設備檢討以各目為單元合計面積，見 `rules/法規/1各類場所消防安全設備設置標準.md` §6 供第十二條第五款使用之複合用途建築物條文）——此影響 `/code-requirements` 的面積合計方式，定案時在 case.json `manual_review_items` 或報告中明確注記
 
 ### 第四步：產出檢討表（交付物 4）
 

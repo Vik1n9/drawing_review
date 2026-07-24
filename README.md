@@ -94,9 +94,9 @@ drawing_review/
 ├── rules/                            — 固定法規資料夾與結構化法規規則庫
 │   ├── equipment_rules.json
 │   ├── rule_tests.json
-│   ├── 法規/                         — 法規 PDF/Markdown 原文（非每案輸入）
-│   ├── regulation_index.json
-│   └── regulation_articles/
+│   ├── 法規/                         — 法規全文正典（單一全文 md ＋ _assets 附表圖檔、主從用途 PDF；非每案輸入）
+│   ├── regulation_index.json         — 逐條索引（266 條）
+│   └── regulation_articles/          — 逐條 JSON（含章/節階層、附表圖）
 ├── governance/                       — 規則核定責任追溯鏈
 ├── skills/                           — 審圖 workflow 文件
 ├── tests/                            — Python 單元測試
@@ -140,11 +140,32 @@ DXF 提供座標、圖層、符號與標註位置，但消防設備應設需求�
 | `tools/dxf_svg_review.py` | `annotations.json` + DXF 轉互動式 SVG 圖面審查 HTML | `ezdxf` |
 | `tools/pdf_annotate.py` | legacy：舊版 PDF 紅圈標註輸出 | `pymupdf` |
 | `tools/verification_sheet.py` | 規則核定表匯出與回填 | stdlib |
+| `tools/setup.sh` | 一鍵安裝相依套件（選 `--with-graph` 併裝 graphify） | bash + pip |
+| `tools/check_env.py` | 環境自檢：列出哪些套件已就緒、缺的怎麼裝 | stdlib |
 
-安裝 Python 相依套件：
+### 環境安裝（一鍵）
+
+核心審圖工具（`fire_code_calc.py`、`regulation_index.py`）只用 Python 標準庫，clone 後即可執行；DXF／xlsx／PDF 交付物需要少數第三方套件。**一個指令備妥**，引用本倉庫的人不必自行逐一尋找安裝：
 
 ```bash
-python3 -m pip install -r requirements.txt
+bash tools/setup.sh          # 安裝 requirements.txt（ezdxf / openpyxl / pymupdf）並自檢
+python3 tools/check_env.py   # 隨時檢查哪些套件已就緒、缺的怎麼裝
+```
+
+未安裝對應套件時，工具會直接給出明確的安裝指引，不會靜默失敗。
+
+#### 法規知識圖譜（選用）
+
+`graphify-out/graph.html` 直接用瀏覽器開即可瀏覽，**無需安裝任何東西**。若要**重建圖譜或用 CLI 查詢**（`graphify query/explain/path`），才需要安裝 graphify：
+
+- 專案首頁：<https://github.com/Graphify-Labs/graphify>
+- 安裝（擇一）：
+
+```bash
+bash tools/setup.sh --with-graph                 # 隨本專案一起裝（自動偵測 uv / pip）
+# 或手動：
+uv tool install graphifyy && graphify install    # 建議（uv）
+python3 -m pip install graphifyy                  # 或用 pip
 ```
 
 ---
@@ -210,8 +231,9 @@ python3 -m pip install -r requirements.txt
 ## 七、常用命令
 
 ```bash
-# 安裝相依套件
-python3 -m pip install -r requirements.txt
+# 一鍵安裝相依套件並自檢（等同 pip install -r requirements.txt）
+bash tools/setup.sh
+python3 tools/check_env.py
 
 # 法規索引
 python3 tools/regulation_index.py build

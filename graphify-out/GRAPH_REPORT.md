@@ -1,32 +1,32 @@
 # Graph Report - rules  (2026-07-24)
 
 ## Corpus Check
-- 268 files · ~255,727 words
+- 331 files · ~255,742 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 444 nodes · 792 edges · 30 communities (16 shown, 14 thin omitted)
+- 482 nodes · 830 edges · 31 communities (17 shown, 14 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 23 edges (avg confidence: 0.78)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
 - 氣體與乾粉滅火設備
-- 警報與標示設備
-- 場所用途分類與樓層屬性
-- 自動撒水與水霧設備
-- 甲乙類場所用途細目
-- 緊急照明與緊急電源
+- 警報設備與場所用途分類
+- 緊急照明與避難器具
+- 自動撒水設備
 - 公共危險物品滅火設計
-- 室內外消防栓設備
-- 泡沫滅火設備
-- 可燃性高壓氣體場所設備
+- 水霧泡沫與加壓送水
+- 甲乙類場所用途細目
+- 可燃性高壓氣體場所與泡沫設備
+- 標示設備
+- 消防搶救必要設備
 - 火警探測器
 - 避難器具與收容人員
-- 連結送水管與蓄水池
+- 室內外消防栓設備
 - 手動報警裝置元件
 - 火警受信總機
 - 丙類場所用途細目
-- 丁類危險工作場所
+- 緊急廣播設備
 - 泡沫噴頭
 - 母法依據（消防法）
 - 瓦斯漏氣檢知器
@@ -40,12 +40,13 @@
 - 第二種滅火設備
 - 第五種滅火設備
 - 第四種滅火設備
+- 社群 30
 
 ## God Nodes (most connected - your core abstractions)
 1. `第12條` - 35 edges
 2. `自動撒水設備` - 26 edges
-3. `泡沫滅火設備` - 22 edges
-4. `第222條` - 20 edges
+3. `第222條` - 23 edges
+4. `泡沫滅火設備` - 22 edges
 5. `乾粉滅火設備` - 19 edges
 6. `第211條` - 17 edges
 7. `甲類` - 16 edges
@@ -54,16 +55,16 @@
 10. `惰性氣體滅火設備` - 15 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `第146-7條` --conceptually_related_to--> `第12條`  [AMBIGUOUS]
-  法規/1各類場所消防安全設備設置標準.md → 法規/1各類場所消防安全設備設置標準.md  _Bridges community 2 → community 1_
-- `水霧滅火設備` --semantically_similar_to--> `泡沫滅火設備`  [INFERRED] [semantically similar]
-  法規/1各類場所消防安全設備設置標準.md → 法規/1各類場所消防安全設備設置標準.md  _Bridges community 3 → community 8_
-- `泡沫滅火設備` --semantically_similar_to--> `乾粉滅火設備`  [INFERRED] [semantically similar]
-  法規/1各類場所消防安全設備設置標準.md → 法規/1各類場所消防安全設備設置標準.md  _Bridges community 8 → community 0_
-- `第215條` --semantically_similar_to--> `第231條`  [INFERRED] [semantically similar]
-  法規/1各類場所消防安全設備設置標準.md → 法規/1各類場所消防安全設備設置標準.md  _Bridges community 8 → community 9_
-- `第一種滅火設備` --semantically_similar_to--> `射水設備`  [INFERRED] [semantically similar]
-  法規/1各類場所消防安全設備設置標準.md → 法規/1各類場所消防安全設備設置標準.md  _Bridges community 6 → community 9_
+- `第18條` --references--> `第 18 條官方完整條文附件，第 1 頁`  [EXTRACTED]
+  法規/1各類場所消防安全設備設置標準.md → 法規/1各類場所消防安全設備設置標準_assets/article-18-page-1.png
+- `第18條` --references--> `第 18 條官方完整條文附件，第 2 頁`  [EXTRACTED]
+  法規/1各類場所消防安全設備設置標準.md → 法規/1各類場所消防安全設備設置標準_assets/article-18-page-2.png
+- `第47條` --references--> `第 47 條官方完整條文附件，第 1 頁`  [EXTRACTED]
+  法規/1各類場所消防安全設備設置標準.md → 法規/1各類場所消防安全設備設置標準_assets/article-47-page-1.png
+- `第47條` --references--> `第 47 條官方完整條文附件，第 2 頁`  [EXTRACTED]
+  法規/1各類場所消防安全設備設置標準.md → 法規/1各類場所消防安全設備設置標準_assets/article-47-page-2.png
+- `第57條` --references--> `第 57 條官方完整條文附件，第 1 頁`  [EXTRACTED]
+  法規/1各類場所消防安全設備設置標準.md → 法規/1各類場所消防安全設備設置標準_assets/article-57-page-1.png
 
 ## Hyperedges (group relationships)
 - **消防安全設備四大分類架構（§7-11）** — rules_法規_1各類場所消防安全設備設置標準_第7條, rules_法規_1各類場所消防安全設備設置標準_第8條, rules_法規_1各類場所消防安全設備設置標準_第9條, rules_法規_1各類場所消防安全設備設置標準_第10條, rules_法規_1各類場所消防安全設備設置標準_第11條 [EXTRACTED 1.00]
@@ -87,59 +88,59 @@
 - **全區放射氣體／乾粉滅火設備共用公共危險物品係數表** — rules_法規_1各類場所消防安全設備設置標準_第222條, rules_法規_1各類場所消防安全設備設置標準_第222_1條, rules_法規_1各類場所消防安全設備設置標準_第223條, rules_法規_1各類場所消防安全設備設置標準_二氧化碳滅火設備, rules_法規_1各類場所消防安全設備設置標準_惰性氣體滅火設備, rules_法規_1各類場所消防安全設備設置標準_鹵化烴滅火設備, rules_法規_1各類場所消防安全設備設置標準_乾粉滅火設備 [INFERRED 0.85]
 - **可燃性高壓氣體場所等共通消防安全設備群組** — rules_法規_1各類場所消防安全設備設置標準_可燃性高壓氣體場所, rules_法規_1各類場所消防安全設備設置標準_加氣站, rules_法規_1各類場所消防安全設備設置標準_天然氣儲槽, rules_法規_1各類場所消防安全設備設置標準_可燃性高壓氣體儲槽, rules_法規_1各類場所消防安全設備設置標準_滅火器, rules_法規_1各類場所消防安全設備設置標準_冷卻撒水設備, rules_法規_1各類場所消防安全設備設置標準_射水設備 [EXTRACTED 1.00]
 
-## Communities (30 total, 14 thin omitted)
+## Communities (31 total, 14 thin omitted)
 
 ### Community 0 - "氣體與乾粉滅火設備"
-Cohesion: 0.07
-Nodes (60): 乾粉滅火設備, 二氧化碳滅火設備, 儲存容器, 全區放射方式, 啟動裝置, 安全裝置, 局部放射方式, 惰性氣體滅火設備 (+52 more)
-
-### Community 1 - "警報與標示設備"
 Cohesion: 0.05
-Nodes (59): CNS 10522（火警自動警報設備國家標準）, 一一九火災通報裝置, 出口標示燈, 廣播分區, 手動報警設備, 揚聲器, 擴音機及操作裝置, 標示設備 (+51 more)
+Nodes (72): 第 222 條官方完整條文附件，第 1 頁, 第 222 條官方完整條文附件，第 2 頁, 第 222 條官方完整條文附件，第 3 頁, 第 83-2 條官方完整條文附件，第 1 頁, 第 83 條官方完整條文附件，第 1 頁, 第 83 條官方完整條文附件，第 2 頁, 第 84 條官方完整條文附件，第 1 頁, 第 84 條官方完整條文附件，第 2 頁 (+64 more)
 
-### Community 2 - "場所用途分類與樓層屬性"
-Cohesion: 0.08
-Nodes (44): 丁類場所, 丙類場所, 中央主管機關認可, 中度危險工作場所, 乙類場所, 低度危險工作場所, 地下建築物, 戊類場所 (+36 more)
+### Community 1 - "警報設備與場所用途分類"
+Cohesion: 0.06
+Nodes (64): CNS 10522（火警自動警報設備國家標準）, 一一九火災通報裝置, 丁類場所, 丙類場所, 中度危險工作場所, 乙類場所, 低度危險工作場所, 地下建築物 (+56 more)
 
-### Community 3 - "自動撒水與水霧設備"
+### Community 2 - "緊急照明與避難器具"
+Cohesion: 0.06
+Nodes (36): 第 163 條官方完整條文附件，第 1 頁, 第 164 條官方完整條文附件，第 1 頁, 第 164 條官方完整條文附件，第 2 頁, 第 165 條官方完整條文附件，第 1 頁, 第 236 條官方完整條文附件，第 1 頁, 第 236 條官方完整條文附件，第 2 頁, 第 236 條官方完整條文附件，第 3 頁, CNS 10204 發電機設備 (+28 more)
+
+### Community 3 - "自動撒水設備"
+Cohesion: 0.11
+Nodes (36): 第 47 條官方完整條文附件，第 1 頁, 第 47 條官方完整條文附件，第 2 頁, 第 57 條官方完整條文附件，第 1 頁, 第 57 條官方完整條文附件，第 2 頁, 第 57 條官方完整條文附件，第 3 頁, 一齊開放閥, 撒水頭, 流水檢知裝置 (+28 more)
+
+### Community 4 - "公共危險物品滅火設計"
 Cohesion: 0.10
-Nodes (41): 一齊開放閥, 加壓送水裝置, 撒水頭, 水霧滅火設備, 流水檢知裝置, 第111-1條, 第18條, 第211條 (+33 more)
+Nodes (33): 第 198 條官方完整條文附件，第 1 頁, 第 198 條官方完整條文附件，第 2 頁, 第 201 條官方完整條文附件，第 1 頁, 第 201 條官方完整條文附件，第 2 頁, 一般滅火困難場所, 公共危險物品等場所, 其他滅火困難場所, 加油站 (+25 more)
 
-### Community 4 - "甲乙類場所用途細目"
+### Community 5 - "水霧泡沫與加壓送水"
+Cohesion: 0.11
+Nodes (32): 第 18 條官方完整條文附件，第 1 頁, 第 18 條官方完整條文附件，第 2 頁, 加壓送水裝置, 水霧滅火設備, 泡沫滅火設備, 第111-1條, 第18條, 第212條 (+24 more)
+
+### Community 6 - "甲乙類場所用途細目"
 Cohesion: 0.07
 Nodes (30): 乙類, 乙類（一）車站、飛機場大廈、候船室, 乙類（七）集合住宅、寄宿舍, 乙類（三）兒童及少年福利機構、學校教室、補習班、訓練班、K書中心、安親（才藝）班, 乙類（九）室內溜冰場、室內游泳池, 乙類（二）期貨經紀業、證券交易所、金融機構, 乙類（五）寺廟、宗祠、教堂、靈骨塔, 乙類（八）體育館、活動中心 (+22 more)
 
-### Community 5 - "緊急照明與緊急電源"
-Cohesion: 0.08
-Nodes (29): CNS 10204 發電機設備, CNS 10205 蓄電池設備, 第147條, 第148條, 第149條, 第150條, 第151條, 第152條 (+21 more)
+### Community 7 - "可燃性高壓氣體場所與泡沫設備"
+Cohesion: 0.11
+Nodes (30): CNS 1244 鋅鐵板, CNS 12854 撒水噴孔／配管穿孔規定, 冷卻撒水設備, 加氣站, 可燃性高壓氣體儲槽, 可燃性高壓氣體場所, 固定式泡沫滅火設備, 天然氣儲槽 (+22 more)
 
-### Community 6 - "公共危險物品滅火設計"
-Cohesion: 0.13
-Nodes (29): 一般滅火困難場所, 公共危險物品等場所, 其他滅火困難場所, 加油站, 爆竹煙火場所, 第193條, 第194條, 第195條 (+21 more)
+### Community 8 - "標示設備"
+Cohesion: 0.12
+Nodes (29): 中央主管機關認可, 出口標示燈, 標示設備, 第10條, 第146-1條, 第146-2條, 第146-3條, 第146-4條 (+21 more)
 
-### Community 7 - "室內外消防栓設備"
-Cohesion: 0.19
-Nodes (23): CNS 832 壓力管路鑄鐵管, 室內消防栓設備, 室外消防栓設備, 第209條, 第210條, 第219條, 第221條, 第233條 (+15 more)
-
-### Community 8 - "泡沫滅火設備"
-Cohesion: 0.15
-Nodes (23): 固定式泡沫滅火設備, 泡沫射水槍滅火設備, 泡沫放出口, 泡沫滅火設備, 移動式泡沫滅火設備, 第213條, 第214條, 第215條 (+15 more)
-
-### Community 9 - "可燃性高壓氣體場所設備"
-Cohesion: 0.17
-Nodes (20): CNS 1244 鋅鐵板, CNS 12854 撒水噴孔／配管穿孔規定, 冷卻撒水設備, 加氣站, 可燃性高壓氣體儲槽, 可燃性高壓氣體場所, 天然氣儲槽, 射水設備 (+12 more)
+### Community 9 - "消防搶救必要設備"
+Cohesion: 0.09
+Nodes (24): 第 183 條官方完整條文附件，第 1 頁, 第 183 條官方完整條文附件，第 2 頁, 第 191 條官方完整條文附件，第 1 頁, 第 191 條官方完整條文附件，第 2 頁, 消防專用蓄水池, 無線電通信輔助設備, 第11條, 第180條 (+16 more)
 
 ### Community 10 - "火警探測器"
-Cohesion: 0.14
-Nodes (19): 偵煙式探測器, 光電式分離型探測器, 定溫式探測器（局限型／線型）, 差動式分布型探測器, 差動式局限型探測器, 探測器（火災感知器）, 火焰式探測器, 第114條 (+11 more)
+Cohesion: 0.13
+Nodes (20): 第 117 條官方完整條文附件，第 1 頁, 偵煙式探測器, 光電式分離型探測器, 定溫式探測器（局限型／線型）, 差動式分布型探測器, 差動式局限型探測器, 探測器（火災感知器）, 火焰式探測器 (+12 more)
 
 ### Community 11 - "避難器具與收容人員"
 Cohesion: 0.14
 Nodes (18): 收容人員（計算方式）, 救助袋, 滑杆, 滑臺, 第157條, 第158條, 第159條, 第160條 (+10 more)
 
-### Community 12 - "連結送水管與蓄水池"
-Cohesion: 0.20
-Nodes (12): 消防專用蓄水池, 第180條, 第181條, 第182條, 第183條, 第184條, 第185條, 第186條 (+4 more)
+### Community 12 - "室內外消防栓設備"
+Cohesion: 0.25
+Nodes (17): CNS 832 壓力管路鑄鐵管, 室內消防栓設備, 室外消防栓設備, 第209條, 第210條, 第219條, 第233條, 第32條 (+9 more)
 
 ### Community 13 - "手動報警裝置元件"
 Cohesion: 0.22
@@ -153,12 +154,16 @@ Nodes (5): 火警受信總機, 瓦斯漏氣受信總機, 第125條, 第126條, �
 Cohesion: 0.50
 Nodes (4): 丙類, 丙類（一）電信機器室, 丙類（三）室內停車場、建築物依法附設之室內停車空間, 丙類（二）汽車修護場、飛機修理廠、飛機庫
 
+### Community 16 - "緊急廣播設備"
+Cohesion: 0.50
+Nodes (4): 第 133 條官方完整條文附件，第 1 頁, 第 133 條官方完整條文附件，第 2 頁, 揚聲器, 第133條
+
 ## Ambiguous Edges - Review These
 - `第12條` → `第146-7條`  [AMBIGUOUS]
   法規/1各類場所消防安全設備設置標準.md · relation: conceptually_related_to
 
 ## Knowledge Gaps
-- **132 isolated node(s):** `rules/README.md 法規資料取用格式`, `丁類`, `甲類（一）電影片映演場所（戲院、電影院）`, `甲類（一）歌廳、舞廳、夜總會、俱樂部`, `甲類（一）理容院、指壓按摩場所` (+127 more)
+- **168 isolated node(s):** `rules/README.md 法規資料取用格式`, `丁類`, `甲類（一）電影片映演場所（戲院、電影院）`, `甲類（一）歌廳、舞廳、夜總會、俱樂部`, `甲類（一）理容院、指壓按摩場所` (+163 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **14 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -167,15 +172,15 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **What is the exact relationship between `第12條` and `第146-7條`?**
   _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
-- **Why does `第12條` connect `場所用途分類與樓層屬性` to `自動撒水與水霧設備`, `警報與標示設備`, `避難器具與收容人員`, `室內外消防栓設備`?**
-  _High betweenness centrality (0.253) - this node is a cross-community bridge._
-- **Why does `火警自動警報設備` connect `警報與標示設備` to `火警探測器`, `場所用途分類與樓層屬性`, `公共危險物品滅火設計`?**
-  _High betweenness centrality (0.153) - this node is a cross-community bridge._
-- **Why does `第19條` connect `場所用途分類與樓層屬性` to `泡沫滅火設備`, `警報與標示設備`, `自動撒水與水霧設備`, `火警受信總機`?**
-  _High betweenness centrality (0.122) - this node is a cross-community bridge._
+- **Why does `第12條` connect `警報設備與場所用途分類` to `自動撒水設備`, `水霧泡沫與加壓送水`, `標示設備`, `避難器具與收容人員`, `室內外消防栓設備`?**
+  _High betweenness centrality (0.257) - this node is a cross-community bridge._
+- **Why does `火警自動警報設備` connect `警報設備與場所用途分類` to `標示設備`, `火警探測器`, `公共危險物品滅火設計`?**
+  _High betweenness centrality (0.147) - this node is a cross-community bridge._
+- **Why does `第8條` connect `水霧泡沫與加壓送水` to `氣體與乾粉滅火設備`, `自動撒水設備`, `可燃性高壓氣體場所與泡沫設備`, `消防搶救必要設備`, `室內外消防栓設備`?**
+  _High betweenness centrality (0.123) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `泡沫滅火設備` (e.g. with `水霧滅火設備` and `乾粉滅火設備`) actually correct?**
   _`泡沫滅火設備` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 2 inferred relationships involving `乾粉滅火設備` (e.g. with `鹵化烴滅火設備` and `泡沫滅火設備`) actually correct?**
   _`乾粉滅火設備` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `rules/README.md 法規資料取用格式`, `丁類`, `甲類（一）電影片映演場所（戲院、電影院）` to the rest of the system?**
-  _132 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _168 weakly-connected nodes found - possible documentation gaps or missing edges._

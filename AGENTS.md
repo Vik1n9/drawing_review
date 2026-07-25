@@ -42,9 +42,10 @@ drawing_review/
 ├── rules/                       — 結構化法規規則庫
 │   ├── equipment_rules.json     — 規則（每條附條號、verified 旗標）
 │   ├── rule_tests.json          — 先紅再綠測試案例
-│   ├── 法規/                    — 固定法規資料夾（PDF/Markdown 原文，非每案輸入）
-│   ├── regulation_index.json    — 輕量條文索引（不含完整條文）
-│   └── regulation_articles/      — 逐條文 JSON（審查時按需載入）
+│   ├── 法規/                    — 法規全文正典（單一全文 md ＋ _assets 附表圖檔、主從用途 PDF；非每案輸入）
+│   ├── regulation_index.json    — 輕量條文索引（266 條，不含完整條文）
+│   └── regulation_articles/      — 逐條文 JSON（266 條，含章/節階層與附表圖；按需載入）
+├── graphify-out/                — 法規知識圖譜（可查詢／導覽，見下方「法規圖譜」）
 ├── governance/                  — 規則核定責任追溯鏈
 ├── skills/                      — 審圖 workflow 文件
 └── tools/                       — 確定性工具
@@ -58,6 +59,17 @@ drawing_review/
 | 2 | **問題清單** | 缺失四級分類，每項詳列違反法條、應設要求、圖面現況、缺口 |
 | 3 | **法條檢核清單 HTML** | `tools/checklist_html.py` 依 `check_results.json` 產出標準表格，逐項打勾 |
 
+## 法規圖譜（查詢調閱法規先看這裡）
+
+法規全文已建成可查詢的知識圖譜；後續案件需要查詢／調閱法規時，**先查圖譜以定位條號與關聯，再回原文核對**。
+
+- **位置**：`graphify-out/`（`graph.json` 可查詢圖譜、`graph.html` 互動視覺化、`GRAPH_REPORT.md` 樞紐與社群導覽）
+- **規模**：482 節點／830 邊——條號、設備、場所用途分類、**圖表附件**為節點；`依第X條`／`準用`／設備↔條文／條文↔附表圖為邊。
+- **來源**：以 `rules/法規/` 法規全文 md（各類場所消防安全設備設置標準，§1~§239 共 266 條，含附表圖）與主從用途對照表 PDF 語意抽取。
+- **邊界（呼應最高原則 2、4）**：圖譜只是**索引與導覽**，用來定位條號與關聯，**不是門檻數值或計算結果的來源**。任何應設／免設判斷與數量計算，一律仍以 `python3 tools/fire_code_calc.py` ＋人工確認後的 `case.json` 為準，數值須回法條原文核對；圖表附件節點只作導覽，表內數字不得直接引用，須經先紅再綠抄錄入庫。
+- **查詢**（工具未裝先 `uv tool install graphifyy`）：`graphify query "哪些條文規範自動撒水設備的設置？"`、`graphify explain "第12條"`、`graphify path "甲類" "自動撒水設備"`。
+- **法規更新後重建**：改動 `rules/法規/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量）刷新圖譜；法規為文字語料須走 skill 的語意抽取（依編/章切塊），CLI 的 `graphify update`（純 AST）不適用。圖表附件為確定性節點，可由 `regulation_articles` 的圖片連結重建。
+
 ## 報告語言與分類
 
 - 報告使用繁體中文與台灣法規用語。
@@ -68,7 +80,12 @@ drawing_review/
 ## 常用命令
 
 ```bash
-# 法規 Markdown 轉逐條索引（法規換版或 rules/法規/*.md 更新後執行）
+# 首次使用：一鍵安裝交付物所需套件（ezdxf/openpyxl/pymupdf）並自檢
+bash tools/setup.sh && python3 tools/check_env.py
+# 選：連同法規圖譜 graphify 一起裝 → bash tools/setup.sh --with-graph
+#     graphify 首頁 https://github.com/Graphify-Labs/graphify
+
+# 法規全文轉逐條索引（法規換版或 rules/法規/ 全文更新後執行）
 python3 tools/regulation_index.py build
 
 # 只取用相關條文，不要一次載入全部法規
@@ -109,4 +126,5 @@ python3 tools/verification_sheet.py apply --results governance/核定紀錄/resu
 - 案件 `input/{案件名}/` 不放法規檔；法規來源固定維護於 `rules/法規/` 與規則索引中。
 - SVG 標註網頁的圈選位置為 AI 推定時（`position_confidence: low`），以問題清單文字說明為準。
 - 判定「符合」與「不適用」時，也要保留可覆核的計算過程與條文依據。
-- 查法規依據時，優先使用 `rules/regulation_index.json` 與 `tools/regulation_index.py lookup` 載入相關條文；避免把 `rules/法規/*.md` 全部載入上下文。
+- 查法規依據時，優先使用 `rules/regulation_index.json` 與 `tools/regulation_index.py lookup` 載入相關條文；避免把 `rules/法規/` 全文 md 全部載入上下文。
+- 交付物工具缺套件時，先跑 `bash tools/setup.sh`（或看 `python3 tools/check_env.py` 指引）；核心計算與索引工具只用標準庫，無需安裝。

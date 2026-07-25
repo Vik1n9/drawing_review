@@ -54,8 +54,9 @@ def main():
     try:
         import fitz  # PyMuPDF
     except ImportError:
-        sys.exit("缺少 PyMuPDF，請先安裝：pip install pymupdf\n"
-                 "（本工具是 fire-review 中唯一需要外部套件的工具，僅用於 PDF 標註輸出）")
+        sys.exit("缺少 PyMuPDF，請先安裝：bash tools/setup.sh"
+                 "（或 python3 -m pip install -r requirements.txt）\n"
+                 "本工具僅用於平面圖 PDF 紅圈標註輸出。")
 
     with open(args.annotations, encoding="utf-8") as f:
         spec = json.load(f)

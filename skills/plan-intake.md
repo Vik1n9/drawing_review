@@ -5,7 +5,7 @@
 ## 輸入與輸出（統一資料夾）
 
 - 輸入：`input/{案件名}/平面圖.dxf` 作為需要審核的主圖面，搭配同資料夾內的 `平面圖.pdf` 輔助對照與相關審查文件（只讀不改）；案件資料夾內不放法規檔
-- 輸出：建立 `output/{案件名}-{YYYYMMDD}/` 新目錄，case.json 與後續所有交付物都寫入此目錄
+- 輸出：建立 `output/` 新目錄，case.json 與後續所有交付物都寫入此目錄
 
 ## 執行流程
 
@@ -72,7 +72,7 @@
 
 ### 第四步：產出 case.json
 
-寫入 `output/{案件名}-{YYYYMMDD}/case.json`，schema 如下：
+寫入 `output/case.json`，schema 如下：
 
 ```json
 {

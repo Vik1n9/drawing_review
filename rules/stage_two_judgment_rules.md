@@ -19,14 +19,14 @@
 ```bash
 python3 tools/regulation_graph.py neighbors --article §24        # 定位：引用網＋附表圖檔
 python3 tools/regulation_index.py lookup --article '§24,§12'     # 載入：只取相關條文原文
-python3 tools/fire_code_calc.py check-threshold --case output/{案件名}-{日期}/case.json
+python3 tools/fire_code_calc.py check-threshold --case output/case.json
 ```
 
 其他定位指令：`regulation_graph.py articles --equipment 排煙設備`、
 `regulation_graph.py path --from 無開口樓層 --to 排煙設備`。
 
 **不要一次載入 §14~§31 全文。** 圖譜不得作為門檻數值來源。附表圖檔（如 §18 的表）在
-`rules/法規/1各類場所消防安全設備設置標準_assets/`。
+`rules/core/1各類場所消防安全設備設置標準_assets/`。
 
 判斷範圍時先讀該條主詞是「建築物」「場所」「居室」還是「樓層」——這決定它是整棟／基地
 層級還是樓層／居室層級，也決定本次申請範圍以外的事實能不能拿來支撐勾選。

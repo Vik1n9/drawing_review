@@ -319,8 +319,8 @@ def build_parser():
     parser = argparse.ArgumentParser(description="法規 Markdown 逐條索引與查詢工具")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    build = sub.add_parser("build", help="將 rules/法規/*.md 轉為逐條 JSON 與索引")
-    build.add_argument("--source-dir", default="rules/法規")
+    build = sub.add_parser("build", help="將 rules/core/*.md 轉為逐條 JSON 與索引")
+    build.add_argument("--source-dir", default="rules/core")
     build.add_argument("--index", default="rules/regulation_index.json")
     build.add_argument("--article-dir", default="rules/regulation_articles")
 

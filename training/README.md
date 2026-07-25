@@ -33,9 +33,9 @@ training/
 
 | 素材類型 | 歸檔目的地 | 誰會讀到 |
 |---|---|---|
-| 法規全文 md | `rules/法規/` | `tools/regulation_index.py build` → 逐條 JSON → 圖譜 |
-| 條文附表圖 | `rules/法規/*_assets/` | 逐條 JSON 的內嵌連結、圖譜的圖表附件節點 |
-| 判斷基準／函釋 PDF | `rules/法規/` | `/regulation-intake` 抄錄入庫 |
+| 法規全文 md | `rules/core/` | `tools/regulation_index.py build` → 逐條 JSON → 圖譜 |
+| 條文附表圖 | `rules/core/*_assets/` | 逐條 JSON 的內嵌連結、圖譜的圖表附件節點 |
+| 判斷基準／函釋 PDF | `rules/core/` | `/regulation-intake` 抄錄入庫 |
 | §14~31 判斷表 xlsx | `rules/checklists/` | `tools/standard_checklist_html.py`、`tools/stage_report_xlsx.py` |
 | 格式範本 | `training/{批次}/formats/` ＋ `registry.json` | `training_intake.py status` 查詢 |
 | 實案回饋 | 人工追加到 `rules/review_corrections.md` | 每次審圖的必讀前置 |

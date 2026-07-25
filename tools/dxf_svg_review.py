@@ -5,7 +5,7 @@
 缺失標註、缺失清單導覽與縮放/平移互動。
 
 Usage:
-    python3 tools/dxf_svg_review.py --annotations output/{案件名}-{日期}/annotations.json
+    python3 tools/dxf_svg_review.py --annotations output/annotations.json
 """
 
 import argparse

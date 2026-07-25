@@ -20,7 +20,7 @@ from tools.training_intake import (
 def make_repo(tmp):
     root = Path(tmp)
     (root / "training" / "inbox").mkdir(parents=True)
-    (root / "rules" / "法規" / "1各類場所消防安全設備設置標準_assets").mkdir(parents=True)
+    (root / "rules" / "core" / "1各類場所消防安全設備設置標準_assets").mkdir(parents=True)
     (root / "rules" / "checklists").mkdir(parents=True)
     (root / "rules" / "equipment_rules.json").write_text(
         json.dumps({"rules": [{"id": "a", "verified": False}, {"id": "b", "verified": True}]}),
@@ -40,13 +40,13 @@ def fulltext(articles=25):
 
 class ClassifyTest(unittest.TestCase):
     def test_regulation_fulltext_always_needs_confirmation(self):
-        """rules/法規/ 必須維持單一全文 md，新全文是替換不是並存。"""
+        """rules/core/ 必須維持單一全文 md，新全文是替換不是並存。"""
         with tempfile.TemporaryDirectory() as tmp:
             root = make_repo(tmp)
             path = drop(root, "新法規全文.md", fulltext())
             item = classify_file(path, root=root)
             self.assertEqual(item["kind"], "regulation-fulltext")
-            self.assertEqual(item["destination"], "rules/法規/新法規全文.md")
+            self.assertEqual(item["destination"], "rules/core/新法規全文.md")
             self.assertTrue(item["needs_confirmation"])
 
     def test_short_markdown_is_not_mistaken_for_fulltext(self):
@@ -63,13 +63,13 @@ class ClassifyTest(unittest.TestCase):
             item = classify_file(path, root=root)
             self.assertEqual(item["kind"], "regulation-asset")
             self.assertEqual(item["destination"],
-                             "rules/法規/1各類場所消防安全設備設置標準_assets/article-18-page-2.png")
+                             "rules/core/1各類場所消防安全設備設置標準_assets/article-18-page-2.png")
             self.assertFalse(item["needs_confirmation"])
 
     def test_article_asset_needs_confirmation_without_a_unique_assets_folder(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = make_repo(tmp)
-            (root / "rules" / "法規" / "另一份_assets").mkdir()
+            (root / "rules" / "core" / "另一份_assets").mkdir()
             path = root / "training" / "inbox" / "article-18-page-2.png"
             path.write_bytes(b"\x89PNG")
             self.assertTrue(classify_file(path, root=root)["needs_confirmation"])
@@ -136,7 +136,7 @@ class ForbiddenDestinationTest(unittest.TestCase):
             self.assertIsNotNone(check_destination(dest), dest)
 
     def test_legitimate_destinations_pass(self):
-        for dest in ("rules/法規/判斷基準.pdf", "rules/checklists/判斷用.xlsx",
+        for dest in ("rules/core/判斷基準.pdf", "rules/checklists/判斷用.xlsx",
                      "practice_notes/staging/PN-20260725-001.json",
                      "training/批次-20260725/formats/範本.xlsx"):
             self.assertIsNone(check_destination(dest), dest)
@@ -164,7 +164,7 @@ class ApplyTest(unittest.TestCase):
                                           batch_date="2026-07-25")
             self.assertIsNone(manifest)
             self.assertTrue(any("需人工確認" in e for e in errors))
-            self.assertFalse((root / "rules" / "法規" / "新法規全文.md").exists())
+            self.assertFalse((root / "rules" / "core" / "新法規全文.md").exists())
             self.assertFalse((root / "training" / "測試批次-20260725").exists())
 
     def test_confirmed_by_unblocks_a_flagged_item(self):
@@ -177,7 +177,7 @@ class ApplyTest(unittest.TestCase):
                                           batch_date="2026-07-25")
             self.assertEqual(errors, [])
             self.assertEqual(manifest["items"][0]["confirmed_by"], "使用者")
-            self.assertTrue((root / "rules" / "法規" / "新法規全文.md").is_file())
+            self.assertTrue((root / "rules" / "core" / "新法規全文.md").is_file())
 
     def test_a_tampered_plan_cannot_write_into_the_rule_base(self):
         """訓練模式不得繞過先紅再綠。"""

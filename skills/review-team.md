@@ -4,7 +4,7 @@
 
 ## 前置條件
 
-`output/{案件名}-{YYYYMMDD}/case.json` 已完成人工確認（`/plan-intake` 關卡1通過）。未完成則先執行 `/plan-intake`。
+`output/case.json` 已完成人工確認（`/plan-intake` 關卡1通過）。未完成則先執行 `/plan-intake`。
 
 ## 執行流程
 
@@ -50,7 +50,7 @@ Prompt 模板：
 
 請完成任務 #{任務編號}：{任務subject}
 
-正典資料：output/{案件名}-{YYYYMMDD}/case.json（已人工確認，以此為準，不要重新解讀圖片）
+正典資料：output/case.json（已人工確認，以此為準，不要重新解讀圖片）
 規則庫：rules/equipment_rules.json
 法規版本：{regulation_version}
 圖說可讀性評級：{A|B|C}
@@ -107,7 +107,7 @@ Prompt 模板：
 
 ### 第八步：產出交付物與清理
 
-- 依 `/gap-analysis` 第六步的流程，產出三項交付物到 `output/{案件名}-{YYYYMMDD}/`：圖面審查 HTML（`dxf_svg_review.py`，需 `ezdxf`）、問題清單、法條檢核清單 HTML（`checklist_html.py`）
+- 依 `/gap-analysis` 第六步的流程，產出三項交付物到 `output/`：圖面審查 HTML（`dxf_svg_review.py`，需 `ezdxf`）、問題清單、法條檢核清單 HTML（`checklist_html.py`）
 - 首次執行前若交付物工具報缺套件，先跑 `bash tools/setup.sh`（詳見 README「環境安裝」）
 - TeamDelete 清理團隊資源
 

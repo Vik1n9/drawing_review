@@ -47,7 +47,7 @@ python3 tools/training_intake.py classify
 
 **逐項與使用者確認**標記 `⚠️ 需人工確認` 的項目。特別注意兩類：
 
-- `regulation-fulltext`：**永遠需要確認**。`regulation_index.py build` 會 glob `rules/法規/*.md`，
+- `regulation-fulltext`：**永遠需要確認**。`regulation_index.py build` 會 glob `rules/core/*.md`，
   該資料夾必須維持**單一**法規全文 md（見 `rules/README.md`）。新全文是「替換」不是「並存」——
   確認要替換哪一份，且替換後全部 266 條逐條 JSON 都會重建。
 - `unknown`：不要猜。問使用者這份檔案是什麼、該歸到哪裡，或先擱置在 `sources/unclassified/`。
@@ -76,7 +76,7 @@ python3 tools/training_intake.py apply --batch "{批次名}" --operator "{歸檔
 只要本次訓練要讓系統「多會判斷一條法規」，就走 `skills/regulation-intake.md` ＋ `skills/red-green.md`：
 
 1. **RED**：在 `rules/rule_tests.json` 新增測試，`expected` 對著本次歸檔的法條原文**逐字抄錄**，
-   `source.pdf` 指向 `rules/法規/` 內的來源檔，`source.page` 與 `source.quote` 必填
+   `source.pdf` 指向 `rules/core/` 內的來源檔，`source.page` 與 `source.quote` 必填
 2. **Verify RED**：`python3 tools/fire_code_calc.py run-tests --verify-red {測試ID}`——
    必須看著它 FAIL（不是 INVALID）
 3. **GREEN**：只把讓該測試轉綠所需的最小參數寫入 `rules/equipment_rules.json`，附 `legal_basis` 條號
@@ -119,14 +119,14 @@ markdown 筆記依 `rules/review_corrections.md` 自訂的格式追加（`Status
 
 ### 第六步 重建法規索引
 
-`rules/法規/` 有任何變更（新全文、新附表圖、新判斷基準文件）時：
+`rules/core/` 有任何變更（新全文、新附表圖、新判斷基準文件）時：
 
 ```bash
 python3 tools/regulation_index.py build
 ```
 
 重建 `rules/regulation_index.json` 與 `rules/regulation_articles/article-*.json`。
-沒動到 `rules/法規/` 就跳過這步，並在 `NOTES.md` 註明「本批次未變更法規全文」。
+沒動到 `rules/core/` 就跳過這步，並在 `NOTES.md` 註明「本批次未變更法規全文」。
 
 ### 第七步 自動重建知識圖譜（本 skill 的核心保證）
 
@@ -209,7 +209,7 @@ python3 tools/verification_sheet.py apply --results {結果JSON}
 
 | 訓練成果 | 落點 | 誰自動讀到 |
 |---|---|---|
-| 法規全文／附表圖 | `rules/法規/` → `rules/regulation_articles/` | `tools/regulation_index.py lookup`、知識圖譜 |
+| 法規全文／附表圖 | `rules/core/` → `rules/regulation_articles/` | `tools/regulation_index.py lookup`、知識圖譜 |
 | 法規參數 | `rules/equipment_rules.json` | `fire_code_calc.py check-threshold` 等全部子指令 |
 | 主從用途對照 | `rules/mixed_use_rules.json` | `fire_code_calc.py classify-mixed-use` |
 | §14~31 判斷表 | `rules/checklists/` | `standard_checklist_html.py`、`stage_report_xlsx.py` |

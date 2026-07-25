@@ -23,7 +23,7 @@ practice_notes/
 └── index.json   — 由 practice_note_engine.py reindex 產生（by_article / by_equipment / by_rule_id）
 ```
 
-註：與 `output/{案件名}-{日期}/annotations.json` 無關——那是**圖面 SVG 標註**，
+註：與 `output/annotations.json` 無關——那是**圖面 SVG 標註**，
 本資料夾是**法條實務補充見解**，兩者用途不同、刻意分開命名。
 
 ## 工作流程
@@ -31,12 +31,12 @@ practice_notes/
 ```bash
 # 1. 找出法典涵蓋不到的情境
 python3 tools/fire_code_calc.py check-gap \
-  --case output/{案件名}-{日期}/case.json \
-  --output output/{案件名}-{日期}/gap_candidates.json
+  --case output/case.json \
+  --output output/gap_candidates.json
 
 # 2. 草擬（判讀欄位一律留「（待填）」，須人工填實）
 python3 tools/practice_note_engine.py draft \
-  --gap output/{案件名}-{日期}/gap_candidates.json --case {案件名}
+  --gap output/gap_candidates.json --case {案件名}
 
 # 3. 法典牴觸與重複檢查（0=通過 2=有阻擋問題）
 python3 tools/practice_note_engine.py conflict-check --draft practice_notes/staging/{id}.json

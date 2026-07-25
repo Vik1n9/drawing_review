@@ -7,7 +7,7 @@
 - 執行案件、修改規則、產生報告前，先讀取本檔與相關 `skills/*.md` 流程文件。
 - 判定場所用途、樓層屬性、地下層、屋突層／屋頂層、無開口樓層時，必須讀取 `skills/place-use-classification.md`；用途分類只產生候選，最終以人工確認後的 `case.json` 為準。
 - 不要直接從 DXF、SVG 或圖片推算最終結論；所有計算以人工確認後的 `case.json` 為正典資料。
-- `input/` 視為只讀資料夾；所有案件產出寫入 `output/{案件名}-{YYYYMMDD}/`。
+- `input/` 視為只讀資料夾；所有案件產出寫入 `output/`。
 - 修改 `rules/*.json` 後，必須重跑 `self-test` 與 `run-tests --strict`。
 - 本專案報告與交付物使用繁體中文，並採台灣消防法規用語。
 
@@ -32,14 +32,13 @@ drawing_review/
 │       ├── 平面圖.dxf           — 需要審核的主圖面
 │       ├── 平面圖.pdf           — 輔助對照用圖面 PDF
 │       └── 相關審查文件          — 申請書、審查表、說明書等案件文件
-├── output/                      — 統一輸出資料夾
-│   └── {案件名}-{YYYYMMDD}/     — 每次審查建立新目錄分類
-│       ├── case.json                       — 圖說底稿（正典資料）
-│       ├── annotations.json                — SVG 標註定義
-│       ├── check_results.json              — 檢核結果（供 HTML 產生）
-│       ├── {案件名}-圖面審查.html           — 交付物1：DXF 轉 SVG 標註＋缺失導覽
-│       ├── {案件名}-問題清單.md             — 交付物2：缺失清單（詳列違反法條）
-│       └── {案件名}-法條檢核清單.html       — 交付物3：打勾檢核表
+├── output/                      — 統一輸出資料夾（單一案件平放，不再分案件子目錄）
+│   ├── case.json                — 圖說底稿（正典資料）
+│   ├── annotations.json         — SVG 標註定義
+│   ├── check_results.json       — 檢核結果（供 HTML 產生）
+│   ├── {案件名}-圖面審查.html    — 交付物1：DXF 轉 SVG 標註＋缺失導覽
+│   ├── {案件名}-問題清單.md      — 交付物2：缺失清單（詳列違反法條）
+│   └── {案件名}-法條檢核清單.html — 交付物3：打勾檢核表
 ├── rules/                       — 結構化法規規則庫
 │   ├── equipment_rules.json     — 規則（每條附條號、verified 旗標）
 │   ├── article18_equipment_options.json — §18 各款可選設備對照（選擇設置，非僅泡沫）
@@ -47,7 +46,7 @@ drawing_review/
 │   ├── review_corrections.md    — 累積確認的通案修正筆記（審圖前必讀，不得刪除歷史）
 │   ├── checklists/              — 法條判斷表 xlsx（§14~31，已含第18條完整9款）
 │   ├── rule_tests.json          — 先紅再綠測試案例
-│   ├── 法規/                    — 法規全文正典（單一全文 md ＋ _assets 附表圖檔、主從用途 PDF；非每案輸入）
+│   ├── core/                    — 法規全文正典（單一全文 md ＋ _assets 附表圖檔、主從用途 PDF；非每案輸入）
 │   ├── regulation_index.json    — 輕量條文索引（266 條，不含完整條文）
 │   └── regulation_articles/      — 逐條文 JSON（266 條，含章/節階層與附表圖；按需載入）
 ├── graphify-out/                — 法規知識圖譜（可查詢／導覽，見下方「法規圖譜」）
@@ -91,7 +90,7 @@ drawing_review/
 
 | 目的 | skill | 入口 | 成果落點 |
 |------|-------|------|---------|
-| 注入新法源／實務表格／格式範本 | `/train` | 檔案丟 `training/inbox/` | `rules/法規/`、`rules/checklists/`、`rules/equipment_rules.json`（先紅再綠） |
+| 注入新法源／實務表格／格式範本 | `/train` | 檔案丟 `training/inbox/` | `rules/core/`、`rules/checklists/`、`rules/equipment_rules.json`（先紅再綠） |
 | 記住法典未涵蓋情境的判讀 | `/practice-note` | `check-gap` 找出缺口 | `practice_notes/active/` ＋ `index.json` |
 | 記住通案性工作流程修正 | `/train` 第五步 | 使用者口述確認 | `rules/review_corrections.md`、`rules/stage_two_judgment_rules.md` |
 
@@ -111,11 +110,11 @@ drawing_review/
 
 - **位置**：`graphify-out/`（`graph.json` 可查詢圖譜、`graph.html` 互動視覺化、`GRAPH_REPORT.md` 樞紐與社群導覽）
 - **規模**：482 節點／830 邊——條號、設備、場所用途分類、**圖表附件**為節點；`依第X條`／`準用`／設備↔條文／條文↔附表圖為邊。
-- **來源**：以 `rules/法規/` 法規全文 md（各類場所消防安全設備設置標準，§1~§239 共 266 條，含附表圖）與主從用途對照表 PDF 語意抽取。
+- **來源**：以 `rules/core/` 法規全文 md（各類場所消防安全設備設置標準，§1~§239 共 266 條，含附表圖）與主從用途對照表 PDF 語意抽取。
 - **邊界（呼應最高原則 2、4）**：圖譜只是**索引與導覽**，用來定位條號與關聯，**不是門檻數值或計算結果的來源**。任何應設／免設判斷與數量計算，一律仍以 `python3 tools/fire_code_calc.py` ＋人工確認後的 `case.json` 為準，數值須回法條原文核對；圖表附件節點只作導覽，表內數字不得直接引用，須經先紅再綠抄錄入庫。
 - **查詢（免安裝，優先用這個）**：`python3 tools/regulation_graph.py neighbors --article §24`、`… articles --equipment 排煙設備`、`… path --from 無開口樓層 --to 排煙設備`（純標準庫，直接讀 graph.json，輸出附可貼的 lookup 指令）。裝了 graphify 時另可用 `graphify query/explain/path`。
 - **標準調閱流程**：圖譜（定位牽涉哪幾條）→ `regulation_index.py lookup`（只載入那幾條原文，支援 `'§24,§12'` 逗號列舉與 `'§20-§22'` 範圍）→ `fire_code_calc`（門檻與數量）→ 判斷。**不要一次載入 §14~§31 全文**（全載約 1.5 萬字，定位後通常 3~4 千字）。
-- **法規更新後重建**：改動 `rules/法規/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量）刷新圖譜；法規為文字語料須走 skill 的語意抽取（依編/章切塊），CLI 的 `graphify update`（純 AST）不適用。圖表附件為確定性節點，可由 `regulation_articles` 的圖片連結重建。 重建完成後務必 `python3 tools/graph_status.py stamp` 蓋章——`graph_status.py check` 以 sha256 逐檔指紋判斷圖譜是否跟上規則庫與註解庫，CI 也跑這一步，來源檔改了卻沒重建即紅燈。走 `/train` 時第七步會自動完成重建與蓋章。
+- **法規更新後重建**：改動 `rules/core/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量）刷新圖譜；法規為文字語料須走 skill 的語意抽取（依編/章切塊），CLI 的 `graphify update`（純 AST）不適用。圖表附件為確定性節點，可由 `regulation_articles` 的圖片連結重建。 重建完成後務必 `python3 tools/graph_status.py stamp` 蓋章——`graph_status.py check` 以 sha256 逐檔指紋判斷圖譜是否跟上規則庫與註解庫，CI 也跑這一步，來源檔改了卻沒重建即紅燈。走 `/train` 時第七步會自動完成重建與蓋章。
 
 ## 報告語言與分類
 
@@ -132,7 +131,7 @@ bash tools/setup.sh && python3 tools/check_env.py
 # 選：連同法規圖譜 graphify 一起裝 → bash tools/setup.sh --with-graph
 #     graphify 首頁 https://github.com/Graphify-Labs/graphify
 
-# 法規全文轉逐條索引（法規換版或 rules/法規/ 全文更新後執行）
+# 法規全文轉逐條索引（法規換版或 rules/core/ 全文更新後執行）
 python3 tools/regulation_index.py build
 
 # 只取用相關條文，不要一次載入全部法規
@@ -148,7 +147,7 @@ python3 tools/fire_code_calc.py run-tests --verify-red {測試ID}
 python3 tools/fire_code_calc.py self-test
 
 # 門檻判斷：逐層逐設備 應設/免設/需人工判讀
-python3 tools/fire_code_calc.py check-threshold --case output/{案件名}-{日期}/case.json
+python3 tools/fire_code_calc.py check-threshold --case output/case.json
 
 # 數量計算
 python3 tools/fire_code_calc.py extinguisher --use-category 甲 --floor-area 450
@@ -159,8 +158,8 @@ python3 tools/fire_code_calc.py occupancy --components '[{"name":"客席","area"
 python3 tools/fire_code_calc.py calc --expr '450 / 100'
 
 # 交付物產生
-python3 tools/dxf_svg_review.py --annotations output/{案件名}-{日期}/annotations.json
-python3 tools/checklist_html.py --results output/{案件名}-{日期}/check_results.json
+python3 tools/dxf_svg_review.py --annotations output/annotations.json
+python3 tools/checklist_html.py --results output/check_results.json
 
 # 法規調閱：先定位，再載入（免安裝 graphify）
 python3 tools/regulation_graph.py neighbors --article §24
@@ -168,10 +167,10 @@ python3 tools/regulation_graph.py articles --equipment 排煙設備
 python3 tools/regulation_index.py lookup --article '§24,§12'
 
 # 兩階段審查工作流程（匯出前關卡結束碼 2 = 阻擋，不得續行）
-python3 tools/case_facts_gate.py --stage first  --case output/{案件名}-{日期}/case.json
-python3 tools/case_facts_gate.py --stage second --case output/{案件名}-{日期}/case.json
-python3 tools/stage_report_xlsx.py first-stage --case output/{案件名}-{日期}/case.json
-python3 tools/stage_report_xlsx.py stage-two --decisions output/{案件名}-{日期}/stage2_decisions.json --case output/{案件名}-{日期}/case.json
+python3 tools/case_facts_gate.py --stage first  --case output/case.json
+python3 tools/case_facts_gate.py --stage second --case output/case.json
+python3 tools/stage_report_xlsx.py first-stage --case output/case.json
+python3 tools/stage_report_xlsx.py stage-two --decisions output/stage2_decisions.json --case output/case.json
 
 # 訓練模式（素材歸檔 → 先紅再綠 → 重建索引與圖譜）
 python3 tools/training_intake.py classify                       # 乾跑：印出 inbox 素材的路由建議
@@ -181,9 +180,9 @@ python3 tools/graph_status.py check                              # 0=新鮮 2=�
 python3 tools/graph_status.py stamp                              # 重建圖譜後蓋章
 
 # 實務註解（法典未涵蓋情境）
-python3 tools/fire_code_calc.py check-gap --case output/{案件名}-{日期}/case.json \
-  --output output/{案件名}-{日期}/gap_candidates.json
-python3 tools/practice_note_engine.py draft --gap output/{案件名}-{日期}/gap_candidates.json --case {案件名}
+python3 tools/fire_code_calc.py check-gap --case output/case.json \
+  --output output/gap_candidates.json
+python3 tools/practice_note_engine.py draft --gap output/gap_candidates.json --case {案件名}
 python3 tools/practice_note_engine.py conflict-check --draft practice_notes/staging/{id}.json
 python3 tools/practice_note_engine.py apply --draft practice_notes/staging/{id}.json \
   --approved-by {批准人} --confirm 確認納入
@@ -197,8 +196,8 @@ python3 tools/verification_sheet.py apply --results governance/核定紀錄/resu
 ## 注意事項
 
 - 本專案輸出僅供審圖輔助，最終判斷歸屬專業消防人員。
-- 案件 `input/{案件名}/` 不放法規檔；法規來源固定維護於 `rules/法規/` 與規則索引中。
+- 案件 `input/{案件名}/` 不放法規檔；法規來源固定維護於 `rules/core/` 與規則索引中。
 - SVG 標註網頁的圈選位置為 AI 推定時（`position_confidence: low`），以問題清單文字說明為準。
 - 判定「符合」與「不適用」時，也要保留可覆核的計算過程與條文依據。
-- 查法規依據時，優先使用 `rules/regulation_index.json` 與 `tools/regulation_index.py lookup` 載入相關條文；避免把 `rules/法規/` 全文 md 全部載入上下文。
+- 查法規依據時，優先使用 `rules/regulation_index.json` 與 `tools/regulation_index.py lookup` 載入相關條文；避免把 `rules/core/` 全文 md 全部載入上下文。
 - 交付物工具缺套件時，先跑 `bash tools/setup.sh`（或看 `python3 tools/check_env.py` 指引）；核心計算與索引工具只用標準庫，無需安裝。

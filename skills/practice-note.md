@@ -22,8 +22,8 @@
 
 ```bash
 python3 tools/fire_code_calc.py check-gap \
-  --case output/{案件名}-{日期}/case.json \
-  --output output/{案件名}-{日期}/gap_candidates.json
+  --case output/case.json \
+  --output output/gap_candidates.json
 ```
 
 輸出每個「需人工判讀」的門檻結果，並比對 `practice_notes/index.json`：
@@ -49,7 +49,7 @@ python3 tools/regulation_index.py lookup --article '§17'    # 再載入：只�
 
 ```bash
 python3 tools/practice_note_engine.py draft \
-  --gap output/{案件名}-{日期}/gap_candidates.json \
+  --gap output/gap_candidates.json \
   --case "{案件名}" --rule-id {指定的 rule_id}
 ```
 

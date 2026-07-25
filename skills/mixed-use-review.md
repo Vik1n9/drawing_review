@@ -10,7 +10,7 @@
 
 ## 前置檢查
 
-1. `output/{案件名}-{YYYYMMDD}/case.json` 存在，且 `use_permit` 區塊已完成證照文件萃取；缺件則退回 `/plan-intake` 補齊（或明確記錄「無使用執照可考」進 `manual_review_items`）
+1. `output/case.json` 存在，且 `use_permit` 區塊已完成證照文件萃取；缺件則退回 `/plan-intake` 補齊（或明確記錄「無使用執照可考」進 `manual_review_items`）
 2. 各層 `use_category` 至少有候選值（`use_candidates` 非空）
 3. `python3 tools/fire_code_calc.py self-test` 通過（會一併檢查 `rules/mixed_use_rules.json` 結構）
 
@@ -19,7 +19,7 @@
 ### 第一步：對照表比對（工具，只產候選）
 
 ```bash
-python3 tools/fire_code_calc.py classify-mixed-use --case output/{案件名}-{YYYYMMDD}/case.json
+python3 tools/fire_code_calc.py classify-mixed-use --case output/case.json
 ```
 
 工具逐層比對房名／用途名與對照表 31 項的主要用途部分（B）、便利從屬欄（C）、密切關係欄（D），輸出：
@@ -49,12 +49,12 @@ python3 tools/fire_code_calc.py classify-mixed-use --case output/{案件名}-{YY
 
 - 複合用途成立 → 各層 `use_category` 保留各目分類，`building.mixed_use_assessment` 填 `is_mixed_use: true` 與 `category_candidate`（戊1／戊2）＋ `legal_basis`（§12 第5款第1目／第2目）
 - 全部構成從屬 → `building.principal_use` 定案，從屬樓層 `use_relation.role: subordinate`
-- 注意 §12-1（戊類複合用途之設備檢討以各目為單元合計面積，見 `rules/法規/1各類場所消防安全設備設置標準.md` §6 供第十二條第五款使用之複合用途建築物條文）——此影響 `/code-requirements` 的面積合計方式，定案時在 case.json `manual_review_items` 或報告中明確注記
+- 注意 §12-1（戊類複合用途之設備檢討以各目為單元合計面積，見 `rules/core/1各類場所消防安全設備設置標準.md` §6 供第十二條第五款使用之複合用途建築物條文）——此影響 `/code-requirements` 的面積合計方式，定案時在 case.json `manual_review_items` 或報告中明確注記
 
 ### 第四步：產出檢討表（交付物 4）
 
 ```bash
-python3 tools/mixed_use_report.py --case output/{案件名}-{YYYYMMDD}/case.json
+python3 tools/mixed_use_report.py --case output/case.json
 ```
 
 產出 `{案件名}-複合用途及樓層屬性檢討.html`：主表逐層列「樓層｜各層用途｜樓地板面積｜本次申請範圍樓地板面積｜樓層屬性」＋合計列＋「複合用途建築物判定」編號結論。`null` 或 `confidence: low` 欄位一律顯示「⚪需人工判讀」，嚴禁以推測填充。

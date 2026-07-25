@@ -95,7 +95,7 @@ python3 tools/regulation_graph.py path --from 集合住宅 --to 乙類
 ### 第三步：受控自動化關卡（強制，不可跳過）
 
 ```bash
-python3 tools/case_facts_gate.py --stage first --case output/{案件名}-{YYYYMMDD}/case.json
+python3 tools/case_facts_gate.py --stage first --case output/case.json
 ```
 
 `ready: false` 或結束碼 2 時，**不得輸出最終交付物**。逐項向使用者詢問 `questions` 內容、
@@ -104,8 +104,8 @@ python3 tools/case_facts_gate.py --stage first --case output/{案件名}-{YYYYMM
 ### 第四步：產出交付物
 
 ```bash
-python3 tools/mixed_use_report.py --case output/{案件名}-{YYYYMMDD}/case.json
-python3 tools/stage_report_xlsx.py first-stage --case output/{案件名}-{YYYYMMDD}/case.json
+python3 tools/mixed_use_report.py --case output/case.json
+python3 tools/stage_report_xlsx.py first-stage --case output/case.json
 ```
 
 ## 工作簿格式契約
@@ -139,7 +139,7 @@ python3 tools/stage_report_xlsx.py first-stage --case output/{案件名}-{YYYYMM
 使用者要求執行第一階段時，**不得停在分析、預覽表格或對話式摘要**，除非使用者明示不要匯出。
 一次成功的執行必須全部滿足：
 
-1. `output/{案件名}-{YYYYMMDD}/` 下產生 HTML 檢討表與 `.xlsx` 工作簿
+1. `output/` 下產生 HTML 檢討表與 `.xlsx` 工作簿
 2. 工作簿含 `複合用途檢討`、`用途判斷依據`、`來源資料`、`各樓層高度` 四分頁
 3. 版面依格式範本，未從空白表新造
 4. 主表已檢查數值與公式錯誤

@@ -14,8 +14,8 @@ case.json 是正典資料（最高原則 4）；本工具直接讀 case.json，�
 Zero external dependencies — Python stdlib only.
 
 Usage:
-    python3 tools/case_facts_gate.py --stage first  --case output/{案件名}-{日期}/case.json
-    python3 tools/case_facts_gate.py --stage second --case output/{案件名}-{日期}/case.json
+    python3 tools/case_facts_gate.py --stage first  --case output/case.json
+    python3 tools/case_facts_gate.py --stage second --case output/case.json
     python3 tools/case_facts_gate.py --stage second --case case.json --format json
 """
 

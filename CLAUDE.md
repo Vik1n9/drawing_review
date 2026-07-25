@@ -26,18 +26,17 @@ drawing_review/
 │   ├── {案件名}/                — DXF 圖面資料夾與審查依據文件
 │   │   └── drawings/            — DXF 圖面（只讀不改）
 │   └── 法規/                    — 核對用法條清單 PDF
-├── output/                      — 統一輸出資料夾
-│   └── {案件名}-{YYYYMMDD}/     — 每次審查建立新目錄分類
-│       ├── case.json                       — 圖說底稿（正典資料）
-│       ├── annotations.json                — SVG 標註定義
-│       ├── check_results.json              — 檢核結果（供 HTML 產生）
-│       ├── {案件名}-圖面審查.html           — 交付物1：DXF 轉 SVG 標註＋缺失導覽
-│       ├── {案件名}-問題清單.md             — 交付物2：缺失清單（詳列違反法條）
-│       ├── {案件名}-法條檢核清單.html       — 交付物3：打勾檢核表（§14~§31 逐條窮舉）
-│       ├── {案件名}-複合用途及樓層屬性檢討.html — 交付物4：主從用途／樓層屬性檢討表
-│       ├── stage2_decisions.json           — 第二階段人工定案勾選（/stage-two-review 輸入）
-│       ├── {案件名}-第一階段-複合用途及樓層屬性檢討.xlsx — 兩階段工作流程：第一階段工作簿
-│       └── {案件名}-第二階段-設置標準檢討.xlsx           — 兩階段工作流程：第二階段工作簿
+├── output/                      — 統一輸出資料夾（單一案件平放，不再分案件子目錄）
+│   ├── case.json                           — 圖說底稿（正典資料）
+│   ├── annotations.json                    — SVG 標註定義
+│   ├── check_results.json                  — 檢核結果（供 HTML 產生）
+│   ├── {案件名}-圖面審查.html               — 交付物1：DXF 轉 SVG 標註＋缺失導覽
+│   ├── {案件名}-問題清單.md                 — 交付物2：缺失清單（詳列違反法條）
+│   ├── {案件名}-法條檢核清單.html           — 交付物3：打勾檢核表（§14~§31 逐條窮舉）
+│   ├── {案件名}-複合用途及樓層屬性檢討.html — 交付物4：主從用途／樓層屬性檢討表
+│   ├── stage2_decisions.json               — 第二階段人工定案勾選（/stage-two-review 輸入）
+│   ├── {案件名}-第一階段-複合用途及樓層屬性檢討.xlsx — 兩階段工作流程：第一階段工作簿
+│   └── {案件名}-第二階段-設置標準檢討.xlsx           — 兩階段工作流程：第二階段工作簿
 ├── rules/                       — 結構化法規規則庫
 │   ├── equipment_rules.json     — 規則（每條附條號、verified 旗標）
 │   ├── mixed_use_rules.json     — 主從用途對照表（判斷基準附表結構化、verified 旗標）
@@ -115,13 +114,13 @@ python3 tools/fire_code_calc.py run-tests --verify-red {測試ID}   # Verify RED
 python3 tools/fire_code_calc.py self-test
 
 # 門檻判斷：逐層逐設備 應設/免設/需人工判讀（--format json 供工具串接）
-python3 tools/fire_code_calc.py check-threshold --case output/{案件名}-{日期}/case.json
+python3 tools/fire_code_calc.py check-threshold --case output/case.json
 
 # §13 新舊標準適用判斷（增建/改建/裝修/變更用途案件必跑）
-python3 tools/fire_code_calc.py check-applicability --case output/{案件名}-{日期}/case.json
+python3 tools/fire_code_calc.py check-applicability --case output/case.json
 
 # 主從用途對照表比對（只產候選，最終人工確認；/mixed-use-review 使用）
-python3 tools/fire_code_calc.py classify-mixed-use --case output/{案件名}-{日期}/case.json
+python3 tools/fire_code_calc.py classify-mixed-use --case output/case.json
 
 # 數量計算
 python3 tools/fire_code_calc.py extinguisher --use-category 甲 --floor-area 450
@@ -132,10 +131,10 @@ python3 tools/fire_code_calc.py occupancy --components '[{"name":"客席","area"
 python3 tools/fire_code_calc.py calc --expr '450 / 100'
 
 # 交付物產生
-python3 tools/dxf_svg_review.py --annotations output/{案件名}-{日期}/annotations.json
-python3 tools/article_checklist.py --case output/{案件名}-{日期}/case.json      # §14~31 逐條窮舉 check_results.json
-python3 tools/checklist_html.py --results output/{案件名}-{日期}/check_results.json
-python3 tools/mixed_use_report.py --case output/{案件名}-{日期}/case.json       # 交付物4：複合用途及樓層屬性檢討
+python3 tools/dxf_svg_review.py --annotations output/annotations.json
+python3 tools/article_checklist.py --case output/case.json      # §14~31 逐條窮舉 check_results.json
+python3 tools/checklist_html.py --results output/check_results.json
+python3 tools/mixed_use_report.py --case output/case.json       # 交付物4：複合用途及樓層屬性檢討
 
 # 法規調閱：先定位，再載入（免安裝 graphify）
 python3 tools/regulation_graph.py neighbors --article §24
@@ -143,12 +142,12 @@ python3 tools/regulation_graph.py articles --equipment 排煙設備
 python3 tools/regulation_index.py lookup --article '§24,§12'      # 支援逗號列舉與範圍
 
 # 兩階段審查工作流程
-python3 tools/case_facts_gate.py --stage first  --case output/{案件名}-{日期}/case.json   # 匯出前關卡（結束碼 2 = 阻擋）
-python3 tools/case_facts_gate.py --stage second --case output/{案件名}-{日期}/case.json
-python3 tools/stage_report_xlsx.py first-stage --case output/{案件名}-{日期}/case.json    # 第一階段工作簿
+python3 tools/case_facts_gate.py --stage first  --case output/case.json   # 匯出前關卡（結束碼 2 = 阻擋）
+python3 tools/case_facts_gate.py --stage second --case output/case.json
+python3 tools/stage_report_xlsx.py first-stage --case output/case.json    # 第一階段工作簿
 python3 tools/stage_report_xlsx.py stage-two \
-  --decisions output/{案件名}-{日期}/stage2_decisions.json \
-  --case output/{案件名}-{日期}/case.json                                                 # 第二階段工作簿
+  --decisions output/stage2_decisions.json \
+  --case output/case.json                                                 # 第二階段工作簿
 
 # 訓練模式（素材歸檔 → 先紅再綠 → 重建索引與圖譜）
 python3 tools/training_intake.py classify                       # 乾跑：印出 inbox 素材的路由建議
@@ -158,9 +157,9 @@ python3 tools/graph_status.py check                              # 0=新鮮 2=�
 python3 tools/graph_status.py stamp                              # 重建圖譜後蓋章
 
 # 實務註解（法典未涵蓋情境）
-python3 tools/fire_code_calc.py check-gap --case output/{案件名}-{日期}/case.json \
-  --output output/{案件名}-{日期}/gap_candidates.json
-python3 tools/practice_note_engine.py draft --gap output/{案件名}-{日期}/gap_candidates.json --case {案件名}
+python3 tools/fire_code_calc.py check-gap --case output/case.json \
+  --output output/gap_candidates.json
+python3 tools/practice_note_engine.py draft --gap output/gap_candidates.json --case {案件名}
 python3 tools/practice_note_engine.py conflict-check --draft practice_notes/staging/{id}.json
 python3 tools/practice_note_engine.py apply --draft practice_notes/staging/{id}.json \
   --approved-by {批准人} --confirm 確認納入
@@ -177,7 +176,7 @@ python3 tools/verification_sheet.py apply --results governance/核定紀錄/resu
 
 | 目的 | skill | 入口 | 成果落點 |
 |------|-------|------|---------|
-| 注入新法源／實務表格／格式範本 | `/train` | 檔案丟 `training/inbox/` | `rules/法規/`、`rules/checklists/`、`rules/equipment_rules.json`（先紅再綠） |
+| 注入新法源／實務表格／格式範本 | `/train` | 檔案丟 `training/inbox/` | `rules/core/`、`rules/checklists/`、`rules/equipment_rules.json`（先紅再綠） |
 | 記住法典未涵蓋情境的判讀 | `/practice-note` | `check-gap` 找出缺口 | `practice_notes/active/` ＋ `index.json` |
 | 記住通案性工作流程修正 | `/train` 第五步 | 使用者口述確認 | `rules/review_corrections.md`、`rules/stage_two_judgment_rules.md` |
 
@@ -199,7 +198,7 @@ python3 tools/verification_sheet.py apply --results governance/核定紀錄/resu
   - `graph.json`——可查詢圖譜（482 節點／830 邊：條號、設備、場所用途分類、**圖表附件**為節點；`依第X條`／`準用`／設備↔條文／條文↔附表圖為邊）
   - `graph.html`——互動式視覺化（瀏覽器直接開，免伺服器）
   - `GRAPH_REPORT.md`——樞紐節點（§12 用途分類、避難器具、自動撒水設備…）、社群分群與跨編關聯導覽
-- **來源**：以 `rules/法規/` 法規全文 md（各類場所消防安全設備設置標準，§1~§239 共 266 條，含附表圖檔）與主從用途對照表 PDF 語意抽取；`regulation_version` 見 `rules/regulation_index.json`
+- **來源**：以 `rules/core/` 法規全文 md（各類場所消防安全設備設置標準，§1~§239 共 266 條，含附表圖檔）與主從用途對照表 PDF 語意抽取；`regulation_version` 見 `rules/regulation_index.json`
 - **查詢方式（免安裝，優先用這個）**——`tools/regulation_graph.py` 直接讀 `graph.json`，只用標準庫：
   ```bash
   python3 tools/regulation_graph.py neighbors --article §24        # 該條引用網＋附表圖檔
@@ -215,11 +214,11 @@ python3 tools/verification_sheet.py apply --results governance/核定紀錄/resu
   `lookup --article` 支援單條、範圍與**逗號／頓號列舉**（`'§24,§12'`、`'§20-§22,§28'`）。
   **不要一次載入 §14~§31 全文**——全載約 1.5 萬字，定位後只載相關條通常 3~4 千字。
 - **邊界（呼應最高原則 2、4）**：圖譜只是**索引與導覽**，用來定位條號與關聯，**不是門檻數值或計算結果的來源**。任何應設／免設判斷與數量計算，一律仍以 `python3 tools/fire_code_calc.py` ＋人工確認後的 `case.json` 為準，數值須回法條原文核對，不得直接引用圖譜節點標題當作法規數值。
-- **法規更新後重建**：改動 `rules/法規/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量，只重抽變更條文）刷新圖譜。註：法規為文字語料，須走 skill 的語意抽取（子代理依編/章切塊）；CLI 的 `graphify update`（純 AST、免 LLM）不適用於法條語意圖譜。跨塊抽取後須以 `graphify.ids.make_id` 統一正規化 node id（條號感知）再合併，避免共用概念無法去重。 重建完成後務必 `python3 tools/graph_status.py stamp` 蓋章——`graph_status.py check` 以 sha256 逐檔指紋判斷圖譜是否跟上規則庫與註解庫，CI 也跑這一步，來源檔改了卻沒重建即紅燈。走 `/train` 時第七步會自動完成重建與蓋章。
+- **法規更新後重建**：改動 `rules/core/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量，只重抽變更條文）刷新圖譜。註：法規為文字語料，須走 skill 的語意抽取（子代理依編/章切塊）；CLI 的 `graphify update`（純 AST、免 LLM）不適用於法條語意圖譜。跨塊抽取後須以 `graphify.ids.make_id` 統一正規化 node id（條號感知）再合併，避免共用概念無法去重。 重建完成後務必 `python3 tools/graph_status.py stamp` 蓋章——`graph_status.py check` 以 sha256 逐檔指紋判斷圖譜是否跟上規則庫與註解庫，CI 也跑這一步，來源檔改了卻沒重建即紅燈。走 `/train` 時第七步會自動完成重建與蓋章。
 
 ## 注意事項
 
 - 本專案輸出僅供審圖輔助，最終判斷歸屬專業消防人員
-- `input/` 只讀不改；所有產出寫入 `output/{案件名}-{YYYYMMDD}/`
+- `input/` 只讀不改；所有產出寫入 `output/`
 - 修改 `rules/*.json` 後必須重跑 `self-test` 與 `run-tests --strict`
 - SVG 標註網頁的圈選位置為 AI 推定時（`position_confidence: low`），以問題清單文字說明為準

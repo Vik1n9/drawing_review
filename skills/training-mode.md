@@ -217,7 +217,7 @@ python3 tools/verification_sheet.py apply --results {結果JSON}
 | 通案修正筆記 | `rules/review_corrections.md` | `/first-stage-review`、`/stage-two-review` 的必讀前置 |
 | 逐款判斷慣例 | `rules/stage_two_judgment_rules.md` | `/stage-two-review`、`tools/case_facts_gate.py` |
 | 格式範本 | `training/{批次}/formats/` ＋ `registry.json` | `training_intake.py status` |
-| 條號關聯導覽 | `graphify-out/graph.json` | `graphify query` / `explain` / `path` |
+| 條號關聯導覽 | `graphify-out/graph.json` | `tools/regulation_graph.py neighbors／articles／path`（免安裝） |
 
 各 pipeline skill 的前置檢查會跑 `python3 tools/training_intake.py status`
 （結束碼 `2` ＝ 圖譜未跟上規則庫），確保開場就知道有沒有新訓練成果、圖譜是否可信。

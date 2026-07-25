@@ -54,7 +54,7 @@ drawing_review/
 ├── training/                    — 訓練模式（`/train`）：inbox/ 投放、registry.json 索引、每批次歸檔紀錄
 ├── practice_notes/              — 實務註解層：active/ 現行註解、staging/ 待確認、index.json 索引
 ├── governance/                  — 規則核定責任追溯鏈
-├── skills/                      — 審圖 workflow 文件
+├── skills/                      — 審圖 workflow 文件（只放執行指令；設計說明見 skills/README.md）
 └── tools/                       — 確定性工具
 ```
 
@@ -76,11 +76,12 @@ drawing_review/
 | 第一階段 | `/first-stage-review` | `/plan-intake` → `/mixed-use-review` | 複合用途建築物及樓層屬性檢討（4 分頁） |
 | 第二階段 | `/stage-two-review` | `/code-requirements` → `article_checklist.py` | 設置標準檢討（3 分頁） |
 
-三條鐵律：
+四條鐵律：
 
 1. **第一階段未完成不得執行第二階段**；第一階段結果修正時必須從頭重跑完整第二階段。
 2. **受控自動化關卡**：兩階段匯出前都必須跑 `tools/case_facts_gate.py`；`ready: false`（結束碼 2）時不得輸出最終交付物，逐項問使用者補齊 `case.json` 後重跑。**不得以猜測、預設值或未提供的圖說補足資料。**
 3. **審圖前必讀** `rules/review_corrections.md`（兩階段皆是）與 `rules/stage_two_judgment_rules.md`（第二階段）；兩者皆未經 `governance/` 核定，援引其結論必附「本判斷慣例未經消防專業人員核定，以現行法規為準」。
+4. **規則庫不存條文原文與門檻數值**——轉抄會隨修法漂移。條文一律走下方「法規圖譜」的標準調閱流程即時回查（圖譜定位 → `lookup` 只載入相關條文，不要一次載入 §14~§31 全文）；新增規則時用主詞與範圍描述判斷差異，不寫死數字。
 
 第二階段的勾選一律來自人工定案的 `stage2_decisions.json`——**工具不代為做法規判斷**。
 
@@ -112,8 +113,9 @@ drawing_review/
 - **規模**：482 節點／830 邊——條號、設備、場所用途分類、**圖表附件**為節點；`依第X條`／`準用`／設備↔條文／條文↔附表圖為邊。
 - **來源**：以 `rules/法規/` 法規全文 md（各類場所消防安全設備設置標準，§1~§239 共 266 條，含附表圖）與主從用途對照表 PDF 語意抽取。
 - **邊界（呼應最高原則 2、4）**：圖譜只是**索引與導覽**，用來定位條號與關聯，**不是門檻數值或計算結果的來源**。任何應設／免設判斷與數量計算，一律仍以 `python3 tools/fire_code_calc.py` ＋人工確認後的 `case.json` 為準，數值須回法條原文核對；圖表附件節點只作導覽，表內數字不得直接引用，須經先紅再綠抄錄入庫。
-- **查詢**（工具未裝先 `uv tool install graphifyy`）：`graphify query "哪些條文規範自動撒水設備的設置？"`、`graphify explain "第12條"`、`graphify path "甲類" "自動撒水設備"`。
-- **法規更新後重建**：改動 `rules/法規/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量）刷新圖譜；法規為文字語料須走 skill 的語意抽取（依編/章切塊），CLI 的 `graphify update`（純 AST）不適用。圖表附件為確定性節點，可由 `regulation_articles` 的圖片連結重建。
+- **查詢（免安裝，優先用這個）**：`python3 tools/regulation_graph.py neighbors --article §24`、`… articles --equipment 排煙設備`、`… path --from 無開口樓層 --to 排煙設備`（純標準庫，直接讀 graph.json，輸出附可貼的 lookup 指令）。裝了 graphify 時另可用 `graphify query/explain/path`。
+- **標準調閱流程**：圖譜（定位牽涉哪幾條）→ `regulation_index.py lookup`（只載入那幾條原文，支援 `'§24,§12'` 逗號列舉與 `'§20-§22'` 範圍）→ `fire_code_calc`（門檻與數量）→ 判斷。**不要一次載入 §14~§31 全文**（全載約 1.5 萬字，定位後通常 3~4 千字）。
+- **法規更新後重建**：改動 `rules/法規/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量）刷新圖譜；法規為文字語料須走 skill 的語意抽取（依編/章切塊），CLI 的 `graphify update`（純 AST）不適用。圖表附件為確定性節點，可由 `regulation_articles` 的圖片連結重建。 重建完成後務必 `python3 tools/graph_status.py stamp` 蓋章——`graph_status.py check` 以 sha256 逐檔指紋判斷圖譜是否跟上規則庫與註解庫，CI 也跑這一步，來源檔改了卻沒重建即紅燈。走 `/train` 時第七步會自動完成重建與蓋章。
 
 ## 報告語言與分類
 
@@ -159,6 +161,11 @@ python3 tools/fire_code_calc.py calc --expr '450 / 100'
 # 交付物產生
 python3 tools/dxf_svg_review.py --annotations output/{案件名}-{日期}/annotations.json
 python3 tools/checklist_html.py --results output/{案件名}-{日期}/check_results.json
+
+# 法規調閱：先定位，再載入（免安裝 graphify）
+python3 tools/regulation_graph.py neighbors --article §24
+python3 tools/regulation_graph.py articles --equipment 排煙設備
+python3 tools/regulation_index.py lookup --article '§24,§12'
 
 # 兩階段審查工作流程（匯出前關卡結束碼 2 = 阻擋，不得續行）
 python3 tools/case_facts_gate.py --stage first  --case output/{案件名}-{日期}/case.json

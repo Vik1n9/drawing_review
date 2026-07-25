@@ -247,6 +247,14 @@ def _article_ids_for_equipment(manifest, equipment):
 
 
 def _article_ids_for_article_ref(manifest, article_ref):
+    # 逗號／頓號列舉：'§24,§12'、'§19、§21'——供圖譜定位後一次載入相關條文
+    parts = [p for p in re.split(r"[,，、]", str(article_ref)) if p.strip()]
+    if len(parts) > 1:
+        ids = set()
+        for part in parts:
+            ids.update(_article_ids_for_article_ref(manifest, part.strip()))
+        return ids
+
     article_no = normalize_article_no(article_ref)
     exact = manifest["by_article"].get(article_no)
     if exact:

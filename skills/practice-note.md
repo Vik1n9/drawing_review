@@ -35,8 +35,8 @@ python3 tools/fire_code_calc.py check-gap \
 逐項查證：
 
 ```bash
-python3 tools/regulation_index.py lookup --article '§17'
-graphify explain "第17條"     # 圖譜定位條號與關聯（僅導覽，不是數值來源）
+python3 tools/regulation_graph.py neighbors --article §17   # 先定位：該條引用網與關聯條號
+python3 tools/regulation_index.py lookup --article '§17'    # 再載入：只讀相關條文原文
 ```
 
 - 條文**有**規定但規則未入庫 → 停止本流程，改走 `/regulation-intake` ＋ `skills/red-green.md` 入庫。

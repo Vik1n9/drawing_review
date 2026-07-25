@@ -56,7 +56,7 @@ drawing_review/
 │   ├── staging/                 — 草擬中，待使用者「確認納入」
 │   └── index.json               — 註解索引（by_article／by_equipment／by_rule_id）
 ├── governance/                  — 規則核定責任追溯鏈（核定表／簽名紀錄，見 governance/README.md）
-├── skills/                      — 審圖 skill 定義
+├── skills/                      — 審圖 skill 定義（只放執行指令；設計說明見 skills/README.md）
 └── tools/                       — 確定性工具
 ```
 
@@ -79,7 +79,7 @@ drawing_review/
 | 第一階段 | `/first-stage-review` | `/plan-intake` → `/mixed-use-review` | 複合用途建築物及樓層屬性檢討（4 分頁） |
 | 第二階段 | `/stage-two-review` | `/code-requirements` → `article_checklist.py` | 設置標準檢討（3 分頁） |
 
-三條鐵律：
+四條鐵律：
 
 1. **第一階段未完成不得執行第二階段**；第一階段結果修正時必須從頭重跑完整第二階段
 2. **受控自動化關卡**：兩階段匯出前都必須跑 `tools/case_facts_gate.py`，`ready: false`
@@ -87,6 +87,9 @@ drawing_review/
 3. **審圖前必讀** `rules/review_corrections.md`（兩階段皆是）與
    `rules/stage_two_judgment_rules.md`（第二階段）；兩者皆未經 `governance/` 核定，
    援引其結論必附「本判斷慣例未經消防專業人員核定，以現行法規為準」
+4. **規則庫不存條文原文與門檻數值**——轉抄會隨修法漂移。條文一律走下方「法規圖譜」的
+   標準調閱流程即時回查（圖譜定位 → `lookup` 只載入相關條文，不要一次載入 §14~§31 全文）；
+   新增規則時用主詞與範圍描述判斷差異（「門檻的主詞是各居室，不是整棟」），不寫死數字
 
 格式權威為 `input/範例/` 內的兩份格式範本，`tools/stage_report_xlsx.py` 以程式複製其版面。
 第二階段的勾選一律來自人工定案的 `stage2_decisions.json`——**工具不代為做法規判斷**。
@@ -133,6 +136,11 @@ python3 tools/dxf_svg_review.py --annotations output/{案件名}-{日期}/annota
 python3 tools/article_checklist.py --case output/{案件名}-{日期}/case.json      # §14~31 逐條窮舉 check_results.json
 python3 tools/checklist_html.py --results output/{案件名}-{日期}/check_results.json
 python3 tools/mixed_use_report.py --case output/{案件名}-{日期}/case.json       # 交付物4：複合用途及樓層屬性檢討
+
+# 法規調閱：先定位，再載入（免安裝 graphify）
+python3 tools/regulation_graph.py neighbors --article §24
+python3 tools/regulation_graph.py articles --equipment 排煙設備
+python3 tools/regulation_index.py lookup --article '§24,§12'      # 支援逗號列舉與範圍
 
 # 兩階段審查工作流程
 python3 tools/case_facts_gate.py --stage first  --case output/{案件名}-{日期}/case.json   # 匯出前關卡（結束碼 2 = 阻擋）
@@ -192,15 +200,22 @@ python3 tools/verification_sheet.py apply --results governance/核定紀錄/resu
   - `graph.html`——互動式視覺化（瀏覽器直接開，免伺服器）
   - `GRAPH_REPORT.md`——樞紐節點（§12 用途分類、避難器具、自動撒水設備…）、社群分群與跨編關聯導覽
 - **來源**：以 `rules/法規/` 法規全文 md（各類場所消防安全設備設置標準，§1~§239 共 266 條，含附表圖檔）與主從用途對照表 PDF 語意抽取；`regulation_version` 見 `rules/regulation_index.json`
-- **查詢方式**（工具若未安裝先跑 `uv tool install graphifyy && graphify install`）：
+- **查詢方式（免安裝，優先用這個）**——`tools/regulation_graph.py` 直接讀 `graph.json`，只用標準庫：
   ```bash
-  graphify query "哪些條文規範自動撒水設備的設置？"   # BFS 廣度關聯
-  graphify explain "第12條 各類場所用途分類"          # 某條／某設備的引用網
-  graphify path "甲類" "自動撒水設備"                  # 兩概念間最短關聯路徑
+  python3 tools/regulation_graph.py neighbors --article §24        # 該條引用網＋附表圖檔
+  python3 tools/regulation_graph.py articles --equipment 排煙設備   # 哪些條文規範該設備
+  python3 tools/regulation_graph.py path --from 無開口樓層 --to 排煙設備
   ```
-  工具不可用時，`graph.json` 為標準 networkx node-link 格式，可直接以 Python 讀取遍歷。
+  輸出直接附上可貼的 `lookup` 指令。裝了 graphify 時另可用
+  `graphify query/explain/path`（先 `uv tool install graphifyy && graphify install`）。
+- **標準調閱流程（省 context 且降低看錯條的機率）**：
+  ```
+  圖譜（定位牽涉哪幾條）→ regulation_index.py lookup（只載入那幾條原文）→ fire_code_calc（門檻與數量）→ 判斷
+  ```
+  `lookup --article` 支援單條、範圍與**逗號／頓號列舉**（`'§24,§12'`、`'§20-§22,§28'`）。
+  **不要一次載入 §14~§31 全文**——全載約 1.5 萬字，定位後只載相關條通常 3~4 千字。
 - **邊界（呼應最高原則 2、4）**：圖譜只是**索引與導覽**，用來定位條號與關聯，**不是門檻數值或計算結果的來源**。任何應設／免設判斷與數量計算，一律仍以 `python3 tools/fire_code_calc.py` ＋人工確認後的 `case.json` 為準，數值須回法條原文核對，不得直接引用圖譜節點標題當作法規數值。
-- **法規更新後重建**：改動 `rules/法規/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量，只重抽變更條文）刷新圖譜。註：法規為文字語料，須走 skill 的語意抽取（子代理依編/章切塊）；CLI 的 `graphify update`（純 AST、免 LLM）不適用於法條語意圖譜。跨塊抽取後須以 `graphify.ids.make_id` 統一正規化 node id（條號感知）再合併，避免共用概念無法去重。
+- **法規更新後重建**：改動 `rules/法規/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量，只重抽變更條文）刷新圖譜。註：法規為文字語料，須走 skill 的語意抽取（子代理依編/章切塊）；CLI 的 `graphify update`（純 AST、免 LLM）不適用於法條語意圖譜。跨塊抽取後須以 `graphify.ids.make_id` 統一正規化 node id（條號感知）再合併，避免共用概念無法去重。 重建完成後務必 `python3 tools/graph_status.py stamp` 蓋章——`graph_status.py check` 以 sha256 逐檔指紋判斷圖譜是否跟上規則庫與註解庫，CI 也跑這一步，來源檔改了卻沒重建即紅燈。走 `/train` 時第七步會自動完成重建與蓋章。
 
 ## 注意事項
 

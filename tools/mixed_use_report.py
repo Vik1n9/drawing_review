@@ -12,7 +12,7 @@
 Zero external dependencies — Python stdlib only.
 
 Usage:
-    python3 tools/mixed_use_report.py --case output/{案件名}-{日期}/case.json
+    python3 tools/mixed_use_report.py --case output/case.json
 """
 
 import argparse
@@ -237,7 +237,7 @@ def render(case):
 本表由 AI 審圖輔助系統依 case.json 產生，僅供審查參考，最終判斷歸屬專業消防人員。
 「⚪需人工判讀」欄位嚴禁以推測填充；主用途／從屬用途之判定基準依內政部消防署
 《複合用途建築物判斷基準》及其附表「建築物主用途及從屬用途關係對照表」
-（rules/法規/建築物主用途及從屬用途關係對照表.pdf），經人工確認後回填 case.json 方可定案。
+（rules/core/建築物主用途及從屬用途關係對照表.pdf），經人工確認後回填 case.json 方可定案。
 </div>
 </body>
 </html>

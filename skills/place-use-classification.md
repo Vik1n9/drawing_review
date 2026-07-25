@@ -151,10 +151,10 @@ python3 tools/regulation_index.py lookup --article '§4'
 同一棟或同一防火區劃內有多種用途時，先列出各用途候選，再呼叫工具依《複合用途建築物判斷基準》附表比對主從關係候選：
 
 ```bash
-python3 tools/fire_code_calc.py classify-mixed-use --case output/{案件名}-{YYYYMMDD}/case.json
+python3 tools/fire_code_calc.py classify-mixed-use --case output/case.json
 ```
 
-工具逐層比對房名／用途名與 `rules/mixed_use_rules.json`（附表 31 項結構化），輸出「從屬候選（附項次）／獨立用途候選／戊類候選」。**規則檔不存在時 fallback 到人工判讀**：依 `rules/法規/建築物主用途及從屬用途關係對照表.pdf` 人工比對。戊類候選判斷表：
+工具逐層比對房名／用途名與 `rules/mixed_use_rules.json`（附表 31 項結構化），輸出「從屬候選（附項次）／獨立用途候選／戊類候選」。**規則檔不存在時 fallback 到人工判讀**：依 `rules/core/建築物主用途及從屬用途關係對照表.pdf` 人工比對。戊類候選判斷表：
 
 | 情境 | 候選 |
 |---|---|

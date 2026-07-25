@@ -1,12 +1,12 @@
 # 法條清單結構化與 HTML 轉換（先紅再綠）
 
-對固定法規資料夾 `rules/法規/` 內的法規來源執行結構化。這是規則庫的**唯一合法來源**：所有 `rules/equipment_rules.json` 的參數都必須經由本 skill 從固定法規資料夾中的 PDF/Markdown 原文萃取，並通過「先紅再綠」測試後才能供 `/code-requirements` 使用。案件審查時不得把法規檔放入 `input/{案件名}/` 當作每案附件。
+對固定法規資料夾 `rules/core/` 內的法規來源執行結構化。這是規則庫的**唯一合法來源**：所有 `rules/equipment_rules.json` 的參數都必須經由本 skill 從固定法規資料夾中的 PDF/Markdown 原文萃取，並通過「先紅再綠」測試後才能供 `/code-requirements` 使用。案件審查時不得把法規檔放入 `input/{案件名}/` 當作每案附件。
 
 ## 輸入與輸出
 
 | 項目 | 內容 |
 |------|------|
-| 輸入 | `rules/法規/` 固定法規資料夾（有具體來源的 PDF/Markdown 條文彙編，如設置標準條文＋審查基準） |
+| 輸入 | `rules/core/` 固定法規資料夾（有具體來源的 PDF/Markdown 條文彙編，如設置標準條文＋審查基準） |
 | 輸出 1 | `rules/equipment_rules.json` — 結構化規則（每條附 PDF 頁碼＋原文引用） |
 | 輸出 2 | `rules/rule_tests.json` — 規則測試案例（先紅再綠的依據） |
 | 輸出 3 | `rules/regulation-checklist.html` — 法條清單 HTML 版（**格式不變**，供審查意見書引用） |
@@ -15,7 +15,7 @@
 
 ### 第一步：讀取固定法規來源
 
-- 從 `rules/法規/` 讀取法規 PDF 或 Markdown 原文；PDF 逐頁讀取（每次最多 20 頁，分批處理），Markdown 依條文章節處理
+- 從 `rules/core/` 讀取法規 PDF 或 Markdown 原文；PDF 逐頁讀取（每次最多 20 頁，分批處理），Markdown 依條文章節處理
 - 記錄文件來源資訊：文件名稱、版本／修正日期、總頁數，寫入 rules JSON 的 `regulation_version` 與 `source_document`
 
 ### 第二步：轉換 HTML（格式不變）

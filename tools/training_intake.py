@@ -38,7 +38,7 @@ INBOX_DIR = "training/inbox"
 REGISTRY_PATH = "training/registry.json"
 GRAPH_PENDING_PATH = "training/graph_pending.json"
 
-REGULATION_DIR = "rules/法規"
+REGULATION_DIR = "rules/core"
 CHECKLIST_DIR = "rules/checklists"
 CORRECTIONS_PATH = "rules/review_corrections.md"
 RULE_DOCS = ("rules/equipment_rules.json", "rules/mixed_use_rules.json")
@@ -136,7 +136,7 @@ def classify_file(path, root=".", batch_rel=None):
             return result(
                 "regulation-fulltext", f"{REGULATION_DIR}/{name}",
                 f"Markdown 且偵測到 {len(ARTICLE_HEADING.findall(text))} 處條號 → 判為法規全文。"
-                "⚠️ regulation_index.py build 會 glob rules/法規/*.md，此資料夾必須維持單一全文 md，"
+                "⚠️ regulation_index.py build 會 glob rules/core/*.md，此資料夾必須維持單一全文 md，"
                 "只能『替換』不能並存（見 rules/README.md）",
                 needs_confirmation=True,
             )
@@ -153,7 +153,7 @@ def classify_file(path, root=".", batch_rel=None):
         if target is None:
             return result(
                 "regulation-asset", f"{REGULATION_DIR}/（_assets 資料夾未定）/{name}",
-                "檔名 match article-\\d+ → 判為法規附表圖，但 rules/法規/ 下找不到唯一的 *_assets 資料夾",
+                "檔名 match article-\\d+ → 判為法規附表圖，但 rules/core/ 下找不到唯一的 *_assets 資料夾",
                 needs_confirmation=True,
             )
         return result(
@@ -516,7 +516,7 @@ def cmd_apply(args):
         print(f"  [{r['kind']}] {r['source_name']} → {r['destination']}")
     print(f"\n批次紀錄：{batch_rel}/manifest.json、{batch_rel}/NOTES.md")
     print("\n接續步驟（見 skills/training-mode.md）：")
-    print("  1. rules/法規/ 有變更 → python3 tools/regulation_index.py build")
+    print("  1. rules/core/ 有變更 → python3 tools/regulation_index.py build")
     print("  2. 法規參數入庫 → 走 skills/red-green.md（RED → Verify RED → GREEN → Verify GREEN）")
     print("  3. 回饋筆記 → 依 rules/review_corrections.md 既有格式，經使用者確認後追加")
     print("  4. 圖譜重建 → /graphify rules --update 後 python3 tools/graph_status.py stamp")

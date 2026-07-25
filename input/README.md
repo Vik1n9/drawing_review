@@ -17,6 +17,6 @@ input/
 **使用執照**與**室內裝修申請書**為 `/plan-intake` 證照文件萃取（`use_permit`／`interior_renovation`／`change_of_use`）
 的必要輸入，缺件時 §13 適用判斷與主從用途判定將輸出「需人工判讀」。
 
-- DXF 圖面與審查依據文件 → 由 `/plan-intake` 讀取，產出 case.json 到 `output/{案件名}-{YYYYMMDD}/`
+- DXF 圖面與審查依據文件 → 由 `/plan-intake` 讀取，產出 case.json 到 `output/`
 - 法條清單 PDF → 由 `/regulation-intake` 結構化為 `rules/equipment_rules.json` 與 `rules/regulation-checklist.html`（先紅再綠測試通過後才可使用）
 - 輸入檔案只讀不改；所有產出一律寫到 `output/`

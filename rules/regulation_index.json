@@ -2,7 +2,7 @@
   "schema_version": 1,
   "regulation_name": "各類場所消防安全設備設置標準",
   "regulation_version": "民國 113 年 04 月 24 日",
-  "source_dir": "rules/法規",
+  "source_dir": "rules/core",
   "article_dir": "regulation_articles",
   "article_count": 266,
   "articles": [
@@ -12,7 +12,7 @@
       "legal_basis": "§1",
       "title": "第 1 條",
       "path": "regulation_articles/article-001.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第一編　總則"
       ],
@@ -28,7 +28,7 @@
       "legal_basis": "§2",
       "title": "第 2 條",
       "path": "regulation_articles/article-002.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第一編　總則"
       ],
@@ -44,7 +44,7 @@
       "legal_basis": "§3",
       "title": "第 3 條",
       "path": "regulation_articles/article-003.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第一編　總則"
       ],
@@ -60,7 +60,7 @@
       "legal_basis": "§4",
       "title": "第 4 條",
       "path": "regulation_articles/article-004.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -79,7 +79,7 @@
       "legal_basis": "§5",
       "title": "第 5 條",
       "path": "regulation_articles/article-005.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -100,7 +100,7 @@
       "legal_basis": "§6",
       "title": "第 6 條",
       "path": "regulation_articles/article-006.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -116,7 +116,7 @@
       "legal_basis": "§7",
       "title": "第 7 條",
       "path": "regulation_articles/article-007.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -132,7 +132,7 @@
       "legal_basis": "§8",
       "title": "第 8 條",
       "path": "regulation_articles/article-008.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -169,7 +169,7 @@
       "legal_basis": "§9",
       "title": "第 9 條",
       "path": "regulation_articles/article-009.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -196,7 +196,7 @@
       "legal_basis": "§10",
       "title": "第 10 條",
       "path": "regulation_articles/article-010.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -219,7 +219,7 @@
       "legal_basis": "§11",
       "title": "第 11 條",
       "path": "regulation_articles/article-011.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -248,7 +248,7 @@
       "legal_basis": "§12",
       "title": "第 12 條",
       "path": "regulation_articles/article-012.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -264,7 +264,7 @@
       "legal_basis": "§13",
       "title": "第 13 條",
       "path": "regulation_articles/article-013.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -295,7 +295,7 @@
       "legal_basis": "§14",
       "title": "第 14 條",
       "path": "regulation_articles/article-014.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -314,7 +314,7 @@
       "legal_basis": "§15",
       "title": "第 15 條",
       "path": "regulation_articles/article-015.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -345,7 +345,7 @@
       "legal_basis": "§16",
       "title": "第 16 條",
       "path": "regulation_articles/article-016.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -374,7 +374,7 @@
       "legal_basis": "§17",
       "title": "第 17 條",
       "path": "regulation_articles/article-017.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -401,7 +401,7 @@
       "legal_basis": "§18",
       "title": "第 18 條",
       "path": "regulation_articles/article-018.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -426,7 +426,7 @@
       "legal_basis": "§19",
       "title": "第 19 條",
       "path": "regulation_articles/article-019.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -449,7 +449,7 @@
       "legal_basis": "§20",
       "title": "第 20 條",
       "path": "regulation_articles/article-020.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -468,7 +468,7 @@
       "legal_basis": "§21",
       "title": "第 21 條",
       "path": "regulation_articles/article-021.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -489,7 +489,7 @@
       "legal_basis": "§22",
       "title": "第 22 條",
       "path": "regulation_articles/article-022.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -512,7 +512,7 @@
       "legal_basis": "§22-1",
       "title": "第 22-1 條",
       "path": "regulation_articles/article-22-1.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -531,7 +531,7 @@
       "legal_basis": "§23",
       "title": "第 23 條",
       "path": "regulation_articles/article-023.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -550,7 +550,7 @@
       "legal_basis": "§24",
       "title": "第 24 條",
       "path": "regulation_articles/article-024.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -569,7 +569,7 @@
       "legal_basis": "§25",
       "title": "第 25 條",
       "path": "regulation_articles/article-025.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -588,7 +588,7 @@
       "legal_basis": "§26",
       "title": "第 26 條",
       "path": "regulation_articles/article-026.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -607,7 +607,7 @@
       "legal_basis": "§27",
       "title": "第 27 條",
       "path": "regulation_articles/article-027.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -626,7 +626,7 @@
       "legal_basis": "§28",
       "title": "第 28 條",
       "path": "regulation_articles/article-028.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -645,7 +645,7 @@
       "legal_basis": "§29",
       "title": "第 29 條",
       "path": "regulation_articles/article-029.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -664,7 +664,7 @@
       "legal_basis": "§30",
       "title": "第 30 條",
       "path": "regulation_articles/article-030.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -683,7 +683,7 @@
       "legal_basis": "§30-1",
       "title": "第 30-1 條",
       "path": "regulation_articles/article-30-1.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第二編　消防設計"
       ],
@@ -702,7 +702,7 @@
       "legal_basis": "§31",
       "title": "第 31 條",
       "path": "regulation_articles/article-031.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -727,7 +727,7 @@
       "legal_basis": "§32",
       "title": "第 32 條",
       "path": "regulation_articles/article-032.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -756,7 +756,7 @@
       "legal_basis": "§33",
       "title": "第 33 條",
       "path": "regulation_articles/article-033.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -779,7 +779,7 @@
       "legal_basis": "§34",
       "title": "第 34 條",
       "path": "regulation_articles/article-034.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -799,7 +799,7 @@
       "legal_basis": "§35",
       "title": "第 35 條",
       "path": "regulation_articles/article-035.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -822,7 +822,7 @@
       "legal_basis": "§36",
       "title": "第 36 條",
       "path": "regulation_articles/article-036.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -845,7 +845,7 @@
       "legal_basis": "§37",
       "title": "第 37 條",
       "path": "regulation_articles/article-037.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -868,7 +868,7 @@
       "legal_basis": "§38",
       "title": "第 38 條",
       "path": "regulation_articles/article-038.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -891,7 +891,7 @@
       "legal_basis": "§39",
       "title": "第 39 條",
       "path": "regulation_articles/article-039.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -914,7 +914,7 @@
       "legal_basis": "§40",
       "title": "第 40 條",
       "path": "regulation_articles/article-040.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -937,7 +937,7 @@
       "legal_basis": "§41",
       "title": "第 41 條",
       "path": "regulation_articles/article-041.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -960,7 +960,7 @@
       "legal_basis": "§42",
       "title": "第 42 條",
       "path": "regulation_articles/article-042.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -983,7 +983,7 @@
       "legal_basis": "§43",
       "title": "第 43 條",
       "path": "regulation_articles/article-043.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1006,7 +1006,7 @@
       "legal_basis": "§44",
       "title": "第 44 條",
       "path": "regulation_articles/article-044.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1029,7 +1029,7 @@
       "legal_basis": "§45",
       "title": "第 45 條",
       "path": "regulation_articles/article-045.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1052,7 +1052,7 @@
       "legal_basis": "§46",
       "title": "第 46 條",
       "path": "regulation_articles/article-046.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1075,7 +1075,7 @@
       "legal_basis": "§47",
       "title": "第 47 條",
       "path": "regulation_articles/article-047.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1098,7 +1098,7 @@
       "legal_basis": "§48",
       "title": "第 48 條",
       "path": "regulation_articles/article-048.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1121,7 +1121,7 @@
       "legal_basis": "§49",
       "title": "第 49 條",
       "path": "regulation_articles/article-049.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1144,7 +1144,7 @@
       "legal_basis": "§50",
       "title": "第 50 條",
       "path": "regulation_articles/article-050.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1167,7 +1167,7 @@
       "legal_basis": "§51",
       "title": "第 51 條",
       "path": "regulation_articles/article-051.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1192,7 +1192,7 @@
       "legal_basis": "§52",
       "title": "第 52 條",
       "path": "regulation_articles/article-052.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1217,7 +1217,7 @@
       "legal_basis": "§53",
       "title": "第 53 條",
       "path": "regulation_articles/article-053.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1240,7 +1240,7 @@
       "legal_basis": "§54",
       "title": "第 54 條",
       "path": "regulation_articles/article-054.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1263,7 +1263,7 @@
       "legal_basis": "§55",
       "title": "第 55 條",
       "path": "regulation_articles/article-055.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1286,7 +1286,7 @@
       "legal_basis": "§56",
       "title": "第 56 條",
       "path": "regulation_articles/article-056.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1309,7 +1309,7 @@
       "legal_basis": "§57",
       "title": "第 57 條",
       "path": "regulation_articles/article-057.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1332,7 +1332,7 @@
       "legal_basis": "§58",
       "title": "第 58 條",
       "path": "regulation_articles/article-058.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1355,7 +1355,7 @@
       "legal_basis": "§59",
       "title": "第 59 條",
       "path": "regulation_articles/article-059.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1378,7 +1378,7 @@
       "legal_basis": "§60",
       "title": "第 60 條",
       "path": "regulation_articles/article-060.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1401,7 +1401,7 @@
       "legal_basis": "§61",
       "title": "第 61 條",
       "path": "regulation_articles/article-061.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1421,7 +1421,7 @@
       "legal_basis": "§62",
       "title": "第 62 條",
       "path": "regulation_articles/article-062.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1444,7 +1444,7 @@
       "legal_basis": "§63",
       "title": "第 63 條",
       "path": "regulation_articles/article-063.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1464,7 +1464,7 @@
       "legal_basis": "§64",
       "title": "第 64 條",
       "path": "regulation_articles/article-064.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1487,7 +1487,7 @@
       "legal_basis": "§65",
       "title": "第 65 條",
       "path": "regulation_articles/article-065.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1507,7 +1507,7 @@
       "legal_basis": "§66",
       "title": "第 66 條",
       "path": "regulation_articles/article-066.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1527,7 +1527,7 @@
       "legal_basis": "§67",
       "title": "第 67 條",
       "path": "regulation_articles/article-067.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1547,7 +1547,7 @@
       "legal_basis": "§68",
       "title": "第 68 條",
       "path": "regulation_articles/article-068.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1570,7 +1570,7 @@
       "legal_basis": "§69",
       "title": "第 69 條",
       "path": "regulation_articles/article-069.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1593,7 +1593,7 @@
       "legal_basis": "§70",
       "title": "第 70 條",
       "path": "regulation_articles/article-070.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1616,7 +1616,7 @@
       "legal_basis": "§71",
       "title": "第 71 條",
       "path": "regulation_articles/article-071.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1639,7 +1639,7 @@
       "legal_basis": "§72",
       "title": "第 72 條",
       "path": "regulation_articles/article-072.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1659,7 +1659,7 @@
       "legal_basis": "§73",
       "title": "第 73 條",
       "path": "regulation_articles/article-073.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1679,7 +1679,7 @@
       "legal_basis": "§74",
       "title": "第 74 條",
       "path": "regulation_articles/article-074.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1702,7 +1702,7 @@
       "legal_basis": "§75",
       "title": "第 75 條",
       "path": "regulation_articles/article-075.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1725,7 +1725,7 @@
       "legal_basis": "§76",
       "title": "第 76 條",
       "path": "regulation_articles/article-076.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1748,7 +1748,7 @@
       "legal_basis": "§77",
       "title": "第 77 條",
       "path": "regulation_articles/article-077.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1771,7 +1771,7 @@
       "legal_basis": "§78",
       "title": "第 78 條",
       "path": "regulation_articles/article-078.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1791,7 +1791,7 @@
       "legal_basis": "§79",
       "title": "第 79 條",
       "path": "regulation_articles/article-079.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1811,7 +1811,7 @@
       "legal_basis": "§80",
       "title": "第 80 條",
       "path": "regulation_articles/article-080.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1834,7 +1834,7 @@
       "legal_basis": "§81",
       "title": "第 81 條",
       "path": "regulation_articles/article-081.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1854,7 +1854,7 @@
       "legal_basis": "§82",
       "title": "第 82 條",
       "path": "regulation_articles/article-082.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1879,7 +1879,7 @@
       "legal_basis": "§83",
       "title": "第 83 條",
       "path": "regulation_articles/article-083.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1902,7 +1902,7 @@
       "legal_basis": "§83-1",
       "title": "第 83-1 條",
       "path": "regulation_articles/article-83-1.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1925,7 +1925,7 @@
       "legal_basis": "§83-2",
       "title": "第 83-2 條",
       "path": "regulation_articles/article-83-2.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1948,7 +1948,7 @@
       "legal_basis": "§84",
       "title": "第 84 條",
       "path": "regulation_articles/article-084.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1973,7 +1973,7 @@
       "legal_basis": "§85",
       "title": "第 85 條",
       "path": "regulation_articles/article-085.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -1993,7 +1993,7 @@
       "legal_basis": "§86",
       "title": "第 86 條",
       "path": "regulation_articles/article-086.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2016,7 +2016,7 @@
       "legal_basis": "§87",
       "title": "第 87 條",
       "path": "regulation_articles/article-087.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2041,7 +2041,7 @@
       "legal_basis": "§88",
       "title": "第 88 條",
       "path": "regulation_articles/article-088.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2066,7 +2066,7 @@
       "legal_basis": "§89",
       "title": "第 89 條",
       "path": "regulation_articles/article-089.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2091,7 +2091,7 @@
       "legal_basis": "§90",
       "title": "第 90 條",
       "path": "regulation_articles/article-090.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2116,7 +2116,7 @@
       "legal_basis": "§91",
       "title": "第 91 條",
       "path": "regulation_articles/article-091.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2143,7 +2143,7 @@
       "legal_basis": "§92",
       "title": "第 92 條",
       "path": "regulation_articles/article-092.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2163,7 +2163,7 @@
       "legal_basis": "§93",
       "title": "第 93 條",
       "path": "regulation_articles/article-093.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2188,7 +2188,7 @@
       "legal_basis": "§94",
       "title": "第 94 條",
       "path": "regulation_articles/article-094.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2208,7 +2208,7 @@
       "legal_basis": "§95",
       "title": "第 95 條",
       "path": "regulation_articles/article-095.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2228,7 +2228,7 @@
       "legal_basis": "§96",
       "title": "第 96 條",
       "path": "regulation_articles/article-096.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2251,7 +2251,7 @@
       "legal_basis": "§96-1",
       "title": "第 96-1 條",
       "path": "regulation_articles/article-96-1.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2274,7 +2274,7 @@
       "legal_basis": "§97",
       "title": "第 97 條",
       "path": "regulation_articles/article-097.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2299,7 +2299,7 @@
       "legal_basis": "§97-1",
       "title": "第 97-1 條",
       "path": "regulation_articles/article-97-1.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2322,7 +2322,7 @@
       "legal_basis": "§97-2",
       "title": "第 97-2 條",
       "path": "regulation_articles/article-97-2.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2345,7 +2345,7 @@
       "legal_basis": "§97-3",
       "title": "第 97-3 條",
       "path": "regulation_articles/article-97-3.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2368,7 +2368,7 @@
       "legal_basis": "§97-4",
       "title": "第 97-4 條",
       "path": "regulation_articles/article-97-4.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2391,7 +2391,7 @@
       "legal_basis": "§97-5",
       "title": "第 97-5 條",
       "path": "regulation_articles/article-97-5.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2414,7 +2414,7 @@
       "legal_basis": "§97-6",
       "title": "第 97-6 條",
       "path": "regulation_articles/article-97-6.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2437,7 +2437,7 @@
       "legal_basis": "§97-7",
       "title": "第 97-7 條",
       "path": "regulation_articles/article-97-7.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2460,7 +2460,7 @@
       "legal_basis": "§97-8",
       "title": "第 97-8 條",
       "path": "regulation_articles/article-97-8.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2483,7 +2483,7 @@
       "legal_basis": "§97-9",
       "title": "第 97-9 條",
       "path": "regulation_articles/article-97-9.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2506,7 +2506,7 @@
       "legal_basis": "§97-10",
       "title": "第 97-10 條",
       "path": "regulation_articles/article-97-10.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2529,7 +2529,7 @@
       "legal_basis": "§98",
       "title": "第 98 條",
       "path": "regulation_articles/article-098.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2552,7 +2552,7 @@
       "legal_basis": "§99",
       "title": "第 99 條",
       "path": "regulation_articles/article-099.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2575,7 +2575,7 @@
       "legal_basis": "§100",
       "title": "第 100 條",
       "path": "regulation_articles/article-100.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2598,7 +2598,7 @@
       "legal_basis": "§101",
       "title": "第 101 條",
       "path": "regulation_articles/article-101.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2621,7 +2621,7 @@
       "legal_basis": "§102",
       "title": "第 102 條",
       "path": "regulation_articles/article-102.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2644,7 +2644,7 @@
       "legal_basis": "§103",
       "title": "第 103 條",
       "path": "regulation_articles/article-103.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2664,7 +2664,7 @@
       "legal_basis": "§104",
       "title": "第 104 條",
       "path": "regulation_articles/article-104.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2689,7 +2689,7 @@
       "legal_basis": "§105",
       "title": "第 105 條",
       "path": "regulation_articles/article-105.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2712,7 +2712,7 @@
       "legal_basis": "§106",
       "title": "第 106 條",
       "path": "regulation_articles/article-106.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2735,7 +2735,7 @@
       "legal_basis": "§107",
       "title": "第 107 條",
       "path": "regulation_articles/article-107.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2758,7 +2758,7 @@
       "legal_basis": "§108",
       "title": "第 108 條",
       "path": "regulation_articles/article-108.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2781,7 +2781,7 @@
       "legal_basis": "§109",
       "title": "第 109 條",
       "path": "regulation_articles/article-109.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2804,7 +2804,7 @@
       "legal_basis": "§110",
       "title": "第 110 條",
       "path": "regulation_articles/article-110.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2824,7 +2824,7 @@
       "legal_basis": "§111",
       "title": "第 111 條",
       "path": "regulation_articles/article-111.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2847,7 +2847,7 @@
       "legal_basis": "§111-1",
       "title": "第 111-1 條",
       "path": "regulation_articles/article-111-1.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第一章　滅火設備",
@@ -2867,7 +2867,7 @@
       "legal_basis": "§112",
       "title": "第 112 條",
       "path": "regulation_articles/article-112.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -2890,7 +2890,7 @@
       "legal_basis": "§113",
       "title": "第 113 條",
       "path": "regulation_articles/article-113.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -2913,7 +2913,7 @@
       "legal_basis": "§114",
       "title": "第 114 條",
       "path": "regulation_articles/article-114.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -2936,7 +2936,7 @@
       "legal_basis": "§115",
       "title": "第 115 條",
       "path": "regulation_articles/article-115.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -2959,7 +2959,7 @@
       "legal_basis": "§116",
       "title": "第 116 條",
       "path": "regulation_articles/article-116.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -2982,7 +2982,7 @@
       "legal_basis": "§117",
       "title": "第 117 條",
       "path": "regulation_articles/article-117.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3005,7 +3005,7 @@
       "legal_basis": "§118",
       "title": "第 118 條",
       "path": "regulation_articles/article-118.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3028,7 +3028,7 @@
       "legal_basis": "§119",
       "title": "第 119 條",
       "path": "regulation_articles/article-119.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3051,7 +3051,7 @@
       "legal_basis": "§120",
       "title": "第 120 條",
       "path": "regulation_articles/article-120.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3074,7 +3074,7 @@
       "legal_basis": "§121",
       "title": "第 121 條",
       "path": "regulation_articles/article-121.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3097,7 +3097,7 @@
       "legal_basis": "§122",
       "title": "第 122 條",
       "path": "regulation_articles/article-122.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3120,7 +3120,7 @@
       "legal_basis": "§123",
       "title": "第 123 條",
       "path": "regulation_articles/article-123.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3143,7 +3143,7 @@
       "legal_basis": "§124",
       "title": "第 124 條",
       "path": "regulation_articles/article-124.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3166,7 +3166,7 @@
       "legal_basis": "§125",
       "title": "第 125 條",
       "path": "regulation_articles/article-125.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3191,7 +3191,7 @@
       "legal_basis": "§126",
       "title": "第 126 條",
       "path": "regulation_articles/article-126.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3211,7 +3211,7 @@
       "legal_basis": "§127",
       "title": "第 127 條",
       "path": "regulation_articles/article-127.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3234,7 +3234,7 @@
       "legal_basis": "§128",
       "title": "第 128 條",
       "path": "regulation_articles/article-128.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3257,7 +3257,7 @@
       "legal_basis": "§129",
       "title": "第 129 條",
       "path": "regulation_articles/article-129.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3277,7 +3277,7 @@
       "legal_basis": "§130",
       "title": "第 130 條",
       "path": "regulation_articles/article-130.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3297,7 +3297,7 @@
       "legal_basis": "§131",
       "title": "第 131 條",
       "path": "regulation_articles/article-131.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3320,7 +3320,7 @@
       "legal_basis": "§132",
       "title": "第 132 條",
       "path": "regulation_articles/article-132.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3340,7 +3340,7 @@
       "legal_basis": "§133",
       "title": "第 133 條",
       "path": "regulation_articles/article-133.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3363,7 +3363,7 @@
       "legal_basis": "§134",
       "title": "第 134 條",
       "path": "regulation_articles/article-134.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3386,7 +3386,7 @@
       "legal_basis": "§135",
       "title": "第 135 條",
       "path": "regulation_articles/article-135.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3411,7 +3411,7 @@
       "legal_basis": "§136",
       "title": "第 136 條",
       "path": "regulation_articles/article-136.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3434,7 +3434,7 @@
       "legal_basis": "§137",
       "title": "第 137 條",
       "path": "regulation_articles/article-137.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3457,7 +3457,7 @@
       "legal_basis": "§138",
       "title": "第 138 條",
       "path": "regulation_articles/article-138.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3480,7 +3480,7 @@
       "legal_basis": "§139",
       "title": "第 139 條",
       "path": "regulation_articles/article-139.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3503,7 +3503,7 @@
       "legal_basis": "§140",
       "title": "第 140 條",
       "path": "regulation_articles/article-140.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3528,7 +3528,7 @@
       "legal_basis": "§141",
       "title": "第 141 條",
       "path": "regulation_articles/article-141.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3548,7 +3548,7 @@
       "legal_basis": "§142",
       "title": "第 142 條",
       "path": "regulation_articles/article-142.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3568,7 +3568,7 @@
       "legal_basis": "§143",
       "title": "第 143 條",
       "path": "regulation_articles/article-143.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3588,7 +3588,7 @@
       "legal_basis": "§144",
       "title": "第 144 條",
       "path": "regulation_articles/article-144.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3613,7 +3613,7 @@
       "legal_basis": "§145",
       "title": "第 145 條",
       "path": "regulation_articles/article-145.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3638,7 +3638,7 @@
       "legal_basis": "§145-1",
       "title": "第 145-1 條",
       "path": "regulation_articles/article-145-1.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第二章　警報設備",
@@ -3661,7 +3661,7 @@
       "legal_basis": "§146",
       "title": "第 146 條",
       "path": "regulation_articles/article-146.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -3688,7 +3688,7 @@
       "legal_basis": "§146-1",
       "title": "第 146-1 條",
       "path": "regulation_articles/article-146-1.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -3711,7 +3711,7 @@
       "legal_basis": "§146-2",
       "title": "第 146-2 條",
       "path": "regulation_articles/article-146-2.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -3734,7 +3734,7 @@
       "legal_basis": "§146-3",
       "title": "第 146-3 條",
       "path": "regulation_articles/article-146-3.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -3757,7 +3757,7 @@
       "legal_basis": "§146-4",
       "title": "第 146-4 條",
       "path": "regulation_articles/article-146-4.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -3780,7 +3780,7 @@
       "legal_basis": "§146-5",
       "title": "第 146-5 條",
       "path": "regulation_articles/article-146-5.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -3805,7 +3805,7 @@
       "legal_basis": "§146-6",
       "title": "第 146-6 條",
       "path": "regulation_articles/article-146-6.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -3828,7 +3828,7 @@
       "legal_basis": "§146-7",
       "title": "第 146-7 條",
       "path": "regulation_articles/article-146-7.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -3853,7 +3853,7 @@
       "legal_basis": "§147",
       "title": "第 147 條",
       "path": "regulation_articles/article-147.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -3873,7 +3873,7 @@
       "legal_basis": "§148",
       "title": "第 148 條",
       "path": "regulation_articles/article-148.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -3893,7 +3893,7 @@
       "legal_basis": "§149",
       "title": "第 149 條",
       "path": "regulation_articles/article-149.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -3913,7 +3913,7 @@
       "legal_basis": "§150",
       "title": "第 150 條",
       "path": "regulation_articles/article-150.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -3933,7 +3933,7 @@
       "legal_basis": "§151",
       "title": "第 151 條",
       "path": "regulation_articles/article-151.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -3953,7 +3953,7 @@
       "legal_basis": "§152",
       "title": "第 152 條",
       "path": "regulation_articles/article-152.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -3973,7 +3973,7 @@
       "legal_basis": "§153",
       "title": "第 153 條",
       "path": "regulation_articles/article-153.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -3996,7 +3996,7 @@
       "legal_basis": "§154",
       "title": "第 154 條",
       "path": "regulation_articles/article-154.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4019,7 +4019,7 @@
       "legal_basis": "§155",
       "title": "第 155 條",
       "path": "regulation_articles/article-155.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4042,7 +4042,7 @@
       "legal_basis": "§156",
       "title": "第 156 條",
       "path": "regulation_articles/article-156.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4065,7 +4065,7 @@
       "legal_basis": "§157",
       "title": "第 157 條",
       "path": "regulation_articles/article-157.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4088,7 +4088,7 @@
       "legal_basis": "§158",
       "title": "第 158 條",
       "path": "regulation_articles/article-158.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4111,7 +4111,7 @@
       "legal_basis": "§159",
       "title": "第 159 條",
       "path": "regulation_articles/article-159.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4138,7 +4138,7 @@
       "legal_basis": "§160",
       "title": "第 160 條",
       "path": "regulation_articles/article-160.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4158,7 +4158,7 @@
       "legal_basis": "§161",
       "title": "第 161 條",
       "path": "regulation_articles/article-161.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4181,7 +4181,7 @@
       "legal_basis": "§162",
       "title": "第 162 條",
       "path": "regulation_articles/article-162.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4204,7 +4204,7 @@
       "legal_basis": "§163",
       "title": "第 163 條",
       "path": "regulation_articles/article-163.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4227,7 +4227,7 @@
       "legal_basis": "§164",
       "title": "第 164 條",
       "path": "regulation_articles/article-164.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4250,7 +4250,7 @@
       "legal_basis": "§165",
       "title": "第 165 條",
       "path": "regulation_articles/article-165.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4273,7 +4273,7 @@
       "legal_basis": "§166",
       "title": "第 166 條",
       "path": "regulation_articles/article-166.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4296,7 +4296,7 @@
       "legal_basis": "§167",
       "title": "第 167 條",
       "path": "regulation_articles/article-167.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4319,7 +4319,7 @@
       "legal_basis": "§168",
       "title": "第 168 條",
       "path": "regulation_articles/article-168.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4342,7 +4342,7 @@
       "legal_basis": "§169",
       "title": "第 169 條",
       "path": "regulation_articles/article-169.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4365,7 +4365,7 @@
       "legal_basis": "§170",
       "title": "第 170 條",
       "path": "regulation_articles/article-170.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4388,7 +4388,7 @@
       "legal_basis": "§171",
       "title": "第 171 條",
       "path": "regulation_articles/article-171.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4411,7 +4411,7 @@
       "legal_basis": "§172",
       "title": "第 172 條",
       "path": "regulation_articles/article-172.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4434,7 +4434,7 @@
       "legal_basis": "§173",
       "title": "第 173 條",
       "path": "regulation_articles/article-173.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4457,7 +4457,7 @@
       "legal_basis": "§174",
       "title": "第 174 條",
       "path": "regulation_articles/article-174.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4477,7 +4477,7 @@
       "legal_basis": "§175",
       "title": "第 175 條",
       "path": "regulation_articles/article-175.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4500,7 +4500,7 @@
       "legal_basis": "§176",
       "title": "第 176 條",
       "path": "regulation_articles/article-176.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4523,7 +4523,7 @@
       "legal_basis": "§177",
       "title": "第 177 條",
       "path": "regulation_articles/article-177.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4546,7 +4546,7 @@
       "legal_basis": "§178",
       "title": "第 178 條",
       "path": "regulation_articles/article-178.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4569,7 +4569,7 @@
       "legal_basis": "§179",
       "title": "第 179 條",
       "path": "regulation_articles/article-179.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第三章　避難逃生設備",
@@ -4594,7 +4594,7 @@
       "legal_basis": "§180",
       "title": "第 180 條",
       "path": "regulation_articles/article-180.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第四章　消防搶救上之必要設備",
@@ -4617,7 +4617,7 @@
       "legal_basis": "§181",
       "title": "第 181 條",
       "path": "regulation_articles/article-181.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第四章　消防搶救上之必要設備",
@@ -4640,7 +4640,7 @@
       "legal_basis": "§182",
       "title": "第 182 條",
       "path": "regulation_articles/article-182.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第四章　消防搶救上之必要設備",
@@ -4660,7 +4660,7 @@
       "legal_basis": "§183",
       "title": "第 183 條",
       "path": "regulation_articles/article-183.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第四章　消防搶救上之必要設備",
@@ -4683,7 +4683,7 @@
       "legal_basis": "§184",
       "title": "第 184 條",
       "path": "regulation_articles/article-184.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第四章　消防搶救上之必要設備",
@@ -4703,7 +4703,7 @@
       "legal_basis": "§185",
       "title": "第 185 條",
       "path": "regulation_articles/article-185.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第四章　消防搶救上之必要設備",
@@ -4726,7 +4726,7 @@
       "legal_basis": "§186",
       "title": "第 186 條",
       "path": "regulation_articles/article-186.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第四章　消防搶救上之必要設備",
@@ -4749,7 +4749,7 @@
       "legal_basis": "§187",
       "title": "第 187 條",
       "path": "regulation_articles/article-187.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第四章　消防搶救上之必要設備",
@@ -4772,7 +4772,7 @@
       "legal_basis": "§188",
       "title": "第 188 條",
       "path": "regulation_articles/article-188.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第四章　消防搶救上之必要設備",
@@ -4797,7 +4797,7 @@
       "legal_basis": "§189",
       "title": "第 189 條",
       "path": "regulation_articles/article-189.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第四章　消防搶救上之必要設備",
@@ -4822,7 +4822,7 @@
       "legal_basis": "§190",
       "title": "第 190 條",
       "path": "regulation_articles/article-190.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第四章　消防搶救上之必要設備",
@@ -4853,7 +4853,7 @@
       "legal_basis": "§191",
       "title": "第 191 條",
       "path": "regulation_articles/article-191.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第四章　消防搶救上之必要設備",
@@ -4878,7 +4878,7 @@
       "legal_basis": "§192",
       "title": "第 192 條",
       "path": "regulation_articles/article-192.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第四章　消防搶救上之必要設備",
@@ -4901,7 +4901,7 @@
       "legal_basis": "§192-1",
       "title": "第 192-1 條",
       "path": "regulation_articles/article-192-1.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第三編　消防安全設計",
         "第四章　消防搶救上之必要設備",
@@ -4944,7 +4944,7 @@
       "legal_basis": "§193",
       "title": "第 193 條",
       "path": "regulation_articles/article-193.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第一章　消防設計"
@@ -4962,7 +4962,7 @@
       "legal_basis": "§194",
       "title": "第 194 條",
       "path": "regulation_articles/article-194.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第一章　消防設計"
@@ -4980,7 +4980,7 @@
       "legal_basis": "§195",
       "title": "第 195 條",
       "path": "regulation_articles/article-195.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第一章　消防設計"
@@ -4998,7 +4998,7 @@
       "legal_basis": "§196",
       "title": "第 196 條",
       "path": "regulation_articles/article-196.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第一章　消防設計"
@@ -5016,7 +5016,7 @@
       "legal_basis": "§197",
       "title": "第 197 條",
       "path": "regulation_articles/article-197.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第一章　消防設計"
@@ -5049,7 +5049,7 @@
       "legal_basis": "§198",
       "title": "第 198 條",
       "path": "regulation_articles/article-198.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第一章　消防設計"
@@ -5067,7 +5067,7 @@
       "legal_basis": "§199",
       "title": "第 199 條",
       "path": "regulation_articles/article-199.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第一章　消防設計"
@@ -5085,7 +5085,7 @@
       "legal_basis": "§200",
       "title": "第 200 條",
       "path": "regulation_articles/article-200.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第一章　消防設計"
@@ -5106,7 +5106,7 @@
       "legal_basis": "§201",
       "title": "第 201 條",
       "path": "regulation_articles/article-201.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第一章　消防設計"
@@ -5124,7 +5124,7 @@
       "legal_basis": "§202",
       "title": "第 202 條",
       "path": "regulation_articles/article-202.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第一章　消防設計"
@@ -5142,7 +5142,7 @@
       "legal_basis": "§203",
       "title": "第 203 條",
       "path": "regulation_articles/article-203.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第一章　消防設計"
@@ -5160,7 +5160,7 @@
       "legal_basis": "§204",
       "title": "第 204 條",
       "path": "regulation_articles/article-204.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第一章　消防設計"
@@ -5178,7 +5178,7 @@
       "legal_basis": "§205",
       "title": "第 205 條",
       "path": "regulation_articles/article-205.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第一章　消防設計"
@@ -5201,7 +5201,7 @@
       "legal_basis": "§206",
       "title": "第 206 條",
       "path": "regulation_articles/article-206.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第一章　消防設計"
@@ -5222,7 +5222,7 @@
       "legal_basis": "§206-1",
       "title": "第 206-1 條",
       "path": "regulation_articles/article-206-1.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第一章　消防設計"
@@ -5243,7 +5243,7 @@
       "legal_basis": "§207",
       "title": "第 207 條",
       "path": "regulation_articles/article-207.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第一章　消防設計"
@@ -5264,7 +5264,7 @@
       "legal_basis": "§208",
       "title": "第 208 條",
       "path": "regulation_articles/article-208.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第一章　消防設計"
@@ -5282,7 +5282,7 @@
       "legal_basis": "§209",
       "title": "第 209 條",
       "path": "regulation_articles/article-209.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5303,7 +5303,7 @@
       "legal_basis": "§210",
       "title": "第 210 條",
       "path": "regulation_articles/article-210.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5324,7 +5324,7 @@
       "legal_basis": "§211",
       "title": "第 211 條",
       "path": "regulation_articles/article-211.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5345,7 +5345,7 @@
       "legal_basis": "§212",
       "title": "第 212 條",
       "path": "regulation_articles/article-212.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5366,7 +5366,7 @@
       "legal_basis": "§213",
       "title": "第 213 條",
       "path": "regulation_articles/article-213.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5387,7 +5387,7 @@
       "legal_basis": "§214",
       "title": "第 214 條",
       "path": "regulation_articles/article-214.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5405,7 +5405,7 @@
       "legal_basis": "§215",
       "title": "第 215 條",
       "path": "regulation_articles/article-215.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5426,7 +5426,7 @@
       "legal_basis": "§216",
       "title": "第 216 條",
       "path": "regulation_articles/article-216.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5449,7 +5449,7 @@
       "legal_basis": "§217",
       "title": "第 217 條",
       "path": "regulation_articles/article-217.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5467,7 +5467,7 @@
       "legal_basis": "§218",
       "title": "第 218 條",
       "path": "regulation_articles/article-218.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5488,7 +5488,7 @@
       "legal_basis": "§219",
       "title": "第 219 條",
       "path": "regulation_articles/article-219.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5509,7 +5509,7 @@
       "legal_basis": "§220",
       "title": "第 220 條",
       "path": "regulation_articles/article-220.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5530,7 +5530,7 @@
       "legal_basis": "§221",
       "title": "第 221 條",
       "path": "regulation_articles/article-221.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5551,7 +5551,7 @@
       "legal_basis": "§222",
       "title": "第 222 條",
       "path": "regulation_articles/article-222.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5574,7 +5574,7 @@
       "legal_basis": "§222-1",
       "title": "第 222-1 條",
       "path": "regulation_articles/article-222-1.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5595,7 +5595,7 @@
       "legal_basis": "§223",
       "title": "第 223 條",
       "path": "regulation_articles/article-223.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5616,7 +5616,7 @@
       "legal_basis": "§224",
       "title": "第 224 條",
       "path": "regulation_articles/article-224.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5634,7 +5634,7 @@
       "legal_basis": "§225",
       "title": "第 225 條",
       "path": "regulation_articles/article-225.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5652,7 +5652,7 @@
       "legal_basis": "§226",
       "title": "第 226 條",
       "path": "regulation_articles/article-226.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5670,7 +5670,7 @@
       "legal_basis": "§227",
       "title": "第 227 條",
       "path": "regulation_articles/article-227.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5691,7 +5691,7 @@
       "legal_basis": "§228",
       "title": "第 228 條",
       "path": "regulation_articles/article-228.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5712,7 +5712,7 @@
       "legal_basis": "§229",
       "title": "第 229 條",
       "path": "regulation_articles/article-229.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5733,7 +5733,7 @@
       "legal_basis": "§230",
       "title": "第 230 條",
       "path": "regulation_articles/article-230.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5751,7 +5751,7 @@
       "legal_basis": "§231",
       "title": "第 231 條",
       "path": "regulation_articles/article-231.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5772,7 +5772,7 @@
       "legal_basis": "§232",
       "title": "第 232 條",
       "path": "regulation_articles/article-232.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5790,7 +5790,7 @@
       "legal_basis": "§233",
       "title": "第 233 條",
       "path": "regulation_articles/article-233.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第四編　公共危險物品等場所消防設計及消防安全設備",
         "第二章　消防安全設備"
@@ -5808,7 +5808,7 @@
       "legal_basis": "§234",
       "title": "第 234 條",
       "path": "regulation_articles/article-234.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第五編　附則"
       ],
@@ -5837,7 +5837,7 @@
       "legal_basis": "§235",
       "title": "第 235 條",
       "path": "regulation_articles/article-235.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第五編　附則"
       ],
@@ -5853,7 +5853,7 @@
       "legal_basis": "§236",
       "title": "第 236 條",
       "path": "regulation_articles/article-236.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第五編　附則"
       ],
@@ -5869,7 +5869,7 @@
       "legal_basis": "§237",
       "title": "第 237 條",
       "path": "regulation_articles/article-237.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第五編　附則"
       ],
@@ -5885,7 +5885,7 @@
       "legal_basis": "§238",
       "title": "第 238 條",
       "path": "regulation_articles/article-238.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第五編　附則"
       ],
@@ -5901,7 +5901,7 @@
       "legal_basis": "§239",
       "title": "第 239 條",
       "path": "regulation_articles/article-239.json",
-      "source_file": "rules/法規/1各類場所消防安全設備設置標準.md",
+      "source_file": "rules/core/1各類場所消防安全設備設置標準.md",
       "hierarchy": [
         "第五編　附則"
       ],

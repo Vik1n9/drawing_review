@@ -35,18 +35,18 @@ python3 tools/training_intake.py status
 ```bash
 python3 tools/regulation_graph.py neighbors --article §24        # 定位：引用網＋附表圖檔
 python3 tools/regulation_index.py lookup --article '§24,§12'     # 載入：只取相關條文原文
-python3 tools/fire_code_calc.py check-threshold --case output/{案件名}-{YYYYMMDD}/case.json
+python3 tools/fire_code_calc.py check-threshold --case output/case.json
 ```
 
 其他定位指令：`regulation_graph.py articles --equipment 排煙設備`、
 `regulation_graph.py path --from 無開口樓層 --to 排煙設備`。
 
 圖譜不得作為門檻數值來源，節點標題不得當作法規數值使用。附表圖檔在
-`rules/法規/1各類場所消防安全設備設置標準_assets/`。
+`rules/core/1各類場所消防安全設備設置標準_assets/`。
 
 ## 必要輸入
 
-- `output/{案件名}-{YYYYMMDD}/case.json`
+- `output/case.json`
 - `rules/checklists/各類場所消防安全設備設置標準14~31條判斷用.xlsx`
 - `input/範例/第二階段-設置標準檢討-格式範本.xlsx`
 
@@ -61,7 +61,7 @@ python3 tools/fire_code_calc.py check-threshold --case output/{案件名}-{YYYYM
 
 ```bash
 /code-requirements {案件名}
-python3 tools/article_checklist.py --case output/{案件名}-{YYYYMMDD}/case.json
+python3 tools/article_checklist.py --case output/case.json
 ```
 
 工具輸出原文嵌入報告作為計算記錄。
@@ -69,7 +69,7 @@ python3 tools/article_checklist.py --case output/{案件名}-{YYYYMMDD}/case.jso
 ### 第三步：受控自動化關卡（強制，不可跳過）
 
 ```bash
-python3 tools/case_facts_gate.py --stage second --case output/{案件名}-{YYYYMMDD}/case.json
+python3 tools/case_facts_gate.py --stage second --case output/case.json
 ```
 
 `ready: false` 或結束碼 2 時，**先詢問使用者並等待答覆，不得產出最終工作簿**。
@@ -77,7 +77,7 @@ python3 tools/case_facts_gate.py --stage second --case output/{案件名}-{YYYYM
 
 ### 第四步：人工定案勾選（AI 不得自行定案）
 
-填 `output/{案件名}-{YYYYMMDD}/stage2_decisions.json`：
+填 `output/stage2_decisions.json`：
 
 ```json
 {
@@ -97,10 +97,10 @@ python3 tools/case_facts_gate.py --stage second --case output/{案件名}-{YYYYM
 ### 第五步：產出交付物
 
 ```bash
-python3 tools/checklist_html.py --results output/{案件名}-{YYYYMMDD}/check_results.json
+python3 tools/checklist_html.py --results output/check_results.json
 python3 tools/stage_report_xlsx.py stage-two \
-  --decisions output/{案件名}-{YYYYMMDD}/stage2_decisions.json \
-  --case output/{案件名}-{YYYYMMDD}/case.json
+  --decisions output/stage2_decisions.json \
+  --case output/case.json
 ```
 
 ## 產出後交叉核對（強制關卡）

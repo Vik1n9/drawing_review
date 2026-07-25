@@ -8,14 +8,14 @@
 Zero external dependencies — Python stdlib only.
 
 Usage:
-    python3 checklist_html.py --results output/{案件名}-{日期}/check_results.json
+    python3 checklist_html.py --results output/check_results.json
 
 check_results.json 格式：
 {
   "case_name": "示範案件",
   "date": "2026-07-08",
   "regulation_version": "…",
-  "regulation_html": "../../rules/regulation-checklist.html",
+  "regulation_html": "../rules/regulation-checklist.html",
   "items": [
     {"article": "§14", "anchor": "art-14", "equipment": "滅火器", "floor": "1F",
      "requirement": "甲類場所應設", "status": "fail",

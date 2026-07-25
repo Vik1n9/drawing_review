@@ -1,7 +1,7 @@
 {
   "_comment": "示範標註檔（schema demo）。source_drawings 為 input 內的 DXF 圖面；執行 python3 tools/dxf_svg_review.py --annotations 本檔 即產出圖面審查 HTML。本示範案件未附實際 DXF 圖檔。",
   "case_name": "示範案件",
-  "output_html": "output/示範案件-20260708/示範案件-圖面審查.html",
+  "output_html": "output/示範案件-圖面審查.html",
   "source_drawings": [
     {"drawing_id": "1F", "path": "input/示範案件/drawings/1F.dxf", "floor": "1F", "unit": "mm"},
     {"drawing_id": "B1", "path": "input/示範案件/drawings/B1.dxf", "floor": "B1", "unit": "mm"}

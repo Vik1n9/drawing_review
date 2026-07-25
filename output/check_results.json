@@ -1,8 +1,8 @@
 {
   "case_name": "示範案件",
-  "date": "2026-07-08",
+  "date": "2026-07-25",
   "regulation_version": "開發示例版（版本日期待核定，正式使用前依全國法規資料庫現行條文重建）",
-  "regulation_html": "../../rules/regulation-checklist.html",
+  "regulation_html": "../rules/regulation-checklist.html",
   "article_range": "§14~§31（逐條窮舉）",
   "not_coded_articles": [
     "§16",
@@ -26,7 +26,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "應設；圖面既有 2 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "應設；圖面既有 2 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§14",
@@ -37,7 +37,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "應設；圖面既有 2 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "應設；圖面既有 2 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§14",
@@ -48,7 +48,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "應設；圖面既有 1 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "應設；圖面既有 1 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§15",
@@ -59,7 +59,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "應設；圖面既有 1 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "應設；圖面既有 1 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§15",
@@ -70,7 +70,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "應設；圖面既有 1 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "應設；圖面既有 1 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§15",
@@ -81,7 +81,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "fail",
-      "finding": "法定應設而圖面未見既有設備（重大缺失候選；數量核算由 /gap-analysis 補充）｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "法定應設而圖面未見既有設備（重大缺失候選；數量核算由 /gap-analysis 補充）｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§16",
@@ -103,7 +103,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "pass",
-      "finding": "免設：甲類使用樓層合計 830 vs 門檻 1500 ㎡（scope: total）（計算過程供覆核，原則 8）｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "免設：甲類使用樓層合計 830 vs 門檻 1500 ㎡（scope: total）（計算過程供覆核，原則 8）｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§17",
@@ -114,7 +114,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "需人工判讀：非甲類且非高樓層，特別規定（舞台/地下建築物等）未納入示例規則｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "需人工判讀：非甲類且非高樓層，特別規定（舞台/地下建築物等）未納入示例規則｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§17",
@@ -125,14 +125,14 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "pass",
-      "finding": "免設：甲類使用樓層合計 830 vs 門檻 1500 ㎡（scope: total）（計算過程供覆核，原則 8）｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "免設：甲類使用樓層合計 830 vs 門檻 1500 ㎡（scope: total）（計算過程供覆核，原則 8）｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§18",
       "anchor": "art-18",
       "equipment": "二氧化碳滅火設備、惰性氣體滅火設備、鹵化烴滅火設備",
       "floor": "—",
-      "requirement": "> 因條文排版無法完整呈現內容，請詳閱完整條文檔案。 1. 下表所列之場所，應就水霧、泡沫、二氧化碳、惰性氣體、鹵化烴或乾粉滅火設備等選擇設置之。但外牆開口面積（常時開放部分）達該層樓地板面積百分之十五以上者，上列除惰性氣體及鹵化烴外之滅火設備得採移動式設置。 2. 樓地板面積在三百平方公尺以上之餐廳或供第十二條第一款第六目所定榮譽國民之家、長期照顧服務機…",
+      "requirement": "1. 下表所列之場所，應就水霧、泡沫、二氧化碳、惰性氣體、鹵化烴或乾粉滅火設備等選擇設置之。但外牆開口面積（常時開放部分）達該層樓地板面積百分之十五以上者，上列除惰性氣體及鹵化烴外之滅火設備得採移動式設置。 2. 樓地板面積在三百平方公尺以上之餐廳或供第十二條第一款第六目所定榮譽國民之家、長期照顧服務機構（限機構住宿式、社區式之建築物使用類組非屬 H-2 …",
       "status": "manual",
       "finding": "⚪ 需人工判讀（規則未入庫）：本條門檻尚未結構化入 equipment_rules.json，請點條號對照原文逐項確認",
       "rule_status": "not_coded",
@@ -147,7 +147,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "應設；圖面既有 4 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "應設；圖面既有 4 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§19",
@@ -158,7 +158,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "應設；圖面既有 3 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "應設；圖面既有 3 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§19",
@@ -169,7 +169,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "應設；圖面既有 4 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "應設；圖面既有 4 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§20",
@@ -213,7 +213,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "應設；圖面既有 5 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "應設；圖面既有 5 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§23",
@@ -224,7 +224,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "應設；圖面既有 4 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "應設；圖面既有 4 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§23",
@@ -235,7 +235,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "應設；圖面既有 2 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "應設；圖面既有 2 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§24",
@@ -246,7 +246,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "應設；圖面既有 8 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "應設；圖面既有 8 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§24",
@@ -257,7 +257,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "應設；圖面既有 6 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "應設；圖面既有 6 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§24",
@@ -268,7 +268,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "應設；圖面既有 4 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "應設；圖面既有 4 具，數量足額與配置需 /gap-analysis 計算與逐點檢核｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§25",
@@ -312,7 +312,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "應設；既有設備數量未登載於 case.json，是否設置需人工判讀｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "應設；既有設備數量未登載於 case.json，是否設置需人工判讀｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§28",
@@ -323,7 +323,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "需人工判讀：居室開口有效通風面積條件需大樣圖/開口計算書｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "需人工判讀：居室開口有效通風面積條件需大樣圖/開口計算書｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§28",
@@ -334,7 +334,7 @@
       "rule_status": "coded",
       "source_page": null,
       "status": "manual",
-      "finding": "應設；既有設備數量未登載於 case.json，是否設置需人工判讀｜⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+      "finding": "應設；既有設備數量未登載於 case.json，是否設置需人工判讀｜⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，確認清單見 python3 tools/verification_sheet.py list"
     },
     {
       "article": "§29",

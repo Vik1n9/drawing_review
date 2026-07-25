@@ -13,7 +13,7 @@ from tools.regulation_graph import (
     main,
 )
 
-PREFIX = "rules_法規_1各類場所消防安全設備設置標準"
+PREFIX = "rules_core_1各類場所消防安全設備設置標準"
 
 
 def fake_graph():

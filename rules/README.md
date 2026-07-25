@@ -1,8 +1,8 @@
 # 法規資料取用格式
 
-`rules/法規/1各類場所消防安全設備設置標準.md` 是法規全文正典來源（法務部全國法規資料庫，§1~§239 共 266 條；含附表的 20 條以 `_assets/` 內的官方附件圖檔內嵌）。審查案件時不要直接載入全文 Markdown；請先用索引查詢相關條文，再只讀需要的逐條 JSON。
+`rules/core/1各類場所消防安全設備設置標準.md` 是法規全文正典來源（法務部全國法規資料庫，§1~§239 共 266 條；含附表的 20 條以 `_assets/` 內的官方附件圖檔內嵌）。審查案件時不要直接載入全文 Markdown；請先用索引查詢相關條文，再只讀需要的逐條 JSON。
 
-> 註：早期曾以「依編章切分的多個 md」維護，現已整併為單一全文正典檔。`regulation_index.py build` 會 glob `rules/法規/*.md`，故此資料夾請維持**單一**法規全文 md，避免重複條文。
+> 註：早期曾以「依編章切分的多個 md」維護，現已整併為單一全文正典檔。`regulation_index.py build` 會 glob `rules/core/*.md`，故此資料夾請維持**單一**法規全文 md，避免重複條文。
 
 ## 產生索引
 
@@ -28,7 +28,7 @@ python3 tools/regulation_index.py lookup --keyword '無開口樓層'
 
 ## 主從用途對照表（mixed_use_rules.json）
 
-- 來源文件：`rules/法規/建築物主用途及從屬用途關係對照表.pdf`（內政部消防署《複合用途建築物判斷基準》附表，使用者提供）
+- 來源文件：`rules/core/建築物主用途及從屬用途關係對照表.pdf`（內政部消防署《複合用途建築物判斷基準》附表，使用者提供）
 - `rules/mixed_use_rules.json`：附表 31 項逐列結構化（`subordinate-table` 規則），供 `fire_code_calc.py classify-mixed-use` 比對主從用途**候選**；全部 `verified: false`，抄錄疑字以 `transcription_note` 標注，核定時須對照 PDF 原件
 - 判斷基準**本文**（從屬認定要件與面積比例門檻）尚未提供、未入庫——量化從屬判定一律「需人工判讀」（見 README 待補事項備忘）
 - `rule_tests.json` 的測試可用選填欄位 `rules_file` 指向本檔；`run-tests --strict` 與 `self-test` 會一併檢查本檔

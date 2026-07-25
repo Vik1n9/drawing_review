@@ -8,12 +8,12 @@
     pip install pymupdf
 
 Usage:
-    python3 pdf_annotate.py --annotations output/{案件名}-{日期}/annotations.json
+    python3 pdf_annotate.py --annotations output/annotations.json
 
 annotations.json 格式：
 {
   "source_pdf": "input/示範案件/平面圖.pdf",
-  "output_pdf": "output/示範案件-20260708/示範案件-標註圖.pdf",
+  "output_pdf": "output/示範案件-標註圖.pdf",
   "annotations": [
     {
       "issue_id": 1,

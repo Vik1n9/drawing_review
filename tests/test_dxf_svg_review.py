@@ -116,13 +116,13 @@ class DxfSvgReviewTest(unittest.TestCase):
 
     def test_output_html_under_output_directory_resolves_from_cwd(self):
         with tempfile.TemporaryDirectory() as tmp:
-            annotations_path = Path(tmp) / "output" / "示範案件-20260708" / "annotations.json"
+            annotations_path = Path(tmp) / "output" / "annotations.json"
             annotations_path.parent.mkdir(parents=True)
-            spec = {"case_name": "示範案件", "output_html": "output/示範案件-20260708/示範案件-圖面審查.html"}
+            spec = {"case_name": "示範案件", "output_html": "output/示範案件-圖面審查.html"}
 
             out = default_output_path(spec, annotations_path)
 
-            self.assertEqual(out, Path.cwd() / "output/示範案件-20260708/示範案件-圖面審查.html")
+            self.assertEqual(out, Path.cwd() / "output/示範案件-圖面審查.html")
 
 
 if __name__ == "__main__":

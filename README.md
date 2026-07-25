@@ -27,7 +27,7 @@
 4. **開始審一個案件**
    - 把待審 `平面圖.dxf`（＋輔助 `平面圖.pdf`、審查文件）放到 `input/{案件名}/`
    - 依 `skills/review-team.md`（總流程）或逐步 `plan-intake → place-use-classification → code-requirements → gap-analysis` 執行
-   - 產出四項固定交付物到 `output/{案件名}-{YYYYMMDD}/`
+   - 產出四項固定交付物到 `output/`
    - 查法規先看知識圖譜：瀏覽器直接開 `graphify-out/graph.html`，或
      `python3 tools/regulation_graph.py neighbors --article §24`（免安裝），定位後再
      `python3 tools/regulation_index.py lookup --article '§24,§12'` 只載入相關條文
@@ -41,10 +41,10 @@
 | 項目 | 內容 |
 |------|------|
 | 輸入 | `input/{案件名}/平面圖.dxf` 為審核主圖面，搭配同資料夾內的 `平面圖.pdf` 與相關審查文件；法規不放入案件輸入資料夾 |
-| 正典資料 | 人工確認後的 `output/{案件名}-{YYYYMMDD}/case.json`；DXF 與 PDF/文件只作為證據來源 |
+| 正典資料 | 人工確認後的 `output/case.json`；DXF 與 PDF/文件只作為證據來源 |
 | 核心能力 1 | 依法條清單計算各類消防設備的應設需求（種類、數量、免設或需人工判讀） |
 | 核心能力 2 | 比對圖面既有設備配置與應設需求，列出缺項、數量不足、配置疑義與需人工判讀項目 |
-| 輸出 | `output/{案件名}-{YYYYMMDD}/` 下四項固定交付物：① 圖面審查 HTML（DXF 轉 SVG＋缺失導覽）② 問題清單 Markdown ③ 法條檢核清單 HTML（§14~§31 逐條窮舉）④ 複合用途及樓層屬性檢討 HTML |
+| 輸出 | `output/` 下四項固定交付物：① 圖面審查 HTML（DXF 轉 SVG＋缺失導覽）② 問題清單 Markdown ③ 法條檢核清單 HTML（§14~§31 逐條窮舉）④ 複合用途及樓層屬性檢討 HTML |
 | 防幻覺機制 | 規則庫採先紅再綠：測試 expected 必須逐字抄錄法條來源，紅燈確認後才編碼規則參數 |
 | 使用者 | 消防設備師（士）、消防審查人員、建築師事務所 |
 
@@ -60,7 +60,7 @@ input/{案件名}/平面圖.pdf
 input/{案件名}/相關審查文件
         │
         ▼
-/regulation-intake（首次建庫或法規換版；來源固定在 rules/法規/）
+/regulation-intake（首次建庫或法規換版；來源固定在 rules/core/）
         │  先紅再綠：測試 → verify-red → 規則 → strict 綠燈
         ▼
 rules/equipment_rules.json
@@ -74,7 +74,7 @@ rules/regulation_index.json
 【關卡1：人工確認】
         │  面積、用途、構造、樓層、既有設備、證照萃取欄位、低信心欄位逐項確認
         ▼
-output/{案件名}-{日期}/case.json
+output/case.json
         │
         ▼
 /mixed-use-review
@@ -93,7 +93,7 @@ output/{案件名}-{日期}/case.json
 【關卡2：准出】
         │  self-test、run-tests --strict、抽檢重算、法條可追溯檢查
         ▼
-output/{案件名}-{日期}/
+output/
 ├── {案件名}-圖面審查.html                  ① DXF→SVG 圖面標註＋缺失導覽
 ├── {案件名}-問題清單.md                    ② 缺失四級分類，詳列違反法條
 ├── {案件名}-法條檢核清單.html              ③ §14~§31 逐條窮舉打勾檢核表，條號連結法條原文
@@ -151,18 +151,17 @@ drawing_review/
 │       ├── 平面圖.dxf                — 需要審核的主圖面（只讀不改）
 │       ├── 平面圖.pdf                — 輔助對照用圖面 PDF（只讀不改）
 │       └── 相關審查文件               — 申請書、審查表、說明書等案件文件
-├── output/
-│   └── {案件名}-{YYYYMMDD}/
-│       ├── case.json                 — 圖說底稿（正典資料）
-│       ├── annotations.json          — SVG 標註定義
-│       ├── check_results.json        — 檢核結果（供 HTML 產生）
-│       ├── {案件名}-圖面審查.html
-│       ├── {案件名}-問題清單.md
-│       └── {案件名}-法條檢核清單.html
+├── output/                           — 統一輸出資料夾（單一案件平放，不再分案件子目錄）
+│   ├── case.json                     — 圖說底稿（正典資料）
+│   ├── annotations.json              — SVG 標註定義
+│   ├── check_results.json            — 檢核結果（供 HTML 產生）
+│   ├── {案件名}-圖面審查.html
+│   ├── {案件名}-問題清單.md
+│   └── {案件名}-法條檢核清單.html
 ├── rules/                            — 固定法規資料夾與結構化法規規則庫
 │   ├── equipment_rules.json
 │   ├── rule_tests.json
-│   ├── 法規/                         — 法規全文正典（單一全文 md ＋ _assets 附表圖檔、主從用途 PDF；非每案輸入）
+│   ├── core/                         — 法規全文正典（單一全文 md ＋ _assets 附表圖檔、主從用途 PDF；非每案輸入）
 │   ├── regulation_index.json         — 逐條索引（266 條）
 │   └── regulation_articles/          — 逐條 JSON（含章/節階層、附表圖）
 ├── training/                         — 訓練模式（`/train`）
@@ -181,7 +180,7 @@ drawing_review/
 └── tools/                            — 確定性工具
 ```
 
-`input/` 一律視為只讀；每案輸入資料夾只放案件圖面與審查文件，不放法規檔。法規固定維護於 `rules/法規/`，所有案件共用同一套經索引與測試的規則庫。所有案件產出寫入新的 `output/{案件名}-{YYYYMMDD}/` 目錄。
+`input/` 一律視為只讀；每案輸入資料夾只放案件圖面與審查文件，不放法規檔。法規固定維護於 `rules/core/`，所有案件共用同一套經索引與測試的規則庫。所有案件產出寫入新的 `output/` 目錄。
 
 ---
 
@@ -209,7 +208,7 @@ DXF 提供座標、圖層、符號與標註位置，但消防設備應設需求�
 
 | 學什麼 | 走哪條 | 落到哪 | 後續怎麼被叫到 |
 |---|---|---|---|
-| 新法源、實務表格、格式範本 | `/train`（丟 `training/inbox/`） | `rules/法規/`、`rules/checklists/`、`rules/equipment_rules.json`（先紅再綠） | 既有工具零修改即讀得到 |
+| 新法源、實務表格、格式範本 | `/train`（丟 `training/inbox/`） | `rules/core/`、`rules/checklists/`、`rules/equipment_rules.json`（先紅再綠） | 既有工具零修改即讀得到 |
 | 法典未涵蓋情境的判讀 | `/practice-note` | `practice_notes/active/` ＋ `index.json` | `check-gap` 下次自動比對命中 |
 | 通案性工作流程修正 | `/train` 第五步 | `rules/review_corrections.md` 等 | 每次審圖的必讀前置 |
 
@@ -307,7 +306,7 @@ python3 -m pip install graphifyy                  # 或用 pip
 ```json
 {
   "case_name": "示範案件",
-  "output_html": "output/示範案件-20260708/示範案件-圖面審查.html",
+  "output_html": "output/示範案件-圖面審查.html",
   "source_drawings": [
     {"drawing_id": "1F", "path": "input/示範案件/平面圖.dxf", "floor": "1F", "unit": "mm"}
   ],
@@ -345,9 +344,9 @@ python3 tools/fire_code_calc.py run-tests --strict
 python3 tools/fire_code_calc.py run-tests --verify-red {測試ID}
 
 # 門檻判斷與數量計算
-python3 tools/fire_code_calc.py check-threshold --case output/{案件名}-{日期}/case.json
-python3 tools/fire_code_calc.py check-applicability --case output/{案件名}-{日期}/case.json   # §13 新舊標準
-python3 tools/fire_code_calc.py classify-mixed-use --case output/{案件名}-{日期}/case.json    # 主從用途候選
+python3 tools/fire_code_calc.py check-threshold --case output/case.json
+python3 tools/fire_code_calc.py check-applicability --case output/case.json   # §13 新舊標準
+python3 tools/fire_code_calc.py classify-mixed-use --case output/case.json    # 主從用途候選
 python3 tools/fire_code_calc.py extinguisher --use-category 甲 --floor-area 450
 python3 tools/fire_code_calc.py sprinkler --area 450 --radius 2.3
 python3 tools/fire_code_calc.py detector --area 450 --height 3.5 --fireproof --detector-type smoke-2
@@ -355,21 +354,21 @@ python3 tools/fire_code_calc.py hydrant-coverage --area 450 --radius 25
 python3 tools/fire_code_calc.py occupancy --components '[{"name":"客席","area":120,"per_sqm":3}]' --fixed-seats 40
 
 # 交付物產生
-python3 tools/dxf_svg_review.py --annotations output/{案件名}-{日期}/annotations.json
-python3 tools/article_checklist.py --case output/{案件名}-{日期}/case.json     # §14~31 逐條窮舉
-python3 tools/checklist_html.py --results output/{案件名}-{日期}/check_results.json
-python3 tools/mixed_use_report.py --case output/{案件名}-{日期}/case.json      # 交付物4
+python3 tools/dxf_svg_review.py --annotations output/annotations.json
+python3 tools/article_checklist.py --case output/case.json     # §14~31 逐條窮舉
+python3 tools/checklist_html.py --results output/check_results.json
+python3 tools/mixed_use_report.py --case output/case.json      # 交付物4
 
 # 兩階段 Excel 交付路線
-python3 tools/case_facts_gate.py --stage first  --case output/{案件名}-{日期}/case.json
-python3 tools/case_facts_gate.py --stage second --case output/{案件名}-{日期}/case.json
-python3 tools/stage_report_xlsx.py first-stage --case output/{案件名}-{日期}/case.json
-python3 tools/stage_report_xlsx.py stage-two --decisions output/{案件名}-{日期}/stage2_decisions.json --case output/{案件名}-{日期}/case.json
+python3 tools/case_facts_gate.py --stage first  --case output/case.json
+python3 tools/case_facts_gate.py --stage second --case output/case.json
+python3 tools/stage_report_xlsx.py first-stage --case output/case.json
+python3 tools/stage_report_xlsx.py stage-two --decisions output/stage2_decisions.json --case output/case.json
 
-python3 tools/standard_checklist_html.py --input rules/checklists/各類場所消防安全設備設置標準14~31條判斷用.xlsx --answers output/{案件名}-{日期}/standard_checklist_answers.json --output output/{案件名}-{日期}/{案件名}-標準表檢核.html
+python3 tools/standard_checklist_html.py --input rules/checklists/各類場所消防安全設備設置標準14~31條判斷用.xlsx --answers output/standard_checklist_answers.json --output output/{案件名}-標準表檢核.html
 
 # 產生標準表答案範本（審核時只填 checked ID）
-python3 tools/standard_checklist_html.py --input rules/checklists/各類場所消防安全設備設置標準14~31條判斷用.xlsx --dump-answer-template output/{案件名}-{日期}/standard_checklist_answers.template.json --output output/{案件名}-{日期}/{案件名}-標準表檢核.html
+python3 tools/standard_checklist_html.py --input rules/checklists/各類場所消防安全設備設置標準14~31條判斷用.xlsx --dump-answer-template output/standard_checklist_answers.template.json --output output/{案件名}-標準表檢核.html
 
 # 訓練模式（讓系統學會新東西的入口）
 python3 tools/training_intake.py classify                     # 乾跑：inbox 素材路由建議
@@ -379,8 +378,8 @@ python3 tools/graph_status.py check                           # 0=新鮮 2=過�
 python3 tools/graph_status.py stamp                           # 重建圖譜後蓋章
 
 # 實務註解（法典未涵蓋情境）
-python3 tools/fire_code_calc.py check-gap --case output/{案件名}-{日期}/case.json
-python3 tools/practice_note_engine.py draft --gap output/{案件名}-{日期}/gap_candidates.json --case {案件名}
+python3 tools/fire_code_calc.py check-gap --case output/case.json
+python3 tools/practice_note_engine.py draft --gap output/gap_candidates.json --case {案件名}
 python3 tools/practice_note_engine.py conflict-check --draft practice_notes/staging/{id}.json
 python3 tools/practice_note_engine.py apply --draft practice_notes/staging/{id}.json --approved-by {批准人} --confirm 確認納入
 python3 tools/practice_note_engine.py test --strict
@@ -430,7 +429,7 @@ python3 -m unittest discover tests
 
 | # | 狀態 | 事項 | 觸發條件／後續動作 |
 |---|------|------|-------------------|
-| 1 | [ ] 待文件 | **《複合用途建築物判斷基準》本文**（從屬認定要件：管理權、使用形態、面積比例門檻等文字規定）尚未提供，目前僅有附表 | 文件放入 `rules/法規/` 後：先紅再綠補 `mixed_use_rules.json` 的 `subordinate-criteria`／`subordinate-thresholds` 規則，`classify-mixed-use` 量化判定由「需人工判讀」升級為工具計算 |
+| 1 | [ ] 待文件 | **《複合用途建築物判斷基準》本文**（從屬認定要件：管理權、使用形態、面積比例門檻等文字規定）尚未提供，目前僅有附表 | 文件放入 `rules/core/` 後：先紅再綠補 `mixed_use_rules.json` 的 `subordinate-criteria`／`subordinate-thresholds` 規則，`classify-mixed-use` 量化判定由「需人工判讀」升級為工具計算 |
 | 2 | [ ] 待文件 | 「14~31 條判斷用」勾選表**實務範例**尚未提供 | 取得後對齊 `checklist_html.py` 檢核表版面與欄位 |
 | 3 | [ ] 待文件 | 實際案件的**使用執照、室內裝修申請書**樣本（可去識別化）尚未提供 | 取得後驗證 `plan-intake` 證照萃取欄位（`use_permit`／`interior_renovation`／`change_of_use`）設計是否齊備 |
 | 4 | [ ] 待入庫 | **§16、§18、§20、§21、§22、§25、§26、§27、§29、§30 規則尚未入庫**——檢核表以「⚪需人工判讀（規則未入庫）」逐條呈現 | 逐條先紅再綠入 `equipment_rules.json`（條文原文已在 `rules/regulation_articles/`，可隨時進行） |

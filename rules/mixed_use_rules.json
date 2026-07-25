@@ -1,7 +1,7 @@
 {
   "regulation": "複合用途建築物判斷基準",
   "regulation_version": "使用者提供之附表 PDF（發布日期／文號待人工補注，核定時確認現行版本）",
-  "source_document": "rules/法規/建築物主用途及從屬用途關係對照表.pdf",
+  "source_document": "rules/core/建築物主用途及從屬用途關係對照表.pdf",
   "disclaimer": "本檔為附表「建築物主用途及從屬用途關係對照表」之結構化抄錄，全部 verified: false，未經消防專業人員核定不得作為審查依據。判斷基準本文（從屬認定要件、面積比例門檻）尚未提供，未入庫；量化判定一律需人工判讀。",
   "transcription_notes": [
     "PDF 為直式掃描轉出，部分文字經程式萃取可能有跨欄/跨頁歸屬誤差與疑似錯漏字；各該項以 transcription_note 標注，核定時須對照原件逐字確認。",

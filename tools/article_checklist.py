@@ -13,7 +13,7 @@
 Zero external dependencies — Python stdlib only.
 
 Usage:
-    python3 tools/article_checklist.py --case output/{案件名}-{日期}/case.json
+    python3 tools/article_checklist.py --case output/case.json
 """
 
 import argparse
@@ -123,7 +123,7 @@ def not_coded_item(article_doc, n, quantity_rule_ids=()):
         "anchor": f"art-{n}",
         "equipment": "、".join(tags[:3]) if tags else title,
         "floor": "—",
-        "requirement": snippet if snippet else f"（{title} 條文原文未索引，請查 rules/法規/）",
+        "requirement": snippet if snippet else f"（{title} 條文原文未索引，請查 rules/core/）",
         "status": "manual",
         "finding": status_note,
         "rule_status": rule_status,
@@ -172,7 +172,7 @@ def build_results(case_path, rules_path, articles_dir):
         "case_name": case.get("case_name", "(未命名案件)"),
         "date": str(date.today()),
         "regulation_version": rules_doc.get("regulation_version", "未注明"),
-        "regulation_html": "../../rules/regulation-checklist.html",
+        "regulation_html": "../rules/regulation-checklist.html",
         "article_range": f"§{ARTICLE_FIRST}~§{ARTICLE_LAST}（逐條窮舉）",
         "not_coded_articles": not_coded,
         "items": items,

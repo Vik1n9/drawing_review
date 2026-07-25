@@ -137,8 +137,8 @@ python3 tools/regulation_index.py lookup --article '§24,§12'     # 逗號列�
 
 | 項目 | 原版 | 本專案 | 原因 |
 |------|------|--------|------|
-| 檔名 | `yyyy-MM-dd HH-mm_XXX.xlsx` 時間戳 | `{案件名}-XXX.xlsx` 固定檔名 | 輸出目錄 `output/{案件名}-{YYYYMMDD}/` 已含日期；固定檔名重跑即覆蓋，符合「只保留最後確認正式版」的修正條目 |
-| 案件資料夾 | `01_審圖所需文件/`、`04_審圖結果輸出/` | `input/{案件名}/`、`output/{案件名}-{YYYYMMDD}/` | 對齊專案的統一輸入／輸出契約 |
+| 檔名 | `yyyy-MM-dd HH-mm_XXX.xlsx` 時間戳 | `{案件名}-XXX.xlsx` 固定檔名 | 輸出目錄 `output/` 已含日期；固定檔名重跑即覆蓋，符合「只保留最後確認正式版」的修正條目 |
+| 案件資料夾 | `01_審圖所需文件/`、`04_審圖結果輸出/` | `input/{案件名}/`、`output/` | 對齊專案的統一輸入／輸出契約 |
 | Excel 產生 | `@oai/artifact-tool`（Node） | `openpyxl`（`tools/stage_report_xlsx.py`） | 原依賴為 Codex 內建套件，本環境不可用 |
 | 事實關卡 | 另建 `tmp/{案件名}-case-facts.json` | 直接讀 `case.json` | 最高原則 4：正典資料是 `case.json`，不另建平行事實檔 |
 | §12 款目缺漏 | 只印分類代碼 | 標「⚪需人工判讀：§12 款目未載」 | 最高原則 1：法條可追溯 |

@@ -1,6 +1,6 @@
 # 缺失比對分析（產出三項交付物）
 
-對 $ARGUMENTS（案件名）執行「應設 vs 既有」比對，產出三項固定交付物到 `output/{案件名}-{YYYYMMDD}/`：
+對 $ARGUMENTS（案件名）執行「應設 vs 既有」比對，產出三項固定交付物到 `output/`：
 
 1. **圖面審查 HTML**——DXF 轉 SVG，於向量圖面上標出有問題的部分並提供缺失導覽
 2. **問題清單**——缺失四級分類，詳列違反哪些法條
@@ -8,11 +8,11 @@
 
 ## 前置檢查
 
-1. `output/{案件名}-{YYYYMMDD}/case.json` 已定稿（人工確認完成）
+1. `output/case.json` 已定稿（人工確認完成）
 2. 應設設備清單（`{案件名}-requirements.md`）已產出；若無，先執行 `/code-requirements`
 3. `run-tests --strict` 全綠（先紅再綠關卡，紅則停止）
 4. `python3 tools/training_intake.py status` ——結束碼 `2` ＝ 法規圖譜未跟上規則庫，先補建再續行
-5. `python3 tools/fire_code_calc.py check-gap --case output/{案件名}-{日期}/case.json` ——「需人工判讀」項若已有實務註解涵蓋，於問題清單引用註解 ID 與所補充的法條；確為法典未涵蓋且使用者當場給出判讀者，走 `/practice-note` 沉澱下來
+5. `python3 tools/fire_code_calc.py check-gap --case output/case.json` ——「需人工判讀」項若已有實務註解涵蓋，於問題清單引用註解 ID 與所補充的法條；確為法典未涵蓋且使用者當場給出判讀者，走 `/practice-note` 沉澱下來
 
 ## 執行流程
 
@@ -79,7 +79,7 @@
 
 ### 第六步：產出三項交付物
 
-全部寫入 `output/{案件名}-{YYYYMMDD}/`：
+全部寫入 `output/`：
 
 **交付物 1：圖面審查 HTML（DXF 轉 SVG＋缺失導覽）**
 

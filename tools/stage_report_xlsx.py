@@ -13,11 +13,11 @@ decisions.json——即經人工確認的判斷結果。工具只負責排版與
 依賴 openpyxl（見 requirements.txt；bash tools/setup.sh 一鍵安裝）。
 
 Usage:
-    python3 tools/stage_report_xlsx.py first-stage --case output/{案件名}-{日期}/case.json
+    python3 tools/stage_report_xlsx.py first-stage --case output/case.json
     python3 tools/stage_report_xlsx.py stage-two \\
         --law rules/checklists/各類場所消防安全設備設置標準14~31條判斷用.xlsx \\
-        --decisions output/{案件名}-{日期}/stage2_decisions.json \\
-        --case output/{案件名}-{日期}/case.json
+        --decisions output/stage2_decisions.json \\
+        --case output/case.json
 """
 
 import argparse

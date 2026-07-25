@@ -18,6 +18,16 @@
 | 3. **受控自動化關卡** | `tools/case_facts_gate.py --stage first` | ready / 阻擋問題 |
 | 4. 交付物產出 | `mixed_use_report.py` ＋ `stage_report_xlsx.py first-stage` | HTML ＋ Excel |
 
+## 開場前置檢查（訓練成果與圖譜新鮮度）
+
+```bash
+python3 tools/training_intake.py status
+```
+
+結束碼 `2` ＝ 圖譜未跟上規則庫（或有未完成的重建）。此時**先補建圖譜再續行**，
+否則查圖譜會查到舊資料。輸出同時會告知：最新訓練批次、Active 修正筆記數、
+現有實務註解數、尚未逐條確認的規則數。
+
 ## 開始前必讀（不可跳過）
 
 檢視任何案件文件**之前**，完整讀取 `rules/review_corrections.md`，並套用所有

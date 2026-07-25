@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "note": "實務註解索引，由 practice_note_engine.py reindex 產生。註解為實務補充見解，非法規條文；援引必附未核定警語。",
+  "unverified_notice": "本實務註解未經消防專業人員核定，以現行法規為準",
+  "count": 0,
+  "notes": [],
+  "by_article": {},
+  "by_equipment": {},
+  "by_rule_id": {}
+}

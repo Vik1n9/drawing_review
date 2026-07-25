@@ -24,8 +24,20 @@ jobs:
       - name: 規則測試（先紅再綠，含覆蓋率檢查）
         run: python3 tools/fire_code_calc.py run-tests --strict
 
+      - name: 實務註解庫一致性檢查
+        run: python3 tools/practice_note_engine.py test --strict
+
+      - name: 法規圖譜新鮮度把關（來源檔異動後未重建圖譜即紅燈）
+        run: python3 tools/graph_status.py check
+
       - name: 示範案件門檻判斷煙霧測試
         run: python3 tools/fire_code_calc.py check-threshold --case "output/示範案件-20260708/case.json"
+
+      - name: 法典缺口偵測煙霧測試
+        run: python3 tools/fire_code_calc.py check-gap --case "output/示範案件-20260708/case.json"
+
+      - name: 待確認規則清單煙霧測試
+        run: python3 tools/verification_sheet.py list --format json
 
       - name: 核定表匯出煙霧測試
         run: |

@@ -153,7 +153,16 @@ drawing_review/
 │   ├── 法規/                         — 法規全文正典（單一全文 md ＋ _assets 附表圖檔、主從用途 PDF；非每案輸入）
 │   ├── regulation_index.json         — 逐條索引（266 條）
 │   └── regulation_articles/          — 逐條 JSON（含章/節階層、附表圖）
-├── governance/                       — 規則核定責任追溯鏈
+├── training/                         — 訓練模式（`/train`）
+│   ├── inbox/                        — 待歸檔訓練素材投放區
+│   ├── registry.json                 — 訓練批次總索引
+│   └── {批次名}-{YYYYMMDD}/          — manifest.json／sources/／formats/／NOTES.md
+├── practice_notes/                   — 實務註解層（法典未涵蓋情境的實務見解）
+│   ├── active/                       — 現行有效註解（PN-{日期}-{序號}.json）
+│   ├── staging/                      — 草擬中，待使用者「確認納入」
+│   └── index.json                    — 註解索引（by_article／by_equipment／by_rule_id）
+├── graphify-out/                     — 法規知識圖譜（含 source_fingerprint.json 新鮮度指紋）
+├── governance/                       — 規則確認紀錄（核定表／註解紀錄）
 ├── skills/                           — 審圖 workflow 文件
 ├── tests/                            — Python 單元測試
 └── tools/                            — 確定性工具
@@ -180,6 +189,24 @@ DXF 提供座標、圖層、符號與標註位置，但消防設備應設需求�
 ### 4. 法規參數先紅再綠
 
 規則庫的每個門檻、係數與數量參數都必須先有測試；測試 expected 需逐字抄錄法條來源並附頁碼與 quote。`run-tests --verify-red` 確認紅得正確後，才可編碼最小規則讓 `run-tests --strict` 轉綠。
+
+### 5. 訓練模式：法典層與註解層雙軌
+
+系統要「學會」新東西，只有兩條路，都不允許直接改規則參數：
+
+| 學什麼 | 走哪條 | 落到哪 | 後續怎麼被叫到 |
+|---|---|---|---|
+| 新法源、實務表格、格式範本 | `/train`（丟 `training/inbox/`） | `rules/法規/`、`rules/checklists/`、`rules/equipment_rules.json`（先紅再綠） | 既有工具零修改即讀得到 |
+| 法典未涵蓋情境的判讀 | `/practice-note` | `practice_notes/active/` ＋ `index.json` | `check-gap` 下次自動比對命中 |
+| 通案性工作流程修正 | `/train` 第五步 | `rules/review_corrections.md` 等 | 每次審圖的必讀前置 |
+
+`training_intake.py` 在**程式層**拒絕把素材寫進 `equipment_rules.json`／`mixed_use_rules.json`／
+`rule_tests.json`——訓練模式讓入庫更順，不讓入庫更鬆。實務註解只補充法典、不推翻法典：
+免除法定應設設備的註解一律紅色警示，且未經使用者輸入「確認納入」禁止從 `staging` 移到 `active`。
+
+訓練寫入後，`/train` 會**自動重建法規知識圖譜**並以 `graph_status.py stamp` 蓋章。
+`graph_status.py check` 以 sha256 逐檔指紋（`graphify-out/source_fingerprint.json`）
+判斷圖譜是否跟上規則庫與註解庫——CI 也跑這一步，來源檔改了卻沒重建圖譜就是紅燈。
 
 ---
 
@@ -330,6 +357,24 @@ python3 tools/standard_checklist_html.py --input rules/checklists/各類場所�
 # 產生標準表答案範本（審核時只填 checked ID）
 python3 tools/standard_checklist_html.py --input rules/checklists/各類場所消防安全設備設置標準14~31條判斷用.xlsx --dump-answer-template output/{案件名}-{日期}/standard_checklist_answers.template.json --output output/{案件名}-{日期}/{案件名}-標準表檢核.html
 
+# 訓練模式（讓系統學會新東西的入口）
+python3 tools/training_intake.py classify                     # 乾跑：inbox 素材路由建議
+python3 tools/training_intake.py apply --batch {批次名} --operator {歸檔人}
+python3 tools/training_intake.py status                       # 工作流程前置檢查（2 = 圖譜需補建）
+python3 tools/graph_status.py check                           # 0=新鮮 2=過期 3=尚未建立基準
+python3 tools/graph_status.py stamp                           # 重建圖譜後蓋章
+
+# 實務註解（法典未涵蓋情境）
+python3 tools/fire_code_calc.py check-gap --case output/{案件名}-{日期}/case.json
+python3 tools/practice_note_engine.py draft --gap output/{案件名}-{日期}/gap_candidates.json --case {案件名}
+python3 tools/practice_note_engine.py conflict-check --draft practice_notes/staging/{id}.json
+python3 tools/practice_note_engine.py apply --draft practice_notes/staging/{id}.json --approved-by {批准人} --confirm 確認納入
+python3 tools/practice_note_engine.py test --strict
+
+# 規則逐條確認（使用者本身即為消防專業人員，不需另送外部核定）
+python3 tools/verification_sheet.py list                      # 列出待確認規則，於對話中逐條確認
+python3 tools/verification_sheet.py apply --results {結果JSON}
+
 # 測試
 python3 -m unittest discover tests
 ```
@@ -361,7 +406,7 @@ python3 -m unittest discover tests
 | Phase 4 配置幾何檢核 | 將步行距離、水平距離、涵蓋半徑從疑義升級為座標幾何檢核 | 待建 |
 | Phase 5 多 Agent 編排 | 四類設備審查員並行，Team Lead 彙整 | skill 已建 |
 | Phase 6 品管准出 | 抽檢重算、法條引用逐項可追溯性檢查、自動化 CI | 部分已建 |
-| Phase 7 實戰迭代 | 實案回饋轉成規則、測試、工具檢查點 | 持續 |
+| Phase 7 實戰迭代 | 實案回饋轉成規則、測試、工具檢查點 | 已建（`/train` 訓練模式 ＋ `/practice-note` 實務註解），持續累積 |
 
 ---
 

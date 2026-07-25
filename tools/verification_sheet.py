@@ -1,25 +1,28 @@
 #!/usr/bin/env python3
-"""規則核定表工具 for drawing_review.
+"""規則逐條確認工具 for drawing_review.
 
-給不使用 GitHub / AI 的消防專業人員用的核定介面：
-- export：把規則庫匯出成人類可讀、可列印勾選的「核定表 HTML」
-          （每條規則一列：目前參數、法條原文引用、勾選欄、簽名欄）
-- apply ：消防人員核定回傳後，由架構管理者填寫結果 JSON，
-          本命令回填 verified / verified_by / verified_date / evidence
+本專案使用者本身即為消防專業人員，**不需另外送外部核定**——確認就是使用者自己逐條看過。
+本工具的職責是「把尚未確認的規則列給使用者看，並把他的確認結果回填」：
+
+- list  ：在終端逐條列出尚未確認的規則（條號、目前參數、法條原文抄錄），供使用者當場審核
+- export：同樣內容匯出成可列印勾選的 HTML（需要書面紀錄，或走紙本簽名流程時用）
+- apply ：把確認結果回填 verified / verified_by / verified_date / verification_evidence
 
 Zero external dependencies — Python stdlib only.
 
 Usage:
-    # 匯出未核定規則的核定表（--all 匯出全部）
-    python3 tools/verification_sheet.py export
-    python3 tools/verification_sheet.py export --all --output governance/核定表/核定表-20260710.html
+    # 列出尚未確認的規則，給使用者逐條審核（--all 含已確認）
+    python3 tools/verification_sheet.py list
 
-    # 回填核定結果
+    # 需要書面紀錄時匯出 HTML
+    python3 tools/verification_sheet.py export
+
+    # 回填確認結果
     python3 tools/verification_sheet.py apply --results governance/核定紀錄/results-20260710.json
 
-apply 的 results JSON 格式：
+apply 的 results JSON 格式（`evidence` 選填——使用者本人逐條確認時可省略，
+走紙本簽名流程時才填簽名掃描檔路徑）：
 {
-  "evidence": "governance/核定紀錄/核定表-20260710-簽名掃描.pdf",
   "verified_by": "○○○（消防設備師）",
   "verified_date": "2026-07-10",
   "results": [
@@ -43,6 +46,9 @@ from datetime import date
 
 RULES_PATH = "rules/equipment_rules.json"
 TESTS_PATH = "rules/rule_tests.json"
+
+# 使用者本人即為消防專業人員，逐條確認不需另附簽名掃描；走紙本流程時才填 evidence
+INLINE_EVIDENCE = "使用者逐條確認（消防專業人員本人，未另附書面簽名）"
 
 CSS = """
 body { font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; margin: 1.5rem; color: #222; }
@@ -148,15 +154,86 @@ def cmd_export(args):
         print(f"⚠️ 其中 {no_test} 條規則沒有任何測試引用，核定前應先補 rule_tests.json（先紅再綠）")
 
 
+def pending_rules(rules_doc, include_all=False):
+    return [r for r in rules_doc["rules"] if include_all or not r.get("verified")]
+
+
+def cmd_list(args):
+    """逐條列出尚未確認的規則，供使用者當場審核——這是本專案的確認主路徑。"""
+    rules_doc = load(args.rules)
+    tests_doc = load(args.tests)
+    rules = pending_rules(rules_doc, args.all)
+
+    if args.format == "json":
+        print(json.dumps({
+            "regulation_version": rules_doc.get("regulation_version"),
+            "pending_count": len(rules),
+            "rules": [{
+                "id": r["id"], "equipment": r.get("equipment"), "legal_basis": r.get("legal_basis"),
+                "verified": bool(r.get("verified")), "params": r.get("params"),
+                "note": r.get("note"),
+                "quotes": [{"test_id": t, "page": p, "quote": q}
+                           for t, p, q in quotes_for_rule(tests_doc, r["id"])],
+            } for r in rules],
+        }, ensure_ascii=False, indent=2))
+        return
+
+    if not rules:
+        print("✅ 沒有待確認的規則。")
+        return
+
+    print(f"待確認規則 {len(rules)} 條（法規版本：{rules_doc.get('regulation_version', '未注明')}）")
+    print("逐條回覆「正確」或「錯誤＋更正內容」即可。\n")
+    for i, r in enumerate(rules, 1):
+        print(f"{i}. {r.get('equipment')}｜{r.get('legal_basis')}｜`{r['id']}`")
+        for line in flatten_params(r.get("params")):
+            print(f"   - {line}")
+        for _, page, quote in quotes_for_rule(tests_doc, r["id"]):
+            page_text = f"p.{page}" if page is not None else "頁碼未填"
+            print(f"   原文（{page_text}）：{shorten(quote, args.quote_chars)}")
+        if not quotes_for_rule(tests_doc, r["id"]):
+            print("   ⚠️ 尚無測試引用法條原文——確認前應先補測試（先紅再綠）")
+        print()
+    print("錯誤的項目不自動改參數——走先紅再綠：先改測試 expected 轉紅，再改參數轉綠。")
+
+
+def flatten_params(params, prefix=""):
+    """把巢狀參數攤平成「路徑 = 值」的短行，避免在對話中傾印整包 JSON。"""
+    lines = []
+    if isinstance(params, dict):
+        for k, v in params.items():
+            key = f"{prefix}.{k}" if prefix else str(k)
+            if isinstance(v, (dict, list)):
+                lines.extend(flatten_params(v, key))
+            else:
+                lines.append(f"{key} = {v}")
+    elif isinstance(params, list):
+        if all(not isinstance(v, (dict, list)) for v in params):
+            lines.append(f"{prefix} = {'、'.join(str(v) for v in params)}")
+        else:
+            for i, v in enumerate(params):
+                lines.extend(flatten_params(v, f"{prefix}[{i}]"))
+    elif params is not None:
+        lines.append(f"{prefix} = {params}")
+    return lines
+
+
+def shorten(text, limit):
+    text = " ".join(str(text).split())
+    return text if limit <= 0 or len(text) <= limit else text[:limit] + "…"
+
+
 def cmd_apply(args):
     spec = load(args.results)
     rules_doc = load(args.rules)
     by_id = {r["id"]: r for r in rules_doc["rules"]}
     verified_by = spec.get("verified_by")
     verified_date = spec.get("verified_date")
-    evidence = spec.get("evidence")
-    if not (verified_by and verified_date and evidence):
-        sys.exit("results JSON 必須包含 verified_by、verified_date、evidence（簽名掃描檔路徑）——缺一不可，這是責任追溯鏈")
+    evidence = spec.get("evidence") or INLINE_EVIDENCE
+    if not (verified_by and verified_date):
+        sys.exit("results JSON 必須包含 verified_by 與 verified_date——這是責任追溯鏈的最低要求。"
+                 "走紙本簽名流程時另填 evidence 指向簽名掃描檔；"
+                 "使用者本人逐條確認時 evidence 可省略。")
 
     applied, corrections = [], []
     for item in spec["results"]:
@@ -191,8 +268,17 @@ def cmd_apply(args):
 
 
 def main():
-    p = argparse.ArgumentParser(description="規則核定表匯出／回填")
+    p = argparse.ArgumentParser(description="規則逐條確認：列出／匯出／回填")
     sub = p.add_subparsers(dest="command", required=True)
+
+    s = sub.add_parser("list", help="逐條列出待確認規則，供使用者當場審核（確認主路徑）")
+    s.add_argument("--rules", default=RULES_PATH)
+    s.add_argument("--tests", default=TESTS_PATH)
+    s.add_argument("--all", action="store_true", help="含已確認規則（預設僅待確認）")
+    s.add_argument("--format", choices=("text", "json"), default="text")
+    s.add_argument("--quote-chars", type=int, default=60,
+                   help="法條原文摘要字數上限（0 = 不截斷）")
+    s.set_defaults(func=cmd_list)
 
     s = sub.add_parser("export", help="匯出核定表 HTML（可列印勾選）")
     s.add_argument("--rules", default=RULES_PATH)

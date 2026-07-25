@@ -18,9 +18,10 @@
 
 ```
 practice_notes/
-├── active/      — 現行有效註解，每則一個 {id}.json
-├── staging/     — Agent 草擬、待使用者確認（未生效）
-└── index.json   — 由 practice_note_engine.py reindex 產生（by_article / by_equipment / by_rule_id）
+├── active/             — 現行有效註解，每則一個 {id}.json
+├── staging/            — Agent 草擬、待使用者確認（未生效）
+├── graph_extractions/  — 每則 active 註解的 LLM 語意抽取結果 {id}.json（併入知識圖譜的輸入）
+└── index.json          — 由 practice_note_engine.py reindex 產生（by_article / by_equipment / by_rule_id）
 ```
 
 註：與 `output/annotations.json` 無關——那是**圖面 SVG 標註**，
@@ -47,7 +48,31 @@ python3 tools/practice_note_engine.py apply --draft practice_notes/staging/{id}.
 
 # 5. 迴歸驗收
 python3 tools/practice_note_engine.py test --strict
+
+# 6. 併入知識圖譜（沒做這步，後續案件查圖譜查不到這則註解）
+python3 tools/practice_note_graph.py plan                       # 0=齊備 2=有待語意抽取
+python3 tools/practice_note_graph.py contract --note {id}       # 印出抽取契約 → LLM 語意抽取
+python3 tools/practice_note_graph.py validate --extraction practice_notes/graph_extractions/{id}.json
+python3 tools/practice_note_graph.py merge                      # 冪等合併進 graphify-out/graph.json
+python3 tools/graph_status.py stamp                             # 蓋章（註解未併入時會拒絕）
 ```
+
+## 為什麼註解要進圖譜，而且要用 LLM 語意抽取
+
+`check-gap` 讀 `index.json` 只能做**結構化欄位**（條號、rule_id、設備）的比對；
+審圖時真正的問法是「§24 這條有沒有相關實務見解」「挑空區這種情境以前怎麼判」——
+這要靠圖譜的關聯查詢。而註解的 `scenario.summary`／`judgment.detail` 是自由文字、
+沒有固定格式，「牽涉哪些概念、關聯到哪些條文與設備」只能靠語意理解抽取，
+關鍵字比對會漏抽也會誤抽。
+
+因此分成兩段：**LLM 做語意抽取**（`/practice-note` 第七步，結果寫入
+`graph_extractions/{id}.json`，每個概念與關聯都要 `rationale` 引註解原文）、
+**工具做確定性合併**（`practice_note_graph.py merge` 只搬運抽取檔寫明的節點與邊，
+自己不從註解文字推導任何語意關聯；唯一例外是 `ref_article`／`judgment.equipment`
+兩個結構化欄位產生的錨點邊，標記 `MECHANICAL`）。
+
+抽取檔以 `note_sha256` 綁定當時的註解內容：**改了註解就必須重新語意抽取**，
+否則 `merge` 拒絕、`graph_status.py check` 紅燈。
 
 ## Schema
 

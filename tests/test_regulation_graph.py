@@ -114,6 +114,86 @@ class GraphQueryTest(unittest.TestCase):
         self.assertIn("graphify rules", str(ctx.exception))
 
 
+def graph_with_practice_note():
+    """圖譜 ＋ 一則已併入的實務註解（practice_note_graph.py merge 的產物形狀）。"""
+    graph = fake_graph()
+    graph["nodes"].append({
+        "id": "practice_note_PN-20260725-001", "label": "PN-20260725-001",
+        "file_type": "practice_note", "layer": "practice_note",
+        "note_id": "PN-20260725-001", "note_sha256": "deadbeef",
+        "ref_article": "第19條", "equipment": "排煙設備", "decision": "exempt_with_alternatives",
+        "graph_summary": "挑空區逾 12 公尺得以火焰式探測器替代",
+        "source_case": "Case_20260725",
+        "source_file": "practice_notes/active/PN-20260725-001.json",
+    })
+    graph["links"].append({"source": "practice_note_PN-20260725-001",
+                           "target": f"{PREFIX}_第19條", "relation": "supplements",
+                           "layer": "practice_note"})
+    graph["links"].append({"source": "practice_note_PN-20260725-001",
+                           "target": f"{PREFIX}_排煙設備", "relation": "concerns_equipment",
+                           "layer": "practice_note"})
+    return graph
+
+
+class PracticeNoteQueryTest(unittest.TestCase):
+    """訓練成果（實務註解）必須查得到——審圖時查圖譜就要看見它。"""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.path = Path(self.tmp.name) / "graph.json"
+        self.path.write_text(json.dumps(graph_with_practice_note(), ensure_ascii=False),
+                             encoding="utf-8")
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def run_cli(self, args, fmt="json"):
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            code = main(["--graph", str(self.path), "--format", fmt] + args)
+        self.assertEqual(code, 0)
+        return json.loads(out.getvalue()) if fmt == "json" else out.getvalue()
+
+    def test_neighbors_surfaces_the_note_for_its_article(self):
+        payload = self.run_cli(["neighbors", "--article", "§19"])
+        self.assertEqual([n["note_id"] for n in payload["practice_notes"]], ["PN-20260725-001"])
+        self.assertIn("非法規條文", payload["practice_notes"][0]["notice"])
+
+    def test_note_is_not_mixed_into_article_citation_groups(self):
+        payload = self.run_cli(["neighbors", "--article", "§19"])
+        labels = [e["label"] for group in payload["groups"].values() for e in group]
+        self.assertNotIn("PN-20260725-001", labels)
+
+    def test_articles_by_equipment_surfaces_related_notes(self):
+        payload = self.run_cli(["articles", "--equipment", "排煙設備"])
+        self.assertEqual([n["note_id"] for n in payload["practice_notes"]], ["PN-20260725-001"])
+
+    def test_notes_subcommand_filters_by_article_and_equipment(self):
+        self.assertEqual([n["note_id"] for n in
+                          self.run_cli(["notes", "--article", "§19"])["practice_notes"]],
+                         ["PN-20260725-001"])
+        self.assertEqual([n["note_id"] for n in
+                          self.run_cli(["notes", "--equipment", "排煙設備"])["practice_notes"]],
+                         ["PN-20260725-001"])
+        self.assertEqual([n["note_id"] for n in
+                          self.run_cli(["notes", "--article", "§28"])["practice_notes"]], [])
+
+    def test_notes_subcommand_lists_all_by_default(self):
+        payload = self.run_cli(["notes"])
+        self.assertEqual([n["note_id"] for n in payload["practice_notes"]], ["PN-20260725-001"])
+
+    def test_markdown_output_carries_the_note_warning(self):
+        text = self.run_cli(["neighbors", "--article", "§19"], fmt="markdown")
+        self.assertIn("PN-20260725-001", text)
+        self.assertIn("非法規條文", text)
+
+    def test_graph_without_notes_still_answers_cleanly(self):
+        path = Path(self.tmp.name) / "plain.json"
+        path.write_text(json.dumps(fake_graph(), ensure_ascii=False), encoding="utf-8")
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            main(["--graph", str(path), "--format", "json", "notes"])
+        self.assertEqual(json.loads(out.getvalue())["practice_notes"], [])
+
+
 class RealGraphTest(unittest.TestCase):
     def test_repo_graph_answers_the_documented_queries(self):
         nodes, out, into = load_graph(DEFAULT_GRAPH)

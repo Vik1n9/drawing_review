@@ -12,9 +12,10 @@
 python3 tools/training_intake.py status
 ```
 
-結束碼 `2` ＝ 圖譜未跟上規則庫（或有未完成的重建）。此時**先補建圖譜再續行**，
-否則查圖譜會查到舊資料。輸出同時會告知：最新訓練批次、Active 修正筆記數、
-現有實務註解數、尚未逐條確認的規則數。
+結束碼 `2` ＝ 圖譜未跟上規則庫、實務註解未併入圖譜，或有未完成的重建。
+此時**先補齊再續行**，否則查圖譜會查到舊資料或查不到已納入的實務註解。
+輸出同時會告知：最新訓練批次、Active 修正筆記數、現有實務註解數（含是否已納入圖譜）、
+尚未逐條確認的規則數。
 
 ## 開始前必讀（不可跳過）
 
@@ -37,9 +38,12 @@ python3 tools/training_intake.py status
 python3 tools/regulation_graph.py neighbors --article §12     # 定位：引用網＋附表圖檔
 python3 tools/regulation_index.py lookup --article '§12'      # 載入：條文原文
 python3 tools/regulation_graph.py path --from 集合住宅 --to 乙類
+python3 tools/regulation_graph.py notes --article §12         # 該條既有的實務註解
 ```
 
 圖譜不得作為門檻數值來源，節點標題不得當作法規數值使用。
+查詢輸出帶出的**實務註解**是既往案件沉澱的實務見解、非法規條文，
+援引時必須同時列出所補充的法條與註解 ID。
 
 ## 輸入
 

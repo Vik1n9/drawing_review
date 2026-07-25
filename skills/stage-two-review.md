@@ -16,8 +16,9 @@
 python3 tools/training_intake.py status
 ```
 
-結束碼 `2` ＝ 圖譜未跟上規則庫（或有未完成的重建）。此時**先補建圖譜再續行**。
-輸出同時會告知：最新訓練批次、Active 修正筆記數、現有實務註解數、尚未逐條確認的規則數。
+結束碼 `2` ＝ 圖譜未跟上規則庫、實務註解未併入圖譜，或有未完成的重建。此時**先補齊再續行**。
+輸出同時會告知：最新訓練批次、Active 修正筆記數、現有實務註解數（含是否已納入圖譜）、
+尚未逐條確認的規則數。
 
 ## 開始前必讀（不可跳過）
 
@@ -39,7 +40,11 @@ python3 tools/fire_code_calc.py check-threshold --case output/case.json
 ```
 
 其他定位指令：`regulation_graph.py articles --equipment 排煙設備`、
-`regulation_graph.py path --from 無開口樓層 --to 排煙設備`。
+`regulation_graph.py path --from 無開口樓層 --to 排煙設備`、
+`regulation_graph.py notes --article §24`（該條既有的實務註解）。
+
+`neighbors`／`articles` 的輸出若帶出**實務註解**，那是既往案件沉澱的實務見解、
+**不是法規條文**：可作為判斷參考，援引時必須同時列出所補充的法條與註解 ID。
 
 圖譜不得作為門檻數值來源，節點標題不得當作法規數值使用。附表圖檔在
 `rules/core/1各類場所消防安全設備設置標準_assets/`。

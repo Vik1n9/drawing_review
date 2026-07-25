@@ -103,24 +103,73 @@ python3 tools/fire_code_calc.py self-test
 python3 tools/fire_code_calc.py run-tests --strict
 ```
 
-三者全綠才算完成。回報使用者：註解 ID、涵蓋的條號與情境、`index.json` 現有註解數。
+三者全綠才算完成，接著做第七步（圖譜納入）。
 
-### 第七步 提醒更新圖譜
+### 第七步 語意抽取並併入知識圖譜（本步驟不得省略）
 
-註解是新的知識節點。本次若新增了 active 註解：
+註解是新的知識節點。**沒有做完這步，後續案件查圖譜就查不到這則訓練成果**——
+`/graphify rules` 只掃 `rules/`，不會把 `practice_notes/` 抽進圖譜。
+
+註解的 `scenario.summary`／`judgment.detail` 是自由文字、沒有固定格式，
+「這則註解牽涉哪些概念、關聯到哪些既有條文與設備」**只能靠語意理解抽取**——
+關鍵字比對會漏抽也會誤抽。所以這步由**你（LLM）做語意抽取**，工具只負責確定性合併。
 
 ```bash
-python3 tools/graph_status.py check
+python3 tools/practice_note_graph.py plan          # 0=齊備 2=有待抽取
+python3 tools/practice_note_graph.py contract --note {註解 id}
 ```
 
-過期則依 `skills/training-mode.md` 第七步自動重建圖譜並 `stamp`；
-無法重建時寫 `training/graph_pending.json` 並明確告知使用者。
+`contract` 會印出註解原文、可用的關聯類型與輸出格式。依它產出抽取檔
+`practice_notes/graph_extractions/{註解 id}.json`：
+
+- `concepts[]`——從註解讀出的概念（觸發條件、設備、場所用途…）。
+  名稱用**審圖時會拿來查的詞**（「挑空區」而非「本案特殊空間」），
+  `rationale` 必須引註解原文，說明這個概念是從哪句話讀出來的
+- `edges[]`——註解與圖譜節點的關聯，`target` **優先用既有節點 label**
+  （先跑 `regulation_graph.py neighbors --article §X` 查既有節點名稱，
+  能掛既有節點就不要新造概念，否則會長出查不到的孤島）：
+  `supplements`（補充條文）／`concerns_equipment`（涉及設備）／
+  `applies_when`（觸發條件）／`conceptually_related_to`（語意關聯）
+- **只抽註解真的說了的東西**。不確定就不要抽——寧可少一條邊，
+  不可讓圖譜長出註解沒說過的關聯（`CLAUDE.md` 最高原則 5）
+
+```bash
+python3 tools/practice_note_graph.py validate --extraction practice_notes/graph_extractions/{id}.json
+python3 tools/practice_note_graph.py merge         # 冪等，可重複執行
+python3 tools/graph_status.py check                # 應為 ✅ 新鮮 ＋ 實務註解已納入
+python3 tools/graph_status.py stamp
+```
+
+工具的把關（都會擋下，不要繞過）：
+
+- 抽取檔以 `note_sha256` 綁定當時的註解內容——**註解改了就必須重新語意抽取**，
+  否則 `merge` 拒絕合併、`check` 標「過期」
+- `concepts` 與 `edges` 全空、`rationale` 留白、`target` 在圖譜與 concepts 都找不到 → 驗證不過
+- 有任何 active 註解沒抽取 → `merge` 整批拒絕、`graph_status.py stamp` 拒絕蓋章
+  （避免蓋出「燈是綠的但註解不在圖譜裡」的假綠燈）
+
+無法完成時**不得靜默跳過**：寫 `training/graph_pending.json` 並明確告知使用者
+「本註解尚未併入圖譜，後續案件查圖譜查不到它」。
+
+### 第八步 回報使用者
+
+回報：註解 ID、涵蓋的條號與情境、`index.json` 現有註解數、**圖譜納入狀態**
+（`practice_note_graph.py check` 的結果）與抽出的概念、關聯條號。
 
 ## 後續案件如何自動調用
 
-- `check-gap` 每次都會比對 `practice_notes/index.json`，命中即標 `reuse_practice_note` 並列出註解摘要
-- `index.json` 提供 `by_article`／`by_equipment`／`by_rule_id` 三種查法
-- 審查報告引用註解時，**必須**同時列出所補充的法條與註解 ID，供覆核者回溯到條文與當初的判讀理由
+三條路都會通到同一則註解：
+
+- **check-gap**：每次都會比對 `practice_notes/index.json`，命中即標 `reuse_practice_note` 並列出摘要
+- **索引直查**：`index.json` 提供 `by_article`／`by_equipment`／`by_rule_id` 三種查法
+- **圖譜查詢**（第七步併入後才有）：
+  ```bash
+  python3 tools/regulation_graph.py notes --article §19        # 該條的實務註解
+  python3 tools/regulation_graph.py notes --equipment 排煙設備   # 該設備的實務註解
+  python3 tools/regulation_graph.py neighbors --article §19    # 條文引用網會一併帶出註解
+  ```
+
+審查報告引用註解時，**必須**同時列出所補充的法條與註解 ID，供覆核者回溯到條文與當初的判讀理由。
 
 ## 重要注意事項
 

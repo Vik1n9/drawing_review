@@ -51,20 +51,9 @@ TITLE_FONT = Font(bold=True, size=14)
 WRAP_TOP = Alignment(wrap_text=True, vertical="top")
 CENTER = Alignment(horizontal="center", vertical="center", wrap_text=True)
 
-# 第 18 條表列各項（法條判斷表若缺 §18 時補入；見 rules/article18_equipment_options.json）
-ARTICLE_18_FALLBACK = [
-    ("18條下列場所應設置自動滅火設備", None),
-    (None, "一. 屋頂直昇機停機場(坪)。"),
-    (None, "二. 飛機修理廠、飛機庫樓地板面積在200㎡以上者。"),
-    (None, "三. 汽車修理廠、室內停車空間在第一層樓地板面積500㎡以上者；在地下層或第二層以上樓地板面積在200㎡以上者；"
-           "在屋頂設有停車場樓地板面積在300㎡以上者。"),
-    (None, "四. 昇降機械式停車場可容納十輛以上者。"),
-    (None, "五. 發電機室、變壓器室及其他類似之電器設備場所，樓地板面積在200㎡以上者。"),
-    (None, "六. 鍋爐房、廚房等大量使用火源之場所，樓地板面積在200㎡以上者。"),
-    (None, "七. 電信機械室、電腦室或總機室及其他類似場所，樓地板面積在200㎡以上者。"),
-    (None, "八. 引擎試驗室、石油試驗室、印刷機房及其他類似危險工作場所，樓地板面積在200㎡以上者。"),
-    (None, "九. 外牆開口面積(常時開放部分)達該層樓地板面積15%以上者，滅火設備得採移動式設置。"),
-]
+ARTICLE_18_OPTIONS_PATH = os.path.join("rules", "article18_equipment_options.json")
+ITEM_NUMERALS = {1: "一", 2: "二", 3: "三", 4: "四", 5: "五",
+                 6: "六", 7: "七", 8: "八", 9: "九", 10: "十"}
 
 EQUIPMENT_BY_ARTICLE = {
     "14": "滅火器", "15": "室內消防栓設備", "16": "室外消防栓設備", "17": "自動撒水設備",
@@ -349,14 +338,33 @@ def normalize_law_rows(values):
     return normalized
 
 
-def ensure_article_18(rows):
-    """§18 必須出現在 §17 與 §19 之間；法條判斷表缺漏時補入。"""
+def article_18_fallback(path=None):
+    """§18 表列各款 → [(條文/設備, 款項條件)]。
+
+    唯一來源是 rules/article18_equipment_options.json——條文轉錄只存在一份，
+    避免多處複本隨修法漂移（見 rules/stage_two_judgment_rules.md「維護規則」）。
+    """
+    doc = load_article18_doc(path)
+    if not doc:
+        return []
+    rows = [(f"18條{doc.get('article_title', '下列場所應設置自動滅火設備')}", None)]
+    for entry in doc.get("items") or []:
+        numeral = ITEM_NUMERALS.get(entry.get("item"), str(entry.get("item")))
+        rows.append((None, f"{numeral}. {entry.get('condition', '')}"))
+    return rows
+
+
+def ensure_article_18(rows, path=None):
+    """§18 必須出現在 §17 與 §19 之間；法條判斷表缺漏時自規則檔補入。"""
     if any(title and title.startswith("18條") for title, _ in rows):
+        return rows
+    fallback = article_18_fallback(path)
+    if not fallback:
         return rows
     insert_at = next((i for i, (title, _) in enumerate(rows) if title and title.startswith("19條")), None)
     if insert_at is None:
-        return rows + ARTICLE_18_FALLBACK
-    return rows[:insert_at] + ARTICLE_18_FALLBACK + rows[insert_at:]
+        return rows + fallback
+    return rows[:insert_at] + fallback + rows[insert_at:]
 
 
 def parse_article(title):
@@ -500,13 +508,20 @@ def build_stage_two(law_rows, decisions):
     return workbook, rows
 
 
+def load_article18_doc(path=None):
+    """§18 規則檔內容；不存在時回傳 None（呼叫端各自降級）。"""
+    path = path or ARTICLE_18_OPTIONS_PATH
+    if not os.path.exists(path):
+        return None
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
 def load_article18_options(path=None):
     """§18 各款可選設備 → {款次: "泡沫、乾粉"}。規則檔缺漏時回傳空 dict。"""
-    path = path or os.path.join("rules", "article18_equipment_options.json")
-    if not os.path.exists(path):
+    doc = load_article18_doc(path)
+    if not doc:
         return {}
-    with open(path, encoding="utf-8") as f:
-        doc = json.load(f)
     options = {}
     for entry in doc.get("items") or []:
         names = list(entry.get("options") or [])

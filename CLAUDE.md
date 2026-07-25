@@ -15,7 +15,7 @@
 7. **法規版本注記**——報告標頭必須注明所依據的法規版本（`rules` 檔案的 `regulation_version` 欄位）
 8. **呈現正反兩面**——判定「免設」時同樣列出計算過程與條文依據，讓審查者可以覆核，不是只列缺失
 
-用途分類、樓層屬性、地下層、屋突層／屋頂層與無開口樓層判定，必須讀取 `skills/place-use-classification.md`；第 12 條用途分類只產生候選，最終以人工確認後的 `case.json` 為準。複合用途建築物的主從用途判定依 `skills/mixed-use-review.md`（`/mixed-use-review`）：以 `rules/mixed_use_rules.json`（《複合用途建築物判斷基準》附表結構化）比對產生候選，§12 分類經人工定案後才可進入 `/code-requirements`。案件涉及增建、改建、室內裝修或變更用途時，必須先跑 `check-applicability`（§13）判斷各設備適用新舊標準。
+用途分類、樓層屬性、地下層、屋突層／屋頂層與無開口樓層判定，必須讀取 `skills/place-use-classification.md`；第 12 條用途分類只產生候選，最終以人工確認後的 `case.json` 為準。複合用途建築物的主從用途判定依 `skills/mixed-use-review.md`（`/mixed-use-review`）：以 `rules/mixed_use_rules.json`（《複合用途建築物判斷基準》附表結構化）比對產生候選，§12 分類經人工定案後才可進入 `/code-requirements`。案件涉及增建、改建、室內裝修或變更用途時，必須先跑 `check-applicability`（§13）判斷各設備適用新舊標準。走兩階段 Excel 交付路線時，另須先讀 `rules/review_corrections.md`——其中含通案樓層屬性規則（該工作流程下所有地上樓層一律列為`無開口樓層`），會改變 §14~31 的判斷基礎。
 
 ## 目錄結構（統一輸入／統一輸出）
 
@@ -33,11 +33,18 @@ drawing_review/
 │       ├── {案件名}-圖面審查.html           — 交付物1：DXF 轉 SVG 標註＋缺失導覽
 │       ├── {案件名}-問題清單.md             — 交付物2：缺失清單（詳列違反法條）
 │       ├── {案件名}-法條檢核清單.html       — 交付物3：打勾檢核表（§14~§31 逐條窮舉）
-│       └── {案件名}-複合用途及樓層屬性檢討.html — 交付物4：主從用途／樓層屬性檢討表
+│       ├── {案件名}-複合用途及樓層屬性檢討.html — 交付物4：主從用途／樓層屬性檢討表
+│       ├── stage2_decisions.json           — 第二階段人工定案勾選（/stage-two-review 輸入）
+│       ├── {案件名}-第一階段-複合用途及樓層屬性檢討.xlsx — 兩階段工作流程：第一階段工作簿
+│       └── {案件名}-第二階段-設置標準檢討.xlsx           — 兩階段工作流程：第二階段工作簿
 ├── rules/                       — 結構化法規規則庫
 │   ├── equipment_rules.json     — 規則（每條附條號、verified 旗標）
 │   ├── mixed_use_rules.json     — 主從用途對照表（判斷基準附表結構化、verified 旗標）
+│   ├── article18_equipment_options.json — §18 各款可選設備對照（選擇設置，非僅泡沫）
 │   ├── rule_tests.json          — 先紅再綠測試案例（expected 抄錄自法條 PDF；選填 rules_file 指向第二規則檔）
+│   ├── stage_two_judgment_rules.md — §14~31 逐款實務判斷慣例（未核定，須附警語）
+│   ├── review_corrections.md    — 累積確認的通案修正筆記（審圖前必讀，不得刪除歷史）
+│   ├── checklists/              — 法條判斷表 xlsx（§14~31，已含第18條完整9款）
 │   └── regulation-checklist.html — 法條清單 HTML（由法條 PDF 轉換，格式不變，逐條錨點）
 ├── governance/                  — 規則核定責任追溯鏈（核定表／簽名紀錄，見 governance/README.md）
 ├── skills/                      — 審圖 skill 定義
@@ -52,6 +59,28 @@ drawing_review/
 | 2 | **問題清單** | 缺失四級分類（重大／一般／配置疑義／需人工判讀），每項詳列違反法條、應設要求、圖面現況、缺口 |
 | 3 | **法條檢核清單 HTML** | `article_checklist.py` 依 case.json 產出 §14~§31 **逐條窮舉**的 `check_results.json`（規則未入庫條號列「⚪需人工判讀（規則未入庫）」），`/gap-analysis` 更新比對結果後由 `checklist_html.py` 產出標準表格，逐項打勾（☑符合／☒不符合／⚪需人工判讀／—不適用），條號深連結到 `regulation-checklist.html` 錨點 |
 | 4 | **複合用途及樓層屬性檢討 HTML** | `/mixed-use-review` 人工確認主從用途後，`mixed_use_report.py` 依 case.json 產出（格式對齊 `input/範例/` 實務範例：樓層／各層用途／樓地板面積／本次申請範圍／樓層屬性＋合計＋判定結論） |
+
+## 兩階段審查工作流程（Excel 交付，與四項固定交付物並行）
+
+實務交付另有一條**兩階段** Excel 路線，內容與交付物 3、4 同源（皆以 `case.json` 為正典），
+只是格式為工作簿。完整規則見 `skills/first-stage-review.md` 與 `skills/stage-two-review.md`。
+
+| 階段 | skill | 串接既有流程 | Excel 交付物 |
+|------|-------|------------|-------------|
+| 第一階段 | `/first-stage-review` | `/plan-intake` → `/mixed-use-review` | 複合用途建築物及樓層屬性檢討（4 分頁） |
+| 第二階段 | `/stage-two-review` | `/code-requirements` → `article_checklist.py` | 設置標準檢討（3 分頁） |
+
+三條鐵律：
+
+1. **第一階段未完成不得執行第二階段**；第一階段結果修正時必須從頭重跑完整第二階段
+2. **受控自動化關卡**：兩階段匯出前都必須跑 `tools/case_facts_gate.py`，`ready: false`
+   （結束碼 2）時不得輸出最終交付物，逐項問使用者補齊 `case.json` 後重跑
+3. **審圖前必讀** `rules/review_corrections.md`（兩階段皆是）與
+   `rules/stage_two_judgment_rules.md`（第二階段）；兩者皆未經 `governance/` 核定，
+   援引其結論必附「本判斷慣例未經消防專業人員核定，以現行法規為準」
+
+格式權威為 `input/範例/` 內的兩份格式範本，`tools/stage_report_xlsx.py` 以程式複製其版面。
+第二階段的勾選一律來自人工定案的 `stage2_decisions.json`——**工具不代為做法規判斷**。
 
 ## 報告語言與風格
 
@@ -95,6 +124,14 @@ python3 tools/dxf_svg_review.py --annotations output/{案件名}-{日期}/annota
 python3 tools/article_checklist.py --case output/{案件名}-{日期}/case.json      # §14~31 逐條窮舉 check_results.json
 python3 tools/checklist_html.py --results output/{案件名}-{日期}/check_results.json
 python3 tools/mixed_use_report.py --case output/{案件名}-{日期}/case.json       # 交付物4：複合用途及樓層屬性檢討
+
+# 兩階段審查工作流程
+python3 tools/case_facts_gate.py --stage first  --case output/{案件名}-{日期}/case.json   # 匯出前關卡（結束碼 2 = 阻擋）
+python3 tools/case_facts_gate.py --stage second --case output/{案件名}-{日期}/case.json
+python3 tools/stage_report_xlsx.py first-stage --case output/{案件名}-{日期}/case.json    # 第一階段工作簿
+python3 tools/stage_report_xlsx.py stage-two \
+  --decisions output/{案件名}-{日期}/stage2_decisions.json \
+  --case output/{案件名}-{日期}/case.json                                                 # 第二階段工作簿
 
 # 規則核定（消防專業人員協作，見 governance/README.md）
 python3 tools/verification_sheet.py export                                            # 匯出核定表 HTML

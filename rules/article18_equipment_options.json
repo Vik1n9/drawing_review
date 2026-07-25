@@ -1,0 +1,85 @@
+{
+  "regulation": "各類場所消防安全設備設置標準",
+  "regulation_version": "開發示例版（版本日期待核定，正式使用前依全國法規資料庫現行條文重建）",
+  "legal_basis": "§18",
+  "disclaimer": "本檔為第 18 條「自動滅火設備擇一設置」的可選設備對照，verified 均為 false，未經消防專業人員核定不得作為審查依據。各款觸發門檻不在本檔，一律回法條原文與 tools/fire_code_calc.py 核對。",
+  "article_title": "下列場所應設置自動滅火設備",
+  "title_note": "第 18 條條文不是「應設置泡沫滅火設備」。表列場所應就水霧、泡沫、二氧化碳或惰性氣體、鹵化烴、乾粉等自動滅火設備擇一設置；輸出時「條文／設備」欄僅列該款可選設的設備名稱，不加條次前綴。",
+  "global_constraints": [
+    {
+      "id": "no-co2-in-occupied-rooms",
+      "rule": "中央管理室、防災中心等平時有人使用之類似處所不得選用二氧化碳滅火設備。",
+      "verified": false
+    }
+  ],
+  "items": [
+    {
+      "item": 1,
+      "condition": "屋頂直昇機停機場（坪）。",
+      "options": ["泡沫", "乾粉"],
+      "alternative_sprinkler": null,
+      "verified": false
+    },
+    {
+      "item": 2,
+      "condition": "飛機修理廠、飛機庫樓地板面積在 200 ㎡以上者。",
+      "options": ["泡沫", "乾粉"],
+      "alternative_sprinkler": null,
+      "verified": false
+    },
+    {
+      "item": 3,
+      "condition": "汽車修理廠、室內停車空間在第一層樓地板面積 500 ㎡以上者；在地下層或第二層以上樓地板面積在 200 ㎡以上者；在屋頂設有停車場樓地板面積在 300 ㎡以上者。",
+      "options": ["水霧", "泡沫", "二氧化碳或惰性氣體", "鹵化烴", "乾粉"],
+      "alternative_sprinkler": "自動撒水設備",
+      "verified": false
+    },
+    {
+      "item": 4,
+      "condition": "昇降機械式停車場可容納十輛以上者。",
+      "options": ["水霧", "泡沫", "二氧化碳或惰性氣體", "鹵化烴", "乾粉"],
+      "alternative_sprinkler": "自動撒水設備",
+      "verified": false
+    },
+    {
+      "item": 5,
+      "condition": "發電機室、變壓器室及其他類似之電器設備場所，樓地板面積在 200 ㎡以上者。",
+      "options": ["水霧", "二氧化碳或惰性氣體", "鹵化烴", "乾粉"],
+      "alternative_sprinkler": null,
+      "verified": false
+    },
+    {
+      "item": 6,
+      "condition": "鍋爐房、廚房等大量使用火源之場所，樓地板面積在 200 ㎡以上者。",
+      "options": ["二氧化碳或惰性氣體", "鹵化烴", "乾粉"],
+      "alternative_sprinkler": null,
+      "verified": false
+    },
+    {
+      "item": 7,
+      "condition": "電信機械室、電腦室或總機室及其他類似場所，樓地板面積在 200 ㎡以上者。",
+      "options": ["二氧化碳或惰性氣體", "鹵化烴", "乾粉"],
+      "alternative_sprinkler": "預動式自動撒水設備",
+      "verified": false
+    },
+    {
+      "item": 8,
+      "condition": "引擎試驗室、石油試驗室、印刷機房及其他類似危險工作場所，樓地板面積在 200 ㎡以上者。",
+      "options": [],
+      "alternative_sprinkler": null,
+      "verified": false,
+      "note": "本款可選設備對照尚未由使用者確認，輸出時列「⚪需人工判讀」，不得推測填充。"
+    },
+    {
+      "item": 9,
+      "condition": "外牆開口面積（常時開放部分）達該層樓地板面積 15% 以上者，滅火設備得採移動式設置。",
+      "options": [],
+      "alternative_sprinkler": null,
+      "is_trigger": false,
+      "verified": false,
+      "note": "本款不是獨立的設備觸發條件，而是「常時開放外牆開口面積達該層 15% 以上時，除惰性氣體及鹵化烴外得採移動式設置」的替代設置條件。"
+    }
+  ],
+  "evidence_rule": "以建築圖或設備圖確認是否有表列空間、位置、面積、停車容量及例外事實；資料不足時列「待釐清事項」，不得自行假定不存在。",
+  "source_note": "本對照由使用者於 2026-07-13 明確確認（見 rules/review_corrections.md「2026-07-13 第18至23條判斷修正」）；條文原文以 rules/法規/1各類場所消防安全設備設置標準.md 為準。"
+}

@@ -100,6 +100,34 @@ output/{案件名}-{日期}/
 
 大型或複雜案件可走 `/review-team`：滅火設備、警報設備、避難逃生設備、消防搶救必要設備並行審查，由 Team Lead 統整後仍產出同三項交付物。
 
+### 兩階段 Excel 交付路線
+
+實務上另有一條**兩階段**工作流程，內容與交付物 ③④ 同源（都以 `case.json` 為正典），交付格式為 Excel 工作簿：
+
+```
+/first-stage-review                          第一階段：複合用途建築物及樓層屬性檢討
+        │  串接 /plan-intake → /mixed-use-review
+        │  【必讀】rules/review_corrections.md（累積確認的通案修正）
+        ▼
+【關卡：case_facts_gate --stage first】       ready:false（結束碼 2）→ 不得匯出，逐項問使用者
+        ▼
+{案件名}-第一階段-複合用途及樓層屬性檢討.xlsx   複合用途檢討／用途判斷依據／來源資料／各樓層高度
+        │
+        ▼
+/stage-two-review                            第二階段：消防安全設備設置標準檢討
+        │  串接 /code-requirements → article_checklist.py
+        │  【必讀】rules/stage_two_judgment_rules.md（§14~31 逐款判斷慣例，附條號）
+        ▼
+【關卡：case_facts_gate --stage second】       另檢查第一階段 §12 分類與判定已人工定案
+        │  人工填 stage2_decisions.json（勾選一律由人工定案，工具不代為判斷）
+        ▼
+{案件名}-第二階段-設置標準檢討.xlsx            消防安全設備設置標準／應設置設備／待釐清事項
+```
+
+第一階段未完成不得執行第二階段；第一階段結果修正時必須從頭重跑完整第二階段。
+`rules/stage_two_judgment_rules.md` 與 `rules/review_corrections.md` 均未經 `governance/` 核定，
+援引其結論必附「本判斷慣例未經消防專業人員核定，以現行法規為準」。
+
 ---
 
 ## 三、目錄結構
@@ -163,6 +191,8 @@ DXF 提供座標、圖層、符號與標註位置，但消防設備應設需求�
 | `tools/regulation_index.py` | 法規 Markdown 轉逐條索引與按需查詢 | stdlib |
 | `tools/article_checklist.py` | 依 case.json 產出 §14~§31 逐條窮舉 `check_results.json` | stdlib |
 | `tools/mixed_use_report.py` | case.json 轉複合用途及樓層屬性檢討 HTML（交付物4） | stdlib |
+| `tools/case_facts_gate.py` | 兩階段交付物匯出前的案件事實齊備關卡（不齊備結束碼 2） | stdlib |
+| `tools/stage_report_xlsx.py` | 兩階段 Excel 工作簿產生（第一階段 4 分頁／第二階段 3 分頁） | `openpyxl` |
 | `tools/checklist_html.py` | `check_results.json` 轉法條檢核清單 HTML | stdlib |
 | `tools/standard_checklist_html.py` | 消防人員標準 Excel 表 + 答案 JSON 轉紅勾檢核 HTML | `openpyxl` |
 | `tools/dxf_svg_review.py` | `annotations.json` + DXF 轉互動式 SVG 圖面審查 HTML | `ezdxf` |
@@ -288,6 +318,13 @@ python3 tools/dxf_svg_review.py --annotations output/{案件名}-{日期}/annota
 python3 tools/article_checklist.py --case output/{案件名}-{日期}/case.json     # §14~31 逐條窮舉
 python3 tools/checklist_html.py --results output/{案件名}-{日期}/check_results.json
 python3 tools/mixed_use_report.py --case output/{案件名}-{日期}/case.json      # 交付物4
+
+# 兩階段 Excel 交付路線
+python3 tools/case_facts_gate.py --stage first  --case output/{案件名}-{日期}/case.json
+python3 tools/case_facts_gate.py --stage second --case output/{案件名}-{日期}/case.json
+python3 tools/stage_report_xlsx.py first-stage --case output/{案件名}-{日期}/case.json
+python3 tools/stage_report_xlsx.py stage-two --decisions output/{案件名}-{日期}/stage2_decisions.json --case output/{案件名}-{日期}/case.json
+
 python3 tools/standard_checklist_html.py --input rules/checklists/各類場所消防安全設備設置標準14~31條判斷用.xlsx --answers output/{案件名}-{日期}/standard_checklist_answers.json --output output/{案件名}-{日期}/{案件名}-標準表檢核.html
 
 # 產生標準表答案範本（審核時只填 checked ID）

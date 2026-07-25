@@ -111,6 +111,42 @@ class RegulationIndexTest(unittest.TestCase):
             articles = lookup_related_articles(index_path, article="§115-§117")
             self.assertEqual([a["id"] for a in articles], ["article-115", "article-116", "article-117"])
 
+    def test_lookup_accepts_comma_separated_articles_from_graph_hints(self):
+        """regulation_graph.py 的 lookup_hint 會產生 '§117,§115' 這種列舉，須可直接執行。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "rules" / "法規"
+            source.mkdir(parents=True)
+            (source / "第3編-警報設備.md").write_text(
+                "\n".join(
+                    [
+                        "# 各類場所消防安全設備設置標準",
+                        "## 第三編 消防安全設計",
+                        "### 第二章 警報設備",
+                        "##### 第 115 條",
+                        "探測器之裝置位置，依下列規定：",
+                        "##### 第 116 條",
+                        "下列處所免設探測器：",
+                        "##### 第 117 條",
+                        "偵煙式探測器或火焰式探測器，不得設於下列處所：",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+            index_path = root / "rules" / "regulation_index.json"
+            build_regulation_index(source, index_path, root / "rules" / "regulation_articles")
+
+            for ref in ("§117,§115", "§117、§115", "§115-§116,§117"):
+                ids = [a["id"] for a in lookup_related_articles(index_path, article=ref)]
+                self.assertIn("article-115", ids, ref)
+                self.assertIn("article-117", ids, ref)
+
+            # 單條與範圍語法不受影響
+            self.assertEqual(
+                [a["id"] for a in lookup_related_articles(index_path, article="§116")],
+                ["article-116"],
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -28,7 +28,9 @@
    - 把待審 `平面圖.dxf`（＋輔助 `平面圖.pdf`、審查文件）放到 `input/{案件名}/`
    - 依 `skills/review-team.md`（總流程）或逐步 `plan-intake → place-use-classification → code-requirements → gap-analysis` 執行
    - 產出四項固定交付物到 `output/{案件名}-{YYYYMMDD}/`
-   - 查法規先看知識圖譜：瀏覽器直接開 `graphify-out/graph.html`，或 `graphify query "…"`
+   - 查法規先看知識圖譜：瀏覽器直接開 `graphify-out/graph.html`，或
+     `python3 tools/regulation_graph.py neighbors --article §24`（免安裝），定位後再
+     `python3 tools/regulation_index.py lookup --article '§24,§12'` 只載入相關條文
 
 > 第三方套件與對應工具一覽見 §五「工具層／環境安裝」；完整目錄結構見 §三。核心計算工具（`fire_code_calc.py`、`regulation_index.py`）無需安裝即可執行。
 
@@ -128,6 +130,16 @@ output/{案件名}-{日期}/
 `rules/stage_two_judgment_rules.md` 與 `rules/review_corrections.md` 均未經 `governance/` 核定，
 援引其結論必附「本判斷慣例未經消防專業人員核定，以現行法規為準」。
 
+兩階段的規則庫**刻意不存放條文原文與門檻數值**（轉抄會隨修法漂移），條文一律即時回查，
+且先用圖譜把範圍縮到實際牽涉的幾條再載入：
+
+```bash
+python3 tools/regulation_graph.py neighbors --article §28        # 定位：引用網＋附表圖檔
+python3 tools/regulation_index.py lookup --article '§28,§12'     # 載入：只取相關條文原文
+```
+
+§14~§31 全文一次載入約 1.5 萬字；定位後只載相關條通常 3~4 千字。
+
 ---
 
 ## 三、目錄結構
@@ -154,7 +166,8 @@ drawing_review/
 │   ├── regulation_index.json         — 逐條索引（266 條）
 │   └── regulation_articles/          — 逐條 JSON（含章/節階層、附表圖）
 ├── governance/                       — 規則核定責任追溯鏈
-├── skills/                           — 審圖 workflow 文件
+├── skills/                           — 審圖 workflow 文件（只放執行指令）
+│   └── README.md                     — 兩階段工作流程設計說明（不被 skill 載入）
 ├── tests/                            — Python 單元測試
 └── tools/                            — 確定性工具
 ```
@@ -189,6 +202,7 @@ DXF 提供座標、圖層、符號與標註位置，但消防設備應設需求�
 |------|------|------|
 | `tools/fire_code_calc.py` | 法規門檻、數量計算、§13 適用判斷、主從用途比對、規則測試、自檢 | stdlib |
 | `tools/regulation_index.py` | 法規 Markdown 轉逐條索引與按需查詢 | stdlib |
+| `tools/regulation_graph.py` | 法規圖譜查詢：條文引用網／設備對應條文／概念關聯路徑（免安裝 graphify） | stdlib |
 | `tools/article_checklist.py` | 依 case.json 產出 §14~§31 逐條窮舉 `check_results.json` | stdlib |
 | `tools/mixed_use_report.py` | case.json 轉複合用途及樓層屬性檢討 HTML（交付物4） | stdlib |
 | `tools/case_facts_gate.py` | 兩階段交付物匯出前的案件事實齊備關卡（不齊備結束碼 2） | stdlib |

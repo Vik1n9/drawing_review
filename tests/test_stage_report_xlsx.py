@@ -11,6 +11,7 @@ from tools.stage_report_xlsx import (
     MANUAL,
     DEFAULT_LAW_PATH,
     add_references,
+    article_18_fallback,
     build_first_stage,
     build_stage_two,
     ensure_article_18,
@@ -147,6 +148,26 @@ class StageTwoWorkbookTest(unittest.TestCase):
         self.assertEqual(titles[0][:3], "17條")
         self.assertTrue(titles[1].startswith("18條"))
         self.assertTrue(titles[-1].startswith("19條"))
+
+    def test_article_18_text_has_a_single_source_of_truth(self):
+        """§18 條文轉錄只存在 rules/article18_equipment_options.json 一份。
+
+        工具內不得再有第二份複本——多處複本會隨修法漂移
+        （rules/stage_two_judgment_rules.md「維護規則」）。
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "opts.json"
+            path.write_text(json.dumps({
+                "article_title": "測試標題",
+                "items": [{"item": 1, "condition": "測試款項條件。", "options": ["泡沫"]}],
+            }, ensure_ascii=False), encoding="utf-8")
+            rows = article_18_fallback(str(path))
+        self.assertEqual(rows, [("18條測試標題", None), (None, "一. 測試款項條件。")])
+
+    def test_article_18_fallback_degrades_when_rules_file_missing(self):
+        self.assertEqual(article_18_fallback("/nonexistent.json"), [])
+        rows = self.law_rows()
+        self.assertEqual(ensure_article_18(rows, "/nonexistent.json"), rows)
 
     def test_repo_law_table_already_contains_article_18(self):
         rows = read_law_rows(DEFAULT_LAW_PATH)

@@ -41,6 +41,10 @@ drawing_review/
 │       └── {案件名}-法條檢核清單.html       — 交付物3：打勾檢核表
 ├── rules/                       — 結構化法規規則庫
 │   ├── equipment_rules.json     — 規則（每條附條號、verified 旗標）
+│   ├── article18_equipment_options.json — §18 各款可選設備對照（選擇設置，非僅泡沫）
+│   ├── stage_two_judgment_rules.md — §14~31 逐款實務判斷慣例（未核定，須附警語）
+│   ├── review_corrections.md    — 累積確認的通案修正筆記（審圖前必讀，不得刪除歷史）
+│   ├── checklists/              — 法條判斷表 xlsx（§14~31，已含第18條完整9款）
 │   ├── rule_tests.json          — 先紅再綠測試案例
 │   ├── 法規/                    — 法規全文正典（單一全文 md ＋ _assets 附表圖檔、主從用途 PDF；非每案輸入）
 │   ├── regulation_index.json    — 輕量條文索引（266 條，不含完整條文）
@@ -58,6 +62,24 @@ drawing_review/
 | 1 | **圖面審查 HTML** | `skills/gap-analysis.md` 產出 `annotations.json`，再用 `tools/dxf_svg_review.py` 將 DXF 轉 SVG 並標註缺失 |
 | 2 | **問題清單** | 缺失四級分類，每項詳列違反法條、應設要求、圖面現況、缺口 |
 | 3 | **法條檢核清單 HTML** | `tools/checklist_html.py` 依 `check_results.json` 產出標準表格，逐項打勾 |
+
+## 兩階段審查工作流程（Excel 交付，與固定交付物並行）
+
+實務交付另有一條兩階段 Excel 路線，內容與交付物 3 及複合用途檢討表同源（皆以 `case.json` 為正典）。
+完整規則見 `skills/first-stage-review.md` 與 `skills/stage-two-review.md`。
+
+| 階段 | skill | 串接既有流程 | Excel 交付物 |
+|------|-------|------------|-------------|
+| 第一階段 | `/first-stage-review` | `/plan-intake` → `/mixed-use-review` | 複合用途建築物及樓層屬性檢討（4 分頁） |
+| 第二階段 | `/stage-two-review` | `/code-requirements` → `article_checklist.py` | 設置標準檢討（3 分頁） |
+
+三條鐵律：
+
+1. **第一階段未完成不得執行第二階段**；第一階段結果修正時必須從頭重跑完整第二階段。
+2. **受控自動化關卡**：兩階段匯出前都必須跑 `tools/case_facts_gate.py`；`ready: false`（結束碼 2）時不得輸出最終交付物，逐項問使用者補齊 `case.json` 後重跑。**不得以猜測、預設值或未提供的圖說補足資料。**
+3. **審圖前必讀** `rules/review_corrections.md`（兩階段皆是）與 `rules/stage_two_judgment_rules.md`（第二階段）；兩者皆未經 `governance/` 核定，援引其結論必附「本判斷慣例未經消防專業人員核定，以現行法規為準」。
+
+第二階段的勾選一律來自人工定案的 `stage2_decisions.json`——**工具不代為做法規判斷**。
 
 ## 法規圖譜（查詢調閱法規先看這裡）
 
@@ -114,6 +136,12 @@ python3 tools/fire_code_calc.py calc --expr '450 / 100'
 # 交付物產生
 python3 tools/dxf_svg_review.py --annotations output/{案件名}-{日期}/annotations.json
 python3 tools/checklist_html.py --results output/{案件名}-{日期}/check_results.json
+
+# 兩階段審查工作流程（匯出前關卡結束碼 2 = 阻擋，不得續行）
+python3 tools/case_facts_gate.py --stage first  --case output/{案件名}-{日期}/case.json
+python3 tools/case_facts_gate.py --stage second --case output/{案件名}-{日期}/case.json
+python3 tools/stage_report_xlsx.py first-stage --case output/{案件名}-{日期}/case.json
+python3 tools/stage_report_xlsx.py stage-two --decisions output/{案件名}-{日期}/stage2_decisions.json --case output/{案件名}-{日期}/case.json
 
 # 規則核定（消防專業人員協作，見 governance/README.md）
 python3 tools/verification_sheet.py export

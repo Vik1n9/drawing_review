@@ -11,7 +11,7 @@
 1. `output/case.json` 已定稿（人工確認完成）
 2. 應設設備清單（`{案件名}-requirements.md`）已產出；若無，先執行 `/code-requirements`
 3. `run-tests --strict` 全綠（先紅再綠關卡，紅則停止）
-4. `python3 tools/training_intake.py status` ——結束碼 `2` ＝ 法規圖譜未跟上規則庫，先補建再續行
+4. `python3 tools/training_intake.py status` ——結束碼 `2` ＝ 法規圖譜未跟上規則庫**或實務註解未併入圖譜**，先補齊再續行
 5. `python3 tools/fire_code_calc.py check-gap --case output/case.json` ——「需人工判讀」項若已有實務註解涵蓋，於問題清單引用註解 ID 與所補充的法條；確為法典未涵蓋且使用者當場給出判讀者，走 `/practice-note` 沉澱下來
 
 ## 執行流程

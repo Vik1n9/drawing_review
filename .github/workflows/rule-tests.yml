@@ -27,7 +27,13 @@ jobs:
       - name: 實務註解庫一致性檢查
         run: python3 tools/practice_note_engine.py test --strict
 
-      - name: 法規圖譜新鮮度把關（來源檔異動後未重建圖譜即紅燈）
+      - name: 實務註解語意抽取齊備檢查（有 active 註解未抽取即紅燈）
+        run: python3 tools/practice_note_graph.py plan
+
+      - name: 實務註解圖譜納入把關（註解沒併進圖譜即紅燈）
+        run: python3 tools/practice_note_graph.py check
+
+      - name: 法規圖譜新鮮度把關（來源檔異動後未重建圖譜、或註解未納入即紅燈）
         run: python3 tools/graph_status.py check
 
       - name: 示範案件門檻判斷煙霧測試

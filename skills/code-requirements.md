@@ -9,7 +9,7 @@
 2. 讀取 `rules/equipment_rules.json` 的 `regulation_version`，寫入報告標頭
 3. 執行 `python3 tools/fire_code_calc.py self-test` 確認規則引擎正常
 4. 執行 `python3 tools/fire_code_calc.py run-tests --strict` ——**先紅再綠關卡：任一測試紅，規則庫不得用於本次計算**，先回 `/regulation-intake` 修復
-5. 執行 `python3 tools/training_intake.py status` ——結束碼 `2` ＝ 法規圖譜未跟上規則庫，先補建再續行；同時得知有無新訓練成果與實務註解
+5. 執行 `python3 tools/training_intake.py status` ——結束碼 `2` ＝ 法規圖譜未跟上規則庫**或實務註解未併入圖譜**，先補齊再續行；同時得知有無新訓練成果與實務註解（`regulation_graph.py notes --article §X` 可查該條既有註解）
 
 ## 執行流程
 

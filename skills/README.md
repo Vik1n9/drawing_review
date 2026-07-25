@@ -79,11 +79,16 @@
 `neighbors` 查詢本身僅約 0.5 千字。除了省 context，先定位也降低看錯條的機率。
 
 ```bash
-python3 tools/regulation_graph.py neighbors --article §24        # 該條引用網＋附表圖檔
+python3 tools/regulation_graph.py neighbors --article §24        # 該條引用網＋附表圖檔＋實務註解
 python3 tools/regulation_graph.py articles --equipment 排煙設備   # 哪些條文規範該設備
 python3 tools/regulation_graph.py path --from 無開口樓層 --to 排煙設備
+python3 tools/regulation_graph.py notes --article §24            # 專查該條的實務註解
 python3 tools/regulation_index.py lookup --article '§24,§12'     # 逗號列舉／範圍皆可
 ```
+
+圖譜含**兩層**：法典層（`rules/core/` 走 `/graphify rules`）與註解層
+（`practice_notes/active/` 走 LLM 語意抽取 ＋ `tools/practice_note_graph.py merge`）。
+查詢結果中的實務註解是**實務見解、非法規條文**，援引須同時列出所補充的法條與註解 ID。
 
 `tools/regulation_graph.py` 只用標準庫直接讀 `graphify-out/graph.json`，**不需安裝 graphify**；
 輸出會附上可直接貼用的 `lookup` 指令。裝了 graphify 時另可用 `graphify query/explain/path`。

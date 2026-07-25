@@ -6,6 +6,16 @@
 
 **第一階段未完成前不得執行 `/stage-two-review`。**
 
+## 開場前置檢查（訓練成果與圖譜新鮮度）
+
+```bash
+python3 tools/training_intake.py status
+```
+
+結束碼 `2` ＝ 圖譜未跟上規則庫（或有未完成的重建）。此時**先補建圖譜再續行**，
+否則查圖譜會查到舊資料。輸出同時會告知：最新訓練批次、Active 修正筆記數、
+現有實務註解數、尚未逐條確認的規則數。
+
 ## 開始前必讀（不可跳過）
 
 檢視任何案件文件**之前**，完整讀取 `rules/review_corrections.md`，套用所有 `Status: Active`

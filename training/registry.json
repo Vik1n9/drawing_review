@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "note": "訓練批次總索引。由 tools/training_intake.py apply 維護；工作流程以 tools/training_intake.py status 查詢。",
+  "latest_batch": null,
+  "batches": [],
+  "assets": {
+    "format_templates": []
+  }
+}

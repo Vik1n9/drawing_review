@@ -18,9 +18,10 @@
 3. **先紅再綠**：規則庫的每個參數必須先有測試，`expected` 從法條 PDF 原文逐字抄錄並附頁碼與 quote；經 `run-tests --verify-red` 確認紅得正確，編碼後轉綠才可使用。參數先於測試存在則刪除重來；`run-tests --strict` 不通過的規則庫不得交付。
 4. **正典資料是 `case.json`**：所有計算以人工確認後的 `case.json` 為準；DXF、SVG 與圖片只是證據來源，不得跳過確認關卡直接從圖面推算。
 5. **需人工判讀原則**：圖面判讀不確定、需大樣圖或現場才能確認的項目，例如防火區劃、排煙開口、夾層面積等，一律標註「需人工判讀」，嚴禁用推測填充。
-6. **未核定規則必附警語**：`rules/*.json` 中 `verified: false` 的規則參數，輸出時必須附「本參數未經消防專業人員核定，以現行法規為準」。
+6. **待確認規則必標示**：`rules/*.json` 中 `verified: false` 的規則參數，輸出時必須標明「本參數尚未逐條確認」。本專案使用者本身即為消防專業人員，不需另外送外部核定：把待確認清單列給使用者（`python3 tools/verification_sheet.py list`）逐條審核，回覆結果以 `apply` 回填即可。
 7. **法規版本注記**：報告標頭必須注明所依據的法規版本，也就是 `rules` 檔案的 `regulation_version` 欄位。
 8. **呈現正反兩面**：判定「免設」時同樣列出計算過程與條文依據，讓審查者可以覆核，不只列缺失。
+9. **法典與實務註解分離**：`rules/` 為法典層，只能經先紅再綠變更；法典未涵蓋情境的實務見解只能以 Practice Note 寫入 `practice_notes/`（`/practice-note`），不得直接改規則參數。`check-gap` 偵測到案件結論無法被既有規則涵蓋時，先查證是否只是「規則未入庫」（是則走先紅再綠），確為法典未涵蓋才草擬註解供使用者審閱；未經使用者「確認納入」的註解禁止從 `staging` 移到 `active`。
 
 ## 目錄結構
 
@@ -50,6 +51,8 @@ drawing_review/
 │   ├── regulation_index.json    — 輕量條文索引（266 條，不含完整條文）
 │   └── regulation_articles/      — 逐條文 JSON（266 條，含章/節階層與附表圖；按需載入）
 ├── graphify-out/                — 法規知識圖譜（可查詢／導覽，見下方「法規圖譜」）
+├── training/                    — 訓練模式（`/train`）：inbox/ 投放、registry.json 索引、每批次歸檔紀錄
+├── practice_notes/              — 實務註解層：active/ 現行註解、staging/ 待確認、index.json 索引
 ├── governance/                  — 規則核定責任追溯鏈
 ├── skills/                      — 審圖 workflow 文件（只放執行指令；設計說明見 skills/README.md）
 └── tools/                       — 確定性工具
@@ -82,6 +85,26 @@ drawing_review/
 
 第二階段的勾選一律來自人工定案的 `stage2_decisions.json`——**工具不代為做法規判斷**。
 
+## 訓練模式與實務註解（讓系統「學會」新東西的唯一入口）
+
+系統要多會判斷一條法規、或記住一個實務見解，一律走這兩條路，**不得直接改規則參數**。
+
+| 目的 | skill | 入口 | 成果落點 |
+|------|-------|------|---------|
+| 注入新法源／實務表格／格式範本 | `/train` | 檔案丟 `training/inbox/` | `rules/法規/`、`rules/checklists/`、`rules/equipment_rules.json`（先紅再綠） |
+| 記住法典未涵蓋情境的判讀 | `/practice-note` | `check-gap` 找出缺口 | `practice_notes/active/` ＋ `index.json` |
+| 記住通案性工作流程修正 | `/train` 第五步 | 使用者口述確認 | `rules/review_corrections.md`、`rules/stage_two_judgment_rules.md` |
+
+四條鐵律：
+
+1. **不繞過先紅再綠**——`training_intake.py` 在程式層拒絕寫入 `equipment_rules.json`／`mixed_use_rules.json`／`rule_tests.json`；法規參數一律走 `skills/red-green.md`
+2. **不自動下法規判斷**——歸檔分類只看副檔名與檔名樣式，信心不足即標 `needs_confirmation` 交人工；註解草案的判讀欄位一律留「（待填）」，嚴禁推測填充
+3. **註解只補充、不推翻法典**——免除法定應設設備的註解一律紅色警示，須具名確認法源；未經使用者「確認納入」禁止 `staging` → `active`
+4. **圖譜必須跟上**——訓練寫入後 `/train` 第七步自動重建圖譜並 `graph_status.py stamp`；自動重建失敗則寫 `training/graph_pending.json`，此後 `training_intake.py status` 與 CI 的 `graph_status.py check` 持續紅燈，直到補建
+
+各 pipeline skill 的前置檢查跑 `python3 tools/training_intake.py status`（結束碼 `2` ＝ 圖譜未跟上規則庫），
+開場即知有無新訓練成果、圖譜是否可信。
+
 ## 法規圖譜（查詢調閱法規先看這裡）
 
 法規全文已建成可查詢的知識圖譜；後續案件需要查詢／調閱法規時，**先查圖譜以定位條號與關聯，再回原文核對**。
@@ -92,7 +115,7 @@ drawing_review/
 - **邊界（呼應最高原則 2、4）**：圖譜只是**索引與導覽**，用來定位條號與關聯，**不是門檻數值或計算結果的來源**。任何應設／免設判斷與數量計算，一律仍以 `python3 tools/fire_code_calc.py` ＋人工確認後的 `case.json` 為準，數值須回法條原文核對；圖表附件節點只作導覽，表內數字不得直接引用，須經先紅再綠抄錄入庫。
 - **查詢（免安裝，優先用這個）**：`python3 tools/regulation_graph.py neighbors --article §24`、`… articles --equipment 排煙設備`、`… path --from 無開口樓層 --to 排煙設備`（純標準庫，直接讀 graph.json，輸出附可貼的 lookup 指令）。裝了 graphify 時另可用 `graphify query/explain/path`。
 - **標準調閱流程**：圖譜（定位牽涉哪幾條）→ `regulation_index.py lookup`（只載入那幾條原文，支援 `'§24,§12'` 逗號列舉與 `'§20-§22'` 範圍）→ `fire_code_calc`（門檻與數量）→ 判斷。**不要一次載入 §14~§31 全文**（全載約 1.5 萬字，定位後通常 3~4 千字）。
-- **法規更新後重建**：改動 `rules/法規/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量）刷新圖譜；法規為文字語料須走 skill 的語意抽取（依編/章切塊），CLI 的 `graphify update`（純 AST）不適用。圖表附件為確定性節點，可由 `regulation_articles` 的圖片連結重建。
+- **法規更新後重建**：改動 `rules/法規/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量）刷新圖譜；法規為文字語料須走 skill 的語意抽取（依編/章切塊），CLI 的 `graphify update`（純 AST）不適用。圖表附件為確定性節點，可由 `regulation_articles` 的圖片連結重建。 重建完成後務必 `python3 tools/graph_status.py stamp` 蓋章——`graph_status.py check` 以 sha256 逐檔指紋判斷圖譜是否跟上規則庫與註解庫，CI 也跑這一步，來源檔改了卻沒重建即紅燈。走 `/train` 時第七步會自動完成重建與蓋章。
 
 ## 報告語言與分類
 
@@ -150,8 +173,24 @@ python3 tools/case_facts_gate.py --stage second --case output/{案件名}-{日�
 python3 tools/stage_report_xlsx.py first-stage --case output/{案件名}-{日期}/case.json
 python3 tools/stage_report_xlsx.py stage-two --decisions output/{案件名}-{日期}/stage2_decisions.json --case output/{案件名}-{日期}/case.json
 
-# 規則核定（消防專業人員協作，見 governance/README.md）
-python3 tools/verification_sheet.py export
+# 訓練模式（素材歸檔 → 先紅再綠 → 重建索引與圖譜）
+python3 tools/training_intake.py classify                       # 乾跑：印出 inbox 素材的路由建議
+python3 tools/training_intake.py apply --batch {批次名} --operator {歸檔人}
+python3 tools/training_intake.py status                          # 工作流程前置檢查（2 = 圖譜需補建）
+python3 tools/graph_status.py check                              # 0=新鮮 2=過期 3=尚未建立基準
+python3 tools/graph_status.py stamp                              # 重建圖譜後蓋章
+
+# 實務註解（法典未涵蓋情境）
+python3 tools/fire_code_calc.py check-gap --case output/{案件名}-{日期}/case.json \
+  --output output/{案件名}-{日期}/gap_candidates.json
+python3 tools/practice_note_engine.py draft --gap output/{案件名}-{日期}/gap_candidates.json --case {案件名}
+python3 tools/practice_note_engine.py conflict-check --draft practice_notes/staging/{id}.json
+python3 tools/practice_note_engine.py apply --draft practice_notes/staging/{id}.json \
+  --approved-by {批准人} --confirm 確認納入
+python3 tools/practice_note_engine.py test --strict
+
+# 規則逐條確認（使用者本身即為消防專業人員，不需另送外部核定）
+python3 tools/verification_sheet.py list                                              # 列出待確認規則
 python3 tools/verification_sheet.py apply --results governance/核定紀錄/results-{日期}.json
 ```
 

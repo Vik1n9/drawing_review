@@ -28,7 +28,8 @@ from decimal import Decimal, Context, ROUND_HALF_EVEN
 
 _CTX = Context(prec=28, rounding=ROUND_HALF_EVEN)
 
-UNVERIFIED_WARNING = "⚠️ 本參數未經消防專業人員核定（verified: false），以現行法規為準，不得直接作為審查依據"
+UNVERIFIED_WARNING = ("⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，"
+                      "確認清單見 python3 tools/verification_sheet.py list")
 
 
 def exact(value):
@@ -261,6 +262,106 @@ def cmd_check_threshold(args):
         print("## 案件層級需人工判讀事項")
         for item in manual_items:
             print(f"- ⚪ {item}")
+
+
+# ---------------------------------------------------------------------------
+# check-gap — 法典涵蓋不到的情境（實務註解的候選來源）
+# ---------------------------------------------------------------------------
+
+PRACTICE_INDEX_PATH = "practice_notes/index.json"
+
+
+def load_practice_index(path):
+    """讀實務註解索引；不存在或壞掉時回空索引（註解層是選用的）。"""
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return {"notes": [], "by_rule_id": {}, "by_article": {}}
+
+
+def gap_candidates(rules_doc, case, practice_index):
+    """把 check-threshold 中「需人工判讀」的結果轉為 gap candidate。
+
+    gap ＝ 法典（rules/）給不出應設或免設的情境。已有實務註解涵蓋者一併列出，
+    供 /practice-note 判斷是要沿用既有註解，還是草擬新註解。
+    """
+    _, results = threshold_results(rules_doc, case)
+    by_rule = practice_index.get("by_rule_id", {})
+    by_article = practice_index.get("by_article", {})
+    notes_by_id = {n["id"]: n for n in practice_index.get("notes", [])}
+
+    candidates = []
+    for item in results:
+        if "需人工判讀" not in item["verdict"]:
+            continue
+        article = str(item.get("legal_basis") or "").lstrip("§")
+        matched = sorted(set(by_rule.get(item["rule_id"], [])) | set(by_article.get(article, [])))
+        candidates.append({
+            "floor": item["floor"],
+            "equipment": item["equipment"],
+            "rule_id": item["rule_id"],
+            "article": item.get("legal_basis"),
+            "status": "uncertain",
+            "verdict": item["verdict"],
+            "case_context": f"{item['floor']}（用途 {item['floor_use']}，{item['floor_area']} ㎡）：{item['reason']}",
+            "matched_rules": [item["rule_id"]],
+            "matched_notes": [
+                {"id": nid, "summary": notes_by_id.get(nid, {}).get("summary"),
+                 "decision": notes_by_id.get(nid, {}).get("decision")}
+                for nid in matched
+            ],
+            "suggested_action": "reuse_practice_note" if matched else "draft_practice_note",
+            "conflict_warning": None,
+        })
+    return candidates
+
+
+def cmd_check_gap(args):
+    rules_doc = load_rules(args.rules)
+    with open(args.case, encoding="utf-8") as f:
+        case = json.load(f)
+    index = load_practice_index(args.notes)
+    candidates = gap_candidates(rules_doc, case, index)
+
+    doc = {
+        "case_name": case.get("case_name", "(未命名案件)"),
+        "regulation_version": rules_doc.get("regulation_version", "未注明"),
+        "practice_notes_count": index.get("count", len(index.get("notes", []))),
+        "candidates": candidates,
+        "unverified_warning": UNVERIFIED_WARNING,
+        "note": "gap candidate 只表示『既有規則庫無法給出應設／免設』，"
+                "不表示該情境法規真的沒有規定——可能是規則未入庫。"
+                "先查 regulation_index / 法規圖譜確認條文，確有條文者走先紅再綠入庫；"
+                "確為法典未涵蓋的實務情境者，才走 /practice-note 草擬實務註解。",
+    }
+    if args.output:
+        os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
+        with open(args.output, "w", encoding="utf-8") as f:
+            json.dump(doc, f, ensure_ascii=False, indent=2, default=str)
+            f.write("\n")
+
+    if getattr(args, "format", "text") == "json":
+        print(json.dumps(doc, ensure_ascii=False, indent=2, default=str))
+        return
+
+    print(f"# 法典涵蓋缺口：{doc['case_name']}")
+    print(f"法規版本：{doc['regulation_version']}｜既有實務註解 {doc['practice_notes_count']} 則")
+    if not candidates:
+        print("\n✅ 本案沒有『需人工判讀』的門檻結果，法典涵蓋完整。")
+    for i, c in enumerate(candidates, 1):
+        print(f"\n{i}. ⚪ {c['equipment']}｜{c['article']}｜{c['rule_id']}")
+        print(f"   情境：{c['case_context']}")
+        if c["matched_notes"]:
+            for n in c["matched_notes"]:
+                print(f"   已有實務註解：{n['id']}（{n['decision']}）{n['summary']}")
+            print("   建議：沿用既有註解（reuse_practice_note）")
+        else:
+            print("   無既有實務註解 → 建議：先查條文是否只是規則未入庫；"
+                  "確為法典未涵蓋才草擬（draft_practice_note）")
+    if args.output:
+        print(f"\n已輸出：{args.output}")
+    print(f"\n{doc['note']}")
 
 
 def _emit(name, rule, verdict, why):
@@ -719,7 +820,7 @@ def cmd_run_tests(args):
               "接著編碼規則參數使測試轉綠；若為既有規則，表示規則與法條 PDF 抄錄值不一致，必須查原文。"
               "INVALID 表示測試本身無效（缺 quote／格式錯誤），先修測試。")
         sys.exit(1)
-    print("【綠】全部測試通過。提醒：綠 ≠ 已核定，verified: false 的規則仍須專業人員核定。")
+    print("【綠】全部測試通過。提醒：綠 ＝ 參數與抄錄的法條原文一致；尚未逐條確認的規則見 verification_sheet.py list。")
 
 
 # ---------------------------------------------------------------------------
@@ -749,7 +850,8 @@ def cmd_self_test(args):
     print(f"✅ self-test 通過：規則 {total_rules} 條"
           f"（{'＋'.join(path for path, _ in docs)}；未核定 {unverified} 條），計算引擎正常")
     if unverified:
-        print(f"⚠️ 尚有 {unverified} 條規則 verified: false，正式使用前須由消防專業人員核定")
+        print(f"⚠️ 尚有 {unverified} 條規則未逐條確認（verified: false）——"
+              "跑 python3 tools/verification_sheet.py list 逐條審核")
 
 
 # ---------------------------------------------------------------------------
@@ -765,6 +867,14 @@ def build_parser():
     s.add_argument("--format", choices=["text", "json"], default="text",
                    help="輸出格式：text（預設，人讀）/ json（供 article_checklist.py 等工具串接）")
     s.set_defaults(func=cmd_check_threshold)
+
+    s = sub.add_parser("check-gap", help="列出法典涵蓋不到的情境（實務註解候選）")
+    s.add_argument("--rules", default=default_rules)
+    s.add_argument("--notes", default=PRACTICE_INDEX_PATH, help="實務註解索引 practice_notes/index.json")
+    s.add_argument("--case", required=True)
+    s.add_argument("--output", default=None, help="輸出 gap_candidates.json 路徑")
+    s.add_argument("--format", choices=["text", "json"], default="text")
+    s.set_defaults(func=cmd_check_gap)
 
     s = sub.add_parser("check-applicability", help="§13 增建/改建/變更用途之新舊標準適用判斷")
     s.add_argument("--rules", default=default_rules)

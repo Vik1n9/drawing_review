@@ -16,6 +16,12 @@ import sys
 import warnings
 from pathlib import Path
 
+# 直接以腳本執行時（python3 tools/dxf_svg_review.py）也要找得到 tools 套件，
+# 比照 tools/onboarding.py:31 的既有做法。
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from tools import dxf_parse  # noqa: E402
+
 
 SEVERITY_CLASS = {
     "重大缺失": "critical",
@@ -77,6 +83,24 @@ def entity_layer(entity):
 
 
 def collect_dxf_entities(dxf_path):
+    """解析 DXF。預設走零相依的 stdlib 解析器，ezdxf 只是後備。
+
+    目標使用者多半裝不起第三方套件（AI 桌面版沙盒），所以交付物1
+    不能建立在 ezdxf 之上。二進位 DXF 與畸形結構才回頭找 ezdxf；
+    兩條路徑的輸出一致性由 tests/test_dxf_parse.py 的差分測試把關。
+    """
+    try:
+        return dxf_parse.parse(dxf_path)
+    except dxf_parse.DxfParseError as exc:
+        try:
+            return collect_dxf_entities_ezdxf(dxf_path)
+        except ReviewInputError:
+            # ezdxf 也沒有——把 stdlib 那邊比較好懂的訊息給使用者
+            raise ReviewInputError(str(exc)) from exc
+
+
+def collect_dxf_entities_ezdxf(dxf_path):
+    """ezdxf 參考實作。同時是差分測試的預言，不要與上面的分派器合併。"""
     ezdxf = import_ezdxf()
     doc = ezdxf.readfile(dxf_path)
     modelspace = doc.modelspace()

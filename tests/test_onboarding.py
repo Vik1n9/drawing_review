@@ -256,6 +256,58 @@ class OnboardingContractTest(unittest.TestCase):
             [s["title"] for s in result["steps"]])
 
 
+class ContractFilesStayLeanTest(unittest.TestCase):
+    """`CLAUDE.md`／`AGENTS.md` 每個工作階段都會載入，所以導引細節必須留在
+    `skills/onboarding.md`——導引走完後就不該再有人付這份 context 的代價。
+    """
+
+    CONTRACTS = ("CLAUDE.md", "AGENTS.md")
+    REPO = Path(__file__).resolve().parent.parent
+
+    def read(self, name):
+        return (self.REPO / name).read_text(encoding="utf-8")
+
+    def test_contracts_tell_agents_to_skip_the_skill_when_ready(self):
+        """結束碼 0 時必須明講「不要讀 skills/onboarding.md」，導引才會自動退場。"""
+        for name in self.CONTRACTS:
+            text = self.read(name)
+            self.assertIn("結束碼 `0`", text, f"{name} 沒說明就緒時該怎麼做")
+            self.assertIn("不要讀 `skills/onboarding.md`", text,
+                          f"{name} 沒叫代理在就緒時跳過導引")
+
+    # 「## 開場檢查」整節的行數上限。逐步細節一旦被貼回來，這個數字會立刻爆掉。
+    # 用節長度而不是關鍵字黑名單：常用命令區塊本來就會出現 decide/apply/--results，
+    # 黑名單會誤判。
+    MAX_SECTION_LINES = 30
+
+    def opening_section(self, text):
+        lines = text.splitlines()
+        start = next(i for i, line in enumerate(lines)
+                     if line.startswith("## 開場檢查"))
+        rest = lines[start + 1:]
+        end = next((i for i, line in enumerate(rest) if line.startswith("## ")),
+                   len(rest))
+        return rest[:end]
+
+    def test_contracts_do_not_inline_the_walkthrough(self):
+        """逐步細節只能放 skills/onboarding.md，不得回流到常駐契約。"""
+        for name in self.CONTRACTS:
+            section = self.opening_section(self.read(name))
+            self.assertLessEqual(
+                len(section), self.MAX_SECTION_LINES,
+                f"{name} 的開場章節長到 {len(section)} 行——導引細節應該留在 "
+                f"skills/onboarding.md，不要每個工作階段都載入")
+            # 五步驟清單是導引本體的標誌，不該出現在常駐契約
+            self.assertNotIn("④", "\n".join(section),
+                             f"{name} 把五步驟清單寫回常駐契約了")
+
+    def test_the_walkthrough_detail_lives_in_the_skill(self):
+        """反面：細節必須真的在 skill 裡，不能是刪掉了事。"""
+        skill = self.read("skills/onboarding.md")
+        for marker in ("--results", "已裁示/", "verified: true", "Verify RED"):
+            self.assertIn(marker, skill, f"skills/onboarding.md 缺少 {marker}")
+
+
 class OnboardingIntroTest(unittest.TestCase):
 
     def test_intro_covers_the_four_deliverables_and_exits_zero(self):

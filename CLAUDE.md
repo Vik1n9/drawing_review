@@ -18,53 +18,27 @@
 
 用途分類、樓層屬性、地下層、屋突層／屋頂層與無開口樓層判定，必須讀取 `skills/place-use-classification.md`；第 12 條用途分類只產生候選，最終以人工確認後的 `case.json` 為準。複合用途建築物的主從用途判定依 `skills/mixed-use-review.md`（`/mixed-use-review`）：以 `rules/mixed_use_rules.json`（《複合用途建築物判斷基準》附表結構化）比對產生候選，§12 分類經人工定案後才可進入 `/code-requirements`。案件涉及增建、改建、室內裝修或變更用途時，必須先跑 `check-applicability`（§13）判斷各設備適用新舊標準。走兩階段 Excel 交付路線時，另須先讀 `rules/review_corrections.md`——其中含通案樓層屬性規則（該工作流程下所有地上樓層一律列為`無開口樓層`），會改變 §14~31 的判斷基礎。
 
-## 開場必做：開場導引（載入本倉庫的第一件事）
-
-**載入本倉庫後的第一個動作**，不需使用者要求（Claude Code 已設 SessionStart hook 自動執行；
-其他 AI 工具自行執行）：
+## 開場檢查（一行；結束碼決定要不要載入導引）
 
 ```bash
-python3 tools/onboarding.py status      # 結束碼 2 ＝ 有待處理步驟
+python3 tools/onboarding.py status      # 0 ＝ 就緒／2 ＝ 有待處理步驟
 ```
 
-結束碼為 `2` 時，依 `skills/onboarding.md` 逐步引導使用者走完五個步驟：
-**① 待確認事項裁示 → ② 法規圖譜 → ③ 環境工具 → ④ 規則庫健康 → ⑤ 操作簡介**。
+- **結束碼 `0`**——**直接開始審圖**。不要讀 `skills/onboarding.md`、不要把導引內容講給使用者，
+  本節到此結束。
+- **結束碼 `2`**——才讀 `skills/onboarding.md` 並依其流程引導使用者（首次載入，或環境、
+  疑義表、圖譜有變動時才會走到）。完整的五步驟、逐則裁示問法、唯讀／寫入分界與工具中立
+  規範都在那份檔案裡，**刻意不放在本檔**：那些內容只有導引當下需要，不該每個工作階段都載入。
 
-兩條貫穿全程的紀律：
-
-- **唯讀自動、寫入先問**——`status` 把每條命令標成`（唯讀，可直接跑）`或`（寫入，需你同意）`；
-  標「寫入」者（`setup.sh`、`pending_review.py decide/apply`、圖譜重建）必須先向使用者
-  說明並取得同意才能執行
-- **工具中立**——使用者可能用 Claude Code、Codex、OpenCode 或其他工具。斜線指令只有
-  Claude Code 有，引導時一律給「可複製的命令」＋「一句自然語言請求」；命令裡的解譯器照
-  `status` 回報的 `interpreter` 改寫（Windows 常只有 `python`）
-
-本倉庫的使用者**就是消防專業人員本人**，自行把倉庫導入自己電腦的 AI 工具作業。
-他懂法規但不一定懂終端機——把技術細節擋在他前面，只把需要他做法規判斷的事端到他面前。
-
-### 第一步的細節：待確認事項
-
-規則參數與現行條文比對出的差異寫在 `governance/待確認清單/`，並以 `待確認事項.md` 呈現。
-`onboarding.py status` 的第一步已涵蓋這項檢查（也可單獨跑
-`python3 tools/pending_review.py status`）。有待確認事項時，**在進行任何審圖工作之前**
-先完成這條迴路：
-
-1. `python3 tools/pending_review.py list` —— 逐則列給使用者（他本人就是消防專業人員）
-2. 使用者逐則回覆「採納更正」／「維持現值」／「另有更正＋正確值」
-3. `python3 tools/pending_review.py decide --id {ID} --decision {裁示} --by "{確認人}"`
-   （多則可用 `--results {裁示JSON}` 一次記錄）
-4. `python3 tools/pending_review.py apply --all --by "{確認人}"` —— 工具自動走先紅再綠
-   （把條文原文寫進 `rule_tests.json` 的 expected → 確認轉紅 → 才改參數 → 確認轉綠），
-   接著回填 `verified: true`、重產 `待確認事項.md`、同步 README 區塊；全部裁示完畢時
-   自動移除 `待確認事項.md` 並把疑義檔封存到 `governance/待確認清單/已裁示/`
-5. 收尾：`python3 tools/fire_code_calc.py self-test && python3 tools/fire_code_calc.py run-tests --strict`
-
-三條紀律：
+走到導引時的三條紅線（`skills/onboarding.md` 有完整說明）：
 
 - **不得代替使用者裁示**——工具只執行已記錄的裁示，AI 不得自行決定採納或維持
-- **不得跳過先紅再綠**——`apply` 內建 Verify RED 關卡，測試沒紅（或紅得不對）即整批回滾
-- **未裁示前照常審圖是允許的，但受影響規則的輸出必須附「本參數尚未逐條確認」警語**，
-  且不得把該規則的結論當成已核定的法源依據
+- **不得跳過先紅再綠**——`pending_review.py apply` 內建 Verify RED 關卡，測試沒紅即整批回滾
+- **會改動系統的命令先取得同意**——安裝套件、`apply`、圖譜重建皆是
+
+與審圖直接相關、任何工作階段都適用的一條：**規則參數與現行條文比對出的差異未裁示前，
+照常審圖是允許的，但受影響規則的輸出必須附「本參數尚未逐條確認」警語**，
+且不得把該規則的結論當成已核定的法源依據。
 
 
 ## 目錄結構（統一輸入／統一輸出）

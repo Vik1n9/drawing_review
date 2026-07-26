@@ -254,7 +254,8 @@ NOTES_TEMPLATE = """# 訓練批次紀錄：{batch}
 - [ ] 新增測試（先紅再綠 RED）：`rules/rule_tests.json` 的測試 ID —— 待填
 - [ ] 新增規則（GREEN）：`rules/equipment_rules.json` 的規則 ID —— 待填（一律 `verified: false`）
 - [ ] 回饋筆記追加：`rules/review_corrections.md` / `rules/stage_two_judgment_rules.md` 的日期標題 —— 待填
-- [ ] 圖譜重建：`/graphify rules --update` 後 `python3 tools/graph_status.py stamp`
+- [ ] 圖譜重建：`/graphify rules --update` → `python3 tools/practice_note_graph.py merge`
+      （重建會覆寫 graph.json，須把實務註解層併回去）→ `python3 tools/graph_status.py stamp`
 - [ ] 送核定：`python3 tools/verification_sheet.py export`
 
 ## 注意
@@ -434,7 +435,10 @@ def format_status(result):
                  " —— 審圖前必讀 rules/review_corrections.md")
     lines.append(f"規則庫：{result['unverified_rules']} 條尚未逐條確認（verified: false）"
                  " —— 跑 python3 tools/verification_sheet.py list 列給使用者確認")
-    lines.append(f"實務註解（active）：{result['practice_notes_active']} 則"
+    notes_state = (result["graph"].get("notes") or {}).get("state", "covered")
+    merged_mark = {"covered": "✅ 已納入圖譜", "uncovered": "⛔ 尚未併入圖譜（查圖譜查不到）"}
+    mark = f"（{merged_mark.get(notes_state, notes_state)}）" if result["practice_notes_active"] else ""
+    lines.append(f"實務註解（active）：{result['practice_notes_active']} 則{mark}"
                  " —— check-gap 會自動比對；引用時須同時列出所補充的法條與註解 ID")
     if result["practice_notes_staging"]:
         lines.append(f"⚠️ practice_notes/staging/ 有 {result['practice_notes_staging']} 則草案"
@@ -449,6 +453,11 @@ def format_status(result):
     elif graph["state"] == "no_baseline":
         lines.append("法規圖譜：⚠️ 尚未建立指紋基準 —— 先確認圖譜為當前規則庫所建，"
                      "再跑 python3 tools/graph_status.py stamp")
+    elif graph["state"] == "notes_missing":
+        lines.append("法規圖譜：⛔ 實務註解未納入 —— 來源檔沒變，但註解不在圖譜裡，"
+                     "審圖查圖譜會查不到這些訓練成果")
+        lines.append(f"  → {graph_status.practice_note_graph.MERGE_HINT}")
+        lines.append("    合併後重新 python3 tools/graph_status.py stamp 蓋章")
     else:
         total = sum(len(v) for v in graph["diff"].values())
         lines.append(f"法規圖譜：⛔ 已過期（{total} 個來源檔異動）"
@@ -458,7 +467,7 @@ def format_status(result):
         lines.append(f"⛔ 存在 {GRAPH_PENDING_PATH}：上次訓練的圖譜自動重建未完成，必須補建後刪除此旗標")
 
     lines.append("✅ 可續行後續工作流程" if result["ready"]
-                 else "⛔ 圖譜未跟上規則庫：補建圖譜並蓋章後再續行")
+                 else "⛔ 圖譜未跟上規則庫與註解庫：補建圖譜、併入註解層並蓋章後再續行")
     return "\n".join(lines)
 
 
@@ -519,7 +528,8 @@ def cmd_apply(args):
     print("  1. rules/core/ 有變更 → python3 tools/regulation_index.py build")
     print("  2. 法規參數入庫 → 走 skills/red-green.md（RED → Verify RED → GREEN → Verify GREEN）")
     print("  3. 回饋筆記 → 依 rules/review_corrections.md 既有格式，經使用者確認後追加")
-    print("  4. 圖譜重建 → /graphify rules --update 後 python3 tools/graph_status.py stamp")
+    print("  4. 圖譜重建 → /graphify rules --update → python3 tools/practice_note_graph.py merge "
+          "→ python3 tools/graph_status.py stamp")
     print("  5. 綠燈驗收 → python3 tools/fire_code_calc.py self-test && "
           "python3 tools/fire_code_calc.py run-tests --strict")
     return 0

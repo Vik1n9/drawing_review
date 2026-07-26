@@ -24,7 +24,7 @@
 | 四 | 法源類 → `skills/regulation-intake.md` ＋ `skills/red-green.md` | 新測試＋新規則 |
 | 五 | 回饋類 → `/practice-note`（結構化）或追加 markdown 筆記 | `practice_notes/active/` ／ `review_corrections.md` 新條目 |
 | 六 | `regulation_index.py build` | 重建逐條索引 |
-| 七 | 自動重建圖譜 ＋ 蓋章 | 新 `graphify-out/` ＋ `source_fingerprint.json` |
+| 七 | 自動重建圖譜 ＋ 併入實務註解層 ＋ 蓋章 | 新 `graphify-out/` ＋ `source_fingerprint.json` |
 | 八 | `self-test` ＋ `run-tests --strict` | 綠燈驗收 |
 | 九 | 回填 `NOTES.md`／`manifest.json`，總結本次學到什麼 | 批次收尾 |
 
@@ -136,13 +136,25 @@ python3 tools/graph_status.py check
 
 結束碼 `0`＝新鮮（跳過重建）、`2`＝過期、`3`＝尚未建立指紋基準。
 
+結束碼 `2` 有兩種成因，處理方式不同——訊息會直接寫明是哪一種：
+
+- **來源檔異動**（`已過期`）→ 重建圖譜（下方）
+- **實務註解未納入**（`註解未納入`）→ 只需補做註解層合併（下方第 3 行起）
+
 過期或無基準時，**自動**執行重建，不要等使用者開口：
 
 ```bash
 /graphify rules --update      # 增量：只重抽變更條文（一般情況）
 /graphify rules               # 大改：法規換版、全文替換時
+python3 tools/practice_note_graph.py plan     # 註解層：0=齊備 2=有待語意抽取
+python3 tools/practice_note_graph.py merge    # 把實務註解併回圖譜
 python3 tools/graph_status.py stamp
 ```
+
+**`/graphify rules` 只掃 `rules/`，而且會覆寫 `graph.json`**——重建等於把實務註解層沖掉，
+所以每次重建後都必須重跑 `practice_note_graph.py merge`。`plan` 回報有待抽取的註解時，
+依 `skills/practice-note.md` 第七步做 LLM 語意抽取後再 merge；
+註解沒併回去，`graph_status.py stamp` 會拒絕蓋章（避免蓋出查不到註解的假綠燈）。
 
 法規是文字語料，必須走 skill 的語意抽取（子代理依編/章切塊）；CLI 的 `graphify update`
 （純 AST、免 LLM）**不適用**於法條語意圖譜。跨塊抽取後須以 `graphify.ids.make_id`
@@ -213,11 +225,11 @@ python3 tools/verification_sheet.py apply --results {結果JSON}
 | 法規參數 | `rules/equipment_rules.json` | `fire_code_calc.py check-threshold` 等全部子指令 |
 | 主從用途對照 | `rules/mixed_use_rules.json` | `fire_code_calc.py classify-mixed-use` |
 | §14~31 判斷表 | `rules/checklists/` | `standard_checklist_html.py`、`stage_report_xlsx.py` |
-| 實務註解 | `practice_notes/active/` ＋ `index.json` | `fire_code_calc.py check-gap` 自動比對命中 |
+| 實務註解 | `practice_notes/active/` ＋ `index.json` ＋ 圖譜註解層 | `fire_code_calc.py check-gap` 自動比對命中；`regulation_graph.py notes／neighbors／articles` 查得到（需先語意抽取並 `practice_note_graph.py merge`） |
 | 通案修正筆記 | `rules/review_corrections.md` | `/first-stage-review`、`/stage-two-review` 的必讀前置 |
 | 逐款判斷慣例 | `rules/stage_two_judgment_rules.md` | `/stage-two-review`、`tools/case_facts_gate.py` |
 | 格式範本 | `training/{批次}/formats/` ＋ `registry.json` | `training_intake.py status` |
-| 條號關聯導覽 | `graphify-out/graph.json` | `tools/regulation_graph.py neighbors／articles／path`（免安裝） |
+| 條號關聯導覽 | `graphify-out/graph.json` | `tools/regulation_graph.py neighbors／articles／path／notes`（免安裝） |
 
 各 pipeline skill 的前置檢查會跑 `python3 tools/training_intake.py status`
 （結束碼 `2` ＝ 圖譜未跟上規則庫），確保開場就知道有沒有新訓練成果、圖譜是否可信。

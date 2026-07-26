@@ -82,6 +82,7 @@ drawing_review/
 ├── practice_notes/              — 實務註解層（法典未涵蓋情境的實務見解）
 │   ├── active/                  — 現行有效註解（每則一個 PN-{日期}-{序號}.json）
 │   ├── staging/                 — 草擬中，待使用者「確認納入」
+│   ├── graph_extractions/       — 每則註解的 LLM 語意抽取結果（併入知識圖譜的輸入）
 │   └── index.json               — 註解索引（by_article／by_equipment／by_rule_id）
 ├── governance/                  — 規則核定責任追溯鏈（核定表／簽名紀錄，見 governance/README.md）
 │   └── 待確認清單/              — 疑義檔：參數與現行條文的差異，逐則待使用者裁示（已裁示者封存於 已裁示/）
@@ -170,6 +171,7 @@ python3 tools/mixed_use_report.py --case output/case.json       # 交付物4：�
 # 法規調閱：先定位，再載入（免安裝 graphify）
 python3 tools/regulation_graph.py neighbors --article §24
 python3 tools/regulation_graph.py articles --equipment 排煙設備
+python3 tools/regulation_graph.py notes --article §24              # 該條既有的實務註解
 python3 tools/regulation_index.py lookup --article '§24,§12'      # 支援逗號列舉與範圍
 
 # 兩階段審查工作流程
@@ -196,6 +198,14 @@ python3 tools/practice_note_engine.py apply --draft practice_notes/staging/{id}.
   --approved-by {批准人} --confirm 確認納入
 python3 tools/practice_note_engine.py test --strict
 
+# 實務註解 → 知識圖譜（LLM 語意抽取 ＋ 確定性合併；沒做完後續查圖譜查不到訓練成果）
+python3 tools/practice_note_graph.py plan                        # 0=齊備 2=有待語意抽取
+python3 tools/practice_note_graph.py contract --note {註解 id}    # 印出抽取契約給 LLM 填
+python3 tools/practice_note_graph.py validate \
+  --extraction practice_notes/graph_extractions/{id}.json
+python3 tools/practice_note_graph.py merge                       # 併入 graph.json（冪等）
+python3 tools/practice_note_graph.py check                       # 0=已納入 2=未納入
+
 # 待確認事項（開場必做：與現行條文比對出的差異，逐則裁示後自動修正）
 python3 tools/pending_review.py status                                                # 結束碼 2 = 有待確認事項
 python3 tools/pending_review.py list                                                  # 逐則列給使用者裁示
@@ -216,7 +226,7 @@ python3 tools/verification_sheet.py apply --results governance/核定紀錄/resu
 | 目的 | skill | 入口 | 成果落點 |
 |------|-------|------|---------|
 | 注入新法源／實務表格／格式範本 | `/train` | 檔案丟 `training/inbox/` | `rules/core/`、`rules/checklists/`、`rules/equipment_rules.json`（先紅再綠） |
-| 記住法典未涵蓋情境的判讀 | `/practice-note` | `check-gap` 找出缺口 | `practice_notes/active/` ＋ `index.json` |
+| 記住法典未涵蓋情境的判讀 | `/practice-note` | `check-gap` 找出缺口 | `practice_notes/active/` ＋ `index.json` ＋ **圖譜註解層** |
 | 記住通案性工作流程修正 | `/train` 第五步 | 使用者口述確認 | `rules/review_corrections.md`、`rules/stage_two_judgment_rules.md` |
 
 四條鐵律：
@@ -224,7 +234,8 @@ python3 tools/verification_sheet.py apply --results governance/核定紀錄/resu
 1. **不繞過先紅再綠**——`training_intake.py` 在程式層拒絕寫入 `equipment_rules.json`／`mixed_use_rules.json`／`rule_tests.json`；法規參數一律走 `skills/red-green.md`
 2. **不自動下法規判斷**——歸檔分類只看副檔名與檔名樣式，信心不足即標 `needs_confirmation` 交人工；註解草案的判讀欄位一律留「（待填）」，嚴禁推測填充
 3. **註解只補充、不推翻法典**——免除法定應設設備的註解一律紅色警示，須具名確認法源；未經使用者「確認納入」禁止 `staging` → `active`
-4. **圖譜必須跟上**——訓練寫入後 `/train` 第七步自動重建圖譜並 `graph_status.py stamp`；自動重建失敗則寫 `training/graph_pending.json`，此後 `training_intake.py status` 與 CI 的 `graph_status.py check` 持續紅燈，直到補建
+4. **圖譜必須跟上**——訓練寫入後 `/train` 第七步自動重建圖譜、**併入實務註解層**（`practice_note_graph.py merge`）並 `graph_status.py stamp`；自動重建失敗則寫 `training/graph_pending.json`，此後 `training_intake.py status` 與 CI 的 `graph_status.py check` 持續紅燈，直到補建
+5. **註解要進圖譜才算學會**——`/graphify rules` 只掃 `rules/`，實務註解得另走「LLM 語意抽取 → `practice_note_graph.py merge`」；註解文字沒有固定格式，關聯只能語意抽取，工具不做任何推導，只搬運抽取檔寫明的節點與邊。註解未併入時 `graph_status.py check` 紅燈、`stamp` 拒絕蓋章（防假綠燈）
 
 各 pipeline skill 的前置檢查跑 `python3 tools/training_intake.py status`（結束碼 `2` ＝ 圖譜未跟上規則庫），
 開場即知有無新訓練成果、圖譜是否可信。
@@ -237,13 +248,17 @@ python3 tools/verification_sheet.py apply --results governance/核定紀錄/resu
   - `graph.json`——可查詢圖譜（482 節點／830 邊：條號、設備、場所用途分類、**圖表附件**為節點；`依第X條`／`準用`／設備↔條文／條文↔附表圖為邊）
   - `graph.html`——互動式視覺化（瀏覽器直接開，免伺服器）
   - `GRAPH_REPORT.md`——樞紐節點（§12 用途分類、避難器具、自動撒水設備…）、社群分群與跨編關聯導覽
-- **來源**：以 `rules/core/` 法規全文 md（各類場所消防安全設備設置標準，§1~§239 共 266 條，含附表圖檔）與主從用途對照表 PDF 語意抽取；`regulation_version` 見 `rules/regulation_index.json`
+- **來源（兩層）**：
+  - **法典層**——`rules/core/` 法規全文 md（各類場所消防安全設備設置標準，§1~§239 共 266 條，含附表圖檔）與主從用途對照表 PDF，走 `/graphify rules` 語意抽取；`regulation_version` 見 `rules/regulation_index.json`
+  - **註解層**——`practice_notes/active/` 的實務註解（訓練成果），走 **LLM 語意抽取 → `tools/practice_note_graph.py merge`**。節點帶 `layer: "practice_note"`，與法典層節點區隔；`/graphify rules` **不會**掃到這一層，且重建會覆寫 `graph.json`，故每次重建後都要重跑 `merge`
 - **查詢方式（免安裝，優先用這個）**——`tools/regulation_graph.py` 直接讀 `graph.json`，只用標準庫：
   ```bash
-  python3 tools/regulation_graph.py neighbors --article §24        # 該條引用網＋附表圖檔
+  python3 tools/regulation_graph.py neighbors --article §24        # 該條引用網＋附表圖檔＋實務註解
   python3 tools/regulation_graph.py articles --equipment 排煙設備   # 哪些條文規範該設備
   python3 tools/regulation_graph.py path --from 無開口樓層 --to 排煙設備
+  python3 tools/regulation_graph.py notes --article §24            # 專查該條的實務註解
   ```
+  查詢輸出帶出的實務註解是**實務見解、非法規條文**，援引時必須同時列出所補充的法條與註解 ID（輸出已附此警語）。
   輸出直接附上可貼的 `lookup` 指令。裝了 graphify 時另可用
   `graphify query/explain/path`（先 `uv tool install graphifyy && graphify install`）。
 - **標準調閱流程（省 context 且降低看錯條的機率）**：
@@ -253,7 +268,7 @@ python3 tools/verification_sheet.py apply --results governance/核定紀錄/resu
   `lookup --article` 支援單條、範圍與**逗號／頓號列舉**（`'§24,§12'`、`'§20-§22,§28'`）。
   **不要一次載入 §14~§31 全文**——全載約 1.5 萬字，定位後只載相關條通常 3~4 千字。
 - **邊界（呼應最高原則 2、4）**：圖譜只是**索引與導覽**，用來定位條號與關聯，**不是門檻數值或計算結果的來源**。任何應設／免設判斷與數量計算，一律仍以 `python3 tools/fire_code_calc.py` ＋人工確認後的 `case.json` 為準，數值須回法條原文核對，不得直接引用圖譜節點標題當作法規數值。
-- **法規更新後重建**：改動 `rules/core/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量，只重抽變更條文）刷新圖譜。註：法規為文字語料，須走 skill 的語意抽取（子代理依編/章切塊）；CLI 的 `graphify update`（純 AST、免 LLM）不適用於法條語意圖譜。跨塊抽取後須以 `graphify.ids.make_id` 統一正規化 node id（條號感知）再合併，避免共用概念無法去重。 重建完成後務必 `python3 tools/graph_status.py stamp` 蓋章——`graph_status.py check` 以 sha256 逐檔指紋判斷圖譜是否跟上規則庫與註解庫，CI 也跑這一步，來源檔改了卻沒重建即紅燈。走 `/train` 時第七步會自動完成重建與蓋章。
+- **法規更新後重建**：改動 `rules/core/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量，只重抽變更條文）刷新圖譜。註：法規為文字語料，須走 skill 的語意抽取（子代理依編/章切塊）；CLI 的 `graphify update`（純 AST、免 LLM）不適用於法條語意圖譜。跨塊抽取後須以 `graphify.ids.make_id` 統一正規化 node id（條號感知）再合併，避免共用概念無法去重。 重建後**必須重跑 `python3 tools/practice_note_graph.py merge`**（重建會覆寫 `graph.json`，把實務註解層沖掉），再 `python3 tools/graph_status.py stamp` 蓋章。`graph_status.py check` 有兩道關卡：sha256 逐檔指紋（圖譜是否跟上規則庫與註解庫）＋**註解納入度**（每則 active 註解是否真的在 `graph.json` 有節點且 sha 對得上）；CI 也跑這一步，來源檔改了沒重建、或註解沒併進圖譜，皆為紅燈，`stamp` 也會拒絕蓋章。走 `/train` 時第七步會自動完成重建、註解合併與蓋章。
 
 ## 注意事項
 

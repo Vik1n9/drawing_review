@@ -219,6 +219,14 @@ python3 tools/practice_note_engine.py apply --draft practice_notes/staging/{id}.
   --approved-by {批准人} --confirm 確認納入
 python3 tools/practice_note_engine.py test --strict
 
+# 實務註解 → 知識圖譜（LLM 語意抽取 ＋ 確定性合併；沒做完後續查圖譜查不到訓練成果）
+python3 tools/practice_note_graph.py plan                        # 0=齊備 2=有待語意抽取
+python3 tools/practice_note_graph.py contract --note {註解 id}    # 印出抽取契約給 LLM 填
+python3 tools/practice_note_graph.py validate \
+  --extraction practice_notes/graph_extractions/{id}.json
+python3 tools/practice_note_graph.py merge                       # 併入 graph.json（冪等）
+python3 tools/practice_note_graph.py check                       # 0=已納入 2=未納入
+
 # 待確認事項（開場必做：與現行條文比對出的差異，逐則裁示後自動修正）
 python3 tools/pending_review.py status                                                # 結束碼 2 = 有待確認事項
 python3 tools/pending_review.py list                                                  # 逐則列給使用者裁示

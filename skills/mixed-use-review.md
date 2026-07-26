@@ -13,6 +13,7 @@
 1. `output/case.json` 存在，且 `use_permit` 區塊已完成證照文件萃取；缺件則退回 `/plan-intake` 補齊（或明確記錄「無使用執照可考」進 `manual_review_items`）
 2. 各層 `use_category` 至少有候選值（`use_candidates` 非空）
 3. `python3 tools/fire_code_calc.py self-test` 通過（會一併檢查 `rules/mixed_use_rules.json` 結構）
+4. `python3 tools/training_intake.py status` ——結束碼 `2` ＝ 法規圖譜未跟上規則庫或實務註解未併入圖譜，先補建再續行；本 skill 會查圖譜定位 §12 與主從用途關聯，查到舊圖譜等於用過期知識做分類
 
 ## 執行流程
 

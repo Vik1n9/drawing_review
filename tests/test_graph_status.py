@@ -1,9 +1,49 @@
+import hashlib
 import json
 import tempfile
 import unittest
 from pathlib import Path
 
 from tools.graph_status import EXIT_CODES, collect_sources, diff_sources, evaluate, main
+from tools.practice_note_graph import GRAPH_PATH, LAYER, merge
+
+NOTE_ID = "PN-20260725-001"
+
+
+def write_active_note(root):
+    """一則最小可用的 active 註解（status 為 active 才會進納入度檢查）。"""
+    note = {
+        "id": NOTE_ID, "ref_article": "19", "ref_rule_ids": ["r1"],
+        "scenario": {"summary": "挑空區", "conditions": {"space_type": "挑空區"}},
+        "judgment": {"equipment": "火警自動警報設備", "decision": "exempt", "detail": "得免設"},
+        "source_case": "Case", "status": "active", "created": "2026-07-25T10:00:00+08:00",
+    }
+    path = root / "practice_notes" / "active" / f"{NOTE_ID}.json"
+    path.write_text(json.dumps(note, ensure_ascii=False, indent=2), encoding="utf-8")
+    return path
+
+
+def merge_note_into_graph(root, note_path):
+    """建最小圖譜與語意抽取檔，走真正的 merge 流程把註解併進去。"""
+    graph = {"directed": True, "graph": {}, "links": [],
+             "nodes": [{"id": "a19", "label": "第19條", "file_type": "document"}]}
+    (root / GRAPH_PATH).parent.mkdir(parents=True, exist_ok=True)
+    (root / GRAPH_PATH).write_text(json.dumps(graph, ensure_ascii=False), encoding="utf-8")
+    extraction = {
+        "schema_version": 1, "note_id": NOTE_ID,
+        "note_sha256": hashlib.sha256(note_path.read_bytes()).hexdigest(),
+        "extracted_by": "test-llm", "extracted_at": "2026-07-25T11:00:00+08:00",
+        "summary": "挑空區情境",
+        "concepts": [{"label": "挑空區", "kind": "scenario_condition", "rationale": "summary"}],
+        "edges": [{"target": "第19條", "relation": "supplements", "rationale": "ref_article"}],
+    }
+    path = root / "practice_notes" / "graph_extractions" / f"{NOTE_ID}.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(extraction, ensure_ascii=False), encoding="utf-8")
+    result = merge(root)
+    assert result["ok"], result
+    assert any(n.get("layer") == LAYER
+               for n in json.loads((root / GRAPH_PATH).read_text(encoding="utf-8"))["nodes"])
 
 
 def make_repo(tmp):
@@ -85,6 +125,33 @@ class EvaluateTest(unittest.TestCase):
             result = evaluate(root)
             self.assertEqual(result["state"], "stale")
             self.assertEqual(result["diff"]["added"], ["practice_notes/active/PN-20260725-001.json"])
+
+    def test_notes_missing_when_active_note_not_in_graph(self):
+        """假綠燈防線：來源指紋一致，但註解沒併進圖譜時仍須紅燈。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(tmp)
+            write_active_note(root)
+            main(["--root", str(root), "stamp", "--allow-missing-notes"])
+            result = evaluate(root)
+            self.assertEqual(result["state"], "notes_missing")
+            self.assertEqual(result["diff"], {"added": [], "removed": [], "changed": []})
+            self.assertEqual(result["notes"]["missing"], ["PN-20260725-001"])
+            self.assertEqual(main(["--root", str(root), "check"]), EXIT_CODES["notes_missing"])
+
+    def test_stamp_refuses_while_notes_are_not_merged(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(tmp)
+            write_active_note(root)
+            self.assertEqual(main(["--root", str(root), "stamp"]), 2)
+            self.assertFalse((root / "graphify-out" / "source_fingerprint.json").is_file())
+
+    def test_fresh_once_note_is_merged_into_graph(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(tmp)
+            note_path = write_active_note(root)
+            merge_note_into_graph(root, note_path)
+            self.assertEqual(main(["--root", str(root), "stamp"]), 0)
+            self.assertEqual(evaluate(root)["state"], "fresh")
 
     def test_restamp_clears_staleness(self):
         with tempfile.TemporaryDirectory() as tmp:

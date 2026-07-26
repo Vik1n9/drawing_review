@@ -69,4 +69,4 @@ python3 tools/mixed_use_report.py --case output/case.json
 1. **對照表僅供候選**——從屬認定的管理權、使用形態、面積比例要件（判斷基準本文）未入庫前，最終判定一律人工
 2. **對照表已確認，判斷基準本文仍未入庫**——`mixed_use_rules.json` 的 31 項抄錄已於 2026-07-25 與附表原件逐欄核對（`verified: true`），輸出不再附「本參數尚未逐條確認」警語；但**從屬認定要件與面積比例門檻未入庫**，量化判定與最終主從判定的「需人工判讀」標示一律保留。其他 `verified: false` 的規則（見 `verification_sheet.py list`）警語照舊必須保留
 3. **§12 分類未定案不得進 `/code-requirements`**——門檻判斷全繫於此
-4. 遵守 `CLAUDE.md` 審圖最高原則
+4. 遵守 `AGENTS.md` 五條底線

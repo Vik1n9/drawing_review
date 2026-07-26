@@ -5,7 +5,7 @@
 
 觸發時機：**只有 `python3 tools/onboarding.py status` 的結束碼為 `2` 時才需要讀本檔。**
 結束碼 `0` 代表導引已經走完，直接開始審圖即可——不要載入本檔、不要把導引內容講給使用者。
-`CLAUDE.md`／`AGENTS.md` 因此只留一行開場檢查與紅線，把流程細節集中在這裡：
+`AGENTS.md`（正本）因此只留一行開場檢查與紅線，把流程細節集中在這裡：
 這些內容只有導引當下用得到，不該每個工作階段都佔用 context。
 
 Claude Code 由 SessionStart hook 自動跑出診斷；其他 AI 工具（Codex、OpenCode …）

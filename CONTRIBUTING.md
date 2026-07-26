@@ -38,7 +38,7 @@ python3 tools/onboarding.py status
 | 層 | 檔案 | 涵蓋範圍 |
 |----|------|---------|
 | 1 | `README.md` 最上方的可貼區塊 | 所有工具，以及自己動手貼的使用者 |
-| 2 | `AGENTS.md`（跨工具行為契約）／`CLAUDE.md`（內容一致） | Codex、OpenCode、Claude Code 等會讀代理指示檔的工具 |
+| 2 | `AGENTS.md`（行為契約**正本**；`CLAUDE.md` 只是指向它的指標） | Codex、OpenCode、Claude Code 等會讀代理指示檔的工具 |
 | 3 | `.claude/settings.json` 的 SessionStart hook | 僅 Claude Code——**加分自動化，不是機制本體** |
 
 兩條實作規範：

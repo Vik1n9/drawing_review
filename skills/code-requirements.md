@@ -93,4 +93,4 @@ python3 tools/fire_code_calc.py occupancy --components '{JSON}' [--fixed-seats N
 1. **每一項判定必附條號**——引用不到條號的一律降級為「建議事項」
 2. **工具輸出原文嵌入**——這是審查者覆核計算過程的依據
 3. **免設也要列**——免設判定同樣附計算過程與條文，供覆核
-4. 遵守 `CLAUDE.md` 審圖最高原則
+4. 遵守 `AGENTS.md` 五條底線

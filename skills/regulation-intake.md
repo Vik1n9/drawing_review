@@ -101,4 +101,4 @@ python3 tools/fire_code_calc.py self-test
 1. **expected 值只能抄錄、不能推算**——測試的存在意義就是「PDF 原文的複寫」，推算出的 expected 等於讓 AI 自己驗自己
 2. **HTML 是引用基準**——審查意見書中每個條號都連結到 HTML 錨點，審查者一鍵可核對原文
 3. **quote 必須逐字**——run-tests 會檢查 quote 非空；人工核定時逐字比對 PDF
-4. 遵守 `CLAUDE.md` 審圖最高原則與 `regulation-data.md` 治理規範
+4. 遵守 `AGENTS.md` 五條底線與 `regulation-data.md` 治理規範

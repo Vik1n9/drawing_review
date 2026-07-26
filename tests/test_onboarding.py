@@ -257,15 +257,73 @@ class OnboardingContractTest(unittest.TestCase):
 
 
 class ContractFilesStayLeanTest(unittest.TestCase):
-    """`CLAUDE.md`／`AGENTS.md` 每個工作階段都會載入，所以導引細節必須留在
-    `skills/onboarding.md`——導引走完後就不該再有人付這份 context 的代價。
+    """常駐契約每個工作階段都會載入，所以只留「載入任何 skill 之前就必須生效的
+    底線」與「情境 → 讀哪份文件」的路由；其餘紀律由各階段 skill 於載入時提示。
+
+    `AGENTS.md` 是唯一正本（跨 AI 工具共用），`CLAUDE.md` 只是指向它的指標——
+    兩份「內容一致」的檔案手動同步已證明會漂移。
     """
 
-    CONTRACTS = ("CLAUDE.md", "AGENTS.md")
+    CONTRACTS = ("AGENTS.md",)
     REPO = Path(__file__).resolve().parent.parent
 
     def read(self, name):
         return (self.REPO / name).read_text(encoding="utf-8")
+
+    # 工程預算，不是法規值（沒有法條原文可抄）：契約只有四節——定位、開場檢查、
+    # 五條底線、路由表。路由表每支 skill 一列，所以新增 skill 時上限本來就該跟著調；
+    # 但「某條紀律又貼回契約」不是調高的理由，那該進對應 skill。
+    MAX_CONTRACT_LINES = 50
+    MAX_POINTER_LINES = 10
+
+    def test_contract_stays_under_budget(self):
+        """契約膨脹回去的話，每個工作階段都要付這份 context 的代價。"""
+        for name in self.CONTRACTS:
+            lines = self.read(name).splitlines()
+            self.assertLessEqual(
+                len(lines), self.MAX_CONTRACT_LINES,
+                f"{name} 長到 {len(lines)} 行——只有「載入 skill 前就必須生效」"
+                f"的內容才留在常駐契約，其餘移到對應 skill")
+
+    def test_claude_md_is_a_pointer(self):
+        """CLAUDE.md 不得再放一份內容——那正是漂移的來源。"""
+        text = self.read("CLAUDE.md")
+        lines = text.splitlines()
+        self.assertLessEqual(
+            len(lines), self.MAX_POINTER_LINES,
+            f"CLAUDE.md 長到 {len(lines)} 行——正本是 AGENTS.md，這裡只該放指標")
+        self.assertIn("AGENTS.md", text, "CLAUDE.md 沒指向正本 AGENTS.md")
+        self.assertNotIn("## 五條底線", text,
+                         "CLAUDE.md 又複製了一份契約內容，漂移會再度發生")
+
+    # 從常駐契約移出的紀律 → 承接檔案。合取斷言：契約裡不得殘留，承接檔案必須有。
+    # 只斷言「承接檔案有」會在寫完當下就是綠的（那些檔案現在就含有這些字），
+    # 無鑑別力——分不出「承接檔案有內容」與「我根本沒從契約刪掉」。
+    DEMOTED_RULES = {
+        "法規版本": ("skills/code-requirements.md", "skills/gap-analysis.md"),
+        "建議事項": ("skills/code-requirements.md", "skills/gap-analysis.md"),
+        "免設": ("skills/code-requirements.md",),
+        "四級": ("skills/gap-analysis.md",),
+        "verified: false": ("skills/code-requirements.md",
+                            "skills/mixed-use-review.md"),
+        "Verify RED": ("skills/red-green.md",),
+    }
+
+    def test_demoted_rules_have_a_home(self):
+        """移出的紀律必須真的搬到 skill，不能是刪掉了事。"""
+        contract = self.read("AGENTS.md")
+        for rule, homes in self.DEMOTED_RULES.items():
+            # 用 assertFalse 而非 assertNotIn：後者失敗時會把整份契約傾印出來，
+            # 維護者要讀的是「哪條紀律殘留」，不是 254 行原文。
+            self.assertFalse(
+                rule in contract,
+                f"AGENTS.md 仍含「{rule}」——這條紀律只在對應階段才需要，"
+                f"應由 {homes[0]} 於載入時提示")
+            for home in homes:
+                self.assertIn(
+                    rule, self.read(home),
+                    f"{home} 缺少「{rule}」——從契約移出前必須先有承接檔案，"
+                    f"否則這條紀律就真的消失了")
 
     def test_contracts_tell_agents_to_skip_the_skill_when_ready(self):
         """結束碼 0 時必須明講「不要讀 skills/onboarding.md」，導引才會自動退場。"""

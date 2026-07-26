@@ -10,7 +10,7 @@
     python3 tools/practice_note_engine.py reindex
     python3 tools/practice_note_engine.py test --strict
 
-法典／註解雙軌制（見 CLAUDE.md 審圖最高原則 9）：
+法典／註解雙軌制（見 skills/practice-note.md）：
 
 - `rules/` 是**法典層**，只能經先紅再綠變更；本引擎絕不寫入。
 - `practice_notes/` 是**註解層**，記錄法典未涵蓋情境下的實務見解。
@@ -133,7 +133,7 @@ def validate_schema(note):
 
     for path_str in placeholders(note):
         problems.append(f"{path_str} 仍是 {PLACEHOLDER}——草案必須由人工填實，"
-                        "嚴禁以推測填充（CLAUDE.md 最高原則 5）")
+                        "嚴禁以推測填充（AGENTS.md 底線 3）")
     return problems
 
 
@@ -286,7 +286,7 @@ def cmd_draft(args):
     for path in written:
         print(f"  - {path.relative_to(root).as_posix()}")
     print(f"\n⚠️ 草案的判讀欄位一律是「{PLACEHOLDER}」，必須由使用者填實後才能通過 conflict-check。")
-    print("   嚴禁由 Agent 以推測填充（CLAUDE.md 最高原則 5）。")
+    print("   嚴禁由 Agent 以推測填充（AGENTS.md 底線 3）。")
     print("\n接續：")
     print("  1. 與使用者逐欄確認並填實 scenario.conditions / judgment.decision / judgment.detail")
     print(f"  2. python3 tools/practice_note_engine.py conflict-check --draft {STAGING_DIR}/{{id}}.json")

@@ -24,7 +24,16 @@
    python3 tools/fire_code_calc.py self-test
    python3 tools/fire_code_calc.py run-tests --strict
    ```
-4. **開始審一個案件**
+4. **處理待確認事項**（規則參數與現行條文比對出的差異，未裁示前不得作為審查依據）
+   ```bash
+   python3 tools/pending_review.py status   # 結束碼 2 ＝ 有待確認事項
+   python3 tools/pending_review.py list     # 逐則列給具消防專業的使用者裁示
+   ```
+   AI 代理請在開場自動執行 `status`；有待確認事項就把 `list` 的內容列給使用者，
+   逐則取得「採納更正／維持現值／另有更正」後執行
+   `python3 tools/pending_review.py decide` 與 `apply --all`——工具會自動走先紅再綠
+   完成更正、回填 `verified`、更新 README 並移除疑義檔。詳見下方待確認區塊。
+5. **開始審一個案件**
    - 把待審 `平面圖.dxf`（＋輔助 `平面圖.pdf`、審查文件）放到 `input/{案件名}/`
    - 依 `skills/review-team.md`（總流程）或逐步 `plan-intake → place-use-classification → code-requirements → gap-analysis` 執行
    - 產出四項固定交付物到 `output/`
@@ -33,6 +42,24 @@
      `python3 tools/regulation_index.py lookup --article '§24,§12'` 只載入相關條文
 
 > 第三方套件與對應工具一覽見 §五「工具層／環境安裝」；完整目錄結構見 §三。核心計算工具（`fire_code_calc.py`、`regulation_index.py`）無需安裝即可執行。
+
+---
+
+<!-- PENDING-REVIEW:BEGIN -->
+### ⚠️ 有 14 則待確認事項——請先處理再開始審圖
+
+規則參數與現行條文（各類場所消防安全設備設置標準 民國 113 年 04 月 24 日修正）比對出 14 則差異，其中 14 則尚未裁示。受影響的規則：`18-8`、`18-9`、`detector-coverage`、`emergency-light-threshold`、`exit-light-threshold`、`extinguisher-count`、`extinguisher-threshold`、`fire-alarm-threshold`、`indoor-hydrant-coverage`、`indoor-hydrant-threshold`、`smoke-exhaust-threshold`、`sprinkler-head-spacing`、`sprinkler-threshold`、`subordinate-table`。
+
+完整內容見 **[`待確認事項.md`](待確認事項.md)**。
+
+```bash
+python3 tools/pending_review.py status   # 開場檢查（有待確認事項會回結束碼 2）
+python3 tools/pending_review.py list     # 逐則列出，交給具消防專業的使用者裁示
+python3 tools/pending_review.py apply --all --by "○○○（消防設備師）"
+```
+
+裁示完成後 `apply` 會自動走先紅再綠更正參數、回填 `verified`、更新本區塊並移除疑義檔。在此之前，這些規則的輸出一律附「本參數尚未逐條確認」警語。
+<!-- PENDING-REVIEW:END -->
 
 ---
 
@@ -146,6 +173,7 @@ python3 tools/regulation_index.py lookup --article '§28,§12'     # 載入：�
 
 ```text
 drawing_review/
+├── 待確認事項.md                     — 規則參數 vs 現行條文的待裁示差異（自動產生，全部裁示後自動移除）
 ├── input/
 │   └── {案件名}/
 │       ├── 平面圖.dxf                — 需要審核的主圖面（只讀不改）
@@ -173,7 +201,11 @@ drawing_review/
 │   ├── staging/                      — 草擬中，待使用者「確認納入」
 │   └── index.json                    — 註解索引（by_article／by_equipment／by_rule_id）
 ├── graphify-out/                     — 法規知識圖譜（含 source_fingerprint.json 新鮮度指紋）
-├── governance/                       — 規則確認紀錄（核定表／註解紀錄）
+├── governance/                       — 規則確認紀錄
+│   ├── 待確認清單/                   — 疑義檔（rule-discrepancies-{日期}.json）＋ 已裁示/ 封存
+│   ├── 核定表/                       — 核定表 HTML（需書面紀錄時）
+│   ├── 核定紀錄/                     — verified 回填的 results JSON
+│   └── 註解紀錄/                     — 實務註解追溯紀錄
 ├── skills/                           — 審圖 workflow 文件（只放執行指令）
 │   └── README.md                     — 兩階段工作流程設計說明（不被 skill 載入）
 ├── tests/                            — Python 單元測試
@@ -383,6 +415,11 @@ python3 tools/practice_note_engine.py draft --gap output/gap_candidates.json --c
 python3 tools/practice_note_engine.py conflict-check --draft practice_notes/staging/{id}.json
 python3 tools/practice_note_engine.py apply --draft practice_notes/staging/{id}.json --approved-by {批准人} --confirm 確認納入
 python3 tools/practice_note_engine.py test --strict
+
+# 待確認事項（開場必做）
+python3 tools/pending_review.py status                        # 結束碼 2 = 有待確認事項
+python3 tools/pending_review.py list                          # 逐則列給使用者裁示
+python3 tools/pending_review.py apply --all --by "{確認人}"    # 先紅再綠自動更正＋回填 verified
 
 # 規則逐條確認（使用者本身即為消防專業人員，不需另送外部核定）
 python3 tools/verification_sheet.py list                      # 列出待確認規則，於對話中逐條確認

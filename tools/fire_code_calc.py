@@ -72,6 +72,51 @@ def main_category(use_value):
     return use_value
 
 
+def use_matches(use_value, specs):
+    """用途是否落在規則的適用清單內。
+
+    條文的適用範圍常以「目」為單位（§19 第一款的「第二款第十二目」＝乙12），
+    但也有整款適用者（§14 第一款的甲類場所）。specs 可混用兩種寫法：
+    細分用途碼（'甲1'、'乙12'）須完全相同，主類別（'甲'）則涵蓋其下所有目。
+    """
+    if not specs:
+        return False
+    value = str(use_value or "")
+    if not value:
+        return False
+    main = main_category(value)
+    for spec in specs:
+        text = str(spec)
+        if text == value or (len(text) == 1 and text == main):
+            return True
+    return False
+
+
+def matched_threshold_key(table, use_value, default_keys=("other", "any")):
+    """門檻查表命中的鍵：先比對細分用途碼，再退回主類別，最後才用 other／any 通則。
+
+    這個順序讓「甲類第一目 300、其餘 500」這種條文能直接編碼成
+    {'甲1': 300, 'other': 500}，而舊有只寫主類別的參數（{'甲': 300, 'other': 500}）
+    行為不變。查無適用門檻時回傳 None（呼叫端據以輸出需人工判讀）。
+    """
+    value = str(use_value or "")
+    if value and value in table:
+        return value
+    main = main_category(value)
+    if main and main in table:
+        return main
+    for key in default_keys:
+        if key in table:
+            return key
+    return None
+
+
+def threshold_for(table, use_value, default_keys=("other", "any")):
+    """門檻查表的值；查無適用門檻回傳 None。"""
+    key = matched_threshold_key(table, use_value, default_keys)
+    return None if key is None else table[key]
+
+
 def floor_index(floor_label):
     """'1F' → 1, 'B1' → -1；解析失敗回傳 None。"""
     m = re.fullmatch(r"(B?)(\d+)F?", str(floor_label).strip(), re.IGNORECASE)
@@ -110,18 +155,23 @@ def threshold_results(rules_doc, case):
     }
     results = []
 
-    # 甲類樓層合計面積（撒水、排煙等 total 門檻用）
+    # 樓層合計面積（撒水、排煙等 total 門檻用）：主類別與細分用途碼各留一份，
+    # 因為條文的合計主詞有時是整個甲類，有時只到目（§17 第一款第一目）
     total_area_by_cat = {}
+    total_area_by_use = {}
     for fl in floors:
-        cat = main_category(get_value(fl.get("use_category", "")))
+        use_code = get_value(fl.get("use_category", ""))
+        cat = main_category(use_code)
         a = exact(get_value(fl.get("area", 0)) or 0)
         total_area_by_cat[cat] = total_area_by_cat.get(cat, Decimal(0)) + a
+        total_area_by_use[use_code] = total_area_by_use.get(use_code, Decimal(0)) + a
 
     for fl in floors:
         label = fl.get("floor", "?")
         idx = floor_index(label)
         area = exact(get_value(fl.get("area", 0)) or 0)
-        cat = main_category(get_value(fl.get("use_category", "")))
+        use_code = get_value(fl.get("use_category", ""))
+        cat = main_category(use_code)
         windowless = get_value(fl.get("windowless", None))
         is_basement = idx is not None and idx < 0
 
@@ -142,11 +192,12 @@ def threshold_results(rules_doc, case):
         r = find_rule(rules_doc, "extinguisher-threshold")
         p = r["params"]
         verdict, why = None, ""
-        if cat in p["always_required_uses"]:
-            verdict, why = "應設", f"{cat}類場所一律應設"
+        if use_matches(use_code, p["always_required_uses"]):
+            verdict, why = "應設", (f"用途 {use_code or cat} 屬一律應設範圍"
+                                    f"（規則：{'、'.join(str(u) for u in p['always_required_uses'])}）")
         elif (is_basement or windowless is True) and area >= exact(p["basement_or_windowless_area_threshold"]["value"]):
             verdict, why = "應設", f"地下層/無開口樓層面積 {area} ≥ {p['basement_or_windowless_area_threshold']['value']} ㎡"
-        elif cat in p["total_area_threshold_other_uses"]["applies_to"]:
+        elif use_matches(use_code, p["total_area_threshold_other_uses"]["applies_to"]):
             th = exact(p["total_area_threshold_other_uses"]["value"])
             if total_area >= th:
                 verdict, why = "應設", f"總樓地板面積 {total_area} ≥ {th} ㎡（scope: total）"
@@ -159,22 +210,44 @@ def threshold_results(rules_doc, case):
         # 室內消防栓 §15
         r = find_rule(rules_doc, "indoor-hydrant-threshold")
         p = r["params"]
-        tier = p["low_rise"] if floors_above <= p["low_rise"]["max_floors"] else p["mid_rise"]
-        th = exact(tier["per_floor_area_threshold"].get(cat, tier["per_floor_area_threshold"].get("other")))
-        if area >= th:
-            add("室內消防栓", r, "應設", f"本層面積 {area} ≥ {th} ㎡（scope: per_floor，{'五層以下' if tier is p['low_rise'] else '六層以上'}門檻）")
+        # basement_or_windowless_per_floor_threshold：§15 第四款（地下層或無開口樓層另有門檻）
+        basement_table = p.get("basement_or_windowless_per_floor_threshold")
+        if basement_table and (is_basement or windowless is True):
+            tier_name, tier_table = "地下層／無開口樓層", basement_table
+        elif floors_above <= p["low_rise"]["max_floors"]:
+            tier_name, tier_table = "五層以下", p["low_rise"]["per_floor_area_threshold"]
         else:
-            add("室內消防栓", r, "免設", f"本層面積 {area} < {th} ㎡")
+            tier_name, tier_table = "六層以上", p["mid_rise"]["per_floor_area_threshold"]
+        raw_th = threshold_for(tier_table, use_code)
+        if raw_th is None:
+            add("室內消防栓", r, "需人工判讀", f"用途 {use_code or '未登載'} 不在規則涵蓋的門檻表內")
+        else:
+            th = exact(raw_th)
+            if area >= th:
+                add("室內消防栓", r, "應設", f"本層面積 {area} ≥ {th} ㎡（scope: per_floor，{tier_name}門檻）")
+            else:
+                add("室內消防栓", r, "免設", f"本層面積 {area} < {th} ㎡（{tier_name}門檻）")
 
         # 自動撒水 §17
         r = find_rule(rules_doc, "sprinkler-threshold")
         p = r["params"]
+        low_rise_th = p["low_rise_total_area_threshold"]
+        # by_use：逐目門檻（§17 第一款的「第一款第一目」與「同款其他各目及第二款第一目」兩段）
+        by_use = low_rise_th.get("by_use")
+        matched_key = matched_threshold_key(by_use, use_code, default_keys=()) if by_use else None
         if idx is not None and idx >= p["high_rise_per_floor_threshold"]["min_floor_index"]:
             th = exact(p["high_rise_per_floor_threshold"]["value"])
             v = "應設" if area >= th else "免設"
             add("自動撒水設備", r, v, f"十一層以上樓層，本層面積 {area} vs 門檻 {th} ㎡")
-        elif cat in p["low_rise_total_area_threshold"]["applies_to"]:
-            th = exact(p["low_rise_total_area_threshold"]["value"])
+        elif matched_key is not None:
+            th = exact(by_use[matched_key])
+            # 命中細分用途碼時以該目合計，命中主類別時以整類合計
+            scope_total = total_area_by_use.get(use_code, Decimal(0)) if matched_key == str(use_code) \
+                else total_area_by_cat.get(cat, Decimal(0))
+            v = "應設" if scope_total >= th else "免設"
+            add("自動撒水設備", r, v, f"{matched_key} 使用樓層合計 {scope_total} vs 門檻 {th} ㎡（scope: total）")
+        elif by_use is None and use_matches(use_code, low_rise_th.get("applies_to", [])):
+            th = exact(low_rise_th["value"])
             cat_total = total_area_by_cat.get(cat, Decimal(0))
             v = "應設" if cat_total >= th else "免設"
             add("自動撒水設備", r, v, f"{cat}類使用樓層合計 {cat_total} vs 門檻 {th} ㎡（scope: total）")
@@ -187,12 +260,12 @@ def threshold_results(rules_doc, case):
         if floors_above >= p["high_rise"]["min_floors"]:
             add("火警自動警報設備", r, "應設", f"建築物達 {p['high_rise']['min_floors']} 層以上，{p['high_rise']['rule']}")
         elif is_basement or windowless is True:
-            th = exact(p["basement_windowless_threshold"].get(cat, p["basement_windowless_threshold"]["other"]))
+            th = exact(threshold_for(p["basement_windowless_threshold"], use_code))
             v = "應設" if area >= th else "免設"
             add("火警自動警報設備", r, v, f"地下層/無開口樓層，本層面積 {area} vs 門檻 {th} ㎡")
         else:
             if floors_above <= p["low_rise"]["max_floors"]:
-                th = exact(p["low_rise"]["per_floor_area_threshold"].get(cat, p["low_rise"]["per_floor_area_threshold"].get("other")))
+                th = exact(threshold_for(p["low_rise"]["per_floor_area_threshold"], use_code))
             else:
                 th = exact(p["mid_rise"]["per_floor_area_threshold"]["any"])
             v = "應設" if area >= th else "免設"
@@ -200,9 +273,25 @@ def threshold_results(rules_doc, case):
 
         # 標示設備 §23
         r = find_rule(rules_doc, "exit-light-threshold")
-        if cat in r["params"]["required_uses"]:
+        # other_uses_required_when：條文對「其他各款目」附條件（地下層、無開口樓層、十一層以上之樓層）
+        conditions = r["params"].get("other_uses_required_when") or []
+        hit_condition = None
+        if is_basement and "地下層" in conditions:
+            hit_condition = "地下層"
+        elif windowless is True and "無開口樓層" in conditions:
+            hit_condition = "無開口樓層"
+        elif idx is not None and idx >= 11 and "十一層以上之樓層" in conditions:
+            hit_condition = "十一層以上之樓層"
+        if use_matches(use_code, r["params"]["required_uses"]):
             add("出口標示燈・避難方向指示燈", r, "應設",
                 "適用用途；數量與位置依避難動線判定 → 配置需圖面逐點檢核（配置疑義）")
+        elif hit_condition:
+            add("出口標示燈・避難方向指示燈", r, "應設",
+                f"本層為{hit_condition}，供其他各款目使用者於此仍應設；"
+                "數量與位置依避難動線判定 → 配置需圖面逐點檢核（配置疑義）")
+        elif conditions:
+            add("出口標示燈・避難方向指示燈", r, "免設",
+                f"用途 {use_code or '未登載'} 非無條件應設之款目，且本層非{'、'.join(conditions)}")
         else:
             add("出口標示燈・避難方向指示燈", r, "需人工判讀", "用途不在示例規則涵蓋範圍")
 
@@ -213,7 +302,13 @@ def threshold_results(rules_doc, case):
         # 排煙設備 §28
         r = find_rule(rules_doc, "smoke-exhaust-threshold")
         p = r["params"]
-        if cat in p["total_area_threshold"]["applies_to"]:
+        # windowless_floor_threshold：§28 第三款（樓地板面積一千平方公尺以上之無開口樓層）
+        windowless_th = p.get("windowless_floor_threshold")
+        if windowless_th and windowless is True and area >= exact(windowless_th["value"]):
+            add("排煙設備", r, "應設",
+                f"無開口樓層面積 {area} ≥ {windowless_th['value']} ㎡；"
+                f"防煙區劃（每 {p['smoke_compartment_max_sqm']} ㎡）劃設需人工判讀")
+        elif use_matches(use_code, p["total_area_threshold"]["applies_to"]):
             th = exact(p["total_area_threshold"]["value"])
             cat_total = total_area_by_cat.get(cat, Decimal(0))
             if cat_total >= th:

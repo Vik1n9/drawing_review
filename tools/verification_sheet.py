@@ -327,12 +327,16 @@ def verifiable_entries(doc):
     return out
 
 
-def cmd_apply(args):
-    spec = load(args.results)
-    rules_doc = load(args.rules)
+def apply_results(rules_path, spec, sheet=None):
+    """把確認結果寫回規則檔；回傳 (applied, corrections)。
+
+    唯一能產生 verified: true 的路徑（`cmd_apply` 與 `pending_review.py` 共用），
+    確認紀錄與待確認清單的擋關邏輯都集中在這裡。
+    """
+    rules_doc = load(rules_path)
     by_id = verifiable_entries(rules_doc)
     if not by_id:
-        sys.exit(f"{args.rules} 沒有可回填的規則（rules）或項次（items／global_constraints）。")
+        sys.exit(f"{rules_path} 沒有可回填的規則（rules）或項次（items／global_constraints）。")
     verified_by = spec.get("verified_by")
     verified_date = spec.get("verified_date")
     evidence = spec.get("evidence") or INLINE_EVIDENCE
@@ -342,7 +346,7 @@ def cmd_apply(args):
                  "使用者本人逐條確認時 evidence 可省略。")
 
     # 已比對出差異、尚未裁示的規則不得逕行回填 verified: true（最高原則 1、3）
-    open_disc = open_findings_by_rule(getattr(args, "sheet", None))
+    open_disc = open_findings_by_rule(sheet)
     blocked = [item["rule_id"] for item in spec["results"]
                if item.get("result") == "correct" and open_disc.get(item["rule_id"])
                and not item.get("override_discrepancy")]
@@ -370,11 +374,18 @@ def cmd_apply(args):
             sys.exit(f"未知 result 值：{item['result']}（僅接受 correct / incorrect）")
 
     if applied:
-        with open(args.rules, "w", encoding="utf-8") as f:
+        with open(rules_path, "w", encoding="utf-8") as f:
             json.dump(rules_doc, f, ensure_ascii=False, indent=2)
             f.write("\n")
+    return applied, corrections
+
+
+def cmd_apply(args):
+    spec = load(args.results)
+    applied, corrections = apply_results(args.rules, spec, getattr(args, "sheet", None))
     print(f"✅ 已核定 {len(applied)} 條：{', '.join(applied) if applied else '—'}")
-    print(f"   核定人：{verified_by}｜日期：{verified_date}｜存證：{evidence}")
+    print(f"   核定人：{spec.get('verified_by')}｜日期：{spec.get('verified_date')}｜"
+          f"存證：{spec.get('evidence') or INLINE_EVIDENCE}")
     if corrections:
         print(f"\n🔴 {len(corrections)} 條核定為「錯誤」，本工具不自動改參數，請走先紅再綠：")
         for rid, note in corrections:

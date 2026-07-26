@@ -23,6 +23,35 @@
 8. **呈現正反兩面**：判定「免設」時同樣列出計算過程與條文依據，讓審查者可以覆核，不只列缺失。
 9. **法典與實務註解分離**：`rules/` 為法典層，只能經先紅再綠變更；法典未涵蓋情境的實務見解只能以 Practice Note 寫入 `practice_notes/`（`/practice-note`），不得直接改規則參數。`check-gap` 偵測到案件結論無法被既有規則涵蓋時，先查證是否只是「規則未入庫」（是則走先紅再綠），確為法典未涵蓋才草擬註解供使用者審閱；未經使用者「確認納入」的註解禁止從 `staging` 移到 `active`。
 
+## 開場必做：待確認事項（載入本倉庫的第一件事）
+
+規則參數與現行條文比對出的差異寫在 `governance/待確認清單/`，並以 `待確認事項.md` 呈現。
+**每個工作階段一開始就要跑一次**（Claude Code 已設 SessionStart hook 自動執行）：
+
+```bash
+python3 tools/pending_review.py status      # 結束碼 2 ＝ 有待確認事項
+```
+
+結束碼為 `2` 時，**在進行任何審圖工作之前**先完成這條迴路：
+
+1. `python3 tools/pending_review.py list` —— 逐則列給使用者（他本人就是消防專業人員）
+2. 使用者逐則回覆「採納更正」／「維持現值」／「另有更正＋正確值」
+3. `python3 tools/pending_review.py decide --id {ID} --decision {裁示} --by "{確認人}"`
+   （多則可用 `--results {裁示JSON}` 一次記錄）
+4. `python3 tools/pending_review.py apply --all --by "{確認人}"` —— 工具自動走先紅再綠
+   （把條文原文寫進 `rule_tests.json` 的 expected → 確認轉紅 → 才改參數 → 確認轉綠），
+   接著回填 `verified: true`、重產 `待確認事項.md`、同步 README 區塊；全部裁示完畢時
+   自動移除 `待確認事項.md` 並把疑義檔封存到 `governance/待確認清單/已裁示/`
+5. 收尾：`python3 tools/fire_code_calc.py self-test && python3 tools/fire_code_calc.py run-tests --strict`
+
+三條紀律：
+
+- **不得代替使用者裁示**——工具只執行已記錄的裁示，AI 不得自行決定採納或維持
+- **不得跳過先紅再綠**——`apply` 內建 Verify RED 關卡，測試沒紅（或紅得不對）即整批回滾
+- **未裁示前照常審圖是允許的，但受影響規則的輸出必須附「本參數尚未逐條確認」警語**，
+  且不得把該規則的結論當成已核定的法源依據
+
+
 ## 目錄結構
 
 ```text
@@ -53,6 +82,8 @@ drawing_review/
 ├── training/                    — 訓練模式（`/train`）：inbox/ 投放、registry.json 索引、每批次歸檔紀錄
 ├── practice_notes/              — 實務註解層：active/ 現行註解、staging/ 待確認、index.json 索引
 ├── governance/                  — 規則核定責任追溯鏈
+│   └── 待確認清單/              — 疑義檔：參數與現行條文的差異，逐則待使用者裁示（已裁示者封存於 已裁示/）
+├── 待確認事項.md                — 疑義檔的可讀版（pending_review.py render 自動產生／移除）
 ├── skills/                      — 審圖 workflow 文件（只放執行指令；設計說明見 skills/README.md）
 └── tools/                       — 確定性工具
 ```
@@ -187,6 +218,13 @@ python3 tools/practice_note_engine.py conflict-check --draft practice_notes/stag
 python3 tools/practice_note_engine.py apply --draft practice_notes/staging/{id}.json \
   --approved-by {批准人} --confirm 確認納入
 python3 tools/practice_note_engine.py test --strict
+
+# 待確認事項（開場必做：與現行條文比對出的差異，逐則裁示後自動修正）
+python3 tools/pending_review.py status                                                # 結束碼 2 = 有待確認事項
+python3 tools/pending_review.py list                                                  # 逐則列給使用者裁示
+python3 tools/pending_review.py decide --id D-015-01 --decision 採納更正 --by "{確認人}"
+python3 tools/pending_review.py apply --all --by "{確認人}"                            # 先紅再綠自動更正＋回填 verified
+python3 tools/pending_review.py render                                                # 重產 待確認事項.md 並同步 README
 
 # 規則逐條確認（使用者本身即為消防專業人員，不需另送外部核定）
 python3 tools/verification_sheet.py list                                              # 列出待確認規則

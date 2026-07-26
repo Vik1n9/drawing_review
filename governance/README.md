@@ -23,18 +23,24 @@ governance/
 
 ## 前置關卡：待確認清單（參數 vs 現行條文的差異）
 
-規則參數與條文原文比對出差異時，**先寫入待確認清單，不得逕行回填 `verified: true`**：
+規則參數與條文原文比對出差異時，**先寫入待確認清單，不得逕行回填 `verified: true`**。
+`tools/pending_review.py` 把整條迴路自動化——這是處理差異的**主路徑**：
 
 ```bash
-# 逐則列出差異（條文原文｜規則現值｜差異｜影響｜建議更正）
-python3 tools/verification_sheet.py discrepancies
-
-# 使用者逐則裁示：採納更正／維持現值／另有更正＋正確值
-#   採納更正 → 走 skills/red-green.md 先紅再綠改參數，改完再回填 verified
-#   維持現值 → results JSON 該筆加 "override_discrepancy": true 並註明理由
+python3 tools/pending_review.py status                                   # 開場檢查（結束碼 2 = 有待確認事項）
+python3 tools/pending_review.py list                                     # 逐則列給使用者裁示
+python3 tools/pending_review.py decide --id D-015-01 --decision 採納更正 --by "○○○"
+python3 tools/pending_review.py apply --all --by "○○○"                   # 先紅再綠自動更正並回填 verified
 ```
 
-`verification_sheet.py list` 會在有未裁示差異的規則旁標 🔴；`apply` 會擋下這些規則的回填。
+`apply` 的執行順序即先紅再綠：把條文原文寫進 `rule_tests.json` 的 expected → **Verify RED**
+（沒轉紅或紅得不對就整批回滾）→ 才改規則參數 → 確認全部轉綠 → 回填 `verified: true`
+→ 重產 `待確認事項.md` 與 README 區塊。某規則的差異全部裁示完畢時才會回填該規則。
+全部裁示完畢時自動移除 `待確認事項.md`，疑義檔封存到 `待確認清單/已裁示/`。
+
+沒有 `auto_fix` 的項目（需引擎或檔案結構調整）不會被工具猜著改，會列出 `manual_steps`
+交人工完成。`verification_sheet.py discrepancies` 提供同一份清單的唯讀檢視；
+`verification_sheet.py list` 會在有未裁示差異的規則旁標 🔴，`apply` 會擋下這些規則的回填。
 
 ## 主路徑：對話中逐條確認
 

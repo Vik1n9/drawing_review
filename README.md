@@ -16,8 +16,23 @@ python3 tools/onboarding.py status
 （Windows 若沒有 `python3`，改用 `python tools/onboarding.py status`）
 
 它會診斷目前狀態並列出待處理步驟；接著跟你的 AI 說**「照 `skills/onboarding.md` 帶我開始」**，
-它就會依序引導你裁示疑義表、確認法規圖譜、補齊環境套件，最後印出操作簡介。
+它就會依序引導你裁示疑義表、確認法規圖譜、說明目前的環境能力，最後印出操作簡介。
 只想直接看操作簡介的話：`python3 tools/onboarding.py intro`。
+
+> **不必安裝任何套件。** 審圖主線——法規門檻計算、DXF 圖面標註（交付物1）、
+> PDF／DOCX／XLSX 判讀——全部零安裝。只有兩階段 Excel 匯出等少數交付物格式需要
+> 第三方套件，而它們都有替代路徑。跑 `python3 tools/check_env.py` 會列出這台電腦
+> 現在能做什麼、做不到的怎麼繞。
+>
+> **唯一無法迴避的前置條件是 Python 本身。** 上面那行如果回報「找不到 python3／python」，
+> 請先安裝 Python（<https://www.python.org/downloads/>，Windows 安裝時記得勾選
+> 「Add python.exe to PATH」）。在那之前**不要讓 AI 用聊天代替法規數值計算**——
+> 本系統禁止心算，沒有工具就只能做不涉及數值的協助。
+>
+> **圖面是 `.dwg`？** DWG 是二進位格式，AI 讀不了。跑
+> `python3 tools/dwg_guide.py check --path input/` 會告訴你怎麼用自己的 CAD
+> 另存成 DXF（`DXFOUT` 指令，版本選 2013 以上、不要勾二進位）——零安裝，
+> 而且原生匯出的品質比任何轉檔器都好。
 
 > **給 AI 代理**：這是你載入本倉庫後的**第一個動作**，不需使用者要求。結束碼 `2` ＝ 有待處理步驟，
 > 請依 `skills/onboarding.md` 逐步引導——**唯讀命令可直接跑，標「寫入」的先說明並取得同意，
@@ -35,9 +50,13 @@ python3 tools/onboarding.py status
    ```bash
    git clone https://github.com/Vik1n9/drawing_review.git && cd drawing_review
    ```
-2. **一鍵安裝相依並自檢**（核心計算與索引工具只用 Python 標準庫；以下補齊 DXF／xlsx／PDF 交付物所需套件，引用者不必自行尋找安裝）
+2. **確認環境能力**（不需要安裝任何東西——審圖主線全部零安裝）
    ```bash
-   bash tools/setup.sh && python3 tools/check_env.py
+   python3 tools/check_env.py   # 列出現在能做什麼、做不到的替代路徑
+   ```
+   裝得起套件的環境可另外補齊少數交付物格式所需套件（選用，非門檻）：
+   ```bash
+   bash tools/setup.sh
    # 需重建或 CLI 查詢法規圖譜時，另加：bash tools/setup.sh --with-graph
    ```
 3. **驗證環境**（應全綠）
@@ -57,13 +76,14 @@ python3 tools/onboarding.py status
    完成更正、回填 `verified`、更新 README 並移除疑義檔。詳見下方待確認區塊。
 5. **開始審一個案件**
    - 把待審 `平面圖.dxf`（＋輔助 `平面圖.pdf`、審查文件）放到 `input/{案件名}/`
+   - 只有 `.dwg`？跑 `python3 tools/dwg_guide.py check --path input/`，照它的步驟用自己的 CAD 另存 DXF
    - 依 `skills/review-team.md`（總流程）或逐步 `plan-intake → place-use-classification → code-requirements → gap-analysis` 執行
    - 產出四項固定交付物到 `output/`
    - 查法規先看知識圖譜：瀏覽器直接開 `graphify-out/graph.html`，或
      `python3 tools/regulation_graph.py neighbors --article §24`（免安裝），定位後再
      `python3 tools/regulation_index.py lookup --article '§24,§12'` 只載入相關條文
 
-> 第三方套件與對應工具一覽見 §五「工具層／環境安裝」；完整目錄結構見 §三。核心計算工具（`fire_code_calc.py`、`regulation_index.py`）無需安裝即可執行。
+> 能力矩陣與選用套件一覽見 §五「工具層／環境」；完整目錄結構見 §三。法規計算、DXF 圖面標註與文件判讀都無需安裝即可執行。
 
 ---
 
@@ -292,22 +312,39 @@ DXF 提供座標、圖層、符號與標註位置，但消防設備應設需求�
 | `tools/stage_report_xlsx.py` | 兩階段 Excel 工作簿產生（第一階段 4 分頁／第二階段 3 分頁） | `openpyxl` |
 | `tools/checklist_html.py` | `check_results.json` 轉法條檢核清單 HTML | stdlib |
 | `tools/standard_checklist_html.py` | 消防人員標準 Excel 表 + 答案 JSON 轉紅勾檢核 HTML | `openpyxl` |
-| `tools/dxf_svg_review.py` | `annotations.json` + DXF 轉互動式 SVG 圖面審查 HTML | `ezdxf` |
+| `tools/dxf_parse.py` | 零相依 ASCII DXF 解析（含 cp950 中文與版本判定），交付物1 的預設路徑 | stdlib |
+| `tools/dwg_guide.py` | DWG 收件檢查（magic bytes 判格式）與各家 CAD 另存 DXF 引導 | stdlib |
+| `tools/dxf_svg_review.py` | `annotations.json` + DXF 轉互動式 SVG 圖面審查 HTML | stdlib（二進位 DXF 才需 `ezdxf`） |
 | `tools/pdf_annotate.py` | legacy：舊版 PDF 紅圈標註輸出 | `pymupdf` |
 | `tools/verification_sheet.py` | 規則核定表匯出與回填 | stdlib |
-| `tools/setup.sh` | 一鍵安裝相依套件（選 `--with-graph` 併裝 graphify） | bash + pip |
-| `tools/check_env.py` | 環境自檢：列出哪些套件已就緒、缺的怎麼裝 | stdlib |
+| `tools/setup.sh` | 選用：一鍵安裝相依套件（`--with-graph` 併裝 graphify）。裝不起來不影響審圖主線 | bash + pip |
+| `tools/check_env.py` | 環境自檢：能力矩陣——現在能做什麼、做不到的替代路徑 | stdlib |
 
-### 環境安裝（一鍵）
+### 環境（預設什麼都不用裝）
 
-核心審圖工具（`fire_code_calc.py`、`regulation_index.py`）只用 Python 標準庫，clone 後即可執行；DXF／xlsx／PDF 交付物需要少數第三方套件。**一個指令備妥**，引用本倉庫的人不必自行逐一尋找安裝：
+本倉庫的使用者多半只裝了一個 AI 桌面版就開始用，沙盒與安全限制讓 `pip install` 往往失敗。所以審圖主線刻意做成零安裝：
+
+| 能力 | 需要安裝嗎 | 說明 |
+|---|---|---|
+| 法規門檻計算、法條查詢 | **不用** | 核心工具只用 Python 標準庫 |
+| 交付物1：DXF 圖面標註 | **不用** | 文字 DXF 由 `tools/dxf_parse.py` 以標準庫解析 |
+| PDF／DOCX／XLSX 判讀 | **不用** | 由 AI 直接讀取檔案 |
+| DWG 圖面 | 不用（但要手動一步） | 用你的 CAD 另存 DXF，見 `tools/dwg_guide.py check` |
+| 兩階段 Excel 交付物匯出 | `openpyxl` | 缺套件時改用 HTML 版法條檢核清單，內容相同 |
+| 平面圖 PDF 紅圈標註（legacy） | `pymupdf` | 缺套件時改用交付物1 的 HTML／SVG 標註，功能更完整 |
+| 二進位 DXF | `ezdxf` | 或請使用者改存 ASCII DXF（工具會直接這樣指引） |
 
 ```bash
-bash tools/setup.sh          # 安裝 requirements.txt（ezdxf / openpyxl / pymupdf）並自檢
-python3 tools/check_env.py   # 隨時檢查哪些套件已就緒、缺的怎麼裝
+python3 tools/check_env.py   # 這台電腦現在能做什麼、做不到的怎麼繞
 ```
 
-未安裝對應套件時，工具會直接給出明確的安裝指引，不會靜默失敗。
+裝得起套件的環境（自架 Linux、有 WSL 的進階使用者）可以一次補齊，但**這是加分項不是門檻**：
+
+```bash
+bash tools/setup.sh          # 安裝 requirements.txt 並自檢
+```
+
+工具在缺套件時一律給出替代路徑，不會靜默失敗，也不會把使用者卡在「還不能開始」。
 
 #### 法規知識圖譜（選用）
 

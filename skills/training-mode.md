@@ -160,8 +160,10 @@ python3 tools/graph_status.py stamp
 （純 AST、免 LLM）**不適用**於法條語意圖譜。跨塊抽取後須以 `graphify.ids.make_id`
 統一正規化 node id（條號感知）再合併，避免共用概念無法去重。
 
-**降級路徑（不得靜默跳過）**：`graphify` 未安裝時先試 `bash tools/setup.sh --with-graph`；
-仍失敗（離線、無安裝權限）則：
+**降級路徑（不得靜默跳過）**：`graphify` 只有「重建圖譜」需要，**查詢不需要**——
+`regulation_graph.py` 直接讀 `graphify-out/graph.json`，零安裝。未安裝時可試
+`bash tools/setup.sh --with-graph`（僅限 `has_bash` 為真且裝得起套件的環境）；
+裝不起來是常態（沙盒、無權限、離線），不必勉強，改走下列流程：
 
 1. 寫 `training/graph_pending.json`，記錄批次名、日期、待重建原因與待重建的來源檔清單
 2. 在本批次 `NOTES.md` 的圖譜項目保留未勾選狀態並註明原因

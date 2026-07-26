@@ -29,6 +29,12 @@ Claude Code 由 SessionStart hook 自動跑出診斷；其他 AI 工具（Codex�
   引導時一律給「可複製的命令」＋「一句自然語言請求」，斜線指令最多只能當附註。
 - **不要硬貼 `python3`。** 照 `status --format json` 回報的 `interpreter` 改寫所有命令
   （Windows 常只有 `python`）。同理，`bash tools/setup.sh` 只在 `has_bash` 為真時建議。
+- **不要假設使用者能安裝任何東西。** 多數人只裝了一個 AI 桌面版就開始用，沙盒與
+  安全限制讓 `pip install` 往往失敗。審圖主線（法規計算、DXF 圖面標註、文件判讀）
+  全部零安裝；缺套件時**先講替代路徑，不要追著使用者裝**。
+- **Python 本身是唯一無法迴避的前置條件。** `python3 --version`（或 `python`）不通時，
+  所有工具都跑不了。此時如實告知需先安裝 Python，並且**不得以聊天代替法規數值計算**
+  （底線 1 禁止心算）——沒有工具就只能做不涉及數值的協助。
 - **不要假設你有結構化選項提問的能力。** 逐則裁示一律以**純文字編號清單**提問，
   任何工具都做得到。
 - **繁體中文**（台灣法規用語），對象是不熟電腦的使用者：講「你要做什麼」，
@@ -40,6 +46,8 @@ Claude Code 由 SessionStart hook 自動跑出診斷；其他 AI 工具（Codex�
 |---|---|
 | `onboarding.py status` / `intro` | `bash tools/setup.sh`（安裝套件，動到他的電腦） |
 | `check_env.py` | `bash tools/setup.sh --with-graph`（安裝 graphify） |
+| `dwg_guide.py check` | `dwg_guide.py convert`（寫出轉檔產物） |
+| `dxf_parse.py` | |
 | `pending_review.py list` / `show` | `pending_review.py decide` / `apply`（改規則庫） |
 | `graph_status.py check` | `pending_review.py render`（改倉庫檔案） |
 | `fire_code_calc.py self-test` / `run-tests --strict` | 圖譜重建與 `graph_status.py stamp` |
@@ -134,16 +142,28 @@ python3 tools/regulation_graph.py neighbors --article §24
 
 ### 第三步 環境工具
 
-核心計算與法規查詢只用標準庫，什麼都不裝也能跑；缺套件只影響**特定交付物**：
+**這一步永遠是 ✅，不是關卡。** 多數使用者裝不了套件，把他卡在「還不能開始」是錯的。
+`status` 給的是**能力矩陣**，照著講「現在能做什麼」，不要複述套件名稱。
 
-| 缺的套件 | 影響 |
+零安裝就能做（審圖主線全在這裡）：
+
+| 能力 | 為什麼不用裝 |
 |---|---|
-| `ezdxf` | 交付物1（DXF 轉 SVG 圖面標註）產不出來 |
-| `openpyxl` | 兩階段 Excel 交付物與 xlsx 標準表檢核產不出來 |
-| `pymupdf` | 平面圖 PDF 紅圈標註產不出來 |
+| 法規門檻計算與法條查詢 | 核心工具只用 Python 標準庫 |
+| 交付物1 DXF 圖面標註 | 文字 DXF 由 `tools/dxf_parse.py` 以標準庫解析 |
+| PDF／DOCX／XLSX 判讀 | 由你（AI）直接讀取檔案，不需要任何套件 |
 
-這樣講給使用者聽，讓他知道「現在能做什麼、裝了以後多能做什麼」，再問他要不要裝。
-**同意後**才執行 `status` 給的安裝命令，裝完重跑 `python3 tools/check_env.py` 確認。
+做不到的，一律**當場給替代路徑**，不要只說「缺 X」：
+
+| 做不到 | 替代路徑 |
+|---|---|
+| DWG 圖面 | 跑 `dwg_guide.py check`，引導使用者用自己的 CAD 另存 DXF——零安裝、品質更好 |
+| 兩階段 Excel 交付物 | 改用 HTML 版法條檢核清單，內容相同 |
+| 平面圖 PDF 紅圈標註（legacy） | 改用交付物1 的 HTML／SVG 圖面標註，功能更完整 |
+
+只有在使用者**主動問「能不能裝起來」**時才提安裝命令，並且**同意後**才執行；
+裝完重跑 `python3 tools/check_env.py` 確認。裝不起來是常態，不是失敗——
+上表每一項都有走得通的路。
 
 ### 第四步 規則庫健康
 

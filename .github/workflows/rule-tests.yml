@@ -18,6 +18,23 @@ jobs:
       - name: Python 單元測試
         run: python3 -m unittest discover tests
 
+      # 交付物1 對目標使用者的承諾是「零安裝也產得出來」。
+      # 這一步刻意在裝套件之後、以移除 ezdxf 的方式驗證，
+      # 否則承諾壞掉時 CI 不會有任何反應。
+      - name: 零安裝承諾（移除 ezdxf 後仍須通過 DXF 解析與圖面標註測試）
+        run: |
+          python3 -m pip uninstall -y ezdxf
+          python3 -m unittest tests.test_dxf_parse.DxfParseEncodingTest \
+                              tests.test_dxf_parse.DxfParseDegradationTest \
+                              tests.test_dxf_parse.DxfParseCliTest
+          python3 -m pip install -r requirements.txt
+
+      - name: DWG 收件引導煙霧測試（無轉檔器亦須給出引導）
+        run: python3 tools/dwg_guide.py check --path input --format json
+
+      - name: 零相依 DXF 解析煙霧測試
+        run: python3 tools/dxf_parse.py --help
+
       - name: 引擎與規則庫自檢
         run: python3 tools/fire_code_calc.py self-test
 

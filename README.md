@@ -250,7 +250,9 @@ DXF 提供座標、圖層、符號與標註位置，但消防設備應設需求�
 
 訓練寫入後，`/train` 會**自動重建法規知識圖譜**並以 `graph_status.py stamp` 蓋章。
 `graph_status.py check` 以 sha256 逐檔指紋（`graphify-out/source_fingerprint.json`）
-判斷圖譜是否跟上規則庫與註解庫——CI 也跑這一步，來源檔改了卻沒重建圖譜就是紅燈。
+判斷圖譜是否跟上來源檔與註解庫——CI 也跑這一步，來源檔改了卻沒重建圖譜就是紅燈。
+
+圖譜的**來源檔**是 `rules/core/`（法規全文 md、附表 PDF 與附表圖檔）、`rules/README.md`、`rules/regulation_articles/` 與 `practice_notes/active/`——也就是圖譜真的從中抽出節點的檔案。`rules/equipment_rules.json` 與 `rules/mixed_use_rules.json` **不在**追蹤範圍：圖譜 482 個節點沒有一個出自它們，追蹤只會讓每次先紅再綠改參數都誤報過期。這個前提由 `check` 的 `untracked_graph_sources` 不變式持續驗證——日後重建出的圖譜若真的含有這些檔的節點，`check` 會直接紅燈要求把它們加回清單。
 
 ---
 
@@ -472,7 +474,7 @@ python3 -m unittest discover tests
 | 3 | [ ] 待文件 | 實際案件的**使用執照、室內裝修申請書**樣本（可去識別化）尚未提供 | 取得後驗證 `plan-intake` 證照萃取欄位（`use_permit`／`interior_renovation`／`change_of_use`）設計是否齊備 |
 | 4 | [ ] 待入庫 | **§16、§18、§20、§21、§22、§25、§26、§27、§29、§30 規則尚未入庫**——檢核表以「⚪需人工判讀（規則未入庫）」逐條呈現 | 逐條先紅再綠入 `equipment_rules.json`（條文原文已在 `rules/regulation_articles/`，可隨時進行） |
 | 5 | [x] 2026-07-25 部分完成 | **已確認**：`applicability-article-13`（§13）、`subordinate-table`（對照表 31 項）、§18 附表項目一~七＋註一~五＋二氧化碳限制，均已 `verified: true`（紀錄見 `governance/核定紀錄/results-20260725-*.json`）。對照表疑字經原件文字層核對後校讀更正（更氣室→電氣室、視廳→視聽、百貨適場→百貨商場、超集市場→超級市場、診療至→診療室、物品食庫→物品倉庫），並補回第（7）項漏抄之「遊戲室」，原印字留存於各項 `source_text` | 剩餘 **equipment_rules 11 條**維持 `verified: false`：比對出錯值／適用範圍不符／款次未涵蓋，14 則差異列於 `governance/待確認清單/rule-discrepancies-20260725.json`。下一步：`python3 tools/verification_sheet.py discrepancies` 逐則裁示 → 採納者走先紅再綠更正 → `apply` 回填 |
-| 5-1 | [ ] 待重建 | **法規圖譜未跟上規則庫**（`rules/equipment_rules.json`、`rules/mixed_use_rules.json` 已異動），`training/graph_pending.json` 旗標存在期間 `graph_status.py check` 持續紅燈 | 跑 `/graphify rules --update` 重抽 → `python3 tools/graph_status.py stamp` → 刪除 `training/graph_pending.json` |
+| 5-1 | [x] 2026-07-26 | **圖譜新鮮度關卡追蹤錯檔案**：`graph_status.py` 把 `equipment_rules.json`／`mixed_use_rules.json` 列為圖譜來源，但圖譜 482 個節點無一出自它們（`node.source_file` 只有 `rules/core/` 與 `rules/README.md`），導致每次先紅再綠改參數都誤報「圖譜過期」 | 已修正 `SOURCE_GLOBS` 為圖譜真正的來源檔，並新增 `untracked_graph_sources` 不變式：日後重建出的圖譜若含這些檔的節點，`check` 會紅燈要求加回清單。基準已重新蓋章（`stamp_reason` 記錄事由），`training/graph_pending.json` 移除 |
 | 6 | [ ] 待實作 | 戊類複合用途之 §12-1 面積合計方式（以各目為單元合計）尚未進 `check-threshold` 引擎 | 判定為戊類的案件目前由 `/code-requirements` 報告注記、人工調整面積合計；後續先紅再綠入引擎 |
 
 ## 十一、免責聲明

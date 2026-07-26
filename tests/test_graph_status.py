@@ -4,7 +4,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tools.graph_status import EXIT_CODES, collect_sources, diff_sources, evaluate, main
+from tools.graph_status import (EXIT_CODES, collect_sources, diff_sources, evaluate, main,
+                               untracked_graph_sources)
 from tools.practice_note_graph import GRAPH_PATH, LAYER, merge
 
 NOTE_ID = "PN-20260725-001"
@@ -47,10 +48,17 @@ def merge_note_into_graph(root, note_path):
 
 
 def make_repo(tmp):
-    """建立最小圖譜來源結構：兩個規則檔 ＋ 兩條逐條 JSON ＋ 一則實務註解。"""
+    """建立最小圖譜來源結構：法規全文 ＋ rules/README.md ＋ 兩條逐條 JSON。
+
+    equipment_rules.json／mixed_use_rules.json 刻意也建出來——它們在 rules/ 底下但
+    不是圖譜來源，用來驗證追蹤清單不會把它們算進去。
+    """
     root = Path(tmp)
     (root / "rules" / "regulation_articles").mkdir(parents=True)
+    (root / "rules" / "core").mkdir(parents=True)
     (root / "practice_notes" / "active").mkdir(parents=True)
+    (root / "rules" / "core" / "設置標準.md").write_text("# 全文", encoding="utf-8")
+    (root / "rules" / "README.md").write_text("# 法規資料取用格式", encoding="utf-8")
     (root / "rules" / "equipment_rules.json").write_text('{"rules": []}', encoding="utf-8")
     (root / "rules" / "mixed_use_rules.json").write_text('{"rules": []}', encoding="utf-8")
     (root / "rules" / "regulation_articles" / "article-001.json").write_text('{"a": 1}', encoding="utf-8")
@@ -67,11 +75,19 @@ class CollectSourcesTest(unittest.TestCase):
             sources = collect_sources(root)
             self.assertEqual(sorted(sources), [
                 "practice_notes/active/PN-20260725-001.json",
-                "rules/equipment_rules.json",
-                "rules/mixed_use_rules.json",
+                "rules/README.md",
+                "rules/core/設置標準.md",
                 "rules/regulation_articles/article-001.json",
                 "rules/regulation_articles/article-002.json",
             ])
+
+    def test_rule_parameter_files_are_not_graph_sources(self):
+        """圖譜不從規則參數檔抽節點——追蹤它們會讓每次先紅再綠都誤報過期。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(tmp)
+            sources = collect_sources(root)
+            self.assertNotIn("rules/equipment_rules.json", sources)
+            self.assertNotIn("rules/mixed_use_rules.json", sources)
 
     def test_ignores_files_outside_the_graph_source_set(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -82,6 +98,43 @@ class CollectSourcesTest(unittest.TestCase):
             sources = collect_sources(root)
             self.assertNotIn("rules/review_corrections.md", sources)
             self.assertNotIn("practice_notes/staging/PN-20260725-009.json", sources)
+
+
+class UntrackedSourceTest(unittest.TestCase):
+    """追蹤清單刻意不含「掃描得到但不產生節點」的檔案；這個前提必須被持續驗證。"""
+
+    def write_graph(self, root, source_file):
+        path = root / "graphify-out" / "graph.json"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({
+            "nodes": [{"id": "n1", "label": "節點", "source_file": source_file}],
+            "links": [],
+        }, ensure_ascii=False), encoding="utf-8")
+
+    def test_tracked_source_is_not_flagged(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(tmp)
+            self.write_graph(root, "core/設置標準.md")
+            self.assertEqual(untracked_graph_sources(root), [])
+
+    def test_rules_relative_readme_resolves_inside_rules(self):
+        """node.source_file 是相對 rules/ 的路徑，README.md 指的是 rules/README.md。"""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(tmp)
+            (root / "README.md").write_text("# repo 根目錄", encoding="utf-8")
+            self.write_graph(root, "README.md")
+            self.assertEqual(untracked_graph_sources(root), [])
+
+    def test_node_from_untracked_file_turns_the_gate_red(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(tmp)
+            self.write_graph(root, "equipment_rules.json")
+            self.assertEqual(untracked_graph_sources(root), ["rules/equipment_rules.json"])
+            main(["--root", str(root), "stamp"])
+            result = evaluate(root)
+            self.assertEqual(result["state"], "untracked_sources")
+            self.assertEqual(main(["--root", str(root), "check"]),
+                             EXIT_CODES["untracked_sources"])
 
 
 class DiffTest(unittest.TestCase):
@@ -108,11 +161,10 @@ class EvaluateTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = make_repo(tmp)
             main(["--root", str(root), "stamp"])
-            (root / "rules" / "equipment_rules.json").write_text(
-                '{"rules": [{"id": "new"}]}', encoding="utf-8")
+            (root / "rules" / "core" / "設置標準.md").write_text("# 全文（修正）", encoding="utf-8")
             result = evaluate(root)
             self.assertEqual(result["state"], "stale")
-            self.assertEqual(result["diff"]["changed"], ["rules/equipment_rules.json"])
+            self.assertEqual(result["diff"]["changed"], ["rules/core/設置標準.md"])
             self.assertEqual(main(["--root", str(root), "check"]), EXIT_CODES["stale"])
 
     def test_stale_when_a_practice_note_is_added(self):
@@ -168,7 +220,7 @@ class EvaluateTest(unittest.TestCase):
             main(["--root", str(root), "stamp", "--date", "2026-07-25"])
             doc = json.loads((root / "graphify-out" / "source_fingerprint.json").read_text(encoding="utf-8"))
             self.assertEqual(doc["stamped_at"], "2026-07-25")
-            self.assertEqual(doc["source_count"], 4)
+            self.assertEqual(doc["source_count"], 4)  # core md、README、兩條逐條 JSON
 
 
 if __name__ == "__main__":

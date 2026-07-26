@@ -37,15 +37,25 @@ except ImportError:
 FINGERPRINT_PATH = "graphify-out/source_fingerprint.json"
 GRAPH_PATH = "graphify-out/graph.json"
 
-# 圖譜來源檔。前三項與 graphify-out/manifest.json 的 key 集合一致（法典層）；
-# practice_notes/active/ 是註解層——實務註解也是後續案件要查到的知識節點，
-# 新增註解同樣代表圖譜該重建了。
+# 圖譜來源檔＝**圖譜真的從中抽出節點的檔案**（法典層）＋ practice_notes/active/（註解層）。
+#
+# 不含 rules/equipment_rules.json 與 rules/mixed_use_rules.json：這兩個檔在 graphify 的
+# manifest 裡（掃描範圍涵蓋），但 graph.json 的 482 個節點沒有任何一個出自它們
+# （node.source_file 只有 core/ 底下的全文 md、附表 PDF、附表圖檔與 rules/README.md）。
+# 把它們列入追蹤，會讓每一次先紅再綠改參數都誤報「圖譜過期」，而重建出來的圖譜完全相同。
+# 這個「未產生節點就不追蹤」的前提由 untracked_graph_sources() 持續驗證：
+# 日後若重建出的圖譜真的含有這些檔的節點，check 會直接紅燈要求把它們加回本清單。
 SOURCE_GLOBS = [
-    "rules/equipment_rules.json",
-    "rules/mixed_use_rules.json",
+    "rules/core/**/*",
+    "rules/README.md",
     "rules/regulation_articles/article-*.json",
     "practice_notes/active/*.json",
 ]
+
+# graph.json 的 node.source_file 是相對於 graphify 執行根目錄（本專案為 rules/）的路徑，
+# 註解層節點則由 practice_note_graph 以 repo 相對路徑寫入。兩種都要能對回 repo 路徑，
+# 且 rules/ 要先試——否則 rules/README.md 會被誤判成 repo 根目錄的 README.md。
+GRAPH_SOURCE_PREFIXES = ["rules/", ""]
 
 REBUILD_HINT = (
     "重建圖譜：/graphify rules --update（增量）或 /graphify rules（大改）；"
@@ -69,13 +79,45 @@ def collect_sources(root="."):
     found = {}
     for pattern in SOURCE_GLOBS:
         if "*" in pattern:
-            matches = sorted(root.glob(pattern))
+            matches = sorted(p for p in root.glob(pattern) if p.is_file())
         else:
             candidate = root / pattern
             matches = [candidate] if candidate.is_file() else []
         for path in matches:
             found[path.relative_to(root).as_posix()] = sha256_file(path)
     return dict(sorted(found.items()))
+
+
+def untracked_graph_sources(root=".", tracked=None):
+    """圖譜裡有節點、卻不在追蹤清單內的來源檔。
+
+    SOURCE_GLOBS 刻意不追蹤「掃描得到但不產生節點」的檔案（見上方說明）。
+    這個前提一旦破功——重建後的圖譜開始從那些檔抽出節點——追蹤清單就會漏看真正的
+    來源異動。本函式把該前提變成每次 check 都驗的不變式：回傳非空即代表清單該補。
+    """
+    root = Path(root)
+    graph = root / GRAPH_PATH
+    if not graph.is_file():
+        return []
+    try:
+        with open(graph, encoding="utf-8") as f:
+            doc = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return []
+    tracked = set(collect_sources(root) if tracked is None else tracked)
+    untracked = set()
+    for node in doc.get("nodes", []):
+        cited = node.get("source_file")
+        if not cited:
+            continue
+        for prefix in GRAPH_SOURCE_PREFIXES:
+            candidate = f"{prefix}{cited}"
+            if candidate in tracked:
+                break
+            if (root / candidate).is_file():
+                untracked.add(candidate)
+                break
+    return sorted(untracked)
 
 
 def graph_scale(root="."):
@@ -121,6 +163,7 @@ def evaluate(root="."):
     """
     current = collect_sources(root)
     notes = practice_note_graph.check(root)
+    untracked = untracked_graph_sources(root, current)
     doc = load_fingerprint(root)
     if doc is None:
         return {
@@ -129,9 +172,12 @@ def evaluate(root="."):
             "diff": {"added": sorted(current), "removed": [], "changed": []},
             "stamped_at": None,
             "notes": notes,
+            "untracked_sources": untracked,
         }
     changes = diff_sources(doc.get("sources", {}), current)
-    if any(changes.values()):
+    if untracked:
+        state = "untracked_sources"
+    elif any(changes.values()):
         state = "stale"
     elif notes["state"] != "covered":
         state = "notes_missing"
@@ -143,10 +189,12 @@ def evaluate(root="."):
         "diff": changes,
         "stamped_at": doc.get("stamped_at"),
         "notes": notes,
+        "untracked_sources": untracked,
     }
 
 
-EXIT_CODES = {"fresh": 0, "stale": 2, "notes_missing": 2, "no_baseline": 3}
+EXIT_CODES = {"fresh": 0, "stale": 2, "notes_missing": 2, "untracked_sources": 2,
+              "no_baseline": 3}
 
 
 def format_notes(notes):
@@ -179,6 +227,15 @@ def format_check(result):
         lines.append(format_notes(notes))
         lines.append("→ 確認 graphify-out/ 圖譜為當前規則庫所建之後，執行："
                      " python3 tools/graph_status.py stamp")
+        return "\n".join(lines)
+
+    if result["state"] == "untracked_sources":
+        lines.append("⛔ 追蹤清單漏檔 —— 圖譜有節點出自下列檔案，但它們不在 "
+                     "graph_status.py 的 SOURCE_GLOBS 內；這些檔改了不會被偵測到")
+        for path in result["untracked_sources"]:
+            lines.append(f"  [未追蹤] {path}")
+        lines.append(format_notes(notes))
+        lines.append("→ 把上列路徑加進 tools/graph_status.py 的 SOURCE_GLOBS，再重新蓋章")
         return "\n".join(lines)
 
     if result["state"] == "notes_missing":
@@ -223,6 +280,7 @@ def cmd_stamp(args):
               "   （確知本次不需納入註解時，才用 --allow-missing-notes 強制蓋章）", file=sys.stderr)
         return 2
 
+    previous = load_fingerprint(root) or {}
     doc = {
         "schema_version": 1,
         "note": "圖譜來源檔 sha256 指紋；graph_status.py check 以此判斷圖譜是否跟上規則庫。"
@@ -233,6 +291,9 @@ def cmd_stamp(args):
         "source_count": len(sources),
         "sources": sources,
     }
+    if args.reason:
+        doc["stamp_reason"] = args.reason
+        doc["previous_stamped_at"] = previous.get("stamped_at")
     out = root / FINGERPRINT_PATH
     out.parent.mkdir(parents=True, exist_ok=True)
     with open(out, "w", encoding="utf-8") as f:
@@ -263,6 +324,9 @@ def build_parser():
     s.add_argument("--date", default=None, help="蓋章日期（預設今天）")
     s.add_argument("--allow-missing-notes", action="store_true",
                    help="實務註解尚未併入圖譜時仍強制蓋章（會蓋出查不到註解的圖譜，非必要不要用）")
+    s.add_argument("--reason",
+                   help="蓋章事由；非「重建圖譜後蓋章」的情形（例如追蹤清單修正後重新建立基準）必填，"
+                        "會連同前一次蓋章日期寫進指紋檔供追溯")
     s.set_defaults(func=cmd_stamp)
     return p
 

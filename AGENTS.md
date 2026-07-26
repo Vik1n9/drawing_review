@@ -145,7 +145,7 @@ drawing_review/
 - **邊界（呼應最高原則 2、4）**：圖譜只是**索引與導覽**，用來定位條號與關聯，**不是門檻數值或計算結果的來源**。任何應設／免設判斷與數量計算，一律仍以 `python3 tools/fire_code_calc.py` ＋人工確認後的 `case.json` 為準，數值須回法條原文核對；圖表附件節點只作導覽，表內數字不得直接引用，須經先紅再綠抄錄入庫。
 - **查詢（免安裝，優先用這個）**：`python3 tools/regulation_graph.py neighbors --article §24`、`… articles --equipment 排煙設備`、`… path --from 無開口樓層 --to 排煙設備`（純標準庫，直接讀 graph.json，輸出附可貼的 lookup 指令）。裝了 graphify 時另可用 `graphify query/explain/path`。
 - **標準調閱流程**：圖譜（定位牽涉哪幾條）→ `regulation_index.py lookup`（只載入那幾條原文，支援 `'§24,§12'` 逗號列舉與 `'§20-§22'` 範圍）→ `fire_code_calc`（門檻與數量）→ 判斷。**不要一次載入 §14~§31 全文**（全載約 1.5 萬字，定位後通常 3~4 千字）。
-- **法規更新後重建**：改動 `rules/core/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量）刷新圖譜；法規為文字語料須走 skill 的語意抽取（依編/章切塊），CLI 的 `graphify update`（純 AST）不適用。圖表附件為確定性節點，可由 `regulation_articles` 的圖片連結重建。 重建完成後務必 `python3 tools/graph_status.py stamp` 蓋章——`graph_status.py check` 以 sha256 逐檔指紋判斷圖譜是否跟上規則庫與註解庫，CI 也跑這一步，來源檔改了卻沒重建即紅燈。走 `/train` 時第七步會自動完成重建與蓋章。
+- **法規更新後重建**：改動 `rules/core/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量）刷新圖譜；法規為文字語料須走 skill 的語意抽取（依編/章切塊），CLI 的 `graphify update`（純 AST）不適用。圖表附件為確定性節點，可由 `regulation_articles` 的圖片連結重建。 重建完成後務必 `python3 tools/graph_status.py stamp` 蓋章——`graph_status.py check` 以 sha256 逐檔指紋判斷圖譜是否跟上規則庫與註解庫，CI 也跑這一步，來源檔改了卻沒重建即紅燈。走 `/train` 時第七步會自動完成重建與蓋章。圖譜的**來源檔**是 `rules/core/`（法規全文 md、附表 PDF 與附表圖檔）、`rules/README.md`、`rules/regulation_articles/` 與 `practice_notes/active/`——也就是圖譜真的從中抽出節點的檔案。`rules/equipment_rules.json` 與 `rules/mixed_use_rules.json` **不在**追蹤範圍：圖譜 482 個節點沒有一個出自它們，追蹤只會讓每次先紅再綠改參數都誤報過期。這個前提由 `check` 的 `untracked_graph_sources` 不變式持續驗證——日後重建出的圖譜若真的含有這些檔的節點，`check` 會直接紅燈要求把它們加回清單。
 
 ## 報告語言與分類
 

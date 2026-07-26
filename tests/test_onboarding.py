@@ -271,10 +271,20 @@ class ContractFilesStayLeanTest(unittest.TestCase):
         return (self.REPO / name).read_text(encoding="utf-8")
 
     # 工程預算，不是法規值（沒有法條原文可抄）：契約只有四節——定位、開場檢查、
-    # 五條底線、路由表。路由表每支 skill 一列，所以新增 skill 時上限本來就該跟著調；
-    # 但「某條紀律又貼回契約」不是調高的理由，那該進對應 skill。
-    MAX_CONTRACT_LINES = 50
+    # 五條底線、路由。3KB 的常駐契約已經會被嫌臃腫，所以水位壓在 30 行／2KB 上下。
+    # 新增 skill 時把檔名加進路由那段敘述即可，不要為它另起一列；
+    # 「某條紀律又貼回契約」更不是調高上限的理由，那該進對應 skill。
+    MAX_CONTRACT_LINES = 30
+    MAX_CONTRACT_BYTES = 2500
     MAX_POINTER_LINES = 10
+
+    def test_contract_stays_under_byte_budget(self):
+        """行數擋不住把整段塞進同一行——併看位元組數。"""
+        for name in self.CONTRACTS:
+            size = len(self.read(name).encode("utf-8"))
+            self.assertLessEqual(
+                size, self.MAX_CONTRACT_BYTES,
+                f"{name} {size} bytes——常駐契約每個工作階段都要付這個代價")
 
     def test_contract_stays_under_budget(self):
         """契約膨脹回去的話，每個工作階段都要付這份 context 的代價。"""

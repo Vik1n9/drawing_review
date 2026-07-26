@@ -10,14 +10,31 @@
 
 ```
 governance/
+├── 待確認清單/      — 規則參數與現行條文比對出的差異，逐則待使用者裁示
+│   └── rule-discrepancies-{YYYYMMDD}.json
 ├── 核定表/          — verification_sheet.py export 產出的 HTML（僅在需要書面紀錄時用）
 │   └── 核定表-{YYYYMMDD}.html
 ├── 核定紀錄/        — 規則確認成果
-│   ├── results-{YYYYMMDD}.json          — 確認結果 JSON（apply 的輸入）
-│   └── 核定表-{YYYYMMDD}-簽名掃描.pdf   — 走紙本簽名流程時才有
+│   ├── results-{YYYYMMDD}[-{規則檔}].json — 確認結果 JSON（apply 的輸入）
+│   └── 核定表-{YYYYMMDD}-簽名掃描.pdf     — 走紙本簽名流程時才有
 └── 註解紀錄/        — 實務註解追溯紀錄（practice_note_engine.py apply 自動產生）
     └── PN-{YYYYMMDD}-{序號}.md
 ```
+
+## 前置關卡：待確認清單（參數 vs 現行條文的差異）
+
+規則參數與條文原文比對出差異時，**先寫入待確認清單，不得逕行回填 `verified: true`**：
+
+```bash
+# 逐則列出差異（條文原文｜規則現值｜差異｜影響｜建議更正）
+python3 tools/verification_sheet.py discrepancies
+
+# 使用者逐則裁示：採納更正／維持現值／另有更正＋正確值
+#   採納更正 → 走 skills/red-green.md 先紅再綠改參數，改完再回填 verified
+#   維持現值 → results JSON 該筆加 "override_discrepancy": true 並註明理由
+```
+
+`verification_sheet.py list` 會在有未裁示差異的規則旁標 🔴；`apply` 會擋下這些規則的回填。
 
 ## 主路徑：對話中逐條確認
 
@@ -60,7 +77,12 @@ python3 tools/fire_code_calc.py run-tests --strict
 ## 規則
 
 1. **`verified: true` 只能經 `apply` 產生**——不得手改 JSON 跳過確認紀錄；
-   `verified_by` 與 `verified_date` 為必填，這是責任追溯的最低要求
+   `verified_by` 與 `verified_date` 為必填，這是責任追溯的最低要求。
+   `apply` 除規則庫（`rules` 陣列）外，也支援對照表式檔案的項次
+   （`rules/article18_equipment_options.json` 的 `items`／`table_notes`／`global_constraints`，
+   id 形如 `18-3`、`18-註4`），以 `--rules` 指定檔案
+1-1. **待確認清單中仍有未裁示差異的規則，`apply` 會拒絕回填**——裁示為「維持現值」時
+   才於該筆 results 加 `"override_discrepancy": true` 並在 `note` 寫明理由
 2. **確認為「錯誤」的規則不會被工具自動修正**——參數修正必須走先紅再綠
    （先改測試 `expected` →紅→改參數→綠），修正後回到「待確認」狀態，下一輪再確認
 3. **走紙本流程時**，掃描檔命名對應核定表日期，results JSON 的 `evidence` 指向掃描檔路徑

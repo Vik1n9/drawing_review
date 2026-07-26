@@ -386,6 +386,7 @@ python3 tools/practice_note_engine.py test --strict
 
 # 規則逐條確認（使用者本身即為消防專業人員，不需另送外部核定）
 python3 tools/verification_sheet.py list                      # 列出待確認規則，於對話中逐條確認
+python3 tools/verification_sheet.py discrepancies             # 列出與現行條文比對出的差異，逐則裁示
 python3 tools/verification_sheet.py apply --results {結果JSON}
 
 # 測試
@@ -412,7 +413,7 @@ python3 -m unittest discover tests
 
 | 階段 | 內容 | 狀態 |
 |------|------|------|
-| Phase 0 法規編碼 | 設置標準逐條結構化為 rules JSON，消防專業人員逐條核定 | 示例子集已建，仍為 `verified: false` |
+| Phase 0 法規編碼 | 設置標準逐條結構化為 rules JSON，消防專業人員逐條核定 | 示例子集已建；2026-07-25 完成與現行條文（113.04.24 修正）逐條比對：**已確認** §13 適用標準、主從用途對照表 31 項、§18 附表項目一~七與註一~五（`verified: true`）；**待裁示** equipment_rules 其餘 11 條，差異逐則列於 `governance/待確認清單/`（`verification_sheet.py discrepancies`） |
 | Phase 1 規則引擎 MVP | 人工確認 `case.json` → 應設需求計算 | 已具備 |
 | Phase 2 DXF/SVG 工具層 | DXF 轉 SVG 圖面審查 HTML，缺失清單導覽與高亮定位 | 已導入工具骨架 |
 | Phase 3 圖面萃取 | 從 DXF 圖層、符號與審查文件萃取 `case.json`，並經人工確認 | 流程定義中 |
@@ -433,7 +434,8 @@ python3 -m unittest discover tests
 | 2 | [ ] 待文件 | 「14~31 條判斷用」勾選表**實務範例**尚未提供 | 取得後對齊 `checklist_html.py` 檢核表版面與欄位 |
 | 3 | [ ] 待文件 | 實際案件的**使用執照、室內裝修申請書**樣本（可去識別化）尚未提供 | 取得後驗證 `plan-intake` 證照萃取欄位（`use_permit`／`interior_renovation`／`change_of_use`）設計是否齊備 |
 | 4 | [ ] 待入庫 | **§16、§18、§20、§21、§22、§25、§26、§27、§29、§30 規則尚未入庫**——檢核表以「⚪需人工判讀（規則未入庫）」逐條呈現 | 逐條先紅再綠入 `equipment_rules.json`（條文原文已在 `rules/regulation_articles/`，可隨時進行） |
-| 5 | [ ] 待核定 | **全部規則 `verified: false`**（equipment_rules 12 條＋mixed_use_rules 1 條，含 §13 與對照表 31 項）；對照表抄錄自掃描 PDF，若干疑字已標 `transcription_note`（如「更氣室」「百貨適場」「診療至」） | 走 governance 核定：`python3 tools/verification_sheet.py export` 匯出核定表 → 消防專業人員逐條核對原文（特別是 transcription_note 項）→ `apply` 回填 |
+| 5 | [x] 2026-07-25 部分完成 | **已確認**：`applicability-article-13`（§13）、`subordinate-table`（對照表 31 項）、§18 附表項目一~七＋註一~五＋二氧化碳限制，均已 `verified: true`（紀錄見 `governance/核定紀錄/results-20260725-*.json`）。對照表疑字經原件文字層核對後校讀更正（更氣室→電氣室、視廳→視聽、百貨適場→百貨商場、超集市場→超級市場、診療至→診療室、物品食庫→物品倉庫），並補回第（7）項漏抄之「遊戲室」，原印字留存於各項 `source_text` | 剩餘 **equipment_rules 11 條**維持 `verified: false`：比對出錯值／適用範圍不符／款次未涵蓋，14 則差異列於 `governance/待確認清單/rule-discrepancies-20260725.json`。下一步：`python3 tools/verification_sheet.py discrepancies` 逐則裁示 → 採納者走先紅再綠更正 → `apply` 回填 |
+| 5-1 | [ ] 待重建 | **法規圖譜未跟上規則庫**（`rules/equipment_rules.json`、`rules/mixed_use_rules.json` 已異動），`training/graph_pending.json` 旗標存在期間 `graph_status.py check` 持續紅燈 | 跑 `/graphify rules --update` 重抽 → `python3 tools/graph_status.py stamp` → 刪除 `training/graph_pending.json` |
 | 6 | [ ] 待實作 | 戊類複合用途之 §12-1 面積合計方式（以各目為單元合計）尚未進 `check-threshold` 引擎 | 判定為戊類的案件目前由 `/code-requirements` 報告注記、人工調整面積合計；後續先紅再綠入引擎 |
 
 ## 十一、免責聲明

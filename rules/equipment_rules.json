@@ -1,7 +1,7 @@
 {
   "regulation": "各類場所消防安全設備設置標準",
-  "regulation_version": "開發示例版（版本日期待核定，正式使用前依全國法規資料庫現行條文重建）",
-  "disclaimer": "本檔所有參數為架構開發示例，verified 均為 false，未經消防專業人員核定不得作為審查依據。",
+  "regulation_version": "各類場所消防安全設備設置標準 民國 113 年 04 月 24 日修正（條文全文：rules/core/1各類場所消防安全設備設置標準.md）",
+  "disclaimer": "本檔參數於 2026-07-25 逐條與現行條文全文比對：`applicability-article-13`（§13）逐字相符已確認（verified: true）；其餘 11 條比對出錯值、適用範圍不符或款次未涵蓋，維持 verified: false，差異逐條列於 governance/待確認清單/rule-discrepancies-20260725.json，待使用者（消防專業人員）逐條裁示後走先紅再綠更正再回填。verified: false 之參數輸出時必須附警語。",
   "use_categories_example": {
     "甲1": "電影片映演場所、演藝場所等（示例）",
     "甲2": "夜總會、視聽歌唱場所等（示例）",
@@ -17,9 +17,24 @@
       "category": "滅火設備",
       "legal_basis": "§14",
       "params": {
-        "always_required_uses": ["甲"],
-        "total_area_threshold_other_uses": {"value": 150, "scope": "total", "unit": "㎡", "applies_to": ["乙", "丙", "丁"]},
-        "basement_or_windowless_area_threshold": {"value": 50, "scope": "per_floor", "unit": "㎡"}
+        "always_required_uses": [
+          "甲"
+        ],
+        "total_area_threshold_other_uses": {
+          "value": 150,
+          "scope": "total",
+          "unit": "㎡",
+          "applies_to": [
+            "乙",
+            "丙",
+            "丁"
+          ]
+        },
+        "basement_or_windowless_area_threshold": {
+          "value": 50,
+          "scope": "per_floor",
+          "unit": "㎡"
+        }
       },
       "verified": false,
       "verified_by": null,
@@ -32,7 +47,12 @@
       "category": "滅火設備",
       "legal_basis": "§31",
       "params": {
-        "effectiveness_area_per_unit": {"甲": 100, "乙": 200, "丙": 200, "丁": 200},
+        "effectiveness_area_per_unit": {
+          "甲": 100,
+          "乙": 200,
+          "丙": 200,
+          "丁": 200
+        },
         "scope": "per_floor",
         "max_walking_distance_m": 20
       },
@@ -47,8 +67,20 @@
       "category": "滅火設備",
       "legal_basis": "§15",
       "params": {
-        "low_rise": {"max_floors": 5, "per_floor_area_threshold": {"甲": 300, "other": 500}},
-        "mid_rise": {"min_floors": 6, "per_floor_area_threshold": {"甲": 150, "other": 300}},
+        "low_rise": {
+          "max_floors": 5,
+          "per_floor_area_threshold": {
+            "甲": 300,
+            "other": 500
+          }
+        },
+        "mid_rise": {
+          "min_floors": 6,
+          "per_floor_area_threshold": {
+            "甲": 150,
+            "other": 300
+          }
+        },
         "scope": "per_floor"
       },
       "verified": false,
@@ -76,8 +108,19 @@
       "category": "滅火設備",
       "legal_basis": "§17",
       "params": {
-        "low_rise_total_area_threshold": {"value": 1500, "scope": "total", "applies_to": ["甲"], "max_floors": 10},
-        "high_rise_per_floor_threshold": {"value": 100, "scope": "per_floor", "min_floor_index": 11}
+        "low_rise_total_area_threshold": {
+          "value": 1500,
+          "scope": "total",
+          "applies_to": [
+            "甲"
+          ],
+          "max_floors": 10
+        },
+        "high_rise_per_floor_threshold": {
+          "value": 100,
+          "scope": "per_floor",
+          "min_floor_index": 11
+        }
       },
       "verified": false,
       "verified_by": null,
@@ -90,7 +133,11 @@
       "category": "滅火設備",
       "legal_basis": "§46",
       "params": {
-        "horizontal_distance_m": {"standard_nonfireproof": 2.1, "standard_fireproof": 2.3, "fast_response": 2.6},
+        "horizontal_distance_m": {
+          "standard_nonfireproof": 2.1,
+          "standard_fireproof": 2.3,
+          "fast_response": 2.6
+        },
         "square_layout_coverage_formula": "每頭涵蓋 = 2 × r²（正方形配置）"
       },
       "verified": false,
@@ -104,10 +151,28 @@
       "category": "警報設備",
       "legal_basis": "§19",
       "params": {
-        "low_rise": {"max_floors": 5, "per_floor_area_threshold": {"甲": 300, "other": 500}},
-        "mid_rise": {"min_floors": 6, "max_floors": 10, "per_floor_area_threshold": {"any": 300}},
-        "high_rise": {"min_floors": 11, "rule": "全部應設"},
-        "basement_windowless_threshold": {"甲": 100, "other": 300}
+        "low_rise": {
+          "max_floors": 5,
+          "per_floor_area_threshold": {
+            "甲": 300,
+            "other": 500
+          }
+        },
+        "mid_rise": {
+          "min_floors": 6,
+          "max_floors": 10,
+          "per_floor_area_threshold": {
+            "any": 300
+          }
+        },
+        "high_rise": {
+          "min_floors": 11,
+          "rule": "全部應設"
+        },
+        "basement_windowless_threshold": {
+          "甲": 100,
+          "other": 300
+        }
       },
       "verified": false,
       "verified_by": null,
@@ -118,13 +183,45 @@
       "id": "detector-coverage",
       "equipment": "火警探測器",
       "category": "警報設備",
-      "legal_basis": "§115-§120（示例條號，核定時確認）",
+      "legal_basis": "§120、§122",
       "params": {
         "coverage_sqm": {
-          "heat-diff-1": {"h_lt_4": {"fireproof": 90, "other": 50}, "h_4_to_8": {"fireproof": 45, "other": 30}},
-          "heat-diff-2": {"h_lt_4": {"fireproof": 70, "other": 40}, "h_4_to_8": {"fireproof": 35, "other": 25}},
-          "smoke-1": {"h_lt_4": {"any": 150}, "h_4_to_20": {"any": 75}},
-          "smoke-2": {"h_lt_4": {"any": 150}, "h_4_to_15": {"any": 75}}
+          "heat-diff-1": {
+            "h_lt_4": {
+              "fireproof": 90,
+              "other": 50
+            },
+            "h_4_to_8": {
+              "fireproof": 45,
+              "other": 30
+            }
+          },
+          "heat-diff-2": {
+            "h_lt_4": {
+              "fireproof": 70,
+              "other": 40
+            },
+            "h_4_to_8": {
+              "fireproof": 35,
+              "other": 25
+            }
+          },
+          "smoke-1": {
+            "h_lt_4": {
+              "any": 150
+            },
+            "h_4_to_20": {
+              "any": 75
+            }
+          },
+          "smoke-2": {
+            "h_lt_4": {
+              "any": 150
+            },
+            "h_4_to_15": {
+              "any": 75
+            }
+          }
         }
       },
       "verified": false,
@@ -138,7 +235,12 @@
       "category": "避難逃生設備",
       "legal_basis": "§23",
       "params": {
-        "required_uses": ["甲", "乙", "丙", "丁"],
+        "required_uses": [
+          "甲",
+          "乙",
+          "丙",
+          "丁"
+        ],
         "placement": "各出入口上方及避難動線，數量依圖面動線判定"
       },
       "verified": false,
@@ -167,7 +269,15 @@
       "legal_basis": "§13",
       "params": {
         "default_rule": "各類場所於增建、改建或變更用途時，其消防安全設備之設置，適用增建、改建或用途變更前之標準",
-        "always_new_standard_equipment": ["滅火器", "火警自動警報設備", "手動報警設備", "緊急廣播設備", "標示設備", "避難器具", "緊急照明設備"],
+        "always_new_standard_equipment": [
+          "滅火器",
+          "火警自動警報設備",
+          "手動報警設備",
+          "緊急廣播設備",
+          "標示設備",
+          "避難器具",
+          "緊急照明設備"
+        ],
         "extension_area_threshold_sqm": 1000,
         "extension_area_comparator": "gt",
         "extension_ratio_threshold": 0.5,
@@ -177,10 +287,11 @@
         "change_to_scope_note": "用途變更為甲類場所使用時，該變更後用途之消防安全設備適用新標準",
         "prior_noncompliance_rule": "用途變更前，未符合變更前規定之消防安全設備，適用變更後之標準"
       },
-      "verified": false,
-      "verified_by": null,
-      "verified_date": null,
-      "note": "§13 新舊標準適用判斷：預設適用變更前標準，四款但書適用變更後（新）標準。「逾一千平方公尺」為嚴格大於（gt）、「二分之一以上」為大於等於（gte）。室內裝修是否構成「增建或改建」需人工判讀。"
+      "verified": true,
+      "verified_by": "使用者本人（消防專業人員）",
+      "verified_date": "2026-07-25",
+      "note": "§13 新舊標準適用判斷：預設適用變更前標準，四款但書適用變更後（新）標準。「逾一千平方公尺」為嚴格大於（gt）、「二分之一以上」為大於等於（gte）。室內裝修是否構成「增建或改建」需人工判讀。",
+      "verification_evidence": "使用者逐條確認（消防專業人員本人，未另附書面簽名）；本輪確認依據為與 rules/core/1各類場所消防安全設備設置標準.md（民國 113 年 04 月 24 日修正）逐字比對之結果"
     },
     {
       "id": "smoke-exhaust-threshold",
@@ -188,7 +299,13 @@
       "category": "消防搶救上之必要設備",
       "legal_basis": "§28",
       "params": {
-        "total_area_threshold": {"value": 500, "scope": "total", "applies_to": ["甲"]},
+        "total_area_threshold": {
+          "value": 500,
+          "scope": "total",
+          "applies_to": [
+            "甲"
+          ]
+        },
         "smoke_compartment_max_sqm": 500
       },
       "verified": false,
@@ -198,8 +315,17 @@
     }
   ],
   "occupancy_ratios_example": {
-    "餐飲場所客席": {"per_sqm": 3, "note": "示例比率，實際依設置標準收容人員計算規定核定"},
-    "辦公室": {"per_sqm": 3, "note": "示例比率"},
-    "集會堂站席": {"per_sqm": 0.2, "note": "示例比率"}
+    "餐飲場所客席": {
+      "per_sqm": 3,
+      "note": "示例比率，實際依設置標準收容人員計算規定核定"
+    },
+    "辦公室": {
+      "per_sqm": 3,
+      "note": "示例比率"
+    },
+    "集會堂站席": {
+      "per_sqm": 0.2,
+      "note": "示例比率"
+    }
   }
 }

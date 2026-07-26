@@ -1,5 +1,5 @@
 {
-  "description": "規則測試案例（先紅再綠）。expected 值必須從法條清單 PDF 原文逐字抄錄，並填入 source.page / source.quote。本檔目前為架構示例：quote 均為占位文字，接入實際法條 PDF 後須逐條以原文替換並重跑 run-tests。",
+  "description": "規則測試案例（先紅再綠）。expected 值必須從法規原文逐字抄錄，並填入 source.article／source.quote（法條全文：rules/core/1各類場所消防安全設備設置標準.md；附表類另填 source.pdf 與 source.page）。2026-07-25 已將原占位 quote 全數以條文原文取代。帶 discrepancy_ref 的測試表示：expected 目前與所引原文的適用範圍不一致（規則參數尚待更正），差異內容見 governance/待確認清單/rule-discrepancies-20260725.json，裁示後走先紅再綠更正。",
   "workflow": "新增規則時：1) 先寫測試（抄錄 PDF 原文）→ 2) run-tests 確認紅 → 3) 編碼規則參數 → 4) run-tests 轉綠 → 5) 專業核定後 verified: true",
   "tests": [
     {
@@ -8,7 +8,13 @@
       "type": "param-equals",
       "path": "params.effectiveness_area_per_unit.甲",
       "expected": 100,
-      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（甲類場所每一〇〇平方公尺有一滅火效能值）"}
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§31",
+        "page": null,
+        "quote": "供第十二條第一款及第五款使用之場所，各層樓地板面積每一百平方公尺（含未滿）有一滅火效能值。"
+      },
+      "discrepancy_ref": "D-031-01"
     },
     {
       "id": "T-extinguisher-param-walking",
@@ -16,15 +22,30 @@
       "type": "param-equals",
       "path": "params.max_walking_distance_m",
       "expected": 20,
-      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（步行距離在二十公尺以下）"}
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§31",
+        "page": null,
+        "quote": "設有滅火器之樓層，自樓面居室任一點至滅火器之步行距離在二十公尺以下。"
+      }
     },
     {
       "id": "T-extinguisher-calc-450",
       "rule_id": "extinguisher-count",
       "type": "calc-extinguisher",
-      "input": {"use_category": "甲", "floor_area": 450},
-      "expected": {"effectiveness_value": 5},
-      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】450㎡ ÷ 100㎡/效能值，無條件進位 = 5"}
+      "input": {
+        "use_category": "甲",
+        "floor_area": 450
+      },
+      "expected": {
+        "effectiveness_value": 5
+      },
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§31",
+        "page": null,
+        "quote": "供第十二條第一款及第五款使用之場所，各層樓地板面積每一百平方公尺（含未滿）有一滅火效能值。〔計算記錄：450 ㎡ ÷ 100 ㎡＝4.5，「含未滿」無條件進位＝5〕"
+      }
     },
     {
       "id": "T-hydrant-param-type1",
@@ -32,31 +53,72 @@
       "type": "param-equals",
       "path": "params.type1_horizontal_distance_m",
       "expected": 25,
-      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（第一種消防栓水平距離二十五公尺以下）"}
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§34",
+        "page": null,
+        "quote": "第一種消防栓，依下列規定設置：（一）各層任一點至消防栓接頭之水平距離在二十五公尺以下。"
+      },
+      "discrepancy_ref": "D-034-01"
     },
     {
       "id": "T-detector-calc-smoke2",
       "rule_id": "detector-coverage",
       "type": "calc-detector",
-      "input": {"area": 450, "height": 3.5, "fireproof": true, "detector_type": "smoke-2"},
-      "expected": {"count": 3},
-      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】偵煙式二種，裝置高度未滿四公尺，每一五〇平方公尺一只 → ceil(450/150)=3"}
+      "input": {
+        "area": 450,
+        "height": 3.5,
+        "fireproof": true,
+        "detector_type": "smoke-2"
+      },
+      "expected": {
+        "count": 3
+      },
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§122",
+        "page": null,
+        "quote": "偵煙式探測器除光電式分離型外，依下列規定裝置：……四、探測器除走廊、通道、樓梯及傾斜路面外，各探測區域應設探測器數，依下表之探測器種類及裝置面高度，在每一有效探測範圍，至少設置一個。〔表：裝置面高度未滿四公尺，一種或二種＝150 平方公尺；計算記錄 ceil(450/150)＝3〕"
+      },
+      "discrepancy_ref": "D-122-01"
     },
     {
       "id": "T-detector-calc-heatdiff1-nonfireproof",
       "rule_id": "detector-coverage",
       "type": "calc-detector",
-      "input": {"area": 450, "height": 3.5, "fireproof": false, "detector_type": "heat-diff-1"},
-      "expected": {"count": 9},
-      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】差動式局限型一種，未滿四公尺非耐火構造每五〇平方公尺一只 → ceil(450/50)=9"}
+      "input": {
+        "area": 450,
+        "height": 3.5,
+        "fireproof": false,
+        "detector_type": "heat-diff-1"
+      },
+      "expected": {
+        "count": 9
+      },
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§120",
+        "page": null,
+        "quote": "差動式局限型、補償式局限型及定溫式局限型探測器，依下列規定設置：……二、各探測區域應設探測器數，依下表之探測器種類及裝置面高度，在每一有效探測範圍，至少設置一個。〔表：裝置面高度未滿四公尺、其他建築物，差動式局限型一種＝50 平方公尺；計算記錄 ceil(450/50)＝9〕"
+      }
     },
     {
       "id": "T-sprinkler-calc-fireproof",
       "rule_id": "sprinkler-head-spacing",
       "type": "calc-sprinkler",
-      "input": {"area": 450, "radius": 2.3},
-      "expected": {"heads": 43},
-      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】耐火構造水平距離2.3m，正方形配置每頭2×2.3²=10.58㎡ → ceil(450/10.58)=43"}
+      "input": {
+        "area": 450,
+        "radius": 2.3
+      },
+      "expected": {
+        "heads": 43
+      },
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§46",
+        "page": null,
+        "quote": "一般反應型撒水頭（第二種感度），各層任一點至撒水頭之水平距離在二點一公尺以下。但防火構造建築物，其水平距離，得增加為二點三公尺以下。〔計算記錄：正方形配置每頭涵蓋 2×2.3²＝10.58 ㎡，ceil(450/10.58)＝43〕"
+      }
     },
     {
       "id": "T-alarm-param-highrise",
@@ -64,7 +126,12 @@
       "type": "param-equals",
       "path": "params.high_rise.min_floors",
       "expected": 11,
-      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（十一層以上建築物全部應設）"}
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§19",
+        "page": null,
+        "quote": "三、十一層以上建築物。"
+      }
     },
     {
       "id": "T-extinguisher-threshold-other",
@@ -72,7 +139,13 @@
       "type": "param-equals",
       "path": "params.total_area_threshold_other_uses.value",
       "expected": 150,
-      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（總樓地板面積一五〇平方公尺以上）"}
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§14",
+        "page": null,
+        "quote": "二、總樓地板面積在一百五十平方公尺以上之乙、丙、丁類場所。"
+      },
+      "discrepancy_ref": "D-014-01"
     },
     {
       "id": "T-hydrant-threshold-lowrise-甲",
@@ -80,7 +153,13 @@
       "type": "param-equals",
       "path": "params.low_rise.per_floor_area_threshold.甲",
       "expected": 300,
-      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（任何一層樓地板面積三〇〇平方公尺以上）"}
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§15",
+        "page": null,
+        "quote": "一、五層以下建築物，供第十二條第一款第一目所列場所使用，任何一層樓地板面積在三百平方公尺以上者；供同款其他各目及第二款至第四款所列場所使用，任何一層樓地板面積在五百平方公尺以上者；或為學校教室任何一層樓地板面積在一千四百平方公尺以上者。"
+      },
+      "discrepancy_ref": "D-015-01"
     },
     {
       "id": "T-sprinkler-threshold-lowrise",
@@ -88,15 +167,32 @@
       "type": "param-equals",
       "path": "params.low_rise_total_area_threshold.value",
       "expected": 1500,
-      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（樓地板面積合計一五〇〇平方公尺以上）"}
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§17",
+        "page": null,
+        "quote": "一、十層以下建築物之樓層，供第十二條第一款第一目所列場所使用，樓地板面積合計在三百平方公尺以上者；供同款其他各目及第二款第一目所列場所使用，樓地板面積在一千五百平方公尺以上者。"
+      },
+      "discrepancy_ref": "D-017-01"
     },
     {
       "id": "T-exitlight-required-uses",
       "rule_id": "exit-light-threshold",
       "type": "param-equals",
       "path": "params.required_uses",
-      "expected": ["甲", "乙", "丙", "丁"],
-      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（適用用途類別）"}
+      "expected": [
+        "甲",
+        "乙",
+        "丙",
+        "丁"
+      ],
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§23",
+        "page": null,
+        "quote": "一、供第十二條第一款、第二款第十二目、第五款第一目、第三目使用之場所，或地下層、無開口樓層、十一層以上之樓層供同條其他各款目所列場所使用，應設置出口標示燈。"
+      },
+      "discrepancy_ref": "D-023-01"
     },
     {
       "id": "T-emergency-light-required",
@@ -104,15 +200,34 @@
       "type": "param-equals",
       "path": "params.required",
       "expected": "原則各類場所居室及避難動線均應設，除但書免設條件",
-      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（緊急照明設備應設範圍與但書）"}
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§24",
+        "page": null,
+        "quote": "下列場所應設置緊急照明設備：一、供第十二條第一款、第三款及第五款所列場所使用之居室。……五、供前四款使用之場所，自居室通達避難層所須經過之走廊、樓梯間、通道及其他平時依賴人工照明部分。前項經中央主管機關認可為容易避難逃生或具有效採光之場所，得免設緊急照明設備。"
+      },
+      "discrepancy_ref": "D-024-01"
     },
     {
       "id": "T-a13-always-new-equipment",
       "rule_id": "applicability-article-13",
       "type": "param-equals",
       "path": "params.always_new_standard_equipment",
-      "expected": ["滅火器", "火警自動警報設備", "手動報警設備", "緊急廣播設備", "標示設備", "避難器具", "緊急照明設備"],
-      "source": {"pdf": "rules/core/1各類場所消防安全設備設置標準.md", "page": null, "quote": "一、其消防安全設備為滅火器、火警自動警報設備、手動報警設備、緊急廣播設備、標示設備、避難器具及緊急照明設備者。"}
+      "expected": [
+        "滅火器",
+        "火警自動警報設備",
+        "手動報警設備",
+        "緊急廣播設備",
+        "標示設備",
+        "避難器具",
+        "緊急照明設備"
+      ],
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§13",
+        "page": null,
+        "quote": "一、其消防安全設備為滅火器、火警自動警報設備、手動報警設備、緊急廣播設備、標示設備、避難器具及緊急照明設備者。"
+      }
     },
     {
       "id": "T-a13-extension-area-threshold",
@@ -120,7 +235,12 @@
       "type": "param-equals",
       "path": "params.extension_area_threshold_sqm",
       "expected": 1000,
-      "source": {"pdf": "rules/core/1各類場所消防安全設備設置標準.md", "page": null, "quote": "二、增建或改建部分，以本標準中華民國八十五年七月一日修正條文施行日起，樓地板面積合計逾一千平方公尺或占原建築物總樓地板面積二分之一以上時，該建築物之消防安全設備。"}
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§13",
+        "page": null,
+        "quote": "二、增建或改建部分，以本標準中華民國八十五年七月一日修正條文施行日起，樓地板面積合計逾一千平方公尺或占原建築物總樓地板面積二分之一以上時，該建築物之消防安全設備。"
+      }
     },
     {
       "id": "T-a13-extension-ratio-threshold",
@@ -128,7 +248,12 @@
       "type": "param-equals",
       "path": "params.extension_ratio_threshold",
       "expected": 0.5,
-      "source": {"pdf": "rules/core/1各類場所消防安全設備設置標準.md", "page": null, "quote": "二、增建或改建部分，以本標準中華民國八十五年七月一日修正條文施行日起，樓地板面積合計逾一千平方公尺或占原建築物總樓地板面積二分之一以上時，該建築物之消防安全設備。"}
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§13",
+        "page": null,
+        "quote": "二、增建或改建部分，以本標準中華民國八十五年七月一日修正條文施行日起，樓地板面積合計逾一千平方公尺或占原建築物總樓地板面積二分之一以上時，該建築物之消防安全設備。"
+      }
     },
     {
       "id": "T-a13-change-to-category",
@@ -136,7 +261,12 @@
       "type": "param-equals",
       "path": "params.change_to_use_category",
       "expected": "甲",
-      "source": {"pdf": "rules/core/1各類場所消防安全設備設置標準.md", "page": null, "quote": "三、用途變更為甲類場所使用時，該變更後用途之消防安全設備。"}
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§13",
+        "page": null,
+        "quote": "三、用途變更為甲類場所使用時，該變更後用途之消防安全設備。"
+      }
     },
     {
       "id": "T-smoke-exhaust-threshold",
@@ -144,7 +274,13 @@
       "type": "param-equals",
       "path": "params.total_area_threshold.value",
       "expected": 500,
-      "source": {"pdf": "【示例占位】法條清單.pdf", "page": null, "quote": "【示例占位】待以法條 PDF 原文逐字替換（樓地板面積合計五〇〇平方公尺以上）"}
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§28",
+        "page": null,
+        "quote": "一、供第十二條第一款及第五款第三目所列場所使用，樓地板面積合計在五百平方公尺以上。"
+      },
+      "discrepancy_ref": "D-028-01"
     },
     {
       "id": "T-mixed-entry-count",
@@ -153,7 +289,11 @@
       "type": "param-equals",
       "path": "params.entry_count",
       "expected": 31,
-      "source": {"pdf": "rules/core/建築物主用途及從屬用途關係對照表.pdf", "page": 5, "quote": "（31）丁類（一）高度危險工作場所（二）中度危險工作場所（三）低度危險工作場所"}
+      "source": {
+        "pdf": "rules/core/建築物主用途及從屬用途關係對照表.pdf",
+        "page": 5,
+        "quote": "（31）丁類（一）高度危險工作場所（二）中度危險工作場所（三）低度危險工作場所"
+      }
     },
     {
       "id": "T-mixed-e1-use-ref",
@@ -162,7 +302,11 @@
       "type": "param-equals",
       "path": "params.entries.0.use_ref",
       "expected": "甲類（一）",
-      "source": {"pdf": "rules/core/建築物主用途及從屬用途關係對照表.pdf", "page": 1, "quote": "（1）甲類（一）之電影片映演場所（戲院、電影院）"}
+      "source": {
+        "pdf": "rules/core/建築物主用途及從屬用途關係對照表.pdf",
+        "page": 1,
+        "quote": "（1）甲類（一）之電影片映演場所（戲院、電影院）"
+      }
     },
     {
       "id": "T-mixed-e1-main-parts",
@@ -170,8 +314,23 @@
       "rules_file": "rules/mixed_use_rules.json",
       "type": "param-equals",
       "path": "params.entries.0.main_parts",
-      "expected": ["舞台", "座席", "放映室", "大廳", "售票室", "電氣室", "道具室", "衣物室", "練習室", "儲藏室"],
-      "source": {"pdf": "rules/core/建築物主用途及從屬用途關係對照表.pdf", "page": 1, "quote": "舞台、座席、放映室、大廳、售票室、電氣室、道具室、衣物室、練習室、儲藏室。"}
+      "expected": [
+        "舞台",
+        "座席",
+        "放映室",
+        "大廳",
+        "售票室",
+        "電氣室",
+        "道具室",
+        "衣物室",
+        "練習室",
+        "儲藏室"
+      ],
+      "source": {
+        "pdf": "rules/core/建築物主用途及從屬用途關係對照表.pdf",
+        "page": 1,
+        "quote": "舞台、座席、放映室、大廳、售票室、電氣室、道具室、衣物室、練習室、儲藏室。"
+      }
     },
     {
       "id": "T-mixed-e11-use-ref",
@@ -180,7 +339,11 @@
       "type": "param-equals",
       "path": "params.entries.10.use_ref",
       "expected": "甲類（四）",
-      "source": {"pdf": "rules/core/建築物主用途及從屬用途關係對照表.pdf", "page": 2, "quote": "（11）甲類（四）商場、市場、百貨適場、超集市場、零售市場、展覽場"}
+      "source": {
+        "pdf": "rules/core/建築物主用途及從屬用途關係對照表.pdf",
+        "page": 2,
+        "quote": "（11）甲類（四）商場、市場、百貨適場、超集市場、零售市場、展覽場"
+      }
     },
     {
       "id": "T-mixed-e30-main-parts",
@@ -188,8 +351,15 @@
       "rules_file": "rules/mixed_use_rules.json",
       "type": "param-equals",
       "path": "params.entries.29.main_parts",
-      "expected": ["車庫", "車道"],
-      "source": {"pdf": "rules/core/建築物主用途及從屬用途關係對照表.pdf", "page": 5, "quote": "（30）丙類（三）室內停車場、建築物依法附設之室內停車空間。車庫、車道。"}
+      "expected": [
+        "車庫",
+        "車道"
+      ],
+      "source": {
+        "pdf": "rules/core/建築物主用途及從屬用途關係對照表.pdf",
+        "page": 5,
+        "quote": "（30）丙類（三）室內停車場、建築物依法附設之室內停車空間。車庫、車道。"
+      }
     },
     {
       "id": "T-mixed-e31-use-ref",
@@ -198,7 +368,11 @@
       "type": "param-equals",
       "path": "params.entries.30.use_ref",
       "expected": "丁類（一）（二）（三）",
-      "source": {"pdf": "rules/core/建築物主用途及從屬用途關係對照表.pdf", "page": 5, "quote": "（31）丁類（一）高度危險工作場所（二）中度危險工作場所（三）低度危險工作場所"}
+      "source": {
+        "pdf": "rules/core/建築物主用途及從屬用途關係對照表.pdf",
+        "page": 5,
+        "quote": "（31）丁類（一）高度危險工作場所（二）中度危險工作場所（三）低度危險工作場所"
+      }
     }
   ]
 }

@@ -19,9 +19,10 @@
 
 ### 改 `rules/`（規則庫）
 
-- **必須走先紅再綠**（完整紀律見 `skills/red-green.md`，改編自 obra/superpowers 的 TDD skill）：先在 `rule_tests.json` 寫測試（expected 逐字抄錄法條 PDF、附頁碼與 quote）→ `run-tests --verify-red {測試ID}` 確認紅得正確 → 編碼最小參數 → `run-tests --strict` 轉綠
+- **必須走先紅再綠**（完整紀律見 `skills/red-green.md`，改編自 obra/superpowers 的 TDD skill）：先在 `rule_tests.json` 寫測試（expected 逐字抄錄法規原文、附 `source.article`／附表類附 `source.page` 與 quote）→ `run-tests --verify-red {測試ID}` 確認紅得正確 → 編碼最小參數 → `run-tests --strict` 轉綠
 - **鐵律**：發現參數先於測試被寫入，刪除該參數重來，不保留當參考
-- `verified: true` 只能經 `tools/verification_sheet.py apply` 產生，且 results JSON 必附簽名存證路徑
+- `verified: true` 只能經 `tools/verification_sheet.py apply` 產生，且 results JSON 必附 `verified_by` 與 `verified_date`（走紙本簽名流程時另附 `evidence` 指向簽名掃描檔）
+- **與現行條文比對出差異的規則不得回填 `verified: true`**：差異寫入 `governance/待確認清單/rule-discrepancies-{日期}.json`，`apply` 會擋下該規則；使用者裁示「維持現值」時才於該筆 results 加 `"override_discrepancy": true` 並註明理由
 - PR 說明必附法條依據（條號＋頁碼）
 
 ### 改 `skills/`（工作流）

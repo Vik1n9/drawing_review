@@ -1,7 +1,7 @@
 {
   "case_name": "示範案件",
-  "date": "2026-07-25",
-  "regulation_version": "開發示例版（版本日期待核定，正式使用前依全國法規資料庫現行條文重建）",
+  "date": "2026-07-26",
+  "regulation_version": "各類場所消防安全設備設置標準 民國 113 年 04 月 24 日修正（條文全文：rules/core/1各類場所消防安全設備設置標準.md）",
   "regulation_html": "../rules/regulation-checklist.html",
   "article_range": "§14~§31（逐條窮舉）",
   "not_coded_articles": [

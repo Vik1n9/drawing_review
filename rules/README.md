@@ -29,6 +29,7 @@ python3 tools/regulation_index.py lookup --keyword '無開口樓層'
 ## 主從用途對照表（mixed_use_rules.json）
 
 - 來源文件：`rules/core/建築物主用途及從屬用途關係對照表.pdf`（內政部消防署《複合用途建築物判斷基準》附表，使用者提供）
-- `rules/mixed_use_rules.json`：附表 31 項逐列結構化（`subordinate-table` 規則），供 `fire_code_calc.py classify-mixed-use` 比對主從用途**候選**；全部 `verified: false`，抄錄疑字以 `transcription_note` 標注，核定時須對照 PDF 原件
+- `rules/mixed_use_rules.json`：附表 31 項逐列結構化（`subordinate-table` 規則），供 `fire_code_calc.py classify-mixed-use` 比對主從用途**候選**；2026-07-25 已與附表原件（PDF 文字層）逐欄核對，`verified: true`。原件錯字經校讀更正者，原印字留存於各該項 `source_text`，校讀依據記於 `transcription_note`；第（28）（29）項之原件用字維持原樣，列於 `governance/待確認清單/` 待裁示
+- 各項次的三個註記欄位分工：`source_text` 留存附表原件的原印字；`transcription_note` 是 `classify-mixed-use` 比對輸出會一併帶出的**短句**（例：「更氣室」經校讀更正為「電氣室」）；`verification_note` 是完整核對紀錄（校讀依據、跨頁欄位歸屬確認），只留在檔內供追溯，不進比對輸出
 - 判斷基準**本文**（從屬認定要件與面積比例門檻）尚未提供、未入庫——量化從屬判定一律「需人工判讀」（見 README 待補事項備忘）
 - `rule_tests.json` 的測試可用選填欄位 `rules_file` 指向本檔；`run-tests --strict` 與 `self-test` 會一併檢查本檔

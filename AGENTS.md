@@ -190,6 +190,7 @@ python3 tools/practice_note_engine.py test --strict
 
 # 規則逐條確認（使用者本身即為消防專業人員，不需另送外部核定）
 python3 tools/verification_sheet.py list                                              # 列出待確認規則
+python3 tools/verification_sheet.py discrepancies                                     # 列出與現行條文比對出的差異，逐則裁示
 python3 tools/verification_sheet.py apply --results governance/核定紀錄/results-{日期}.json
 ```
 

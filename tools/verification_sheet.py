@@ -7,6 +7,8 @@
 - list  ：在終端逐條列出尚未確認的規則（條號、目前參數、法條原文抄錄），供使用者當場審核
 - export：同樣內容匯出成可列印勾選的 HTML（需要書面紀錄，或走紙本簽名流程時用）
 - apply ：把確認結果回填 verified / verified_by / verified_date / verification_evidence
+- discrepancies：列出「參數與現行條文比對出的差異」待確認表（governance/待確認清單/），
+                 每則附條文原文、規則現值、差異、建議更正，供使用者逐條裁示
 
 Zero external dependencies — Python stdlib only.
 
@@ -39,13 +41,16 @@ apply 的 results JSON 格式（`evidence` 選填——使用者本人逐條確�
 """
 
 import argparse
+import glob
 import html
 import json
+import os
 import sys
 from datetime import date
 
 RULES_PATH = "rules/equipment_rules.json"
 TESTS_PATH = "rules/rule_tests.json"
+DISCREPANCY_DIR = os.path.join("governance", "待確認清單")
 
 # 使用者本人即為消防專業人員，逐條確認不需另附簽名掃描；走紙本流程時才填 evidence
 INLINE_EVIDENCE = "使用者逐條確認（消防專業人員本人，未另附書面簽名）"
@@ -73,11 +78,18 @@ def load(path):
 
 
 def quotes_for_rule(tests_doc, rule_id):
+    """[(test_id, 出處標示, quote)]；出處優先取條號，附表類才用頁碼。"""
     out = []
     for t in tests_doc.get("tests", []):
         if t.get("rule_id") == rule_id:
             src = t.get("source", {})
-            out.append((t.get("id", ""), src.get("page"), src.get("quote", "")))
+            if src.get("article"):
+                where = src["article"]
+            elif src.get("page") is not None:
+                where = f"p.{src['page']}"
+            else:
+                where = "出處未填"
+            out.append((t.get("id", ""), where, src.get("quote", "")))
     return out
 
 
@@ -95,8 +107,8 @@ def cmd_export(args):
         qs = quotes_for_rule(tests_doc, r["id"])
         if qs:
             quote_html = "<br>".join(
-                f'<span class="quote"><span class="pg">[{html.escape(str(tid))}｜p.{pg if pg is not None else "？"}]</span> {html.escape(q)}</span>'
-                for tid, pg, q in qs)
+                f'<span class="quote"><span class="pg">[{html.escape(str(tid))}｜{html.escape(str(where))}]</span> {html.escape(q)}</span>'
+                for tid, where, q in qs)
         else:
             quote_html = '<span class="quote" style="color:#a00">（此規則尚無測試引用——核定前應先補測試）</span>'
         status = "已核定" if r.get("verified") else "未核定"
@@ -144,7 +156,6 @@ def cmd_export(args):
 </html>
 """
     out = args.output or f"governance/核定表/核定表-{today.replace('-', '')}.html"
-    import os
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8") as f:
         f.write(doc)
@@ -158,11 +169,78 @@ def pending_rules(rules_doc, include_all=False):
     return [r for r in rules_doc["rules"] if include_all or not r.get("verified")]
 
 
+# ---------------------------------------------------------------------------
+# 待確認表（規則參數 vs 現行條文的差異）
+# ---------------------------------------------------------------------------
+
+def latest_discrepancy_path(path=None):
+    """最新一份待確認表；找不到回傳 None。"""
+    if path:
+        return path
+    found = sorted(glob.glob(os.path.join(DISCREPANCY_DIR, "rule-discrepancies-*.json")))
+    return found[-1] if found else None
+
+
+def load_discrepancies(path=None):
+    p = latest_discrepancy_path(path)
+    if not p or not os.path.exists(p):
+        return None, {"findings": []}
+    return p, load(p)
+
+
+def open_findings_by_rule(path=None):
+    """{rule_id: [finding, ...]}，只含尚未裁示（status != resolved）者。"""
+    _, doc = load_discrepancies(path)
+    out = {}
+    for f in doc.get("findings", []):
+        if f.get("status") == "resolved":
+            continue
+        out.setdefault(f.get("rule_id"), []).append(f)
+    return out
+
+
+def cmd_discrepancies(args):
+    """列出待確認表：規則參數與現行條文比對出的差異，逐則供使用者裁示。"""
+    path, doc = load_discrepancies(args.sheet)
+    if path is None:
+        print(f"找不到待確認表（{DISCREPANCY_DIR}/rule-discrepancies-*.json）。")
+        return
+    findings = doc.get("findings", [])
+    if not args.all:
+        findings = [f for f in findings if f.get("status") != "resolved"]
+
+    if args.format == "json":
+        print(json.dumps({**doc, "findings": findings}, ensure_ascii=False, indent=2))
+        return
+
+    print(f"# 規則待確認表：{doc.get('sheet_id', '?')}（{path}）")
+    print(f"法規版本：{doc.get('regulation_version', '未注明')}｜"
+          f"待裁示 {sum(1 for f in findings if f.get('status') != 'resolved')} 則"
+          f"（本檔共 {len(doc.get('findings', []))} 則）\n")
+    for i, f in enumerate(findings, 1):
+        mark = "✅" if f.get("status") == "resolved" else "⚪"
+        print(f"{mark} {i}. [{f.get('id')}] {f.get('equipment')}｜{f.get('article')}｜"
+              f"`{f.get('rule_id')}`（{f.get('type')}）")
+        print(f"   檔案：{f.get('target_file')}")
+        print(f"   條文原文：{shorten(f.get('article_quote', ''), args.quote_chars)}")
+        print(f"   規則現值：{shorten(f.get('current_value', ''), args.quote_chars)}")
+        print(f"   差異：{shorten(f.get('difference', ''), args.quote_chars)}")
+        print(f"   影響：{shorten(f.get('impact', ''), args.quote_chars)}")
+        print(f"   建議更正：{shorten(f.get('suggested_fix', ''), args.quote_chars)}")
+        if f.get("decision"):
+            print(f"   裁示：{f['decision']}")
+        print()
+    print("逐則回覆「採納更正」／「維持現值」／「另有更正＋正確值」即可。")
+    print("採納更正者走 skills/red-green.md：先改 rule_tests.json 的 expected 轉紅 → 再改規則參數轉綠 →"
+          " 最後以 verification_sheet.py apply 回填 verified: true。")
+
+
 def cmd_list(args):
     """逐條列出尚未確認的規則，供使用者當場審核——這是本專案的確認主路徑。"""
     rules_doc = load(args.rules)
     tests_doc = load(args.tests)
     rules = pending_rules(rules_doc, args.all)
+    open_disc = open_findings_by_rule(getattr(args, "sheet", None))
 
     if args.format == "json":
         print(json.dumps({
@@ -172,8 +250,9 @@ def cmd_list(args):
                 "id": r["id"], "equipment": r.get("equipment"), "legal_basis": r.get("legal_basis"),
                 "verified": bool(r.get("verified")), "params": r.get("params"),
                 "note": r.get("note"),
-                "quotes": [{"test_id": t, "page": p, "quote": q}
-                           for t, p, q in quotes_for_rule(tests_doc, r["id"])],
+                "quotes": [{"test_id": t, "source": w, "quote": q}
+                           for t, w, q in quotes_for_rule(tests_doc, r["id"])],
+                "open_discrepancies": [f["id"] for f in open_disc.get(r["id"], [])],
             } for r in rules],
         }, ensure_ascii=False, indent=2))
         return
@@ -188,12 +267,16 @@ def cmd_list(args):
         print(f"{i}. {r.get('equipment')}｜{r.get('legal_basis')}｜`{r['id']}`")
         for line in flatten_params(r.get("params")):
             print(f"   - {line}")
-        for _, page, quote in quotes_for_rule(tests_doc, r["id"]):
-            page_text = f"p.{page}" if page is not None else "頁碼未填"
-            print(f"   原文（{page_text}）：{shorten(quote, args.quote_chars)}")
+        for _, where, quote in quotes_for_rule(tests_doc, r["id"]):
+            print(f"   原文（{where}）：{shorten(quote, args.quote_chars)}")
         if not quotes_for_rule(tests_doc, r["id"]):
             print("   ⚠️ 尚無測試引用法條原文——確認前應先補測試（先紅再綠）")
+        for f in open_disc.get(r["id"], []):
+            print(f"   🔴 已比對出差異 [{f['id']}]（{f.get('type')}）：{shorten(f.get('difference', ''), args.quote_chars)}")
         print()
+    if any(open_disc.get(r["id"]) for r in rules):
+        print("標示 🔴 者已與現行條文比對出差異，請先跑 "
+              "`python3 tools/verification_sheet.py discrepancies` 逐則裁示，再回填 verified。")
     print("錯誤的項目不自動改參數——走先紅再綠：先改測試 expected 轉紅，再改參數轉綠。")
 
 
@@ -223,10 +306,33 @@ def shorten(text, limit):
     return text if limit <= 0 or len(text) <= limit else text[:limit] + "…"
 
 
+def verifiable_entries(doc):
+    """{id: 可回填 verified 的節點}。
+
+    支援兩種檔形：規則庫的 `rules`（equipment_rules / mixed_use_rules），
+    以及對照表式的 `items` ＋ `table_notes` ＋ `global_constraints`
+    （article18_equipment_options）。後者以「條號-項次」為 id（例：18-3、18-註1），
+    全域限制以其自身 id。
+    """
+    if doc.get("rules"):
+        return {r["id"]: r for r in doc["rules"]}
+    out = {}
+    article = str(doc.get("legal_basis", "")).lstrip("§") or "?"
+    for entry in doc.get("items", []):
+        out[f"{article}-{entry.get('item')}"] = entry
+    for entry in doc.get("table_notes", []):
+        out[f"{article}-註{entry.get('no')}"] = entry
+    for entry in doc.get("global_constraints", []):
+        out[entry["id"]] = entry
+    return out
+
+
 def cmd_apply(args):
     spec = load(args.results)
     rules_doc = load(args.rules)
-    by_id = {r["id"]: r for r in rules_doc["rules"]}
+    by_id = verifiable_entries(rules_doc)
+    if not by_id:
+        sys.exit(f"{args.rules} 沒有可回填的規則（rules）或項次（items／global_constraints）。")
     verified_by = spec.get("verified_by")
     verified_date = spec.get("verified_date")
     evidence = spec.get("evidence") or INLINE_EVIDENCE
@@ -234,6 +340,17 @@ def cmd_apply(args):
         sys.exit("results JSON 必須包含 verified_by 與 verified_date——這是責任追溯鏈的最低要求。"
                  "走紙本簽名流程時另填 evidence 指向簽名掃描檔；"
                  "使用者本人逐條確認時 evidence 可省略。")
+
+    # 已比對出差異、尚未裁示的規則不得逕行回填 verified: true（最高原則 1、3）
+    open_disc = open_findings_by_rule(getattr(args, "sheet", None))
+    blocked = [item["rule_id"] for item in spec["results"]
+               if item.get("result") == "correct" and open_disc.get(item["rule_id"])
+               and not item.get("override_discrepancy")]
+    if blocked:
+        sys.exit("下列規則在待確認表中仍有未裁示的差異，不得回填 verified: true："
+                 + "、".join(blocked)
+                 + "。請先跑 `python3 tools/verification_sheet.py discrepancies` 逐則裁示；"
+                   "若使用者裁示為「維持現值」，於該筆 results 加上 \"override_discrepancy\": true 並註明理由。")
 
     applied, corrections = [], []
     for item in spec["results"]:
@@ -263,7 +380,7 @@ def cmd_apply(args):
         for rid, note in corrections:
             print(f"   - {rid}：{note}")
         print("   步驟：1) 依核定意見更正 rule_tests.json 的 expected（跑 run-tests 應轉紅）")
-        print("        2) 更正 equipment_rules.json 參數（轉綠）  3) 下一輪核定表再送核定")
+        print(f"        2) 更正 {args.rules} 參數（轉綠）  3) 下一輪核定表再送核定")
     print("\n收尾：python3 tools/fire_code_calc.py self-test && python3 tools/fire_code_calc.py run-tests --strict")
 
 
@@ -278,7 +395,17 @@ def main():
     s.add_argument("--format", choices=("text", "json"), default="text")
     s.add_argument("--quote-chars", type=int, default=60,
                    help="法條原文摘要字數上限（0 = 不截斷）")
+    s.add_argument("--sheet", help="待確認表路徑（預設取 governance/待確認清單/ 最新一份）")
     s.set_defaults(func=cmd_list)
+
+    s = sub.add_parser("discrepancies",
+                       help="列出參數與現行條文比對出的差異（待確認表），逐則供使用者裁示")
+    s.add_argument("--sheet", help="待確認表路徑（預設取 governance/待確認清單/ 最新一份）")
+    s.add_argument("--all", action="store_true", help="含已裁示（status: resolved）者")
+    s.add_argument("--format", choices=("text", "json"), default="text")
+    s.add_argument("--quote-chars", type=int, default=0,
+                   help="各欄位摘要字數上限（0 = 不截斷，預設不截斷）")
+    s.set_defaults(func=cmd_discrepancies)
 
     s = sub.add_parser("export", help="匯出核定表 HTML（可列印勾選）")
     s.add_argument("--rules", default=RULES_PATH)
@@ -288,8 +415,10 @@ def main():
     s.set_defaults(func=cmd_export)
 
     s = sub.add_parser("apply", help="回填核定結果到規則庫")
-    s.add_argument("--rules", default=RULES_PATH)
+    s.add_argument("--rules", default=RULES_PATH,
+                   help="規則檔（equipment_rules／mixed_use_rules／article18_equipment_options）")
     s.add_argument("--results", required=True, help="核定結果 JSON")
+    s.add_argument("--sheet", help="待確認表路徑（預設取 governance/待確認清單/ 最新一份）")
     s.set_defaults(func=cmd_apply)
 
     args = p.parse_args()

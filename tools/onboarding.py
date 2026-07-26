@@ -63,31 +63,44 @@ def step(title, state, why, lines, commands, say):
 # ---------------------------------------------------------------------------
 
 def step_environment(env):
-    py = env["interpreter"]
-    lines = [f"Python {env['python_version']}（你的命令請用 {py}）",
-             "核心計算與法規查詢只用標準庫，什麼都不裝也能跑"]
-    commands = []
+    """回報「現在能做什麼」，不是「缺哪些套件」。
 
+    使用者多半只裝了一個 AI 桌面版就開始用，沙盒讓 pip 裝不起來。
+    對這種人列一串裝不上的套件只會製造焦慮——所以本步驟永遠是 ready，
+    每個做不到的能力都直接給替代路徑（替代路徑的存在由 check_env
+    的能力矩陣保證，見 tests/test_check_env.py）。
+    """
+    py = env["interpreter"]
+    capabilities = env.get("capabilities", [])
+    blocked = [c for c in capabilities if not c["ok"]]
+
+    lines = [f"Python {env['python_version']}（你的命令請用 {py}）",
+             "本倉庫預設什麼都不必安裝——法規計算、DXF 圖面標註、文件判讀都是零安裝"]
+
+    for capability in capabilities:
+        if capability["ok"]:
+            note = f"（{capability['note']}）" if capability.get("note") else ""
+            lines.append(f"可用：{capability['name']}{note}")
+    for capability in blocked:
+        lines.append(f"暫時做不到：{capability['name']}"
+                     f"（需 {capability['requires']}）→ {capability['alternative']}")
+
+    commands = []
     if env["missing"]:
-        for dep in env["deps"]:
-            if not dep["ok"]:
-                lines.append(f"缺 {dep['package']} —— {dep['use']}")
+        # 裝得起來的環境可以補齊，但這是加分項，不是門檻——
+        # 標 optional 讓 AI 知道不必追著使用者裝。
         if env["has_bash"]:
-            commands.append(command("bash tools/setup.sh", WRITE))
+            commands.append(command("bash tools/setup.sh", WRITE, optional=True))
         else:
-            lines.append("這台電腦沒有 bash（Windows 常見），改用 pip 直接安裝")
+            lines.append("這台電腦沒有 bash（Windows 常見），要裝的話改用 pip")
             commands.append(
-                command(f"{py} -m pip install -r requirements.txt", WRITE))
-        state = "action"
-    else:
-        lines.append("三個交付物套件（ezdxf／openpyxl／pymupdf）都已就緒")
-        state = "ready"
+                command(f"{py} -m pip install -r requirements.txt", WRITE, optional=True))
 
     return step(
-        "環境工具", state,
-        "缺套件時只影響對應的交付物（DXF 標註、xlsx、PDF），法規計算不受影響",
+        "環境工具", "ready",
+        "零安裝就能跑審圖主線；少數交付物格式需要套件，但每項都有替代路徑",
         lines, commands,
-        "跟你的 AI 說：幫我把缺的套件裝起來",
+        "",
     )
 
 

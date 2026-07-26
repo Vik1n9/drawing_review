@@ -246,6 +246,8 @@ class StatusTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = make_repo(tmp)
             from tools.graph_status import main as graph_main
+            # 圖譜來源是 rules/core/ 的法規全文，不是規則參數檔——沒有來源檔就蓋不了章
+            (root / "rules" / "core" / "設置標準.md").write_text("# 全文", encoding="utf-8")
             with contextlib.redirect_stdout(io.StringIO()):
                 graph_main(["--root", str(root), "stamp"])
                 self.assertEqual(main(["--root", str(root), "status"]), 0)
@@ -255,6 +257,8 @@ class StatusTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = make_repo(tmp)
             from tools.graph_status import main as graph_main
+            # 圖譜來源是 rules/core/ 的法規全文，不是規則參數檔——沒有來源檔就蓋不了章
+            (root / "rules" / "core" / "設置標準.md").write_text("# 全文", encoding="utf-8")
             with contextlib.redirect_stdout(io.StringIO()):
                 graph_main(["--root", str(root), "stamp"])
             (root / "training" / "graph_pending.json").write_text('{"reason": "graphify 未安裝"}',

@@ -18,6 +18,35 @@
 
 用途分類、樓層屬性、地下層、屋突層／屋頂層與無開口樓層判定，必須讀取 `skills/place-use-classification.md`；第 12 條用途分類只產生候選，最終以人工確認後的 `case.json` 為準。複合用途建築物的主從用途判定依 `skills/mixed-use-review.md`（`/mixed-use-review`）：以 `rules/mixed_use_rules.json`（《複合用途建築物判斷基準》附表結構化）比對產生候選，§12 分類經人工定案後才可進入 `/code-requirements`。案件涉及增建、改建、室內裝修或變更用途時，必須先跑 `check-applicability`（§13）判斷各設備適用新舊標準。走兩階段 Excel 交付路線時，另須先讀 `rules/review_corrections.md`——其中含通案樓層屬性規則（該工作流程下所有地上樓層一律列為`無開口樓層`），會改變 §14~31 的判斷基礎。
 
+## 開場必做：待確認事項（載入本倉庫的第一件事）
+
+規則參數與現行條文比對出的差異寫在 `governance/待確認清單/`，並以 `待確認事項.md` 呈現。
+**每個工作階段一開始就要跑一次**（Claude Code 已設 SessionStart hook 自動執行）：
+
+```bash
+python3 tools/pending_review.py status      # 結束碼 2 ＝ 有待確認事項
+```
+
+結束碼為 `2` 時，**在進行任何審圖工作之前**先完成這條迴路：
+
+1. `python3 tools/pending_review.py list` —— 逐則列給使用者（他本人就是消防專業人員）
+2. 使用者逐則回覆「採納更正」／「維持現值」／「另有更正＋正確值」
+3. `python3 tools/pending_review.py decide --id {ID} --decision {裁示} --by "{確認人}"`
+   （多則可用 `--results {裁示JSON}` 一次記錄）
+4. `python3 tools/pending_review.py apply --all --by "{確認人}"` —— 工具自動走先紅再綠
+   （把條文原文寫進 `rule_tests.json` 的 expected → 確認轉紅 → 才改參數 → 確認轉綠），
+   接著回填 `verified: true`、重產 `待確認事項.md`、同步 README 區塊；全部裁示完畢時
+   自動移除 `待確認事項.md` 並把疑義檔封存到 `governance/待確認清單/已裁示/`
+5. 收尾：`python3 tools/fire_code_calc.py self-test && python3 tools/fire_code_calc.py run-tests --strict`
+
+三條紀律：
+
+- **不得代替使用者裁示**——工具只執行已記錄的裁示，AI 不得自行決定採納或維持
+- **不得跳過先紅再綠**——`apply` 內建 Verify RED 關卡，測試沒紅（或紅得不對）即整批回滾
+- **未裁示前照常審圖是允許的，但受影響規則的輸出必須附「本參數尚未逐條確認」警語**，
+  且不得把該規則的結論當成已核定的法源依據
+
+
 ## 目錄結構（統一輸入／統一輸出）
 
 ```
@@ -56,6 +85,8 @@ drawing_review/
 │   ├── graph_extractions/       — 每則註解的 LLM 語意抽取結果（併入知識圖譜的輸入）
 │   └── index.json               — 註解索引（by_article／by_equipment／by_rule_id）
 ├── governance/                  — 規則核定責任追溯鏈（核定表／簽名紀錄，見 governance/README.md）
+│   └── 待確認清單/              — 疑義檔：參數與現行條文的差異，逐則待使用者裁示（已裁示者封存於 已裁示/）
+├── 待確認事項.md                — 疑義檔的可讀版（pending_review.py render 自動產生／移除）
 ├── skills/                      — 審圖 skill 定義（只放執行指令；設計說明見 skills/README.md）
 └── tools/                       — 確定性工具
 ```
@@ -175,8 +206,16 @@ python3 tools/practice_note_graph.py validate \
 python3 tools/practice_note_graph.py merge                       # 併入 graph.json（冪等）
 python3 tools/practice_note_graph.py check                       # 0=已納入 2=未納入
 
+# 待確認事項（開場必做：與現行條文比對出的差異，逐則裁示後自動修正）
+python3 tools/pending_review.py status                                                # 結束碼 2 = 有待確認事項
+python3 tools/pending_review.py list                                                  # 逐則列給使用者裁示
+python3 tools/pending_review.py decide --id D-015-01 --decision 採納更正 --by "{確認人}"
+python3 tools/pending_review.py apply --all --by "{確認人}"                            # 先紅再綠自動更正＋回填 verified
+python3 tools/pending_review.py render                                                # 重產 待確認事項.md 並同步 README
+
 # 規則逐條確認（使用者本身即為消防專業人員，不需另送外部核定）
 python3 tools/verification_sheet.py list                                              # 列出待確認規則
+python3 tools/verification_sheet.py discrepancies                                     # 列出與現行條文比對出的差異，逐則裁示
 python3 tools/verification_sheet.py apply --results governance/核定紀錄/results-{日期}.json
 ```
 
@@ -229,7 +268,7 @@ python3 tools/verification_sheet.py apply --results governance/核定紀錄/resu
   `lookup --article` 支援單條、範圍與**逗號／頓號列舉**（`'§24,§12'`、`'§20-§22,§28'`）。
   **不要一次載入 §14~§31 全文**——全載約 1.5 萬字，定位後只載相關條通常 3~4 千字。
 - **邊界（呼應最高原則 2、4）**：圖譜只是**索引與導覽**，用來定位條號與關聯，**不是門檻數值或計算結果的來源**。任何應設／免設判斷與數量計算，一律仍以 `python3 tools/fire_code_calc.py` ＋人工確認後的 `case.json` 為準，數值須回法條原文核對，不得直接引用圖譜節點標題當作法規數值。
-- **法規更新後重建**：改動 `rules/core/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量，只重抽變更條文）刷新圖譜。註：法規為文字語料，須走 skill 的語意抽取（子代理依編/章切塊）；CLI 的 `graphify update`（純 AST、免 LLM）不適用於法條語意圖譜。跨塊抽取後須以 `graphify.ids.make_id` 統一正規化 node id（條號感知）再合併，避免共用概念無法去重。 重建後**必須重跑 `python3 tools/practice_note_graph.py merge`**（重建會覆寫 `graph.json`，把實務註解層沖掉），再 `python3 tools/graph_status.py stamp` 蓋章。`graph_status.py check` 有兩道關卡：sha256 逐檔指紋（圖譜是否跟上規則庫與註解庫）＋**註解納入度**（每則 active 註解是否真的在 `graph.json` 有節點且 sha 對得上）；CI 也跑這一步，來源檔改了沒重建、或註解沒併進圖譜，皆為紅燈，`stamp` 也會拒絕蓋章。走 `/train` 時第七步會自動完成重建、註解合併與蓋章。
+- **法規更新後重建**：改動 `rules/core/` 全文後，重跑 `/graphify rules`（大改）或 `/graphify rules --update`（增量，只重抽變更條文）刷新圖譜。註：法規為文字語料，須走 skill 的語意抽取（子代理依編/章切塊）；CLI 的 `graphify update`（純 AST、免 LLM）不適用於法條語意圖譜。跨塊抽取後須以 `graphify.ids.make_id` 統一正規化 node id（條號感知）再合併，避免共用概念無法去重。 重建後**必須重跑 `python3 tools/practice_note_graph.py merge`**（重建會覆寫 `graph.json`，把實務註解層沖掉），再 `python3 tools/graph_status.py stamp` 蓋章。`graph_status.py check` 有兩道關卡：sha256 逐檔指紋（圖譜是否跟上規則庫與註解庫）＋**註解納入度**（每則 active 註解是否真的在 `graph.json` 有節點且 sha 對得上）；CI 也跑這一步，來源檔改了沒重建、或註解沒併進圖譜，皆為紅燈，`stamp` 也會拒絕蓋章。走 `/train` 時第七步會自動完成重建、註解合併與蓋章。圖譜的**來源檔**是 `rules/core/`（法規全文 md、附表 PDF 與附表圖檔）、`rules/README.md`、`rules/regulation_articles/` 與 `practice_notes/active/`——也就是圖譜真的從中抽出節點的檔案。`rules/equipment_rules.json` 與 `rules/mixed_use_rules.json` **不在**追蹤範圍：圖譜 482 個節點沒有一個出自它們，追蹤只會讓每次先紅再綠改參數都誤報過期。這個前提由 `check` 的 `untracked_graph_sources` 不變式持續驗證——日後重建出的圖譜若真的含有這些檔的節點，`check` 會直接紅燈要求把它們加回清單。
 
 ## 注意事項
 

@@ -10,14 +10,37 @@
 
 ```
 governance/
+├── 待確認清單/      — 規則參數與現行條文比對出的差異，逐則待使用者裁示
+│   └── rule-discrepancies-{YYYYMMDD}.json
 ├── 核定表/          — verification_sheet.py export 產出的 HTML（僅在需要書面紀錄時用）
 │   └── 核定表-{YYYYMMDD}.html
 ├── 核定紀錄/        — 規則確認成果
-│   ├── results-{YYYYMMDD}.json          — 確認結果 JSON（apply 的輸入）
-│   └── 核定表-{YYYYMMDD}-簽名掃描.pdf   — 走紙本簽名流程時才有
+│   ├── results-{YYYYMMDD}[-{規則檔}].json — 確認結果 JSON（apply 的輸入）
+│   └── 核定表-{YYYYMMDD}-簽名掃描.pdf     — 走紙本簽名流程時才有
 └── 註解紀錄/        — 實務註解追溯紀錄（practice_note_engine.py apply 自動產生）
     └── PN-{YYYYMMDD}-{序號}.md
 ```
+
+## 前置關卡：待確認清單（參數 vs 現行條文的差異）
+
+規則參數與條文原文比對出差異時，**先寫入待確認清單，不得逕行回填 `verified: true`**。
+`tools/pending_review.py` 把整條迴路自動化——這是處理差異的**主路徑**：
+
+```bash
+python3 tools/pending_review.py status                                   # 開場檢查（結束碼 2 = 有待確認事項）
+python3 tools/pending_review.py list                                     # 逐則列給使用者裁示
+python3 tools/pending_review.py decide --id D-015-01 --decision 採納更正 --by "○○○"
+python3 tools/pending_review.py apply --all --by "○○○"                   # 先紅再綠自動更正並回填 verified
+```
+
+`apply` 的執行順序即先紅再綠：把條文原文寫進 `rule_tests.json` 的 expected → **Verify RED**
+（沒轉紅或紅得不對就整批回滾）→ 才改規則參數 → 確認全部轉綠 → 回填 `verified: true`
+→ 重產 `待確認事項.md` 與 README 區塊。某規則的差異全部裁示完畢時才會回填該規則。
+全部裁示完畢時自動移除 `待確認事項.md`，疑義檔封存到 `待確認清單/已裁示/`。
+
+沒有 `auto_fix` 的項目（需引擎或檔案結構調整）不會被工具猜著改，會列出 `manual_steps`
+交人工完成。`verification_sheet.py discrepancies` 提供同一份清單的唯讀檢視；
+`verification_sheet.py list` 會在有未裁示差異的規則旁標 🔴，`apply` 會擋下這些規則的回填。
 
 ## 主路徑：對話中逐條確認
 
@@ -60,7 +83,12 @@ python3 tools/fire_code_calc.py run-tests --strict
 ## 規則
 
 1. **`verified: true` 只能經 `apply` 產生**——不得手改 JSON 跳過確認紀錄；
-   `verified_by` 與 `verified_date` 為必填，這是責任追溯的最低要求
+   `verified_by` 與 `verified_date` 為必填，這是責任追溯的最低要求。
+   `apply` 除規則庫（`rules` 陣列）外，也支援對照表式檔案的項次
+   （`rules/article18_equipment_options.json` 的 `items`／`table_notes`／`global_constraints`，
+   id 形如 `18-3`、`18-註4`），以 `--rules` 指定檔案
+1-1. **待確認清單中仍有未裁示差異的規則，`apply` 會拒絕回填**——裁示為「維持現值」時
+   才於該筆 results 加 `"override_discrepancy": true` 並在 `note` 寫明理由
 2. **確認為「錯誤」的規則不會被工具自動修正**——參數修正必須走先紅再綠
    （先改測試 `expected` →紅→改參數→綠），修正後回到「待確認」狀態，下一輪再確認
 3. **走紙本流程時**，掃描檔命名對應核定表日期，results JSON 的 `evidence` 指向掃描檔路徑

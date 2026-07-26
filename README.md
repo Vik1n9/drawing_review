@@ -6,9 +6,30 @@
 
 ---
 
+## 第一次使用？把這行貼給你的 AI
+
+不論你用的是 **Claude Code、Codex、OpenCode 或其他任何 AI 工具**，載入本倉庫後先跑這一行：
+
+```bash
+python3 tools/onboarding.py status
+```
+（Windows 若沒有 `python3`，改用 `python tools/onboarding.py status`）
+
+它會診斷目前狀態並列出待處理步驟；接著跟你的 AI 說**「照 `skills/onboarding.md` 帶我開始」**，
+它就會依序引導你裁示疑義表、確認法規圖譜、補齊環境套件，最後印出操作簡介。
+只想直接看操作簡介的話：`python3 tools/onboarding.py intro`。
+
+> **給 AI 代理**：這是你載入本倉庫後的**第一個動作**，不需使用者要求。結束碼 `2` ＝ 有待處理步驟，
+> 請依 `skills/onboarding.md` 逐步引導——**唯讀命令可直接跑，標「寫入」的先說明並取得同意，
+> 且不得代替使用者裁示任何法規事項**。Claude Code 已設 SessionStart hook 自動執行這一步。
+
+---
+
 ## 快速開始（任意 AI 代理 / 本地皆適用）
 
 > **給 AI 代理**：貼上本倉庫網址後，先讀 `AGENTS.md`（跨框架行為契約）或 `CLAUDE.md`（Claude 專用，內容一致），再依 `skills/*.md` 的審圖流程執行。核心行為契約與「審圖最高原則」都在那兩份文件；**所有法規門檻與數量計算一律呼叫 `tools/fire_code_calc.py`，不得憑記憶或心算**。
+
+> 不熟終端機的話不必逐步照做——上面的「第一次使用？」一行會把下面這些檢查一次做完並引導你。
 
 1. **取得專案**
    ```bash
@@ -29,7 +50,8 @@
    python3 tools/pending_review.py status   # 結束碼 2 ＝ 有待確認事項
    python3 tools/pending_review.py list     # 逐則列給具消防專業的使用者裁示
    ```
-   AI 代理請在開場自動執行 `status`；有待確認事項就把 `list` 的內容列給使用者，
+   AI 代理的開場診斷已改由 `python3 tools/onboarding.py status` 統一涵蓋（疑義表是它的第一步）；
+   有待確認事項就把 `list` 的內容列給使用者，
    逐則取得「採納更正／維持現值／另有更正」後執行
    `python3 tools/pending_review.py decide` 與 `apply --all`——工具會自動走先紅再綠
    完成更正、回填 `verified`、更新 README 並移除疑義檔。詳見下方待確認區塊。
@@ -260,6 +282,7 @@ DXF 提供座標、圖層、符號與標註位置，但消防設備應設需求�
 
 | 工具 | 用途 | 依賴 |
 |------|------|------|
+| `tools/onboarding.py` | 開場導引：載入倉庫後的狀態診斷（五步驟，結束碼 2 ＝ 有待處理）與操作簡介 | stdlib |
 | `tools/fire_code_calc.py` | 法規門檻、數量計算、§13 適用判斷、主從用途比對、規則測試、自檢 | stdlib |
 | `tools/regulation_index.py` | 法規 Markdown 轉逐條索引與按需查詢 | stdlib |
 | `tools/regulation_graph.py` | 法規圖譜查詢：條文引用網／設備對應條文／概念關聯路徑（免安裝 graphify） | stdlib |
@@ -363,6 +386,11 @@ python3 -m pip install graphifyy                  # 或用 pip
 ## 七、常用命令
 
 ```bash
+# 開場導引（載入倉庫的第一件事；結束碼 2 ＝ 有待處理步驟）
+python3 tools/onboarding.py status
+python3 tools/onboarding.py status --format json   # 供工具串接
+python3 tools/onboarding.py intro                  # 操作簡介（印在終端機）
+
 # 一鍵安裝相依套件並自檢（等同 pip install -r requirements.txt）
 bash tools/setup.sh
 python3 tools/check_env.py

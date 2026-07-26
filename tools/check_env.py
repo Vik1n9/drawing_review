@@ -33,26 +33,55 @@ def has_module(name):
         return False
 
 
+def interpreter_command():
+    """使用者複製貼上時該打的解譯器命令。"""
+    for name in ("python3", "python"):
+        if shutil.which(name):
+            return name
+    return sys.executable or "python3"
+
+
+def probe():
+    """回傳結構化的環境狀態，供本檔渲染與 tools/onboarding.py 重用。
+
+    刻意不印任何東西——呈現格式歸 main()，聚合判斷歸呼叫者。
+    """
+    deps = [
+        {"module": mod, "package": pkg, "use": use, "ok": has_module(mod)}
+        for mod, pkg, use in PY_DEPS
+    ]
+    return {
+        "python_version": sys.version.split()[0],
+        # 給使用者複製的命令用哪個字：Windows 上常只有 python 而無 python3。
+        # 兩者都找不到才退回 sys.executable 的完整路徑（至少貼上去能跑）。
+        "interpreter": interpreter_command(),
+        "has_bash": shutil.which("bash") is not None,
+        "deps": deps,
+        "missing": [d["package"] for d in deps if not d["ok"]],
+        "graphify": shutil.which("graphify") is not None,
+        "stdlib_only": list(STDLIB_ONLY),
+    }
+
+
 def main(argv=None):
     argv = argv if argv is not None else sys.argv[1:]
     strict = "--strict" in argv
+    env = probe()
 
     print("== Fire Review 環境自檢 ==")
-    print(f"Python：{sys.version.split()[0]}")
+    print(f"Python：{env['python_version']}")
 
     print("\n[核心工具] 只用標準庫，無需安裝即可執行：")
-    for line in STDLIB_ONLY:
+    for line in env["stdlib_only"]:
         print(f"  ✓ {line}")
 
     print("\n[交付物套件] 未安裝者，對應工具會給出明確錯誤：")
-    missing = []
-    for mod, pkg, use in PY_DEPS:
-        ok = has_module(mod)
-        print(f"  {'✓' if ok else '✗'} {pkg:10} — {use}")
-        if not ok:
-            missing.append(pkg)
+    for dep in env["deps"]:
+        mark = "✓" if dep["ok"] else "✗"
+        print(f"  {mark} {dep['package']:10} — {dep['use']}")
+    missing = env["missing"]
 
-    graph_ok = shutil.which("graphify") is not None
+    graph_ok = env["graphify"]
     print("\n[法規知識圖譜] 選用（graph.html 直接開瀏覽器即可看，重建／CLI 查詢才需要）：")
     print(f"  {'✓' if graph_ok else '✗'} graphify — 圖譜重建與 query/explain/path 查詢")
 

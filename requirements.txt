@@ -1,10 +1,16 @@
-# Fire Review — 執行相依套件
-# 一鍵安裝：bash tools/setup.sh
-# 或：python3 -m pip install -r requirements.txt
+# Fire Review — 選用套件（審圖主線不需要任何一項）
 #
-# 核心審圖工具（fire_code_calc.py、regulation_index.py）只用 Python 標準庫，
-# 以下套件僅特定交付物需要；未安裝時對應工具會給出明確錯誤與安裝指引。
+# 本倉庫預設什麼都不必安裝。多數使用者只裝了一個 AI 桌面版就開始用，
+# 沙盒與安全限制讓 pip install 往往失敗——所以審圖主線刻意做成零安裝：
+#   · 法規門檻計算與法條查詢  → fire_code_calc.py、regulation_index.py（標準庫）
+#   · 交付物1 DXF 圖面標註    → dxf_parse.py 以標準庫解析文字 DXF
+#   · PDF／DOCX／XLSX 判讀    → 由 AI 直接讀取檔案
+#
+# 以下三個套件只影響少數交付物格式，且每項都有替代路徑
+# （跑 python3 tools/check_env.py 會列出來）。裝不起來不影響審圖。
+#
+# 想一次補齊：bash tools/setup.sh   或   python3 -m pip install -r requirements.txt
 
-ezdxf>=1.3,<2        # tools/dxf_svg_review.py：DXF 轉 SVG 圖面標註（交付物1）
-openpyxl>=3.1,<4     # tools/standard_checklist_html.py：xlsx 標準表檢核
-pymupdf>=1.24,<2     # tools/pdf_annotate.py：平面圖 PDF 紅圈標註
+ezdxf>=1.3,<2        # 二進位 DXF 後備；文字 DXF 已由 tools/dxf_parse.py 零相依處理
+openpyxl>=3.1,<4     # tools/stage_report_xlsx.py：兩階段 Excel 交付物（替代：HTML 版檢核清單）
+pymupdf>=1.24,<2     # tools/pdf_annotate.py：legacy PDF 紅圈標註（替代：交付物1 的 HTML／SVG 標註）

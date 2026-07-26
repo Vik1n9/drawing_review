@@ -28,7 +28,29 @@ ALL_READY_ENV = {
     "missing": [],
     "graphify": True,
     "stdlib_only": [],
+    "capabilities": [
+        {"name": "法規門檻計算與法條查詢", "ok": True, "zero_install": True,
+         "requires": None, "alternative": None, "note": None},
+    ],
+    "unavailable": [],
 }
+
+# 目標使用者的常態：什麼套件都裝不起來，但每項缺失都有替代路徑
+ZERO_INSTALL_ENV = dict(
+    ALL_READY_ENV,
+    missing=["openpyxl", "pymupdf"],
+    deps=[{"module": "openpyxl", "package": "openpyxl", "use": "Excel 交付物", "ok": False},
+          {"module": "fitz", "package": "pymupdf", "use": "PDF 標註", "ok": False}],
+    capabilities=[
+        {"name": "法規門檻計算與法條查詢", "ok": True, "zero_install": True,
+         "requires": None, "alternative": None, "note": None},
+        {"name": "DXF 圖面標註（交付物1）", "ok": True, "zero_install": True,
+         "requires": None, "alternative": None, "note": "由標準庫解析"},
+        {"name": "兩階段 Excel 交付物匯出", "ok": False, "zero_install": False,
+         "requires": "openpyxl", "alternative": "改用 HTML 版法條檢核清單", "note": None},
+    ],
+    unavailable=["兩階段 Excel 交付物匯出"],
+)
 
 
 def write_sheet(root, findings):
@@ -154,15 +176,42 @@ class OnboardingStatusTest(unittest.TestCase):
         self.assertEqual("blocked", rules["state"])
         self.assertFalse(result["ready"])
 
-    def test_missing_packages_flag_environment_step(self):
-        env = dict(ALL_READY_ENV, missing=["ezdxf"], deps=[
-            {"module": "ezdxf", "package": "ezdxf", "use": "交付物1", "ok": False}])
-        with temp_repo(env=env) as root:
+    def test_missing_packages_do_not_block_a_zero_install_user(self):
+        """裝不了套件是目標使用者的常態，不是待處理事項。
+
+        審圖主線（法規計算、DXF 圖面標註、文件判讀）全部零安裝，
+        缺套件只影響少數交付物格式，而那些都有替代路徑——
+        把步驟 3 停在 action 只會讓使用者以為自己還不能開始。
+        """
+        with temp_repo(env=ZERO_INSTALL_ENV) as root:
             os.chdir(root)
             result = ob.evaluate()
         environment = steps_by_title(result)["環境工具"]
-        self.assertEqual("action", environment["state"])
-        self.assertIn("setup.sh", " ".join(c["cmd"] for c in environment["commands"]))
+
+        self.assertEqual("ready", environment["state"])
+        self.assertNotIn(environment["state"], ob.BLOCKING)
+        # 安裝命令仍可提供給裝得起來的環境，但必須標成選用
+        install = [c for c in environment["commands"] if "setup.sh" in c["cmd"]]
+        self.assertTrue(all(c["optional"] for c in install))
+
+    def test_unavailable_capabilities_always_show_an_alternative(self):
+        """做不到的事一定要當場給別條路，否則使用者只會卡住。"""
+        with temp_repo(env=ZERO_INSTALL_ENV) as root:
+            os.chdir(root)
+            result = ob.evaluate()
+        text = "\n".join(steps_by_title(result)["環境工具"]["lines"])
+
+        self.assertIn("兩階段 Excel 交付物匯出", text)
+        self.assertIn("改用 HTML 版法條檢核清單", text)
+
+    def test_environment_step_does_not_hardcode_the_package_list(self):
+        """曾經寫死「三個交付物套件（ezdxf／openpyxl／pymupdf）」，清單一變就過時。"""
+        with temp_repo(env=ZERO_INSTALL_ENV) as root:
+            os.chdir(root)
+            result = ob.evaluate()
+        text = "\n".join(steps_by_title(result)["環境工具"]["lines"])
+
+        self.assertNotIn("三個交付物套件", text)
 
     def test_no_bash_suggests_pip_instead_of_setup_sh(self):
         """Windows 情境：沒有 bash 就不該推 setup.sh。"""

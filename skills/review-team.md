@@ -107,8 +107,9 @@ Prompt 模板：
 
 ### 第八步：產出交付物與清理
 
-- 依 `/gap-analysis` 第六步的流程，產出三項交付物到 `output/`：圖面審查 HTML（`dxf_svg_review.py`，需 `ezdxf`）、問題清單、法條檢核清單 HTML（`checklist_html.py`）
-- 首次執行前若交付物工具報缺套件，先跑 `bash tools/setup.sh`（詳見 README「環境安裝」）
+- 依 `/gap-analysis` 第六步的流程，產出三項交付物到 `output/`：圖面審查 HTML（`dxf_svg_review.py`）、問題清單、法條檢核清單 HTML（`checklist_html.py`）
+- 三者皆**零安裝可執行**，不必先裝任何套件。若圖面是 DWG，先依 `python3 tools/dwg_guide.py check` 的引導請使用者另存 DXF
+- 只有兩階段 Excel 交付物需要 `openpyxl`；缺套件時改用 HTML 版檢核清單，內容相同（能力與替代路徑見 `python3 tools/check_env.py`）
 - TeamDelete 清理團隊資源
 
 ## 重要注意事項

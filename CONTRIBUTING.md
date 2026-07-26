@@ -62,7 +62,10 @@ python3 tools/onboarding.py status
 
 ### 改 `tools/`
 
-- 維持 stdlib-only；目前例外為 `dxf_svg_review.py` 使用 `ezdxf` 解析 DXF，以及 legacy `pdf_annotate.py` 使用 `pymupdf`
+- **維持 stdlib-only。** 使用者多半只裝了一個 AI 桌面版就開始用，沙盒讓 `pip install` 往往失敗——第三方相依等於把那些人擋在門外
+- **新增第三方相依前，必須先證明標準庫做不到。** 反例：DXF 曾被認為需要 `ezdxf`，實際上它是純文字的 group code 格式，`tools/dxf_parse.py` 用標準庫就解決了
+- **任何第三方相依都必須是選用的，而且缺席時要有替代路徑。** 替代路徑登記在 `tools/check_env.py` 的 `CAPABILITY_SPECS`，`tests/test_check_env.py` 會強制檢查「不可用的能力一定有替代路徑」
+- 目前的選用相依：`openpyxl`（兩階段 Excel 交付物，替代：HTML 版檢核清單）、`pymupdf`（legacy PDF 標註，替代：交付物1 的 HTML／SVG 標註）、`ezdxf`（二進位 DXF 後備，替代：請使用者改存 ASCII DXF）
 - 改動計算邏輯必須有對應測試案例
 
 ## 流程規範

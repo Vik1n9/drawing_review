@@ -31,6 +31,8 @@
 
 **完整紀律見 `skills/red-green.md`（改編自 obra/superpowers 的 TDD skill），含鐵律、紅旗清單與交付前檢查清單。** 對每一條要進規則庫的參數，嚴格依照順序執行，不得跳步：
 
+> **取得 `source.page` 與 `source.quote` 的方式**：直接讀 `法條清單.pdf`（你原生就讀得了 PDF，不需要安裝任何套件），把原文逐字複製進 `quote`。**但機器抽出來的文字不等於核對過**——OCR 或文字層可能斷行、缺字、把相似字認錯。`quote` 必須與原件逐字比對後才算數，`red-green.md` 對逐字性的要求不因為文字是機器抽的而放寬。
+
 ```
 （RED）       1. 先寫測試：在 rules/rule_tests.json 新增測試案例——
                  expected 值必須從 PDF 原文「抄錄」（不能推算），

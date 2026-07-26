@@ -18,16 +18,36 @@
 
 用途分類、樓層屬性、地下層、屋突層／屋頂層與無開口樓層判定，必須讀取 `skills/place-use-classification.md`；第 12 條用途分類只產生候選，最終以人工確認後的 `case.json` 為準。複合用途建築物的主從用途判定依 `skills/mixed-use-review.md`（`/mixed-use-review`）：以 `rules/mixed_use_rules.json`（《複合用途建築物判斷基準》附表結構化）比對產生候選，§12 分類經人工定案後才可進入 `/code-requirements`。案件涉及增建、改建、室內裝修或變更用途時，必須先跑 `check-applicability`（§13）判斷各設備適用新舊標準。走兩階段 Excel 交付路線時，另須先讀 `rules/review_corrections.md`——其中含通案樓層屬性規則（該工作流程下所有地上樓層一律列為`無開口樓層`），會改變 §14~31 的判斷基礎。
 
-## 開場必做：待確認事項（載入本倉庫的第一件事）
+## 開場必做：開場導引（載入本倉庫的第一件事）
 
-規則參數與現行條文比對出的差異寫在 `governance/待確認清單/`，並以 `待確認事項.md` 呈現。
-**每個工作階段一開始就要跑一次**（Claude Code 已設 SessionStart hook 自動執行）：
+**載入本倉庫後的第一個動作**，不需使用者要求（Claude Code 已設 SessionStart hook 自動執行；
+其他 AI 工具自行執行）：
 
 ```bash
-python3 tools/pending_review.py status      # 結束碼 2 ＝ 有待確認事項
+python3 tools/onboarding.py status      # 結束碼 2 ＝ 有待處理步驟
 ```
 
-結束碼為 `2` 時，**在進行任何審圖工作之前**先完成這條迴路：
+結束碼為 `2` 時，依 `skills/onboarding.md` 逐步引導使用者走完五個步驟：
+**① 待確認事項裁示 → ② 法規圖譜 → ③ 環境工具 → ④ 規則庫健康 → ⑤ 操作簡介**。
+
+兩條貫穿全程的紀律：
+
+- **唯讀自動、寫入先問**——`status` 把每條命令標成`（唯讀，可直接跑）`或`（寫入，需你同意）`；
+  標「寫入」者（`setup.sh`、`pending_review.py decide/apply`、圖譜重建）必須先向使用者
+  說明並取得同意才能執行
+- **工具中立**——使用者可能用 Claude Code、Codex、OpenCode 或其他工具。斜線指令只有
+  Claude Code 有，引導時一律給「可複製的命令」＋「一句自然語言請求」；命令裡的解譯器照
+  `status` 回報的 `interpreter` 改寫（Windows 常只有 `python`）
+
+本倉庫的使用者**就是消防專業人員本人**，自行把倉庫導入自己電腦的 AI 工具作業。
+他懂法規但不一定懂終端機——把技術細節擋在他前面，只把需要他做法規判斷的事端到他面前。
+
+### 第一步的細節：待確認事項
+
+規則參數與現行條文比對出的差異寫在 `governance/待確認清單/`，並以 `待確認事項.md` 呈現。
+`onboarding.py status` 的第一步已涵蓋這項檢查（也可單獨跑
+`python3 tools/pending_review.py status`）。有待確認事項時，**在進行任何審圖工作之前**
+先完成這條迴路：
 
 1. `python3 tools/pending_review.py list` —— 逐則列給使用者（他本人就是消防專業人員）
 2. 使用者逐則回覆「採納更正」／「維持現值」／「另有更正＋正確值」
@@ -134,6 +154,10 @@ drawing_review/
 ## 常用命令
 
 ```bash
+# 開場導引（載入倉庫的第一件事；結束碼 2 ＝ 有待處理步驟）
+python3 tools/onboarding.py status
+python3 tools/onboarding.py intro                # 操作簡介（印在終端機，給使用者看）
+
 # 首次使用：一鍵安裝交付物所需套件（ezdxf/openpyxl/pymupdf）並自檢
 # 核心計算與索引工具只用標準庫；圖譜重建／查詢另需 graphify（--with-graph）
 bash tools/setup.sh && python3 tools/check_env.py

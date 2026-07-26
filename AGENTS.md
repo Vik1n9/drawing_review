@@ -1,9 +1,22 @@
-# Fire Review — Codex 審圖行為契約
+# Fire Review — AI 代理審圖行為契約
 
 本專案是消防審圖輔助系統：案件輸入資料夾內放置待審 `平面圖.dxf`、輔助對照用 `平面圖.pdf` 與相關審查文件後，依法規計算設備需求，列出缺失設備與數量，並以 SVG 網頁標註圖面問題，輔助專業消防人員審圖。輸出只能作為輔助，不能取代專業判斷。
 
-## Codex 執行規則
+本檔適用於**任何 AI 工具**（Codex、OpenCode、Claude Code …）。Claude Code 另有內容一致的 `CLAUDE.md`。
 
+## AI 代理執行規則
+
+- **載入本倉庫後的第一個動作**（不需使用者要求）：跑 `python3 tools/onboarding.py status`。
+  結束碼 `2` 代表有待處理步驟，此時依 `skills/onboarding.md` 逐步引導使用者走完
+  ① 待確認事項裁示 → ② 法規圖譜 → ③ 環境工具 → ④ 規則庫健康 → ⑤ 操作簡介，
+  **不得跳過直接進入審圖**。Claude Code 由 SessionStart hook 自動執行這一步；
+  其他工具沒有 hook 機制，請自行執行。
+- **唯讀自動、寫入先問**：`status` 已把每條命令標成`（唯讀，可直接跑）`或`（寫入，需你同意）`。
+  標「寫入」者（`setup.sh`、`pending_review.py decide/apply`、圖譜重建）必須先向使用者說明
+  並取得同意；且不得代替使用者裁示任何法規事項。
+- **不要假設有斜線指令**：`/gap-analysis` 這類指令只有 Claude Code 有。引導使用者時一律給
+  「可複製的命令」＋「一句自然語言請求」，並照 `status` 回報的 `interpreter` 改寫命令中的
+  解譯器（Windows 常只有 `python` 而無 `python3`）。
 - 執行案件、修改規則、產生報告前，先讀取本檔與相關 `skills/*.md` 流程文件。
 - 判定場所用途、樓層屬性、地下層、屋突層／屋頂層、無開口樓層時，必須讀取 `skills/place-use-classification.md`；用途分類只產生候選，最終以人工確認後的 `case.json` 為準。
 - 不要直接從 DXF、SVG 或圖片推算最終結論；所有計算以人工確認後的 `case.json` 為正典資料。
@@ -23,16 +36,28 @@
 8. **呈現正反兩面**：判定「免設」時同樣列出計算過程與條文依據，讓審查者可以覆核，不只列缺失。
 9. **法典與實務註解分離**：`rules/` 為法典層，只能經先紅再綠變更；法典未涵蓋情境的實務見解只能以 Practice Note 寫入 `practice_notes/`（`/practice-note`），不得直接改規則參數。`check-gap` 偵測到案件結論無法被既有規則涵蓋時，先查證是否只是「規則未入庫」（是則走先紅再綠），確為法典未涵蓋才草擬註解供使用者審閱；未經使用者「確認納入」的註解禁止從 `staging` 移到 `active`。
 
-## 開場必做：待確認事項（載入本倉庫的第一件事）
+## 開場必做：開場導引（載入本倉庫的第一件事）
 
-規則參數與現行條文比對出的差異寫在 `governance/待確認清單/`，並以 `待確認事項.md` 呈現。
-**每個工作階段一開始就要跑一次**（Claude Code 已設 SessionStart hook 自動執行）：
+**載入本倉庫後的第一個動作**，不需使用者要求（Claude Code 由 SessionStart hook 自動執行；
+其他 AI 工具自行執行）：
 
 ```bash
-python3 tools/pending_review.py status      # 結束碼 2 ＝ 有待確認事項
+python3 tools/onboarding.py status      # 結束碼 2 ＝ 有待處理步驟
 ```
 
-結束碼為 `2` 時，**在進行任何審圖工作之前**先完成這條迴路：
+結束碼為 `2` 時，依 `skills/onboarding.md` 逐步引導使用者走完五個步驟：
+**① 待確認事項裁示 → ② 法規圖譜 → ③ 環境工具 → ④ 規則庫健康 → ⑤ 操作簡介**。
+唯讀命令可直接跑，標「寫入」的先說明並取得同意，且不得代替使用者裁示任何法規事項。
+
+本倉庫的使用者**就是消防專業人員本人**，自行把倉庫導入自己電腦的 AI 工具作業。
+他懂法規但不一定懂終端機——把技術細節擋在他前面，只把需要他做法規判斷的事端到他面前。
+
+### 第一步的細節：待確認事項
+
+規則參數與現行條文比對出的差異寫在 `governance/待確認清單/`，並以 `待確認事項.md` 呈現。
+`onboarding.py status` 的第一步已涵蓋這項檢查（也可單獨跑
+`python3 tools/pending_review.py status`）。有待確認事項時，
+**在進行任何審圖工作之前**先完成這條迴路：
 
 1. `python3 tools/pending_review.py list` —— 逐則列給使用者（他本人就是消防專業人員）
 2. 使用者逐則回覆「採納更正」／「維持現值」／「另有更正＋正確值」
@@ -157,6 +182,10 @@ drawing_review/
 ## 常用命令
 
 ```bash
+# 開場導引（載入倉庫的第一件事；結束碼 2 ＝ 有待處理步驟）
+python3 tools/onboarding.py status
+python3 tools/onboarding.py intro                # 操作簡介（印在終端機，給使用者看）
+
 # 首次使用：一鍵安裝交付物所需套件（ezdxf/openpyxl/pymupdf）並自檢
 bash tools/setup.sh && python3 tools/check_env.py
 # 選：連同法規圖譜 graphify 一起裝 → bash tools/setup.sh --with-graph

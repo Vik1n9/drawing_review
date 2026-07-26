@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 tools/pending_review.py status 2>&1 || true",
+            "command": "python3 tools/onboarding.py status 2>&1 || true",
             "timeout": 30
           }
         ]

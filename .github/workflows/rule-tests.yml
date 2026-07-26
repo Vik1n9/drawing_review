@@ -36,6 +36,12 @@ jobs:
       - name: 法規圖譜新鮮度把關（來源檔異動後未重建圖譜、或註解未納入即紅燈）
         run: python3 tools/graph_status.py check
 
+      - name: 開場導引煙霧測試（結束碼 2 ＝ 有待處理步驟，非失敗）
+        run: python3 tools/onboarding.py status --format json || test $? -eq 2
+
+      - name: 操作簡介煙霧測試
+        run: python3 tools/onboarding.py intro
+
       - name: 示範案件門檻判斷煙霧測試
         run: python3 tools/fire_code_calc.py check-threshold --case "output/case.json"
 

@@ -14,6 +14,13 @@
 | `rules/article18_equipment_options.json` | ✅ | §18 各款可選設備對照 |
 | `skills/README.md`（本檔） | ❌ | 設計說明、維護規範 |
 
+`skills/onboarding.md` 不在上表：它是**入口導引**，不是 pipeline 的某個階段。
+使用者載入倉庫後由 `tools/onboarding.py status` 觸發（Claude Code 走 SessionStart hook、
+其他 AI 工具走 `AGENTS.md` 開場條文），負責把人帶到「可以開始審圖」的狀態——
+裁示疑義表、確認圖譜、補齊套件、印出操作簡介——之後才進入本檔描述的審圖流程。
+它面向的是**不熟終端機的消防專業人員**，所以文字一律工具中立（不假設有斜線指令、
+不硬貼 `python3`），且會改動系統的動作一律先取得使用者同意。
+
 ---
 
 ## 一、兩階段與既有 pipeline 的對應

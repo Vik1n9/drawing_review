@@ -55,7 +55,7 @@ python3 tools/practice_note_engine.py draft \
 
 產出 `practice_notes/staging/PN-{日期}-{序號}.json`，判讀欄位一律是 `（待填）`。
 
-**逐欄與使用者確認並填實**，嚴禁自行推測填充（`CLAUDE.md` 最高原則 5）。
+**逐欄與使用者確認並填實**，嚴禁自行推測填充（`AGENTS.md` 底線 3：不確定就標「需人工判讀」，嚴禁推測填充）。
 確認時在對話中直接問那幾個欄位就好，**不要把整份草案 JSON 傾印給使用者**：
 
 - `scenario.conditions`：把使用者口述的情境結構化成可比對的鍵值（如
@@ -131,7 +131,7 @@ python3 tools/practice_note_graph.py contract --note {註解 id}
   `supplements`（補充條文）／`concerns_equipment`（涉及設備）／
   `applies_when`（觸發條件）／`conceptually_related_to`（語意關聯）
 - **只抽註解真的說了的東西**。不確定就不要抽——寧可少一條邊，
-  不可讓圖譜長出註解沒說過的關聯（`CLAUDE.md` 最高原則 5）
+  不可讓圖譜長出註解沒說過的關聯（`AGENTS.md` 底線 3：不確定就標「需人工判讀」，嚴禁推測填充）
 
 ```bash
 python3 tools/practice_note_graph.py validate --extraction practice_notes/graph_extractions/{id}.json
@@ -180,4 +180,4 @@ python3 tools/graph_status.py stamp
 5. **註解不是法源**——使用者的「確認納入」即為專業判斷，不另設核定關卡；
    但援引時必須同時列出所補充的法條與註解 ID，讓結論可回溯到條文
 6. 修訂既有註解：新增一則並把舊註解 `status` 改為 `superseded`，不刪除歷史
-7. 遵守 `CLAUDE.md` 的審圖最高原則；任何步驟與最高原則衝突時，以最高原則為準
+7. 遵守 `AGENTS.md` 五條底線；任何步驟與底線衝突時，以底線為準

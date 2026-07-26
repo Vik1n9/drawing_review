@@ -27,7 +27,7 @@ python3 tools/onboarding.py status
 
 ## 快速開始（任意 AI 代理 / 本地皆適用）
 
-> **給 AI 代理**：貼上本倉庫網址後，先讀 `AGENTS.md`（跨框架行為契約）或 `CLAUDE.md`（Claude 專用，內容一致），再依 `skills/*.md` 的審圖流程執行。核心行為契約與「審圖最高原則」都在那兩份文件；**所有法規門檻與數量計算一律呼叫 `tools/fire_code_calc.py`，不得憑記憶或心算**。
+> **給 AI 代理**：貼上本倉庫網址後，先讀 `AGENTS.md`（行為契約正本，跨 AI 工具共用；`CLAUDE.md` 只是指向它的指標），再依其中的路由表載入該階段的 `skills/*.md`。契約只放「載入任何 skill 之前就必須生效」的五條底線；**所有法規門檻與數量計算一律呼叫 `tools/fire_code_calc.py`，不得憑記憶或心算**。
 
 > 不熟終端機的話不必逐步照做——上面的「第一次使用？」一行會把下面這些檢查一次做完並引導你。
 
@@ -395,9 +395,17 @@ python3 tools/onboarding.py intro                  # 操作簡介（印在終端
 bash tools/setup.sh
 python3 tools/check_env.py
 
-# 法規索引
+# 法規調閱：先用圖譜定位條號與關聯，再只載入那幾條原文
+python3 tools/regulation_graph.py neighbors --article §24      # 該條引用網＋附表圖＋實務註解
+python3 tools/regulation_graph.py articles --equipment 排煙設備  # 哪些條文規範該設備
+python3 tools/regulation_graph.py path --from 無開口樓層 --to 排煙設備
+python3 tools/regulation_graph.py notes --article §24           # 專查該條的實務註解
+
+# 法規索引（lookup 支援單條、範圍與逗號列舉；不要一次載入 §14~§31 全文）
 python3 tools/regulation_index.py build
 python3 tools/regulation_index.py lookup --article '§19'
+python3 tools/regulation_index.py lookup --article '§24,§12'
+python3 tools/regulation_index.py lookup --article '§20-§22,§28'
 python3 tools/regulation_index.py lookup --equipment '滅火器'
 
 # 規則庫自檢與先紅再綠測試
@@ -446,10 +454,19 @@ python3 tools/practice_note_engine.py conflict-check --draft practice_notes/stag
 python3 tools/practice_note_engine.py apply --draft practice_notes/staging/{id}.json --approved-by {批准人} --confirm 確認納入
 python3 tools/practice_note_engine.py test --strict
 
+# 實務註解 → 知識圖譜（LLM 語意抽取 ＋ 確定性合併；沒做完，後續查圖譜查不到訓練成果）
+python3 tools/practice_note_graph.py plan                     # 0=齊備 2=有待語意抽取
+python3 tools/practice_note_graph.py contract --note {註解 id} # 印出抽取契約給 LLM 填
+python3 tools/practice_note_graph.py validate --extraction practice_notes/graph_extractions/{id}.json
+python3 tools/practice_note_graph.py merge                    # 併入 graph.json（冪等）
+python3 tools/practice_note_graph.py check                    # 0=已納入 2=未納入
+
 # 待確認事項（開場必做）
 python3 tools/pending_review.py status                        # 結束碼 2 = 有待確認事項
 python3 tools/pending_review.py list                          # 逐則列給使用者裁示
+python3 tools/pending_review.py decide --id D-015-01 --decision 採納更正 --by "{確認人}"
 python3 tools/pending_review.py apply --all --by "{確認人}"    # 先紅再綠自動更正＋回填 verified
+python3 tools/pending_review.py render                        # 重產 待確認事項.md 並同步 README
 
 # 規則逐條確認（使用者本身即為消防專業人員，不需另送外部核定）
 python3 tools/verification_sheet.py list                      # 列出待確認規則，於對話中逐條確認

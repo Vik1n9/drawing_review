@@ -7,7 +7,7 @@
     python3 tools/training_intake.py apply --batch {批次名} --operator {歸檔人}
     python3 tools/training_intake.py status                   # 供工作流程前置檢查（0=可續行 2=圖譜需補建）
 
-設計邊界（呼應 CLAUDE.md 審圖最高原則 2、3）：
+設計邊界（呼應 AGENTS.md 底線 1 與 skills/red-green.md）：
 
 - 本工具**只搬檔案、不做法規判斷**。分類只看副檔名、檔名樣式與輕量內容探測，
   信心不足一律標 needs_confirmation 交人工確認。

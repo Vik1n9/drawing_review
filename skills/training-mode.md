@@ -171,7 +171,7 @@ python3 tools/graph_status.py stamp
 直到補建並 `stamp` 為止。補建完成後刪除 `training/graph_pending.json`。
 
 圖譜的邊界不因訓練而改變：**它只是索引與導覽，不是門檻數值或計算結果的來源**
-（呼應 `CLAUDE.md` 最高原則 2、4）。
+（呼應 `AGENTS.md` 底線 1「禁止憑記憶引法規數值」與底線 2「case.json 是正典」）。
 
 ### 第八步 綠燈驗收
 
@@ -243,4 +243,4 @@ python3 tools/verification_sheet.py apply --results {結果JSON}
 4. **既有筆記不刪**——取代靠 `Superseded` 標記，歷史是責任追溯的一部分
 5. **圖譜過期即告知**——寧可吵，不要讓後續案件靜默地查到舊圖譜
 6. `input/` 只讀不改；訓練素材投 `training/inbox/`，產出寫 `training/` 與 `rules/`
-7. 遵守 `CLAUDE.md` 的審圖最高原則；本 skill 的任何步驟與最高原則衝突時，以最高原則為準
+7. 遵守 `AGENTS.md` 五條底線；本 skill 的任何步驟與底線衝突時，以底線為準

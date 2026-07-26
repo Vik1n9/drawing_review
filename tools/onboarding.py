@@ -388,7 +388,7 @@ def format_intro(py):
   直接問你的 AI；或重跑下面這行看還缺什麼：
     {py} tools/onboarding.py status
 
-  完整導引流程見 skills/onboarding.md，審圖行為契約見 CLAUDE.md／AGENTS.md。
+  完整導引流程見 skills/onboarding.md，審圖行為契約見 AGENTS.md。
   （用 Claude Code 的話，各流程另可用 /gap-analysis 這類斜線指令直接叫；
     其他 AI 工具用自然語言說明即可，效果相同。）"""
 

@@ -95,6 +95,9 @@ python3 tools/update_guard.py install --from {新版解壓目錄}
 **`rules/*.json`、`graphify-out/graph.json` 是共編檔**——使用者的裁示與上游的修法
 交錯在同一個檔案裡。這類衝突不能一鍵解決：
 
+（`training/graph.json` **不是**共編檔：它是使用者所有的衍生產物，也不進版控。
+真的出問題就 `python3 tools/training_graph_build.py build` 從素材重建，不必還原。）
+
 - **不得**用 `--ours`／`--theirs`／`-X` 任何一種自動解法
 - 正確做法：`python3 tools/update_guard.py diff` 列出差異 → 把「上游改了什麼、
   你的版本是什麼」逐項講給使用者聽 → 依 `skills/red-green.md` 重跑先紅再綠，
@@ -125,6 +128,10 @@ python3 tools/update_guard.py restore --path {路徑} --apply
 - **共編檔預設拒絕整檔還原**。`restore` 對 `rules/`、`graphify-out/` 會擋下來，
   因為拿舊備份整檔蓋回去會把上游的法規更新一起吃掉。要的是列差異、
   請使用者重新裁示，不是 `--force-shared`
+- **`graphify-out/node_ledger.json` 必須與 `graph.json` 同版本**。台帳記錄
+  `(source_file, label) → node id`；只還原其中一個會讓訓練圖譜的跨圖譜參照掛不回法規，
+  查圖譜就查不到訓練成果。要還原就兩個一起，或直接重跑
+  `python3 tools/regulation_graph_build.py rebuild --commit`
 - **一次一項，逐項確認**。不要 `--all --apply` 一把梭
 - **不得代替使用者決定要不要救回某個檔案**——那是他的成果，不是你的
 

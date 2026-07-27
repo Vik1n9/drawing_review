@@ -32,8 +32,11 @@ import sys
 from collections import deque
 
 DEFAULT_GRAPH = os.path.join("graphify-out", "graph.json")
+DEFAULT_TRAINING_GRAPH = os.path.join("training", "graph.json")
 
 PRACTICE_NOTE_LAYER = "practice_note"
+# 訓練圖譜的三個層：實務註解、審圖修正筆記、第二階段判斷慣例。
+TRAINING_LAYERS = (PRACTICE_NOTE_LAYER, "review_correction", "judgment_rule")
 
 BOUNDARY = ("圖譜只是索引與導覽，不是門檻數值來源；判斷前務必以 "
             "`python3 tools/regulation_index.py lookup --article '{articles}'` 載入原文核對。")
@@ -42,17 +45,66 @@ NOTE_NOTICE = ("實務註解為消防專業人員確認之實務見解，非法�
                "援引時須同時列出所補充的法條與註解 ID")
 
 
-def load_graph(path):
+def load_graph(path, required=True):
+    """單一圖譜 → (nodes, links)；不存在時依 required 決定報錯或回空。"""
     if not os.path.exists(path):
-        sys.exit(f"找不到圖譜 {path}。法規更新後請重跑 /graphify rules 重建。")
+        if not required:
+            return {}, []
+        sys.exit(f"找不到法規圖譜 {path}。"
+                 "法規更新後請重跑 python3 tools/regulation_graph_build.py rebuild。")
     with open(path, encoding="utf-8") as f:
         doc = json.load(f)
-    nodes = {n["id"]: n for n in doc["nodes"]}
+    return {n["id"]: n for n in doc.get("nodes", [])}, doc.get("links", [])
+
+
+def sibling_training_graph(regulation_path):
+    """由法規圖譜路徑推出同一個倉庫裡的訓練圖譜路徑。
+
+    `--graph` 指到別的倉庫時，訓練圖譜必須跟著走——否則會把當前目錄的訓練成果
+    混進另一個倉庫的查詢結果。
+    """
+    return os.path.join(os.path.dirname(os.path.dirname(regulation_path)),
+                        "training", "graph.json")
+
+
+def load_graphs(regulation=DEFAULT_GRAPH, training=None, only=None):
+    """**查詢時**把兩個圖譜合併在記憶體裡——它們在磁碟上始終是分開的兩個檔。
+
+    法規圖譜重建不會碰到訓練圖譜，所以訓練成果不會被沖掉；而審圖只想問一句
+    「第 24 條牽涉什麼」，不該為此記兩套指令。合併發生在這裡，指令維持不變。
+
+    訓練圖譜的跨圖譜邊以 `target_label` 為耐久鍵：法規圖譜重建後 id 若對不上，
+    這裡會用 label 重新解析救回來——訓練成果因此撐得過法規圖譜的重建。
+    """
+    nodes, links = {}, []
+    if only != "training":
+        nodes, links = load_graph(regulation, required=True)
+    if only != "regulation":
+        train_nodes, train_links = load_graph(training or sibling_training_graph(regulation),
+                                              required=False)
+        nodes.update(train_nodes)
+        links = links + _relink(train_links, nodes)
+
     out, into = {}, {}
-    for edge in doc["links"]:
+    for edge in links:
+        if not edge.get("source") or not edge.get("target"):
+            continue
         out.setdefault(edge["source"], []).append(edge)
         into.setdefault(edge["target"], []).append(edge)
     return nodes, out, into
+
+
+def _relink(links, nodes):
+    """用 target_label 補救 target_id 對不上的跨圖譜邊。"""
+    by_label = {}
+    for node_id, node in nodes.items():
+        by_label.setdefault(node.get("label"), node_id)
+    fixed = []
+    for edge in links:
+        if edge.get("target") not in nodes and edge.get("target_label"):
+            edge = dict(edge, target=by_label.get(edge["target_label"]))
+        fixed.append(edge)
+    return fixed
 
 
 def label(nodes, node_id):
@@ -88,33 +140,40 @@ def article_numbers(node_ids, nodes):
 
 
 def is_note(node):
-    return (node or {}).get("layer") == PRACTICE_NOTE_LAYER and bool((node or {}).get("note_id"))
+    """訓練圖譜的節點——實務註解、審圖修正筆記、第二階段判斷慣例都算。"""
+    node = node or {}
+    return node.get("layer") in TRAINING_LAYERS and bool(node.get("note_id") or node.get("entry_id"))
 
 
 def note_entry(node, relation=None):
-    """實務註解節點 → 查詢輸出用的摘要（一律帶警語欄位）。"""
+    """訓練圖譜節點 → 查詢輸出用的摘要（一律帶該層自己的警語）。"""
     return {
-        "note_id": node.get("note_id"),
+        "note_id": node.get("note_id") or node.get("entry_id"),
+        "kind": node.get("layer"),
         "relation": relation,
         "ref_article": node.get("ref_article"),
         "equipment": node.get("equipment"),
         "decision": node.get("decision"),
-        "summary": node.get("graph_summary") or node.get("scenario_summary"),
+        "status": node.get("status"),
+        "summary": (node.get("graph_summary") or node.get("scenario_summary")
+                    or node.get("summary")),
         "source_case": node.get("source_case"),
         "path": node.get("source_file"),
-        "notice": NOTE_NOTICE,
+        "notice": node.get("notice") or NOTE_NOTICE,
     }
 
 
 def notes_touching(node_ids, nodes, out, into):
-    """哪些實務註解連到這些節點（註解節點恆為邊的起點，故看 incoming）。"""
+    """哪些訓練成果連到這些節點（訓練節點恆為邊的起點，故看 incoming）。"""
     found = {}
     for node_id in node_ids:
         for edge in into.get(node_id, []) + out.get(node_id, []):
             for other_id in (edge["source"], edge["target"]):
                 node = nodes.get(other_id)
-                if is_note(node) and node["note_id"] not in found:
-                    found[node["note_id"]] = note_entry(node, edge.get("relation"))
+                if is_note(node):
+                    key = node.get("note_id") or node.get("entry_id")
+                    if key not in found:
+                        found[key] = note_entry(node, edge.get("relation"))
     return [found[k] for k in sorted(found)]
 
 
@@ -285,7 +344,12 @@ def render(payload):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="法規知識圖譜查詢（定位條號與關聯，非門檻數值來源）")
-    parser.add_argument("--graph", default=DEFAULT_GRAPH, help="graph.json 路徑")
+    parser.add_argument("--graph", default=DEFAULT_GRAPH, help="法規圖譜路徑")
+    parser.add_argument("--training-graph", default=None,
+                        help="訓練圖譜路徑（預設取 --graph 同倉庫的 training/graph.json；"
+                             "不存在時只查法規圖譜）")
+    parser.add_argument("--only", choices=("regulation", "training"), default=None,
+                        help="只查其中一個圖譜（預設兩個都查）")
     parser.add_argument("--format", choices=("markdown", "json"), default="markdown")
     sub = parser.add_subparsers(dest="command", required=True)
 
@@ -309,7 +373,7 @@ def main(argv=None):
     path.set_defaults(func=cmd_path)
 
     args = parser.parse_args(argv)
-    nodes, out, into = load_graph(args.graph)
+    nodes, out, into = load_graphs(args.graph, args.training_graph, args.only)
     payload = args.func(args, nodes, out, into)
     print(json.dumps(payload, ensure_ascii=False, indent=2) if args.format == "json" else render(payload))
     return 0

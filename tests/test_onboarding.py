@@ -183,7 +183,7 @@ class OnboardingStatusTest(unittest.TestCase):
             os.chdir(root)
             result = ob.evaluate()
         self.assertEqual(EXIT_PENDING, code)
-        self.assertEqual("blocked", steps_by_title(result)["法規圖譜"]["state"])
+        self.assertEqual("blocked", steps_by_title(result)["法規圖譜與訓練圖譜"]["state"])
 
     def test_failing_rule_tests_block_rules_step(self):
         with temp_repo(calc_ok=False) as root:
@@ -318,7 +318,7 @@ class OnboardingContractTest(unittest.TestCase):
         with temp_repo() as root:
             result = self.build(root)
         self.assertEqual(
-            ["本機成果保護", "待確認事項裁示", "法規圖譜", "環境工具",
+            ["本機成果保護", "待確認事項裁示", "法規圖譜與訓練圖譜", "環境工具",
              "規則庫健康", "操作簡介"],
             [s["title"] for s in result["steps"]])
 

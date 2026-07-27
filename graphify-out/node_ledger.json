@@ -1,0 +1,2689 @@
+{
+  "schema_version": 1,
+  "note": "節點 id 台帳：重建圖譜時以 (source_file, label) 沿用既有 id，不重算。抽取檔與訓練圖譜的跨圖譜參照都依賴 label→id 的穩定性。",
+  "nodes": [
+    {
+      "source_file": "README.md",
+      "label": "rules/README.md 法規資料取用格式",
+      "id": "rules_readme"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "CNS 10204 發電機設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_cns_10204_發電機設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "CNS 10205 蓄電池設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_cns_10205_蓄電池設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "CNS 10522（火警自動警報設備國家標準）",
+      "id": "rules_core_1各類場所消防安全設備設置標準_cns_10522_火警自動警報設備國家標準"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "CNS 1244 鋅鐵板",
+      "id": "rules_core_1各類場所消防安全設備設置標準_cns_1244_鋅鐵板"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "CNS 12854 撒水噴孔／配管穿孔規定",
+      "id": "rules_core_1各類場所消防安全設備設置標準_cns_12854_撒水噴孔_配管穿孔規定"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "CNS 832 壓力管路鑄鐵管",
+      "id": "rules_core_1各類場所消防安全設備設置標準_cns_832_壓力管路鑄鐵管"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "一一九火災通報裝置",
+      "id": "rules_core_1各類場所消防安全設備設置標準_一一九火災通報裝置"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "一般滅火困難場所",
+      "id": "rules_core_1各類場所消防安全設備設置標準_一般滅火困難場所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "一齊開放閥",
+      "id": "rules_core_1各類場所消防安全設備設置標準_一齊開放閥"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "丁類場所",
+      "id": "rules_core_1各類場所消防安全設備設置標準_丁類場所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "丙類場所",
+      "id": "rules_core_1各類場所消防安全設備設置標準_丙類場所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "中央主管機關認可",
+      "id": "rules_core_1各類場所消防安全設備設置標準_中央主管機關認可"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "中度危險工作場所",
+      "id": "rules_core_1各類場所消防安全設備設置標準_中度危險工作場所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "乙類場所",
+      "id": "rules_core_1各類場所消防安全設備設置標準_乙類場所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "乾粉滅火設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_乾粉滅火設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "二氧化碳滅火設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_二氧化碳滅火設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "低度危險工作場所",
+      "id": "rules_core_1各類場所消防安全設備設置標準_低度危險工作場所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "偵煙式探測器",
+      "id": "rules_core_1各類場所消防安全設備設置標準_偵煙式探測器"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "儲存容器",
+      "id": "rules_core_1各類場所消防安全設備設置標準_儲存容器"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "光電式分離型探測器",
+      "id": "rules_core_1各類場所消防安全設備設置標準_光電式分離型探測器"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "全區放射方式",
+      "id": "rules_core_1各類場所消防安全設備設置標準_全區放射方式"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "公共危險物品等場所",
+      "id": "rules_core_1各類場所消防安全設備設置標準_公共危險物品等場所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "其他滅火困難場所",
+      "id": "rules_core_1各類場所消防安全設備設置標準_其他滅火困難場所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "冷卻撒水設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_冷卻撒水設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "出口標示燈",
+      "id": "rules_core_1各類場所消防安全設備設置標準_出口標示燈"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "加壓送水裝置",
+      "id": "rules_core_1各類場所消防安全設備設置標準_加壓送水裝置"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "加氣站",
+      "id": "rules_core_1各類場所消防安全設備設置標準_加氣站"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "加油站",
+      "id": "rules_core_1各類場所消防安全設備設置標準_加油站"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "可燃性高壓氣體儲槽",
+      "id": "rules_core_1各類場所消防安全設備設置標準_可燃性高壓氣體儲槽"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "可燃性高壓氣體儲槽／天然氣儲槽",
+      "id": "rules_core_1各類場所消防安全設備設置標準_可燃性高壓氣體儲槽_天然氣儲槽"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "可燃性高壓氣體場所",
+      "id": "rules_core_1各類場所消防安全設備設置標準_可燃性高壓氣體場所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "啟動裝置",
+      "id": "rules_core_1各類場所消防安全設備設置標準_啟動裝置"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "固定式泡沫滅火設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_固定式泡沫滅火設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "地下建築物",
+      "id": "rules_core_1各類場所消防安全設備設置標準_地下建築物"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "天然氣儲槽",
+      "id": "rules_core_1各類場所消防安全設備設置標準_天然氣儲槽"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "安全裝置",
+      "id": "rules_core_1各類場所消防安全設備設置標準_安全裝置"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "定溫式探測器（局限型／線型）",
+      "id": "rules_core_1各類場所消防安全設備設置標準_定溫式探測器_局限型_線型"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "室內消防栓設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_室內消防栓設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "室外消防栓設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_室外消防栓設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "射水設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_射水設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "射水設備（固定式射水槍、移動式射水槍或室外消防栓）",
+      "id": "rules_core_1各類場所消防安全設備設置標準_射水設備_固定式射水槍_移動式射水槍或室外消防栓"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "局部放射方式",
+      "id": "rules_core_1各類場所消防安全設備設置標準_局部放射方式"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "差動式分布型探測器",
+      "id": "rules_core_1各類場所消防安全設備設置標準_差動式分布型探測器"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "差動式局限型探測器",
+      "id": "rules_core_1各類場所消防安全設備設置標準_差動式局限型探測器"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "廣播分區",
+      "id": "rules_core_1各類場所消防安全設備設置標準_廣播分區"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "惰性氣體滅火設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_惰性氣體滅火設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "戊類場所",
+      "id": "rules_core_1各類場所消防安全設備設置標準_戊類場所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "手動報警設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_手動報警設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "排放至安全地方裝置",
+      "id": "rules_core_1各類場所消防安全設備設置標準_排放至安全地方裝置"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "排煙設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_排煙設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "探測器（火災感知器）",
+      "id": "rules_core_1各類場所消防安全設備設置標準_探測器_火災感知器"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "揚聲器",
+      "id": "rules_core_1各類場所消防安全設備設置標準_揚聲器"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "撒水頭",
+      "id": "rules_core_1各類場所消防安全設備設置標準_撒水頭"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "擴音機及操作裝置",
+      "id": "rules_core_1各類場所消防安全設備設置標準_擴音機及操作裝置"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "收容人員（計算方式）",
+      "id": "rules_core_1各類場所消防安全設備設置標準_收容人員_計算方式"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "救助袋",
+      "id": "rules_core_1各類場所消防安全設備設置標準_救助袋"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "標示設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_標示設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "水霧滅火設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_水霧滅火設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "泡沫噴頭",
+      "id": "rules_core_1各類場所消防安全設備設置標準_泡沫噴頭"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "泡沫射水槍滅火設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_泡沫射水槍滅火設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "泡沫放出口",
+      "id": "rules_core_1各類場所消防安全設備設置標準_泡沫放出口"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "泡沫滅火設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_泡沫滅火設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "流水檢知裝置",
+      "id": "rules_core_1各類場所消防安全設備設置標準_流水檢知裝置"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "消防專用蓄水池",
+      "id": "rules_core_1各類場所消防安全設備設置標準_消防專用蓄水池"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "消防栓箱",
+      "id": "rules_core_1各類場所消防安全設備設置標準_消防栓箱"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "消防法（本法）",
+      "id": "rules_core_1各類場所消防安全設備設置標準_消防法_本法"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "滅火器",
+      "id": "rules_core_1各類場所消防安全設備設置標準_滅火器"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "滑杆",
+      "id": "rules_core_1各類場所消防安全設備設置標準_滑杆"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "滑臺",
+      "id": "rules_core_1各類場所消防安全設備設置標準_滑臺"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "火焰式探測器",
+      "id": "rules_core_1各類場所消防安全設備設置標準_火焰式探測器"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "火警分區",
+      "id": "rules_core_1各類場所消防安全設備設置標準_火警分區"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "火警受信總機",
+      "id": "rules_core_1各類場所消防安全設備設置標準_火警受信總機"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "火警發信機",
+      "id": "rules_core_1各類場所消防安全設備設置標準_火警發信機"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "火警自動警報設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_火警自動警報設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "火警警鈴",
+      "id": "rules_core_1各類場所消防安全設備設置標準_火警警鈴"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "無線電通信輔助設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_無線電通信輔助設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "無開口樓層",
+      "id": "rules_core_1各類場所消防安全設備設置標準_無開口樓層"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "爆竹煙火場所",
+      "id": "rules_core_1各類場所消防安全設備設置標準_爆竹煙火場所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "瓦斯漏氣受信總機",
+      "id": "rules_core_1各類場所消防安全設備設置標準_瓦斯漏氣受信總機"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "瓦斯漏氣檢知器",
+      "id": "rules_core_1各類場所消防安全設備設置標準_瓦斯漏氣檢知器"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "瓦斯漏氣火警自動警報設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_瓦斯漏氣火警自動警報設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "瓦斯漏氣警報分區",
+      "id": "rules_core_1各類場所消防安全設備設置標準_瓦斯漏氣警報分區"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "用戶用電設備裝置規則",
+      "id": "rules_core_1各類場所消防安全設備設置標準_用戶用電設備裝置規則"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "甲類場所",
+      "id": "rules_core_1各類場所消防安全設備設置標準_甲類場所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "移動式放射方式",
+      "id": "rules_core_1各類場所消防安全設備設置標準_移動式放射方式"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "移動式泡沫滅火設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_移動式泡沫滅火設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第100條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第100條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第101條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第101條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第102條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第102條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第103條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第103條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第104條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第104條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第105條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第105條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第106條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第106條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第107條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第107條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第108條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第108條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第109條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第109條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第10條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第10條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第110條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第110條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第111-1條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第111_1條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第111條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第111條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第112條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第112條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第113條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第113條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第114條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第114條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第115條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第115條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第116條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第116條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第117條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第117條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第118條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第118條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第119條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第119條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第11條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第11條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第120條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第120條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第121條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第121條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第122條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第122條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第123條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第123條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第124條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第124條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第125條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第125條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第126條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第126條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第127條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第127條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第128條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第128條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第129條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第129條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第12條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第12條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第130條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第130條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第131條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第131條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第132條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第132條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第133條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第133條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第134條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第134條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第135條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第135條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第136條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第136條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第137條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第137條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第138條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第138條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第139條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第139條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第13條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第13條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第140條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第140條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第141條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第141條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第142條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第142條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第143條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第143條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第144條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第144條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第145-1條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第145_1條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第145條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第145條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第146-1條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第146_1條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第146-2條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第146_2條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第146-3條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第146_3條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第146-4條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第146_4條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第146-5條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第146_5條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第146-6條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第146_6條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第146-7條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第146_7條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第146條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第146條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第147條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第147條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第148條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第148條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第149條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第149條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第14條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第14條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第150條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第150條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第151條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第151條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第152條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第152條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第153條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第153條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第154條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第154條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第155條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第155條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第156條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第156條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第157條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第157條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第158條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第158條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第159條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第159條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第15條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第15條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第160條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第160條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第161條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第161條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第162條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第162條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第163條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第163條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第164條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第164條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第165條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第165條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第166條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第166條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第167條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第167條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第168條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第168條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第169條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第169條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第16條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第16條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第170條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第170條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第171條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第171條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第172條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第172條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第173條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第173條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第174條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第174條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第175條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第175條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第176條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第176條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第177條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第177條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第178條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第178條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第179條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第179條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第17條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第17條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第180條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第180條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第181條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第181條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第182條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第182條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第183條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第183條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第184條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第184條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第185條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第185條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第186條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第186條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第187條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第187條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第188條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第188條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第189條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第189條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第18條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第18條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第190條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第190條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第191條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第191條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第192-1條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第192_1條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第192條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第192條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第193條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第193條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第194條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第194條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第195條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第195條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第196條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第196條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第197條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第197條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第198條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第198條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第199條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第199條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第19條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第19條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第1條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第1條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第200條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第200條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第201條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第201條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第202條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第202條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第203條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第203條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第204條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第204條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第205條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第205條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第206-1條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第206_1條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第206條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第206條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第207條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第207條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第208條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第208條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第209條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第209條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第20條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第20條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第210條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第210條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第211條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第211條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第212條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第212條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第213條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第213條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第214條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第214條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第215條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第215條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第216條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第216條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第217條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第217條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第218條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第218條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第219條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第219條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第21條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第21條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第22-1條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第22_1條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第220條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第220條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第221條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第221條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第222-1條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第222_1條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第222條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第222條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第223條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第223條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第224條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第224條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第225條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第225條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第226條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第226條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第227條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第227條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第228條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第228條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第229條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第229條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第22條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第22條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第230條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第230條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第231條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第231條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第232條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第232條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第233條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第233條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第234條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第234條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第235條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第235條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第236條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第236條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第237條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第237條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第238條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第238條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第239條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第239條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第23條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第23條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第24條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第24條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第25條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第25條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第26條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第26條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第27條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第27條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第28條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第28條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第29條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第29條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第2條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第2條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第30-1條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第30_1條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第30條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第30條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第31條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第31條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第32條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第32條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第33條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第33條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第34條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第34條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第35條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第35條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第36條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第36條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第37條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第37條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第38條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第38條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第39條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第39條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第3條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第3條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第40條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第40條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第41條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第41條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第42條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第42條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第43條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第43條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第44條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第44條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第45條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第45條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第46條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第46條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第47條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第47條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第48條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第48條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第49條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第49條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第4條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第4條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第50條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第50條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第51條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第51條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第52條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第52條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第53條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第53條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第54條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第54條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第55條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第55條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第56條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第56條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第57條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第57條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第58條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第58條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第59條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第59條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第5條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第5條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第60條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第60條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第61條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第61條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第62條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第62條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第63條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第63條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第64條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第64條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第65條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第65條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第66條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第66條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第67條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第67條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第68條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第68條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第69條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第69條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第6條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第6條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第70條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第70條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第71條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第71條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第72條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第72條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第73條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第73條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第74條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第74條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第75條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第75條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第76條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第76條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第77條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第77條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第78條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第78條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第79條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第79條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第7條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第7條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第80條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第80條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第81條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第81條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第82條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第82條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第83-1條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第83_1條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第83-2條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第83_2條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第83條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第83條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第84條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第84條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第85條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第85條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第86條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第86條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第87條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第87條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第88條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第88條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第89條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第89條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第8條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第8條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第90條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第90條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第91條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第91條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第92條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第92條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第93條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第93條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第94條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第94條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第95條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第95條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第96-1條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第96_1條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第96條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第96條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第97-10條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第97_10條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第97-1條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第97_1條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第97-2條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第97_2條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第97-3條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第97_3條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第97-4條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第97_4條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第97-5條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第97_5條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第97-6條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第97_6條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第97-7條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第97_7條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第97-8條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第97_8條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第97-9條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第97_9條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第97條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第97條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第98條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第98條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第99條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第99條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第9條",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第9條"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第一種滅火設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第一種滅火設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第一種滅火設備（室內或室外消防栓設備）",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第一種滅火設備_室內或室外消防栓設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第一節 標示設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第一節_標示設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第三種滅火設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第三種滅火設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第三種滅火設備（水霧、泡沫、二氧化碳、惰性氣體、鹵化烴、乾粉滅火設備）",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第三種滅火設備_水霧_泡沫_二氧化碳_惰性氣體_鹵化烴_乾粉滅火設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第三章 避難逃生設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第三章_避難逃生設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第三節 緊急照明設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第三節_緊急照明設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第二種滅火設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第二種滅火設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第二種滅火設備（自動撒水設備）",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第二種滅火設備_自動撒水設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第二節 避難器具",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第二節_避難器具"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第五種滅火設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第五種滅火設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第五種滅火設備（滅火器、水桶、水槽、乾燥砂等）",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第五種滅火設備_滅火器_水桶_水槽_乾燥砂等"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第四種滅火設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第四種滅火設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "第四種滅火設備（大型滅火器）",
+      "id": "rules_core_1各類場所消防安全設備設置標準_第四種滅火設備_大型滅火器"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "簡易自動滅火設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_簡易自動滅火設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "緊急供電系統",
+      "id": "rules_core_1各類場所消防安全設備設置標準_緊急供電系統"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "緊急廣播設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_緊急廣播設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "緊急照明燈",
+      "id": "rules_core_1各類場所消防安全設備設置標準_緊急照明燈"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "緊急照明設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_緊急照明設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "緊急發電機",
+      "id": "rules_core_1各類場所消防安全設備設置標準_緊急發電機"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "緊急電源",
+      "id": "rules_core_1各類場所消防安全設備設置標準_緊急電源"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "緊急電源插座",
+      "id": "rules_core_1各類場所消防安全設備設置標準_緊急電源插座"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "緊急電源（警報設備）",
+      "id": "rules_core_1各類場所消防安全設備設置標準_緊急電源_警報設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "緩降機",
+      "id": "rules_core_1各類場所消防安全設備設置標準_緩降機"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "自動撒水設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_自動撒水設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "蓄電池設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_蓄電池設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "補償式局限型探測器",
+      "id": "rules_core_1各類場所消防安全設備設置標準_補償式局限型探測器"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "補助撒水栓",
+      "id": "rules_core_1各類場所消防安全設備設置標準_補助撒水栓"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "補助泡沫消防栓",
+      "id": "rules_core_1各類場所消防安全設備設置標準_補助泡沫消防栓"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "複合用途建築物",
+      "id": "rules_core_1各類場所消防安全設備設置標準_複合用途建築物"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "視為另一場所",
+      "id": "rules_core_1各類場所消防安全設備設置標準_視為另一場所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "視為單一場所",
+      "id": "rules_core_1各類場所消防安全設備設置標準_視為單一場所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "觀眾席引導燈",
+      "id": "rules_core_1各類場所消防安全設備設置標準_觀眾席引導燈"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "警報設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_警報設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "送水口",
+      "id": "rules_core_1各類場所消防安全設備設置標準_送水口"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "通風換氣裝置",
+      "id": "rules_core_1各類場所消防安全設備設置標準_通風換氣裝置"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "連結送水管",
+      "id": "rules_core_1各類場所消防安全設備設置標準_連結送水管"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "連結送液口",
+      "id": "rules_core_1各類場所消防安全設備設置標準_連結送液口"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "選擇閥",
+      "id": "rules_core_1各類場所消防安全設備設置標準_選擇閥"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "避難器具",
+      "id": "rules_core_1各類場所消防安全設備設置標準_避難器具"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "避難指標",
+      "id": "rules_core_1各類場所消防安全設備設置標準_避難指標"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "避難方向指示燈",
+      "id": "rules_core_1各類場所消防安全設備設置標準_避難方向指示燈"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "避難梯",
+      "id": "rules_core_1各類場所消防安全設備設置標準_避難梯"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "避難橋",
+      "id": "rules_core_1各類場所消防安全設備設置標準_避難橋"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "避難繩索",
+      "id": "rules_core_1各類場所消防安全設備設置標準_避難繩索"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "配管",
+      "id": "rules_core_1各類場所消防安全設備設置標準_配管"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "防災中心",
+      "id": "rules_core_1各類場所消防安全設備設置標準_防災中心"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "防災監控系統綜合操作裝置",
+      "id": "rules_core_1各類場所消防安全設備設置標準_防災監控系統綜合操作裝置"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "防護設備（可燃性高壓氣體場所）",
+      "id": "rules_core_1各類場所消防安全設備設置標準_防護設備_可燃性高壓氣體場所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "電氣設備使用之處所",
+      "id": "rules_core_1各類場所消防安全設備設置標準_電氣設備使用之處所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "音響警報裝置",
+      "id": "rules_core_1各類場所消防安全設備設置標準_音響警報裝置"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "顯著滅火困難場所",
+      "id": "rules_core_1各類場所消防安全設備設置標準_顯著滅火困難場所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "高層建築物",
+      "id": "rules_core_1各類場所消防安全設備設置標準_高層建築物"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "高度危險工作場所",
+      "id": "rules_core_1各類場所消防安全設備設置標準_高度危險工作場所"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "高發泡放出口",
+      "id": "rules_core_1各類場所消防安全設備設置標準_高發泡放出口"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準.md",
+      "label": "鹵化烴滅火設備",
+      "id": "rules_core_1各類場所消防安全設備設置標準_鹵化烴滅火設備"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-117-page-1.png",
+      "label": "第 117 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_117_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-133-page-1.png",
+      "label": "第 133 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_133_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-133-page-2.png",
+      "label": "第 133 條官方完整條文附件，第 2 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_133_page_2"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-163-page-1.png",
+      "label": "第 163 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_163_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-164-page-1.png",
+      "label": "第 164 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_164_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-164-page-2.png",
+      "label": "第 164 條官方完整條文附件，第 2 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_164_page_2"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-165-page-1.png",
+      "label": "第 165 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_165_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-18-page-1.png",
+      "label": "第 18 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_18_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-18-page-2.png",
+      "label": "第 18 條官方完整條文附件，第 2 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_18_page_2"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-183-page-1.png",
+      "label": "第 183 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_183_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-183-page-2.png",
+      "label": "第 183 條官方完整條文附件，第 2 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_183_page_2"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-191-page-1.png",
+      "label": "第 191 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_191_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-191-page-2.png",
+      "label": "第 191 條官方完整條文附件，第 2 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_191_page_2"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-198-page-1.png",
+      "label": "第 198 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_198_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-198-page-2.png",
+      "label": "第 198 條官方完整條文附件，第 2 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_198_page_2"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-201-page-1.png",
+      "label": "第 201 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_201_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-201-page-2.png",
+      "label": "第 201 條官方完整條文附件，第 2 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_201_page_2"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-222-page-1.png",
+      "label": "第 222 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_222_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-222-page-2.png",
+      "label": "第 222 條官方完整條文附件，第 2 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_222_page_2"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-222-page-3.png",
+      "label": "第 222 條官方完整條文附件，第 3 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_222_page_3"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-236-page-1.png",
+      "label": "第 236 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_236_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-236-page-2.png",
+      "label": "第 236 條官方完整條文附件，第 2 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_236_page_2"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-236-page-3.png",
+      "label": "第 236 條官方完整條文附件，第 3 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_236_page_3"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-47-page-1.png",
+      "label": "第 47 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_47_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-47-page-2.png",
+      "label": "第 47 條官方完整條文附件，第 2 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_47_page_2"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-57-page-1.png",
+      "label": "第 57 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_57_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-57-page-2.png",
+      "label": "第 57 條官方完整條文附件，第 2 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_57_page_2"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-57-page-3.png",
+      "label": "第 57 條官方完整條文附件，第 3 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_57_page_3"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-83-2-page-1.png",
+      "label": "第 83-2 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_83_2_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-83-page-1.png",
+      "label": "第 83 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_83_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-83-page-2.png",
+      "label": "第 83 條官方完整條文附件，第 2 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_83_page_2"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-84-page-1.png",
+      "label": "第 84 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_84_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-84-page-2.png",
+      "label": "第 84 條官方完整條文附件，第 2 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_84_page_2"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-97-2-page-1.png",
+      "label": "第 97-2 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_97_2_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-97-3-page-1.png",
+      "label": "第 97-3 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_97_3_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-97-3-page-2.png",
+      "label": "第 97-3 條官方完整條文附件，第 2 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_97_3_page_2"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-97-5-page-1.png",
+      "label": "第 97-5 條官方完整條文附件，第 1 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_97_5_page_1"
+    },
+    {
+      "source_file": "core/1各類場所消防安全設備設置標準_assets/article-97-5-page-2.png",
+      "label": "第 97-5 條官方完整條文附件，第 2 頁",
+      "id": "rules_core_1各類場所消防安全設備設置標準_assets_article_97_5_page_2"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "丁類",
+      "id": "concept_丁類"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "丁類（一）高度／（二）中度／（三）低度危險工作場所",
+      "id": "concept_丁類_危險工作場所"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "丙類",
+      "id": "concept_丙類"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "丙類（一）電信機器室",
+      "id": "concept_丙類一_電信機器室"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "丙類（三）室內停車場、建築物依法附設之室內停車空間",
+      "id": "concept_丙類三_室內停車場"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "丙類（二）汽車修護場、飛機修理廠、飛機庫",
+      "id": "concept_丙類二_汽車修護場飛機修理廠飛機庫"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "乙類",
+      "id": "concept_乙類"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "乙類（一）車站、飛機場大廈、候船室",
+      "id": "concept_乙類一_車站飛機場大廈候船室"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "乙類（七）集合住宅、寄宿舍",
+      "id": "concept_乙類七_集合住宅寄宿舍"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "乙類（三）兒童及少年福利機構、學校教室、補習班、訓練班、K書中心、安親（才藝）班",
+      "id": "concept_乙類三_兒童少年福利機構學校教室補習班"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "乙類（九）室內溜冰場、室內游泳池",
+      "id": "concept_乙類九_室內溜冰場室內游泳池"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "乙類（二）期貨經紀業、證券交易所、金融機構",
+      "id": "concept_乙類二_期貨證券金融機構"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "乙類（五）寺廟、宗祠、教堂、靈骨塔",
+      "id": "concept_乙類五_寺廟宗祠教堂靈骨塔"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "乙類（八）體育館、活動中心",
+      "id": "concept_乙類八_體育館活動中心"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "乙類（六）辦公室、老人服務機構、老人文康機構",
+      "id": "concept_乙類六_辦公室老人服務機構"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "乙類（十一）倉庫、傢俱展示販售場",
+      "id": "concept_乙類十一_倉庫傢俱展示販售場"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "乙類（十二）幼稚園、托兒所",
+      "id": "concept_乙類十二_幼稚園托兒所"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "乙類（十）電影攝影場、電視播送場",
+      "id": "concept_乙類十_電影攝影場電視播送場"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "乙類（四）圖書館、博物館、美術館、陳列館、史蹟資料館、紀念館",
+      "id": "concept_乙類四_圖書館博物館美術館"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "甲類",
+      "id": "concept_甲類"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "甲類（一）歌廳、舞廳、夜總會、俱樂部",
+      "id": "concept_甲類一_歌廳舞廳夜總會俱樂部"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "甲類（一）理容院、指壓按摩場所",
+      "id": "concept_甲類一_理容院指壓按摩場所"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "甲類（一）酒家、酒吧、酒店（廊）",
+      "id": "concept_甲類一_酒家酒吧酒店"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "甲類（一）錄影節目帶播映場所（MTV）、視聽歌唱場所（KTV）",
+      "id": "concept_甲類一_錄影節目帶播映場所視聽歌唱場所"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "甲類（一）電影片映演場所（戲院、電影院）",
+      "id": "concept_甲類一_電影片映演場所"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "甲類（七）三溫暖、公共浴室",
+      "id": "concept_甲類七_三溫暖公共浴室"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "甲類（三）觀光旅館、飯店、旅館、招待所（限有寢室客房者）",
+      "id": "concept_甲類三_觀光旅館飯店旅館招待所"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "甲類（二）保齡球館、撞球場、室內螢幕式高爾夫練習場",
+      "id": "concept_甲類二_保齡球館撞球場室內高爾夫練習場"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "甲類（二）健身休閒中心（含美容瘦身場所）",
+      "id": "concept_甲類二_健身休閒中心"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "甲類（二）遊藝場所、電子遊戲場、資訊休閒場所",
+      "id": "concept_甲類二_遊藝場所電子遊戲場資訊休閒場所"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "甲類（二）集會堂",
+      "id": "concept_甲類二_集會堂"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "甲類（五）餐廳、飲食店、咖啡廳、茶藝館",
+      "id": "concept_甲類五_餐廳飲食店咖啡廳茶藝館"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "甲類（六）啟明、啟智、啟聰等特殊學校",
+      "id": "concept_甲類六_啟明啟智啟聰特殊學校"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "甲類（六）醫療機構（醫院診所）、療養院",
+      "id": "concept_甲類六_醫療機構療養院"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "甲類（六）長期照護機構、養護機構、安養機構、老人服務機構、兒童福利設施、育嬰中心、護理之家、產後護理機構",
+      "id": "concept_甲類六_長期照護養護安養機構"
+    },
+    {
+      "source_file": "core/建築物主用途及從屬用途關係對照表.pdf",
+      "label": "甲類（四）商場、市場、百貨商場、超級市場、零售市場、展覽場",
+      "id": "concept_甲類四_商場市場百貨超市展覽場"
+    }
+  ],
+  "articles": {
+    "1": "f107d7a96e4c270d5c43ff6ec3e4e0bc9a57b9c54d3903e32253a7f96e3f78dd",
+    "2": "bcd3802fb362258544f58c9ce653f61fd0319535b923ab633d178745f30ee6d1",
+    "3": "e1753c5711eaf5f7df25a7d6c70a2f484f392815b3aae667b3d8c0af73b42835",
+    "4": "c3adfdb8c34a0ac92b019b7b006bce7327c59429f0c647fe7091347a1d931068",
+    "5": "f433f279e7f09ef4f507306af448531c07853640117b673758d5af4f60466ac0",
+    "6": "d00728bc03a7b1cad0c34e0c81800481919b3922316486e443e8e7ce10f3582b",
+    "7": "2145faf0f516f01d06dbdba1ab561ddc02890abc3957fb06ea99b8105642a0a7",
+    "8": "a18a5367beaffff8b936ed372d9d2014397996c96d6c5d9957f842758cb059ea",
+    "9": "4725cfb1f4b95b222a65a00f24d4cebe30b549b7827b1fa61674c1d7a6f3b792",
+    "10": "ad01ad02c16a665a9255b00f572f6a3ac6842ff94a274954cdc10407dabf12a6",
+    "11": "3ef20c9e36ae50f7b009dd9146405b7f7ffb88b67f27376fe39808bdd63cfacf",
+    "12": "0dd3a8579dccb77c6b21f8cb040caf1c3cee157b6c439941f8c26cf8b21dc0db",
+    "13": "62d2b912675a3d8a5547ccb20b3e6ca9aa2fe69169bb3410fcdb62b1d46c0b8f",
+    "14": "bc3ac224331357f0f269d1ea33d271e6b753411dc21103cd6fd276682dfbbc4c",
+    "15": "133bbac6b23717bdb7a1068f5ae91d1d7f0305f73b0e2fb9c995f3b55f83a11b",
+    "16": "3afde5bd715646b6d947665ebc35973974bc17de5565099b9a407a87f949478b",
+    "17": "cc6c460ce742eaf7623ed8335f76ea4b010ae8627bf0b17d86ee4886c5c7d35e",
+    "18": "fa4ee67e46236cf6d9d62583dc0b12a1c4e668755cf2934bdafb6b05b5726e85",
+    "19": "bc57769129d846907489e57afa98bf347e243ad79067e2e8048237a61db43e40",
+    "20": "ce3e18a5ba9a6b18fabefecc073488e9d913a9caa6ee18c9b881a8171ce383d4",
+    "21": "12035103da8114c307470b5b5d66863c62bff062ef91560509a97d4324708241",
+    "22": "1a60ca2d6b531dcab3c5541f103884745081e15503a3685f5e73e1775eed6523",
+    "22-1": "d16946d267777da113f4bfe07111c4bb7dc6de56a687d115726c80ca73d65811",
+    "23": "c733a82c4dde29465421efc10e2d09e90d223dbd8b2d4b8cc0674b034ca77c0e",
+    "24": "3d4fbc09c70ac8ad1624f2049f853b35b28b932d81315847f6fb0187ae6cda97",
+    "25": "7b9ce42f9cf1b2d623521b8a913a6f6aae12ccb5493dc6e9ad2b54ee811be70d",
+    "26": "c95b40e3b6bde0b983e41b77580f56f7878d6351a2dfd09044bdce320286b665",
+    "27": "4fcfc21f8642e617251e75a69ea67b31c31d7317096761481e97e4b7800e8a85",
+    "28": "5374730b7851756f0591b684de6b2f55d94387b9a880dd3974f97be676826bad",
+    "29": "3f6831165e48ec6cb2adfadd71a11cb721ee2c4e1aa849fceaa2c84d936202e5",
+    "30": "2d4a5edf29c90a261e812f76aa3eafba1e27c44f418bc6ca9d9d64368dba8121",
+    "30-1": "16130335c3e65ca0914644876a11d2459b4bb86ffa117a1a5e13398797e60344",
+    "31": "efeafe4ff116c74a210453b4952d1e21d71673ecbe36d720ad04730a43ad5ecf",
+    "32": "ddac2ca906d56879ad6edd18bdc1adbf50d1184a6c2b93c46ba43c0cfee0bf63",
+    "33": "9261570e21e5da298d48b0f63f87044335548eca565891f76946cb9190964332",
+    "34": "0f0d3b632082a42de8881c7d6118e794180af2e6a2436666f922a7e90b1779e5",
+    "35": "780c4a08e3e903abbee51d0edc13791f5332ce00b6a13724992e878d893dccb5",
+    "36": "8ddee940a218117924a900b56825c3d296b8c51bd8494ca0a65a3ee5849db781",
+    "37": "1419d2fac8b0c169f7177ede2021c6a25b7005fa564d0c8ad0cff7804f7f1e7f",
+    "38": "c1b25dec4bf1d9e1075217ac95480e1f964612275fcd70ed15e09b2f10a9710d",
+    "39": "1933deb0dc675c589ccee75efa48a8801005763d2553d12d071f5c51fa7a62fc",
+    "40": "7383b13b14dbc8d7c60bb3b6bf8b9c9d0c5d0c6cdf5e2ec0ad67a58c75878c90",
+    "41": "9dae0b71b75fcc56c3c2dc4c894bf968b3399f946dac85a467095d849cbff032",
+    "42": "682514bc68e8bd12bfddb2f47e1bfbf64b6dacdeed9db3fce1451e9f0b7f9681",
+    "43": "ade01e018f732f29fe923359881b842e54458e631affcf96b596e1516ef932e9",
+    "44": "04c8819e1735dfc6e4d31fa1bf464492abb15218ecbb8f23a1f9bbd69614e3f5",
+    "45": "79d20fd6dc2d0a08e4706dcf6c0e044a8ef00d8ba2f78ddc5d99dd3195427f15",
+    "46": "b6e4332c5c083e26e14942df8c9d77a833808e3df893718451a3510349ca19c5",
+    "47": "854843bb6c69adc5c7cdf6e0eddcc2ea25b12b87b30203f6dd31d5c95cbe8f1c",
+    "48": "f3060a7c7ee89351cc401b53e68f442fdba6de62fcfa9b8dffe71d38f2d311b2",
+    "49": "49247c734ba25de82db62efff24f3f0e1ffd116d98efd15a8bd7078e0216ec90",
+    "50": "72e3a6454e04beea75bcac4271afa5b36b9e05e416891d5659873cbe9abcdb5c",
+    "51": "e34fc40ae03bd6fc1f99d798bc6542dacb439d2a72081cf1b5998627fde55e19",
+    "52": "19ded2792293d2421d6a8a390518c67bc7fb754fcdad2b77f5b72862379ec344",
+    "53": "65862f848050cfca34cb17d98f9d749759a7d8c9c8d1ef1b83afadf438072f7d",
+    "54": "1d63e345817bb46b5f83b1bf56b2525d1a763f16c8041f95f67b03a2fdbb84a5",
+    "55": "e1e6204428175b6db27312ef92ee5083ac3175fdc2b5ecba5546f76bd583f63e",
+    "56": "edb31f37901327e4f1172d253f26563fa2f7f731dbc163230b89fad907363764",
+    "57": "cec2fbed9784eaad729af091b5eb04a639bb7713301da98597876a9bb5eaae65",
+    "58": "ece96825413bcd1bc9b568433ba5dae89877ec5bfa8778126b7596b1ad5e2e96",
+    "59": "2ac39a453fe3ac46132d54f3b7a77ce7e255da0d0f71a78f5465d58b2560edf0",
+    "60": "d700463d254e14b0636edcf789cbeea42bf396f9bc48d5b61ba71b52ba2038f9",
+    "61": "0219f366f7a162983bea709d042c41e7d723a0cb06a291dff308a64f6693222d",
+    "62": "79e6bd3970af48eb043e66e30934b6a10d27ffa4acc9d597dbdf6ccadf2aa1a0",
+    "63": "bd21d6525b8dcbb3d554bc81b64a1079fd65bd9647771da2eb7f62408d00e91a",
+    "64": "6c3dff1a83754795002edde2a97b1bd490e4aeb1b74357019a424cdfa116a4b7",
+    "65": "60d65273c731c90e251c3d0544772c6a67966bcf7fc72f8c6b4405a153e905d3",
+    "66": "87a0c2f28f31bd530beb6935b994a36644de58c276dbfc99e6114be73777b885",
+    "67": "917fd2b31e7ad16e2e90b29edbfae21370f9c172135688c5d2f00176d508d09f",
+    "68": "508546795fd32ac3bb016427a79e2239ca181d70a26c670753e77125325dcc69",
+    "69": "705ced62113e198f75b94b8db2019ef815bc901a2c1766ccddc663ad404ef3b8",
+    "70": "b00b72743ef03c1caa679be39c807a1baa8532c78eeeac97935e8afb470491d6",
+    "71": "f7a863350d8b132ba9f20dd0af4ea5930ac618902a2d1e99ed682972070bcb38",
+    "72": "8e969d269d946c9994bd082a8cfcdff660e7b0cc01e260234a05ec6676084839",
+    "73": "82cb11d8d9a2fad951e72ab2dd807300c4482b09e5800eeb8293246ca9b7c182",
+    "74": "5c7a8afd6972dc0e6ba30e73644b181cef6ea1f74255db2970c2f796f882a54d",
+    "75": "e92f6ce9e7710600267ce9a775420f10f1204cb91b54f05ec850b15e070c6c39",
+    "76": "a31a7eda8b71c3220a27f818f7f6d44cce37c4d85de880eb43c691d8200dcd20",
+    "77": "43c3528b9cf63319bd0381eb3ef0e0a0093a055fe151c7e6c34bced6cc20162d",
+    "78": "73e160807020ef41553bc7f4cb34423d3987e0bb410f48e37acaec26b36639b3",
+    "79": "db70efa8e23398ca810059607743c6e61a4a3c27cb11d18fa148877e1a175dc9",
+    "80": "11f6275fbfe3607627a55e540e9a29f17f1823489f054b0123b2ac906993c63e",
+    "81": "5489bc9377764f7939450f29dd29af3d6b9f933ee27dcc94b77b0088bfc9b47c",
+    "82": "945878341b7edeb3f0ef792257c12e5421f8294799b6ea7a0a5b3fcfb97f880e",
+    "83": "3589914df8256ffbbec11ba5d29d91fad0c0f5becfe1eabda3dec5f5f9ae2a8e",
+    "83-1": "1fb5aaa00e5d51dacfbff74f3814d6113636f0c1b94af8daf331288a71f2635c",
+    "83-2": "4deb176439a181c93265cde9cec2e8a9e1cd44e345a9597561c83165fd39db09",
+    "84": "10ea8cad7dcea0d39d580a4dd728786355594fd2f1cff4931d6257e8b2495930",
+    "85": "8210a58a21ea77bc293370dc02c9fe1db1a3f39b7f42a7dcaf69b3c6908ad49d",
+    "86": "792a745d1999cac5c7e7868bf33dd40476b24fdfc81a17cd879d4c85f93250a6",
+    "87": "e84d3c71ff4cc409fe40d9b7ce81a9a9d7403854db3cd8b3c36aa6cee6d25478",
+    "88": "afc9f1f59af7de8a49d2db87e7b809e6b60cc2a406cd20e0739b3e90d0bfe750",
+    "89": "4d52e96147b9536e07a2595063751e17fdaf378527e4fa42dd925f4fff217b51",
+    "90": "975d79074e042bdc3965d9203083d2868c28c3b86f1c241c19cd4058a621e313",
+    "91": "37e2761453dad62e454c0c205ed27fcfdf90f4203eb5d844bc3cd4f8d0bb0c5a",
+    "92": "a2082d116b0eec03d95a0ca53c170d19fee900e576d42b3238cde0f3779f4b1b",
+    "93": "e7693755143167771d314e462756cc11013dc42ff83ca5b790030f3f8aca33a0",
+    "94": "07513f74a7cc587b78489401c6310f7669a797f31d0242dfe5fe7053722874f9",
+    "95": "c57f39c7debba2df0bc944dba5c166d8fd7502900aff668c43e16245ef409328",
+    "96": "605f098864fc7cbc63e024950bef5dd8a93d6c65de0a37d2aa03a80438345320",
+    "96-1": "8eef3a152ee2a30cd4dddbec363aa65ad2a2d51a85b1ba7578c83b0dcc6eb625",
+    "97": "ef275f1aa976b61efc1fafebee97109fc9f47cbb7087458208bb9c3f55c53cf8",
+    "97-1": "02c58ed76ea775bafbb43ba749601e44a4ec40e6c100fa8ef2b7d38b6afeab1a",
+    "97-2": "4586ce73fe5545ab710d08b8d3f64acb2cae47fe306544ae64f57c914c2c957d",
+    "97-3": "1ea321dde6ff7c1a4fba42647d999b9a7440baa6044564bbdff10254c4a679bd",
+    "97-4": "1db9365037fd750c685c9e97dc3a624a80169dc595941072e67b7539c27c6fb7",
+    "97-5": "3d416f71c7fda10edd9538de298a66ae3235c39cf02aeaa84c57cd0c2ce19b0e",
+    "97-6": "20379eea0287e92aecc840d83ea5eafd52adacc3891daaee32c0c3b05496bfc8",
+    "97-7": "3fcfa655d71b387f4bd7ef33eaac62958886b0131426c222f77b2a84231d5498",
+    "97-8": "0bed6d393fe31e205ab529275094b03cbf45fb9abeb989ef508aebe311c29bfe",
+    "97-9": "f293486ac94811be851f6c4ee74caeca36865ea6d23eaf6284fbcbb352483aea",
+    "97-10": "7d2d5e3d3fda1267244c80ba64c7de6fc177c5cab09612f89dc8477e4de60fe9",
+    "98": "1340add82b12b9984ae6cb03bc41bf375da560d0178899e9a9d1df5878d5fbde",
+    "99": "63fe1c0f19f3762a28287ea1a6dec3e2016d02cfdc052b4adcc339a8dd61721d",
+    "100": "381e85c2017522348d1d740f7ec97e3f05922d0e71b429df738a9881984715ce",
+    "101": "b011a866ccaf5fe0aef38ee92f2f526e27e4a6b883a80f0357b2981bde95b90e",
+    "102": "9d46b94c7ae9e881e7e2b0cd7b5bba8b5efc7b1b9dd1ec243671bda930570774",
+    "103": "83fc10d0fb191e16a79e9e2aa66960f4a0d2c438eecb932233d61d1c0efda487",
+    "104": "7253467135327eceb81efc44a7eca6743f9495ed9cabd161096a015f2cde7fca",
+    "105": "a7ffda8ff25a3f72c67db39e2b33fcf08724b05aba276d4314466381341a9106",
+    "106": "286d2964e81a27abb473b769a9dacddf65c804270b3aae85aaa916842de3de52",
+    "107": "3a0e4a33197cb067348bf09777f34b38abd1d971c586d976e2b3826fcedcfdb6",
+    "108": "787d78be26816fc0efe3133fb370d4008f68db694351bc625d4294ee627adab8",
+    "109": "0783451134acacd50406e2c1d2ec3f2b350370922225f5c574d39f23cbdab30b",
+    "110": "afe31aac615a57972336203374ccc0254d65ed488965aadfa0b61aa06050a1d5",
+    "111": "c3fba23f9c533a2b4615a550244c64d6822c7e7636670ffbfec22980b04681c6",
+    "111-1": "232ca3d5a3c529ae11cb0d7242e7a21b0fb8f912b7a4c6426f53c7f043259120",
+    "112": "c24a26eff362052f76fb8d8f00ed83c8044ea9c453fd5e3e25f031762707c2c4",
+    "113": "4a72e887f7bb2dae110f36826372c991974d28ee4cc3e67cbffaf0211f953862",
+    "114": "2f0b6b6ccb79d938fa4973dbc8946a1b1dc1a7267eaff8c538716577ad02d0d9",
+    "115": "cae3c6801f81d8aa290003ced87217ffaaf48efc0491fc4e35fad81bca8661d4",
+    "116": "3cf6cd61dce1af16ba53918b35ae931bc4045ea60d931b7399464b12c030a9cf",
+    "117": "879fbcac43718862a03bd24c9ac413ad8def344999834547b1b9101a75916964",
+    "118": "3943c116bffba71ec7ab2c405d6607d2b539e34ae210640fac0d129caf6b726c",
+    "119": "c84aa6c9d5057f90c270182432cff4878bcbf4080ba924d5f498787788793a46",
+    "120": "bbdddd89ba1bf94b753c07a5fc2fc1c0bccf3bd717dd2ba0fff694684effbf10",
+    "121": "03a191e1ec7d64060096248deb05592bc3c5a5ac614ed82b7dad93f5ad6e12b5",
+    "122": "b66b64a24aa224ea041ac7c12351041c4e709aec2dbf72fce9d2524066f9ffdb",
+    "123": "22aae153b6f94e53534d715d241907450537931b0438b701845aa7292c75d1d0",
+    "124": "33c0a1b655ae8cd2ca9f346a8066120a8b146250c158e5f0ab8960ea4c58b143",
+    "125": "14bfb8f57c8ec53c5564c265a707a4b2b5e64608bf4376e7aa5e83c18c026daf",
+    "126": "9141fb73adad0aa1bdc85bc39f34cc1e077ca07ec2899cfe7d85934c68515f4c",
+    "127": "2261d06e1ef362680badc2526d18fde18e8b352e97797155a39388c4684b92bb",
+    "128": "ae3961519e745818d795b6aa5c45f8de5a342e82457be1528ac0b5427c524dd9",
+    "129": "e558496392618b406725a9e6b021d17c3164ab79e0ba591211194843bca06239",
+    "130": "9b3fc3f516c99ae26d3b43c738e5fd473a8479f9ea18fd8286eb495909685d64",
+    "131": "6bc08eedc7fdef508d73aaa4fa6ad61d655b36b01e154614617546681b0ba496",
+    "132": "63701db4535c463821ad506d2b47e878eb67da5e49c80b0a9d04eedcbb6a5ecd",
+    "133": "5c3a6cc2b57d1ad20637285d633f1f4cd31c7d4c40b6e03f27cd5d1ee0c10b9d",
+    "134": "84e815b49436c1cc3c10a27a3bd37a47561831230ca962e1069226097f2f2294",
+    "135": "5b01398afe0e8cae388a8db075e5ced962f3d4c0b10ba2cf7708c4b2f3a76ccf",
+    "136": "a09519d876474f028c9f4f3c6bf855a51946a3f4103258484b1d561a91d68860",
+    "137": "ab716fd42b4044da3a3f7411d2794e99a4d17beeca5913b1da807a204df64d71",
+    "138": "7882215d83573d05f6830468df4e115348a25ebd40685fa46e490fa878cb4854",
+    "139": "2a94b45ff1bca221b6f356dadc5253de1263c5e4c4c0507993cb57793e456047",
+    "140": "98634102815476b417603cbe438b0222d221c34b25fc614e6e1fbcd5941cd3ec",
+    "141": "f3106518f42a5c76e67220b3736b7d2242027a03089850814dfae81c7d8a8316",
+    "142": "4fefe71a619c1f114602af191a3726a8ed0b627e0d813158e63545fa39d59252",
+    "143": "6b4aea1a00fa50675ebb64e67dd537c106ab626ba3ec1ed2ffb883f01eb6453d",
+    "144": "e86cce2498459b5527483f9522c75c878e37c0166840b13f56ffd386d973f28d",
+    "145": "edbd400e388166058e2d4e1d37593d2906ea3f567ea42fcffa966094e868f6b7",
+    "145-1": "3f783eab2c6216ef586a09a534cec5dbcb09a743d09bf31e4af8c03040caaafe",
+    "146": "a85d585bfaa988c3e2590ccc208005004edf0fd00d074bf6d0b4156159038e4d",
+    "146-1": "9f6f5b38a30287e2eec2ebe35bbe713eab9cf991f47b65b069881416752dfcfb",
+    "146-2": "0e9e744c7c183fe1e6da6ec552fb759f42e1246c52951b9692bff540b443e677",
+    "146-3": "4bdc7afc67baac3c62195f510a6a3d35b4a2fff5ceca6a972e7ffeb1d8d944da",
+    "146-4": "5852167fe723bb2dfe4d51ed886933c032e06736d08655b48b073319a77fcc2a",
+    "146-5": "f663605c5262d16b87c9c214b98a4ffc681775d97fd5b4c95e917ad93cd8ec28",
+    "146-6": "42f582b6d161c77980b9e7f4b78ae4cbc007a698688df4bc37b50f354632088e",
+    "146-7": "cd7eb0769f174c9d2bd2b34581fea0d17f888f0b0407e0498790eaa1c1e8d788",
+    "147": "bcd3802fb362258544f58c9ce653f61fd0319535b923ab633d178745f30ee6d1",
+    "148": "bcd3802fb362258544f58c9ce653f61fd0319535b923ab633d178745f30ee6d1",
+    "149": "bcd3802fb362258544f58c9ce653f61fd0319535b923ab633d178745f30ee6d1",
+    "150": "bcd3802fb362258544f58c9ce653f61fd0319535b923ab633d178745f30ee6d1",
+    "151": "bcd3802fb362258544f58c9ce653f61fd0319535b923ab633d178745f30ee6d1",
+    "152": "bcd3802fb362258544f58c9ce653f61fd0319535b923ab633d178745f30ee6d1",
+    "153": "22cca86dc22285e5ed3954db071f20448d5b6fb517794359b0b13b1ce7fb3937",
+    "154": "e05999b2999b3e8c8762e2f2560a72da8530a34d3b191e2b3cbf1669c89b3a17",
+    "155": "bcc1612cdfcf38224c776e720ed242eb2bfde8c9820460b29b09966c3156233d",
+    "156": "fd632364b91014b1e5d765bba11dfc93597374948c805e03e0e146a058bfc110",
+    "157": "bc3a89eec09ba880940ee4cdc8a509dc695e904d039a3fc59d65de339242616c",
+    "158": "0d301de95dda539c7e2a733b0a01ef16a38a65acb3cf779ed9c367e04a4e7723",
+    "159": "efe792fdcdcfb2e0bed2648193973356f1fe93996beb2374b6ac7159eb5cadbb",
+    "160": "65c49bb8d05b07e59ef8ca4e5c54ce3eae3531d6a4cf2ffe640f29bf5d8a0c9d",
+    "161": "c123d9672d070037c1f9d9a535f535cc7860d3278c0792ad6c271030abafbcff",
+    "162": "7e3875f1ba764ad66d5ff88e243fa7fe7a93cb3215ab9d2419c89263cdddd15d",
+    "163": "3ebde1f7c4876fbdddcde256dd618883001df2c7c73ef8b0c92731246621f8e5",
+    "164": "947ad570fae6c3f52af1ebc6f2b57f261a76c51d967d6378cecabc939aa6a601",
+    "165": "af53139813bd6352ee4f2fb2dbbe18bd022ba065296583635155d56951e2b988",
+    "166": "e5b26073a3a3306c035d9c1e81b052e25082fe67ff87deac1d1f0433e5c2a58f",
+    "167": "5a79d16083d8b679c69d79eb7a25511b3296470139b337e66aa16fc9b600e15c",
+    "168": "457a8aae7c9b1ae47a3fe284adb5361fee2079ef929258e4212733ab0436c1d8",
+    "169": "3f25a6ae54e102e74191f36b3bde210739e400c63e2ec17e6dafc342b37b6ed0",
+    "170": "afe2180e9c83d9b6926b8a4d9ffaecfd9084e78f57f05ac159da4a2ea94c4396",
+    "171": "10a729bf0bfdf65b2fbe0201c07798adc7efa043d6b0906af273e192fe6cc058",
+    "172": "f3451ecddbc0b704aa9c4c8f9f555f1d53a8a82ba90a4cd80eca16c1cafd9c0e",
+    "173": "0505f39fe2347630933830f9bb10f9c87c4e1ef1e6a85751fcc75d0484e4118d",
+    "174": "26cb18913bf8f81fa174306ba4bd4ae8865ef77260ecd4d1ff5dfa090bfa9208",
+    "175": "cb483428ce705972ce522442ded8c51e27a12c5e9542ab87403e2e5a0ae33c8f",
+    "176": "82db32a39b1d64343537f9cdc591199a5b81d35de1d8d297e6f18daa07f78b3c",
+    "177": "a85bf4e05f0251d5437802e82b45beafbf8ceadc4fbbd01fbc883b47a5cc1389",
+    "178": "b7d0fb71681dad3f6c1095ab80c590c179710d59fe7c42957a9a660ec404f7d6",
+    "179": "fad2198fbe10bdf01065d85d97297c94dce3888619baf35134ed148b409d2f18",
+    "180": "e7d80d8e1e43cc9e87f1b62ef72fd15029a3e4fa9439865777a5da439cc9b5fc",
+    "181": "8b21e04963c4e4ec7198001fa5df0c6693123038100802bfbc7cd458aaa6e5cb",
+    "182": "8dd896930a72ea7ecc9da11f9eda4d7775fa19115c7c17750c4a60a7dfbf1dc1",
+    "183": "6a05d124812d4d488639090ef7cb06b898ee6e2c860ccbdbcecabb52bc9c4e0b",
+    "184": "876e16bcc90ebb3554f4efdc398bdfd8a1b97c599f42d5edec8a56c17a454e25",
+    "185": "d1eab7297881ff0a676844fbd4414903ac2ceb967b16153ce763788ea1125d8f",
+    "186": "a2d090916e8066a9261c3f33c35ec8c324cb7c53503ced5cc9c2ccc145f99aad",
+    "187": "0c4c14c416114b99a6de4503e1686ef1813178aa2905b89e4c87059f967f7db4",
+    "188": "cd2b2c8f73f0a15c0a4fe59f0643d031a699431a6a00742d4e3d908ac1fab915",
+    "189": "50f81b7f31586d7cd90f03d40e9426eabceaf9e8851833ecc8397b97703b4168",
+    "190": "caf5ffdc4e0d96e83ad02e1a5aaffbecb03d07dd3a6d88175820c71f1cc90d0f",
+    "191": "99c674b400ffa2db95a7a369cf18f8313c478da64ff594827e15f2fcf2ee814d",
+    "192": "dcffc5071702892602e4f7c6b8b910004a994033623cfe0057ce4c450db6a18b",
+    "192-1": "fed2df4a53ec011172d543b96f60d87b90117f5d174414658bd8694052e9939b",
+    "193": "355dcc8a5ce022aec52af4d5a0839638a3e70f97188a24e261e50354018ababd",
+    "194": "f7cca841ca62933450d19311ad104bedd1c1986e55fc2700d5d226c5ca03bcab",
+    "195": "9a1cb84e997dd9c3371e7d7a9abdd1b2c3a6870876fb65d24232bcbe2ac0aa0a",
+    "196": "a468a1402b6217338497db823f88ad9350b0bc9d315c68fd37db72aa60442b0b",
+    "197": "816030b666057ec2121db7299e94717dec2f74307261594b976d4c1fb1735678",
+    "198": "78e4ead1f88dea9527f8d288a175a03cd150178f5ecced0521ee72b4c6fc8fc1",
+    "199": "61d889840db00d1c534aa97886bb9310dcce7240168cb6f04d46b69948fd29cd",
+    "200": "55c315e9dd83b06af5f57370cd7e1218a78ac71369010e8eef735856955bcdcb",
+    "201": "6ed591f0426b7b6ef8328246a70364ddc1cb26867237e7d129384ccdf67df4e3",
+    "202": "0f40e61acba3fb32dcd6a4aba04c2829da355371ab2f76f4f460aa3acb4978df",
+    "203": "4483186c869cb4ba52db17ea9ef81e59a7a5840c1cb65f21ebd8abe0d6602599",
+    "204": "53fd1d26fd312e4256f42f8498636747136cf4a0a685f4db66d5580d7b290dc3",
+    "205": "81966464a1fa1e40993f10dc953610e847ccb1144ae26747bce48d405f51bbc4",
+    "206": "d41530b9ff6ee03ecb7ace2fd5f57542d2c6edda7315593bb913d246d24d677d",
+    "206-1": "c4d56dcb2db0a312201a1fe3ba29c402c5487f5592a46044802304bd161ee8ae",
+    "207": "64a59ed10ab84356e25b77cd1c9fe75d39a777eb5652e0781950947c676225d8",
+    "208": "0116bbe700484324c05554be2460e33c8c924ba32757db176653fe89f1f0d2ee",
+    "209": "ae03fdfd21a2f8e3e78760f93e7fd942e52594ae02bc7f212a515aaadb204300",
+    "210": "8a106ea585ec6687a1fb5aedf83a1e0783bbb9941d3fca024f66005df8bd230b",
+    "211": "5e68703213539ca75bc59bb147ada222b578ccb40281e5bc81f2063158f95c0d",
+    "212": "50ff1acd7d39c2d32ad42cb1e4eb9e83a03041c0dc024e32aae93ec8454a030f",
+    "213": "c11dfb9299e9a81aafd3ea9879ff3413a11816bdda48e5d6c2493b1ffa5bb375",
+    "214": "bdec466f53c7a7a2f1dbac1451bb3e15eda7fc874d716313245314db1cb60929",
+    "215": "93c92de3626b6094f6f1c142651e392191800e991b9aed472d795af82ab3b633",
+    "216": "b099904c4bfbb9ddac5403e9ba27431f700f2f377733787f8977d63b81690a4a",
+    "217": "94533bfd78d5e1143918b328705e36c57bbca9fd59972736be960620692ba8c2",
+    "218": "b3ae74b8b7dc149752e6378dde1fc254fbad2241435a0fd10ff9e8a0896dc86e",
+    "219": "ccd520571390b11ceb6a093bc242cd92faa60c14455729b34cc3122c473d1b44",
+    "220": "be7863a6fe5dd6f15c46b3149da85eb55525aada4fa7f39d8c737684fda4a058",
+    "221": "f927a15a16cd0736ed96bc88e530413649225999560a0b928da21b3354d91d1f",
+    "222": "7e11372c7fa44ae8ddeb7886b46896da7274da47ed1ec382c3733777d2dd4221",
+    "222-1": "7c0bd0c852712aff4dd996a2a1d3ba9ad0a32c479a8955dd8bd5ae1bcca14cc3",
+    "223": "1e05af2d759748f3004279a52494efcd4cc6a1bc5f67611c5857caaebc497bfe",
+    "224": "0b9b8e4d8e014c9d96bacdf717d371743ae8211d5856fa729245e50bb54b96e7",
+    "225": "f2765dcdecf2a2c5e0d0fe0a3fed74718b4251a2152e0c0c279616993f36607e",
+    "226": "733c931627203f3ab51cf16f8744d3ff1e5630f3549078ae98f851a6ba7afb18",
+    "227": "8ae66c7e81d9b4a125fdc4e623ccd15854e12b932e1b18d31664f9d08030043d",
+    "228": "b22a9ea07a1664cabf5e11d976bbb6150c7ec5ccef4feb4a542f8ae8858a2c84",
+    "229": "3150e02719ffce87cdf4b906a7a722ee24caff9d660355c6841a0f2747b443db",
+    "230": "5d71fbe5075313377ca2f19b7171f30113cc10ef0068f8b74c8bf89395720ac1",
+    "231": "8881a7492d4a7d90bc1e4028dea2e69644a4777e9761c5e66ffdae5ff39235c0",
+    "232": "79e20ad583bd9a6d1a9375863dc0d83df5e3e0dae0ce014e7a7a3e5f6e89a241",
+    "233": "f75a70c07c3fe3e5691c9e4a159ec43b78d1477c1c5048e4c8781ee66336f64e",
+    "234": "e284950f253f2c42c059aa5606a45af581cc8915d13779fe7ab46a2068868711",
+    "235": "10d07e90f33d92b28e77d478f5c5c3c7cd76e358a415062ab97f5c0b0d822881",
+    "236": "36888ac69b883f0219c15ed1158b30107933803d390e5f5ddc970d75185ddb01",
+    "237": "035849aa4f7feecb86bac55646b817dae141d1a796236227dea67d405bc8e8b9",
+    "238": "ad092854912534a68421aa8f18559ea17f5590005a205e7c40ef5dcf30ba58e4",
+    "239": "1d782f6f0023b6dfb51d30b99f8d162ee2b4225f012435d65c7f55ff701864ef"
+  }
+}

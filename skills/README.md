@@ -78,7 +78,7 @@
 - 操作規則（執行順序、交叉核對、備註欄位、工作簿格式）一律以 `skills/*.md` 為準，
   規則庫不重複記載——兩份複本同樣會漂移。
 - 法規換版後，判斷差異須逐條複核是否仍成立；條文文字本身由 `/regulation-intake` 與
-  `/graphify rules` 更新，不必動規則庫。
+  `tools/regulation_graph_build.py` 更新，不必動規則庫。
 
 ---
 
@@ -99,12 +99,15 @@ python3 tools/regulation_graph.py notes --article §24            # 專查該條
 python3 tools/regulation_index.py lookup --article '§24,§12'     # 逗號列舉／範圍皆可
 ```
 
-圖譜含**兩層**：法典層（`rules/core/` 走 `/graphify rules`）與註解層
-（`practice_notes/active/` 走 LLM 語意抽取 ＋ `tools/practice_note_graph.py merge`）。
-查詢結果中的實務註解是**實務見解、非法規條文**，援引須同時列出所補充的法條與註解 ID。
+**有兩個圖譜，查詢時自動合併**：法規圖譜（`graphify-out/graph.json`，條文與附表關聯，
+走 `tools/regulation_graph_build.py` 重建）與訓練圖譜（`training/graph.json`，實務註解、
+審圖修正筆記與判斷慣例，走 `tools/training_graph_build.py build`）。兩者在磁碟上分開，
+所以法規圖譜重建碰不到使用者的訓練成果；`regulation_graph.py` 在記憶體裡合併，
+審圖指令不必改。查詢結果中的訓練成果是**實務見解、非法規條文**，
+援引須同時列出所補充的法條與註解 ID。
 
-`tools/regulation_graph.py` 只用標準庫直接讀 `graphify-out/graph.json`，**不需安裝 graphify**；
-輸出會附上可直接貼用的 `lookup` 指令。裝了 graphify 時另可用 `graphify query/explain/path`。
+`tools/regulation_graph.py` 只用標準庫，**不需安裝 graphify**；輸出會附上可直接貼用的
+`lookup` 指令。graphify 是選用的，只影響 `graph.html` 重繪與 `query/explain/path` CLI。
 
 **邊界（審圖最高原則 2、4）**：圖譜只是索引與導覽，不是門檻數值或計算結果的來源。
 節點標題不得當作法規數值使用；應設／免設判斷與數量計算一律以 `tools/fire_code_calc.py`

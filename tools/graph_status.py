@@ -1,24 +1,28 @@
 #!/usr/bin/env python3
-"""法規知識圖譜新鮮度把關：偵測圖譜來源檔異動，確保後續工作流程查到的是最新圖譜。
+"""兩個圖譜的新鮮度把關：法規圖譜與訓練圖譜**各自獨立**檢查、各自蓋章。
 
 只用 Python 標準庫。
 
-    python3 tools/graph_status.py check   # 0=新鮮 2=過期／註解未納入 3=尚未建立基準
-    python3 tools/graph_status.py stamp   # 重建圖譜並併入註解層後蓋章（記錄當前來源指紋）
+    python3 tools/graph_status.py check                    # 兩個圖譜分段回報（0=都跟上）
+    python3 tools/graph_status.py stamp --graph regulation # 法規圖譜重建後蓋章
+    python3 tools/graph_status.py stamp --graph training   # 訓練圖譜建置後（通常不需要，見下）
 
-兩道關卡：**指紋新鮮度**（來源檔改了有沒有重建）＋**註解納入度**
-（`practice_notes/active/` 每一則是否真的在 `graph.json` 有節點、sha 對得上）。
-只驗指紋會有假綠燈——`/graphify rules` 只掃 `rules/`，重建後蓋章燈是綠的，
-但實務註解其實沒進圖譜，審圖時查圖譜就查不到訓練成果。納入度由
-`tools/practice_note_graph.py` 提供（LLM 語意抽取 → 確定性合併）。
+**為什麼是兩個圖譜。** 早期法規與訓練成果混在同一個 `graph.json`：法典層一重建就會把
+訓練層沖掉，於是每次重建都被迫「先把註解併回去才准蓋章」，把兩件本來各自獨立的事綁成
+一條必須全過的鏈——鏈上任一環卡住，訓練成果就進不了圖譜。分家之後兩者互不阻擋，
+使用者說「更新圖譜」時可以只更新真正過期的那一個。
 
-為什麼不沿用 graphify 自己的 `graphify-out/manifest.json`：它記錄的是 `mtime`，
-全新 clone 之後所有檔案的 mtime 都會重置，會整批誤報「過期」。本工具改以
-sha256 逐檔指紋存於 `graphify-out/source_fingerprint.json`（非 dot 前綴，納版控），
-任何機器上重算都得到相同結果。
+**兩者的把關方式刻意不同：**
+
+- **法規圖譜**（`graphify-out/graph.json`，與上游共編）用 **sha256 逐檔指紋**
+  （`graphify-out/source_fingerprint.json`）。不沿用 graphify 自己的 `manifest.json`：
+  它記的是 `mtime`，全新 clone 之後所有檔案的 mtime 都會重置，會整批誤報「過期」。
+- **訓練圖譜**（`training/graph.json`，純使用者所有）**不需要指紋檔**。它是衍生產物，
+  圖譜裡每個節點都帶著來源素材的語意摘要，直接比對就知道跟不跟得上——
+  少一個要維護的狀態檔，就少一種對不上的可能。
 
 邊界（呼應 AGENTS.md 底線 1、2）：圖譜只是索引與導覽，不是門檻數值來源。
-本工具只回答「圖譜有沒有跟上規則庫」，不回答任何法規判斷。
+本工具只回答「圖譜有沒有跟上素材」，不回答任何法規判斷。
 """
 
 import argparse
@@ -30,39 +34,48 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 try:
-    from tools import practice_note_graph
+    from tools import practice_note_graph, regulation_graph_build, training_graph_build
 except ImportError:
-    import practice_note_graph
+    import practice_note_graph  # noqa: F401  （其他模組沿用 graph_status.practice_note_graph）
+    import regulation_graph_build
+    import training_graph_build
 
 FINGERPRINT_PATH = "graphify-out/source_fingerprint.json"
-GRAPH_PATH = "graphify-out/graph.json"
+GRAPH_PATH = training_graph_build.REGULATION_GRAPH_PATH
+TRAINING_GRAPH_PATH = training_graph_build.TRAINING_GRAPH_PATH
+GRAPH_PENDING_PATH = "training/graph_pending.json"
 
-# 圖譜來源檔＝**圖譜真的從中抽出節點的檔案**（法典層）＋ practice_notes/active/（註解層）。
+# 法規圖譜的來源檔＝**圖譜真的從中抽出節點的檔案**。
 #
 # 不含 rules/equipment_rules.json 與 rules/mixed_use_rules.json：這兩個檔在 graphify 的
-# manifest 裡（掃描範圍涵蓋），但 graph.json 的 482 個節點沒有任何一個出自它們
+# manifest 裡（掃描範圍涵蓋），但 graph.json 的節點沒有任何一個出自它們
 # （node.source_file 只有 core/ 底下的全文 md、附表 PDF、附表圖檔與 rules/README.md）。
 # 把它們列入追蹤，會讓每一次先紅再綠改參數都誤報「圖譜過期」，而重建出來的圖譜完全相同。
-# 這個「未產生節點就不追蹤」的前提由 untracked_graph_sources() 持續驗證：
-# 日後若重建出的圖譜真的含有這些檔的節點，check 會直接紅燈要求把它們加回本清單。
-SOURCE_GLOBS = [
+# 這個「未產生節點就不追蹤」的前提由 untracked_graph_sources() 持續驗證。
+#
+# 也**不含** practice_notes/：實務註解現在屬於訓練圖譜，改一則註解不該害法規圖譜判過期。
+REGULATION_SOURCE_GLOBS = [
     "rules/core/**/*",
     "rules/README.md",
     "rules/regulation_articles/article-*.json",
-    "practice_notes/active/*.json",
 ]
 
-# graph.json 的 node.source_file 是相對於 graphify 執行根目錄（本專案為 rules/）的路徑，
-# 註解層節點則由 practice_note_graph 以 repo 相對路徑寫入。兩種都要能對回 repo 路徑，
-# 且 rules/ 要先試——否則 rules/README.md 會被誤判成 repo 根目錄的 README.md。
+# 相容別名：外部仍以 SOURCE_GLOBS 稱呼法規圖譜的來源清單。
+SOURCE_GLOBS = REGULATION_SOURCE_GLOBS
+
+# graph.json 的 node.source_file 是相對於 graphify 執行根目錄（本專案為 rules/）的路徑。
+# rules/ 要先試——否則 rules/README.md 會被誤判成 repo 根目錄的 README.md。
 GRAPH_SOURCE_PREFIXES = ["rules/", ""]
 
 REBUILD_HINT = (
-    "重建圖譜：/graphify rules --update（增量）或 /graphify rules（大改）；"
-    "graphify 未安裝先跑 bash tools/setup.sh --with-graph。"
-    "重建會覆寫 graph.json，之後必須重跑 python3 tools/practice_note_graph.py merge "
-    "把實務註解層併回去，最後才執行 python3 tools/graph_status.py stamp 蓋章。"
+    "重建法規圖譜（零安裝、不需 API key）："
+    "python3 tools/regulation_graph_build.py plan → 依契約做語意抽取 → "
+    "python3 tools/regulation_graph_build.py rebuild --commit → "
+    "python3 tools/graph_status.py stamp --graph regulation。"
+    "外部 graphify 為選用（視覺化與 CLI 查詢），不裝也能完整重建。"
 )
+
+TRAINING_HINT = training_graph_build.BUILD_HINT
 
 
 def sha256_file(path):
@@ -73,11 +86,11 @@ def sha256_file(path):
     return h.hexdigest()
 
 
-def collect_sources(root="."):
+def collect_sources(root=".", globs=None):
     """回傳 {repo 相對路徑: sha256}，路徑一律以 posix 形式排序輸出。"""
     root = Path(root)
     found = {}
-    for pattern in SOURCE_GLOBS:
+    for pattern in (globs or REGULATION_SOURCE_GLOBS):
         if "*" in pattern:
             matches = sorted(p for p in root.glob(pattern) if p.is_file())
         else:
@@ -89,9 +102,9 @@ def collect_sources(root="."):
 
 
 def untracked_graph_sources(root=".", tracked=None):
-    """圖譜裡有節點、卻不在追蹤清單內的來源檔。
+    """法規圖譜裡有節點、卻不在追蹤清單內的來源檔。
 
-    SOURCE_GLOBS 刻意不追蹤「掃描得到但不產生節點」的檔案（見上方說明）。
+    REGULATION_SOURCE_GLOBS 刻意不追蹤「掃描得到但不產生節點」的檔案（見上方說明）。
     這個前提一旦破功——重建後的圖譜開始從那些檔抽出節點——追蹤清單就會漏看真正的
     來源異動。本函式把該前提變成每次 check 都驗的不變式：回傳非空即代表清單該補。
     """
@@ -120,9 +133,9 @@ def untracked_graph_sources(root=".", tracked=None):
     return sorted(untracked)
 
 
-def graph_scale(root="."):
+def graph_scale(root=".", path=None):
     """讀圖譜規模作為蓋章時的佐證；圖譜不存在或格式不符時回 None。"""
-    path = Path(root) / GRAPH_PATH
+    path = Path(root) / (path or GRAPH_PATH)
     if not path.is_file():
         return None
     try:
@@ -130,7 +143,8 @@ def graph_scale(root="."):
             doc = json.load(f)
     except (json.JSONDecodeError, OSError):
         return None
-    return {"nodes": len(doc.get("nodes", [])), "edges": len(doc.get("links", doc.get("edges", [])))}
+    return {"nodes": len(doc.get("nodes", [])),
+            "edges": len(doc.get("links", doc.get("edges", [])))}
 
 
 def load_fingerprint(root="."):
@@ -150,147 +164,202 @@ def diff_sources(recorded, current):
     }
 
 
-def evaluate(root="."):
-    """圖譜新鮮度評估結果（供 training_intake.py status 直接取用）。
+def load_graph_pending(root="."):
+    """training/graph_pending.json：上次重建失敗／中斷留下的待辦。
 
-    兩道關卡，缺一不可：
-
-    1. **指紋新鮮度**——來源檔改了、圖譜沒重建即 `stale`。
-    2. **註解納入度**——`practice_notes/active/` 的每一則註解都必須真的在
-       `graph.json` 裡有對應節點，且 `note_sha256` 對得上。只驗指紋會出現假綠燈：
-       重建圖譜（`/graphify rules` 只掃 `rules/`）之後蓋章，燈是綠的，
-       但註解根本沒進圖譜，審圖時查圖譜就查不到訓練成果。
+    文件一直宣稱「CI 的 graph_status.py check 也會紅燈」，但以前本工具根本不讀這個檔。
+    現在讀了，那句話才是真的。
     """
-    current = collect_sources(root)
-    notes = practice_note_graph.check(root)
+    return practice_note_graph.load_json(Path(root) / GRAPH_PENDING_PATH)
+
+
+# ---------------------------------------------------------------------------
+# 法規圖譜
+
+def evaluate_regulation(root="."):
+    current = collect_sources(root, REGULATION_SOURCE_GLOBS)
     untracked = untracked_graph_sources(root, current)
     doc = load_fingerprint(root)
     if doc is None:
-        return {
-            "state": "no_baseline",
-            "source_count": len(current),
-            "diff": {"added": sorted(current), "removed": [], "changed": []},
-            "stamped_at": None,
-            "notes": notes,
-            "untracked_sources": untracked,
-        }
+        return {"state": "no_baseline", "source_count": len(current),
+                "diff": {"added": sorted(current), "removed": [], "changed": []},
+                "stamped_at": None, "untracked_sources": untracked,
+                "excluded_notes": [], "semantic_layer": regulation_graph_build.check(root)}
     changes = diff_sources(doc.get("sources", {}), current)
     if untracked:
         state = "untracked_sources"
     elif any(changes.values()):
         state = "stale"
-    elif notes["state"] != "covered":
-        state = "notes_missing"
     else:
         state = "fresh"
+    # 語意層只是「建議重抽」——重建只增不減，沒重抽也不會弄丟既有語意，
+    # 所以它不當關卡，只在輸出裡提醒。
+    semantic = regulation_graph_build.check(root)
+    return {"state": state, "source_count": len(current), "diff": changes,
+            "stamped_at": doc.get("stamped_at"), "untracked_sources": untracked,
+            "excluded_notes": doc.get("practice_notes_excluded") or [],
+            "semantic_layer": semantic}
+
+
+# ---------------------------------------------------------------------------
+# 訓練圖譜
+
+def evaluate_training(root="."):
+    coverage = training_graph_build.check(root)
+    pending = load_graph_pending(root)
+    state = coverage["state"]
+    if pending and state in training_graph_build.OK_STATES:
+        state = "rebuild_pending"
+    return {"state": state, "coverage": coverage, "graph_pending": pending,
+            "scale": graph_scale(root, TRAINING_GRAPH_PATH)}
+
+
+# ---------------------------------------------------------------------------
+# 合併評估
+
+REGULATION_EXIT = {"fresh": 0, "stale": 2, "untracked_sources": 2, "no_baseline": 3}
+TRAINING_EXIT = {"covered": 0, "not_built": 0, "uncovered": 2, "absent": 2,
+                 "rebuild_pending": 2}
+
+
+def evaluate(root="."):
+    """兩個圖譜各自的評估結果。
+
+    頂層仍保留 `state`／`source_count`／`diff`／`stamped_at`／`notes` 等舊欄位，
+    指向**法規圖譜**——onboarding.py 與 training_intake.py 沿用這些鍵，
+    分家不該逼著每個顯示端同步大改。
+    """
+    regulation = evaluate_regulation(root)
+    training = evaluate_training(root)
+    reg_exit = REGULATION_EXIT.get(regulation["state"], 2)
+    train_exit = TRAINING_EXIT.get(training["state"], 2)
     return {
-        "state": state,
-        "source_count": len(current),
-        "diff": changes,
-        "stamped_at": doc.get("stamped_at"),
-        "notes": notes,
-        "untracked_sources": untracked,
+        "regulation": regulation,
+        "training": training,
+        "exit_code": max(reg_exit, train_exit),
+        # 相容欄位（皆為法規圖譜的視角）
+        "state": regulation["state"],
+        "source_count": regulation["source_count"],
+        "diff": regulation["diff"],
+        "stamped_at": regulation["stamped_at"],
+        "untracked_sources": regulation["untracked_sources"],
+        "notes": training["coverage"],
     }
 
 
-EXIT_CODES = {"fresh": 0, "stale": 2, "notes_missing": 2, "untracked_sources": 2,
-              "no_baseline": 3}
+def _semantic_hint(result):
+    pending = (result.get("semantic_layer") or {}).get("pending") or []
+    if not pending:
+        return []
+    return [f"ℹ️ 有 {len(pending)} 個切塊的條文改過、語意層還沒重抽"
+            "（既有語意不會因此消失；要補就跑 "
+            "python3 tools/regulation_graph_build.py plan）"]
 
 
-def format_notes(notes):
-    """實務註解納入度的單行摘要（供 check／status 共用）。"""
-    if notes["active"] == 0:
-        return "實務註解：（無 active 註解）"
-    if notes["state"] == "covered":
-        return f"實務註解：✅ {notes['active']} 則全部已納入圖譜（查圖譜查得到訓練成果）"
-    parts = []
-    for label, key in (("缺漏", "missing"), ("過期", "stale"), ("殘留", "orphan")):
-        if notes[key]:
-            parts.append(f"{label} {'、'.join(notes[key])}")
-    return (f"實務註解：⛔ {notes['active']} 則中僅 {notes['merged']} 則在圖譜內"
-            f"（{'；'.join(parts)}）")
-
-
-def format_check(result):
-    lines = ["== 法規圖譜新鮮度 =="]
-    notes = result.get("notes") or {"active": 0, "state": "covered", "merged": 0,
-                                    "missing": [], "stale": [], "orphan": []}
+def format_regulation(result):
+    lines = ["== 法規圖譜 =="]
     if result["state"] == "fresh":
         lines.append(f"✅ 新鮮 —— {result['source_count']} 個來源檔與圖譜指紋一致"
                      f"（蓋章時間：{result['stamped_at'] or '未記錄'}）")
-        lines.append(format_notes(notes))
+        if result["excluded_notes"]:
+            lines.append(f"⚠️ 上次蓋章時排除了 {len(result['excluded_notes'])} 則實務註解："
+                         f"{'、'.join(result['excluded_notes'])}")
+        lines.extend(_semantic_hint(result))
         return "\n".join(lines)
 
     if result["state"] == "no_baseline":
         lines.append(f"⚠️ 尚未建立基準 —— 找不到 {FINGERPRINT_PATH}，無法判斷圖譜是否跟上"
                      f"（目前 {result['source_count']} 個來源檔）")
-        lines.append(format_notes(notes))
-        lines.append("→ 確認 graphify-out/ 圖譜為當前規則庫所建之後，執行："
-                     " python3 tools/graph_status.py stamp")
+        lines.append("→ 確認圖譜為當前規則庫所建之後，執行："
+                     " python3 tools/graph_status.py stamp --graph regulation")
         return "\n".join(lines)
 
     if result["state"] == "untracked_sources":
         lines.append("⛔ 追蹤清單漏檔 —— 圖譜有節點出自下列檔案，但它們不在 "
-                     "graph_status.py 的 SOURCE_GLOBS 內；這些檔改了不會被偵測到")
+                     "graph_status.py 的 REGULATION_SOURCE_GLOBS 內；這些檔改了不會被偵測到")
         for path in result["untracked_sources"]:
             lines.append(f"  [未追蹤] {path}")
-        lines.append(format_notes(notes))
-        lines.append("→ 把上列路徑加進 tools/graph_status.py 的 SOURCE_GLOBS，再重新蓋章")
-        return "\n".join(lines)
-
-    if result["state"] == "notes_missing":
-        lines.append("⛔ 註解未納入 —— 來源指紋一致，但實務註解沒有進到圖譜；"
-                     "審圖時查圖譜會查不到這些訓練成果")
-        lines.append(format_notes(notes))
-        lines.append(f"→ {practice_note_graph.MERGE_HINT}")
-        lines.append("  合併後重新執行 python3 tools/graph_status.py stamp 蓋章。")
+        lines.append("→ 把上列路徑加進 REGULATION_SOURCE_GLOBS，再重新蓋章")
         return "\n".join(lines)
 
     diff = result["diff"]
     total = sum(len(v) for v in diff.values())
-    lines.append(f"⛔ 已過期 —— {total} 個圖譜來源檔在上次重建後有異動，"
-                 "後續工作流程查到的會是舊圖譜")
+    lines.append(f"⛔ 已過期 —— {total} 個來源檔在上次重建後有異動，查到的會是舊圖譜")
     for label, key in (("新增", "added"), ("刪除", "removed"), ("變更", "changed")):
         for path in diff[key]:
             lines.append(f"  [{label}] {path}")
-    lines.append(format_notes(notes))
+    lines.extend(_semantic_hint(result))
     lines.append(f"→ {REBUILD_HINT}")
     return "\n".join(lines)
 
 
+def format_training(result):
+    lines = [training_graph_build.format_check(result["coverage"])]
+    if result["graph_pending"]:
+        pending = result["graph_pending"]
+        lines.append(f"⛔ 上次圖譜重建未完成（{GRAPH_PENDING_PATH}）："
+                     f"{pending.get('reason') or pending.get('批次') or '未記原因'}")
+        lines.append("→ 補建完成後刪除該檔")
+    return "\n".join(lines)
+
+
+def format_check(result):
+    """兩段式輸出：法規圖譜與訓練圖譜分開講，使用者才知道該更新哪一個。"""
+    if "regulation" not in result:      # 舊格式（僅法規圖譜）
+        return format_regulation(result)
+    return f"{format_regulation(result['regulation'])}\n\n{format_training(result['training'])}"
+
+
+# ---------------------------------------------------------------------------
+# CLI
+
 def cmd_check(args):
     result = evaluate(args.root)
-    print(json.dumps(result, ensure_ascii=False, indent=2) if args.format == "json"
-          else format_check(result))
-    return EXIT_CODES[result["state"]]
+    if args.format == "json":
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    else:
+        print(format_check(result))
+    return result["exit_code"]
 
 
-def cmd_stamp(args):
-    root = Path(args.root)
-    sources = collect_sources(root)
+def _stamp_regulation(root, args):
+    sources = collect_sources(root, REGULATION_SOURCE_GLOBS)
     if not sources:
         print("⛔ 找不到任何圖譜來源檔，請確認執行目錄為專案根目錄", file=sys.stderr)
         return 1
 
-    # 蓋章＝宣告「圖譜已跟上來源檔」。實務註解沒併進圖譜就蓋章，等於蓋出假綠燈。
-    notes = practice_note_graph.check(root)
-    if notes["state"] != "covered" and not args.allow_missing_notes:
-        print(practice_note_graph.format_check(notes), file=sys.stderr)
-        print(f"\n⛔ 拒絕蓋章：實務註解尚未併入圖譜。{practice_note_graph.MERGE_HINT}\n"
-              "   （確知本次不需納入註解時，才用 --allow-missing-notes 強制蓋章）", file=sys.stderr)
-        return 2
+    # 蓋章＝宣告「圖譜已跟上來源檔」。註解沒進訓練圖譜就蓋章不會讓法規圖譜出錯，
+    # 但使用者會以為「圖譜更新完了」——所以照樣要擋，並且把被排除者記在指紋裡持續提醒。
+    coverage = training_graph_build.check(root)
+    excluded = []
+    if coverage["state"] not in training_graph_build.OK_STATES:
+        if not args.allow_missing_notes:
+            print(training_graph_build.format_check(coverage), file=sys.stderr)
+            print("\n⛔ 拒絕蓋章：訓練圖譜尚未跟上素材。"
+                  f"{training_graph_build.BUILD_HINT}\n"
+                  "   （確知本次不需納入訓練成果時，才用 --allow-missing-notes "
+                  "並以 --reason 說明原因）", file=sys.stderr)
+            return 2
+        if not args.reason:
+            print("⛔ --allow-missing-notes 會蓋出「只有法規、查不到訓練成果」的綠燈，"
+                  "必須以 --reason 說明原因供追溯", file=sys.stderr)
+            return 1
+        excluded = sorted(set(coverage["missing"]) | set(coverage["stale"]))
 
     previous = load_fingerprint(root) or {}
     doc = {
-        "schema_version": 1,
-        "note": "圖譜來源檔 sha256 指紋；graph_status.py check 以此判斷圖譜是否跟上規則庫。"
-                "重建圖譜後必須重新蓋章。",
+        "schema_version": 2,
+        "note": "法規圖譜來源檔 sha256 指紋；graph_status.py check 以此判斷圖譜是否跟上規則庫。"
+                "重建圖譜後必須重新蓋章。訓練圖譜不用指紋檔——它以節點內的語意摘要自證。",
         "stamped_at": args.date,
         "graph": graph_scale(root),
-        "practice_notes_merged": notes["merged"],
         "source_count": len(sources),
         "sources": sources,
     }
+    if excluded:
+        doc["practice_notes_excluded"] = excluded
+        doc["excluded_reason"] = args.reason
+        doc["excluded_at"] = args.date
     if args.reason:
         doc["stamp_reason"] = args.reason
         doc["previous_stamped_at"] = previous.get("stamped_at")
@@ -302,7 +371,30 @@ def cmd_stamp(args):
     scale = doc["graph"]
     scale_text = f"（圖譜 {scale['nodes']} 節點／{scale['edges']} 邊）" if scale else "（圖譜檔未讀取）"
     print(f"✅ 已蓋章 {out.as_posix()}：{len(sources)} 個來源檔 {scale_text}")
+    if excluded:
+        print(f"⚠️ 本次排除了 {len(excluded)} 則訓練成果（{'、'.join(excluded)}）"
+              "——check 會持續紅字提醒，直到補建訓練圖譜")
     return 0
+
+
+def _stamp_training(root):
+    """訓練圖譜沒有指紋檔可蓋——直接回報它跟不跟得上。"""
+    coverage = training_graph_build.check(root)
+    print(training_graph_build.format_check(coverage))
+    if coverage["state"] in training_graph_build.OK_STATES:
+        print("ℹ️ 訓練圖譜不需要蓋章：它以節點內的語意摘要自證，check 隨時比對得出來。")
+        return 0
+    return 2
+
+
+def cmd_stamp(args):
+    root = Path(args.root)
+    if args.graph == "training":
+        return _stamp_training(root)
+    code = _stamp_regulation(root, args)
+    if args.graph == "all" and code == 0:
+        return _stamp_training(root)
+    return code
 
 
 def today():
@@ -311,19 +403,22 @@ def today():
 
 
 def build_parser():
-    p = argparse.ArgumentParser(description="法規知識圖譜新鮮度把關")
+    p = argparse.ArgumentParser(description="法規圖譜與訓練圖譜的新鮮度把關（各自獨立）")
     p.add_argument("--root", default=".", help="專案根目錄（預設為當前目錄）")
     sub = p.add_subparsers(dest="command", required=True)
 
     s = sub.add_parser("check",
-                       help="檢查圖譜是否跟上規則庫與註解庫（0=新鮮 2=過期／註解未納入 3=尚未建立基準）")
+                       help="兩個圖譜是否各自跟上素材（0=都跟上 2=有過期 3=法規圖譜尚無基準）")
     s.add_argument("--format", choices=("text", "json"), default="text")
     s.set_defaults(func=cmd_check)
 
-    s = sub.add_parser("stamp", help="重建圖譜並併入註解層後蓋章，記錄當前來源指紋")
+    s = sub.add_parser("stamp", help="重建圖譜後蓋章，記錄當前來源指紋")
+    s.add_argument("--graph", choices=("regulation", "training", "all"), default="regulation",
+                   help="要蓋哪一個圖譜（預設 regulation；訓練圖譜不需要蓋章）")
     s.add_argument("--date", default=None, help="蓋章日期（預設今天）")
     s.add_argument("--allow-missing-notes", action="store_true",
-                   help="實務註解尚未併入圖譜時仍強制蓋章（會蓋出查不到註解的圖譜，非必要不要用）")
+                   help="訓練圖譜尚未跟上時仍強制蓋法規圖譜（須附 --reason；"
+                        "被排除的訓練成果會記進指紋並持續紅字）")
     s.add_argument("--reason",
                    help="蓋章事由；非「重建圖譜後蓋章」的情形（例如追蹤清單修正後重新建立基準）必填，"
                         "會連同前一次蓋章日期寫進指紋檔供追溯")

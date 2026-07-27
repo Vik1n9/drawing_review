@@ -2,6 +2,33 @@
 __pycache__/
 *.pyc
 
+# 使用者本機成果（上游不追蹤）——列在此處不只是「不進版控」：
+# git clean -fd 不刪 gitignored 檔案，git checkout／reset 也永遠不會碰它們，
+# 所以這一段本身就是一道防護，擋掉「AI 清乾淨再 pull」對本機訓練成果的破壞。
+# 已經被追蹤的檔案（output/ 現有交付物、training/registry.json）ignore 無效，
+# 只能靠 tools/update_guard.py 的備份——見 CONTRIBUTING.md「更新倉庫的規範」。
+/input/*
+!/input/README.md
+!/input/範例/
+/output/*
+!/output/README.md
+/training/*/
+!/training/inbox/
+/training/inbox/*
+!/training/inbox/.gitkeep
+/practice_notes/active/*.json
+/practice_notes/staging/*.json
+/practice_notes/graph_extractions/*.json
+
+# 本機備份索引與更新暫存（安裝程式與 update_guard 的產物，不進版控）
+/.更新暫存/
+/更新報告-*.txt
+/安裝清單.json
+*.上游新版
+
+# 發佈打包產物（tools/make_release.py 的輸出）
+/dist/
+
 # graphify — 機器相關指標與可重建的抽取快取（不進版控）
 graphify-out/.graphify_python
 graphify-out/.graphify_root

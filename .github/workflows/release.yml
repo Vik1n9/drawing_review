@@ -1,0 +1,177 @@
+name: release
+
+# 線2 發佈：打包成 Windows 安裝程式，讓不懂 git 的消防專業人員裝得起來。
+# 線1（git clone）不受影響——兩條路徑並行，見 README.md「兩種取得方式」。
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "版本號（例如 v1.2.0）；手動觸發時必填"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  # 發版前先過完整把關。規則測試沒全綠的版本不得出貨——
+  # 使用者拿到的是審圖依據，不是實驗品。
+  verify:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.value }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: version
+        run: echo "value=${{ github.event.inputs.version || github.ref_name }}" >> "$GITHUB_OUTPUT"
+
+      - name: 安裝 Python 相依套件
+        run: python3 -m pip install -r requirements.txt
+
+      - name: Python 單元測試
+        run: python3 -m unittest discover tests
+
+      - name: 引擎與規則庫自檢
+        run: python3 tools/fire_code_calc.py self-test
+
+      - name: 規則測試（先紅再綠）
+        run: python3 tools/fire_code_calc.py run-tests --strict
+
+      - name: 法規圖譜新鮮度把關
+        run: python3 tools/graph_status.py check
+
+  package:
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 打包
+        run: python3 tools/make_release.py --version "${{ needs.verify.outputs.version }}" --out dist
+
+      # 安裝包解出來就得是一個可用、可自驗的倉庫——這一步驗的是
+      # 「排除範例圖與示範交付物之後，它自己還跑不跑得起來」。
+      - name: 安裝包自驗（解壓後跑它自己的測試與開場診斷）
+        run: |
+          set -e
+          work=$(mktemp -d)
+          unzip -q "dist/FireReview-${{ needs.verify.outputs.version }}.zip" -d "$work"
+          cd "$work"
+          python3 -m pip install -r requirements.txt
+          python3 -m unittest discover tests
+          python3 tools/fire_code_calc.py run-tests --strict
+          python3 tools/onboarding.py status --format json > /dev/null || test $? -eq 2
+          python3 tools/update_guard.py check
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stage
+          path: dist/FireReview-${{ needs.verify.outputs.version }}/
+          include-hidden-files: true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zip
+          path: dist/FireReview-${{ needs.verify.outputs.version }}.zip
+
+  installer:
+    needs: [verify, package]
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: stage
+          path: dist/FireReview-${{ needs.verify.outputs.version }}
+
+      - name: 安裝 Inno Setup
+        run: choco install innosetup -y --no-progress
+
+      - name: 編譯安裝程式
+        shell: cmd
+        run: |
+          "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" ^
+            /DMyVersion=${{ needs.verify.outputs.version }} ^
+            "/DStageDir=..\dist\FireReview-${{ needs.verify.outputs.version }}" ^
+            packaging\fire-review.iss
+
+      # 全新安裝跑一次，確認裝出來的東西真的能動。
+      # 升級路徑的逐檔判定由 tests/test_update_guard_install.py 涵蓋
+      # （邏輯刻意放在 Python 端，就是為了讓它測得到）。
+      - name: 全新安裝煙霧測試
+        shell: cmd
+        run: |
+          dist\FireReview-${{ needs.verify.outputs.version }}-setup.exe /VERYSILENT /DIR="%RUNNER_TEMP%\FireReview"
+          if errorlevel 1 exit /b 1
+          cd /d "%RUNNER_TEMP%\FireReview"
+          python tools\onboarding.py status --format json >nul || if errorlevel 3 exit /b 1
+          python tools\update_guard.py check
+          if not exist "安裝清單.json" exit /b 1
+          if not exist "開場診斷.bat" exit /b 1
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: setup
+          path: dist/FireReview-${{ needs.verify.outputs.version }}-setup.exe
+
+  publish:
+    needs: [verify, package, installer]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: zip
+          path: dist
+      - uses: actions/download-artifact@v4
+        with:
+          name: setup
+          path: dist
+
+      - name: 建立 Release（草稿，人工確認後才發佈）
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.verify.outputs.version }}
+          name: Fire Review ${{ needs.verify.outputs.version }}
+          draft: true
+          files: |
+            dist/FireReview-${{ needs.verify.outputs.version }}-setup.exe
+            dist/FireReview-${{ needs.verify.outputs.version }}.zip
+          body: |
+            ## 給消防專業使用者（不需要懂 git）
+
+            下載 **FireReview-${{ needs.verify.outputs.version }}-setup.exe**，
+            雙擊執行，選一個你想安裝的資料夾即可。裝完打開資料夾裡的
+            「安裝完成-請把這段貼給你的AI.txt」，照著把那段話貼給你的 AI。
+
+            > **Windows 會跳出「已保護您的電腦」的藍色警告。**
+            > 這是因為安裝程式沒有購買程式碼簽章憑證，不是偵測到病毒。
+            > 點「其他資訊」→「仍要執行」即可。不放心的話，改用下面的 zip：
+            > 解壓縮到任一資料夾，效果完全相同。
+
+            另附 **FireReview-${{ needs.verify.outputs.version }}.zip**（免安裝，
+            解壓縮即可用）。
+
+            ### 已經裝過舊版？
+
+            裝到**同一個資料夾**即可。安裝程式會：
+
+            1. 先把你的成果備份到那個資料夾的**外面**（更新與重裝都動不到）
+            2. 你沒改過的檔案，直接更新
+            3. **你改過的檔案，保留你的版本**；上游新版另存成 `.上游新版` 供你比對
+            4. 你自己新增的案件圖面與實務見解，完全不動
+
+            裝完會產生「更新報告-日期.txt」，逐檔說明發生了什麼事。
+
+            ⚠️ **不要請 AI 幫你「更新倉庫」**——它可能用 git 指令把你的成果清掉。
+            你的訓練成果只存在你這台電腦，覆蓋掉救不回來。詳見 `skills/safe-update.md`。
+
+            ## 給技術人員
+
+            ```bash
+            git clone https://github.com/${{ github.repository }}.git
+            ```
+
+            更新前請先跑 `python3 tools/update_guard.py check`。

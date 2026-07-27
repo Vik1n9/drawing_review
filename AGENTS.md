@@ -10,19 +10,21 @@
 Claude Code 由 SessionStart hook 自動執行。規則差異未裁示前照常審圖，但受影響規則的
 輸出必須附「本參數尚未逐條確認」警語。
 
-## 五條底線
+## 六條底線
 
 1. 禁止心算、禁止憑記憶引法規數值——一律 `python3 tools/fire_code_calc.py`，輸出嵌入報告
 2. `case.json` 是正典——圖面只是證據，不得跳過人工確認直接推算
 3. 不確定就標「需人工判讀」——嚴禁以推測、預設值或未提供的圖說填充
 4. `input/` 只讀，產出寫 `output/`；報告用繁體中文與台灣消防法規用語
 5. 僅供審圖輔助，最終判斷歸屬專業消防人員
+6. 使用者的訓練成果只存在他本機——更新倉庫前先跑 `python3 tools/update_guard.py check`，未備份不得執行任何會還原或清除工作目錄的 git 操作，也不得刪目錄重裝
 
 ## 路由（`skills/` 下的檔名）
 
 審圖主線：`plan-intake` → `mixed-use-review`（§12 定案）→ `code-requirements`（含 §13）
 → `gap-analysis`（三項交付物）；用途與樓層屬性判定見 `place-use-classification`，
 大型案件分工見 `review-team`。兩階段 Excel 交付：`first-stage-review` → `stage-two-review`。
-改規則參數走 `red-green` ＋ `regulation-intake`，訓練素材與實務見解走 `training-mode`／`practice-note`。
+改規則參數走 `red-green` ＋ `regulation-intake`，訓練素材與實務見解走 `training-mode`／`practice-note`，
+更新或重裝倉庫走 `safe-update`。
 查法規先 `tools/regulation_graph.py neighbors --article §X` 定位，再 `regulation_index.py lookup` 只載入那幾條。
 目錄結構、完整命令與設計背景見 `README.md`、`skills/README.md`、`CONTRIBUTING.md`；工具用法一律 `--help`。

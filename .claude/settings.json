@@ -5,8 +5,20 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 tools/onboarding.py status 2>&1 || true",
+            "command": "for p in python3 python; do command -v \"$p\" >/dev/null 2>&1 && { \"$p\" tools/onboarding.py status 2>&1; break; }; done; true",
             "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "for p in python3 python; do command -v \"$p\" >/dev/null 2>&1 && exec \"$p\" tools/guard_hook.py hook; done; exit 0",
+            "timeout": 10
           }
         ]
       }

@@ -93,6 +93,8 @@
 3. 執行：`python3 tools/dxf_svg_review.py --annotations {輸出目錄}/annotations.json`（**零安裝即可執行**——文字 DXF 由 `tools/dxf_parse.py` 以標準庫解析；只有二進位 DXF 才需要 `ezdxf`，屆時工具會直接指引改存 ASCII DXF）
 3-1. 圖面來源若是 **DWG**，先跑 `python3 tools/dwg_guide.py check --path input/{案件名}/` 取得另存 DXF 的操作步驟；轉檔而來的圖面，`case.json` 對應欄位一律標 `source: derived` 並於報告註明「幾何來自格式轉換，圖層與符號已人工複核」
 4. 產出的 `{案件名}-圖面審查.html` 必須顯示 DXF 轉成的 SVG、缺失清單導覽、點選定位與高亮；若有 `position_confidence: low`，頁面須顯示「位置僅供參考，以問題清單文字說明為準」
+5. 消防設備符號是圖塊（`INSERT`），SVG 上以插入點標記呈現、幾何不展開——足以定位缺失，但不會畫出符號本身；報告不得據此描述符號外觀
+6. 若警告區出現「實際圖元範圍比圖面宣告範圍大 N 倍」，代表圖框外有殘留圖元、整張圖會縮得很小。**不得自行裁切**——圖框外的東西有可能正是缺失本身；請使用頁面的縮放控制，並在報告標「需人工判讀」
 
 **交付物 2：問題清單（`{案件名}-問題清單.md`）**
 

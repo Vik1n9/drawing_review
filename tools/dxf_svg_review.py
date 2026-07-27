@@ -109,6 +109,8 @@ def collect_dxf_entities_ezdxf(dxf_path):
     points = []
     layers = set()
 
+    unsupported = []
+
     for entity in modelspace:
         dxftype = entity.dxftype()
         layers.add(str(getattr(entity.dxf, "layer", "0")))
@@ -169,13 +171,21 @@ def collect_dxf_entities_ezdxf(dxf_path):
                         "layer": entity_layer(entity),
                     }
                 )
-                points.extend(
-                    [
-                        (center[0] - radius, center[1] - radius),
-                        (center[0] + radius, center[1] + radius),
-                    ]
+                # 與 stdlib 版共用同一個包絡計算，兩條路徑不得各算各的
+                points.extend(dxf_parse.arc_extent(center, radius, start, end))
+            elif dxftype == "INSERT":
+                insert = point_tuple(entity.dxf.insert)
+                entities.append(
+                    {
+                        "type": "insert",
+                        "insert": insert,
+                        "block": str(getattr(entity.dxf, "name", "")),
+                        "rotation": float(getattr(entity.dxf, "rotation", 0.0) or 0.0),
+                        "layer": entity_layer(entity),
+                    }
                 )
-            elif dxftype == "TEXT":
+                points.append(insert)
+            elif dxftype in ("TEXT", "ATTRIB"):
                 insert = point_tuple(entity.dxf.insert)
                 text = entity.dxf.text
                 height = float(getattr(entity.dxf, "height", 2.5))
@@ -204,9 +214,11 @@ def collect_dxf_entities_ezdxf(dxf_path):
                 )
                 points.append(insert)
             else:
-                warnings.append(f"不支援的 DXF 實體：{dxftype}（圖層 {getattr(entity.dxf, 'layer', '0')}）")
+                unsupported.append((dxftype, str(getattr(entity.dxf, "layer", "0"))))
         except Exception as exc:  # pragma: no cover - defensive for malformed CAD entities
             warnings.append(f"無法解析 {dxftype}：{exc}")
+
+    warnings.extend(dxf_parse.summarise_unsupported(unsupported))
 
     if not points:
         points = [(0.0, 0.0), (100.0, 100.0)]
@@ -254,7 +266,7 @@ def svg_point(point, max_y):
     return (point[0], svg_y(point[1], max_y))
 
 
-def render_entities(entities, max_y):
+def render_entities(entities, max_y, block_radius=1.0):
     parts = []
     for entity in entities:
         layer = entity["layer"]
@@ -281,7 +293,15 @@ def render_entities(entities, max_y):
             text = html.escape(entity["text"])
             parts.append(
                 f'<text class="cad-text" data-layer="{layer}" '
-                f'x="{x:.4f}" y="{y:.4f}" font-size="{entity["height"]:.4f}">{text}</text>'
+                f'font-size="{entity["height"]:.4f}" x="{x:.4f}" y="{y:.4f}">{text}</text>'
+            )
+        elif entity["type"] == "insert":
+            # 圖塊幾何未展開，以插入點的標記呈現——夠用來定位設備與清點數量
+            x, y = svg_point(entity["insert"], max_y)
+            block = html.escape(entity.get("block", ""))
+            parts.append(
+                f'<circle class="cad-block" data-layer="{layer}" data-block="{block}" '
+                f'cx="{x:.4f}" cy="{y:.4f}" r="{block_radius:.4f}" />'
             )
     return "\n".join(parts)
 
@@ -371,6 +391,8 @@ def render_review_html(spec, drawings):
     width = max(x1 - x0, 1.0)
     height = max(y1 - y0, 1.0)
     max_y = y1
+    # 圖塊標記半徑依整張圖的尺度決定——固定值在 mm 圖上看不見、在 m 圖上蓋掉整層樓
+    block_radius = max(width, height) / 400.0
     svg_min_y = svg_y(y1, max_y)
     warnings = []
     for drawing in drawings:
@@ -389,7 +411,7 @@ def render_review_html(spec, drawings):
         floor = html.escape(str(drawing.get("floor", "")))
         svg_groups.append(
             f'<g class="drawing" data-drawing-id="{drawing_id}" data-floor="{floor}">'
-            f"{render_entities(drawing['parsed']['entities'], max_y)}"
+            f"{render_entities(drawing['parsed']['entities'], max_y, block_radius)}"
             f"</g>"
         )
 
@@ -498,6 +520,8 @@ svg.dragging { cursor: grabbing; }
 .sheet-bg { fill: #fff; stroke: #cfd8e3; stroke-width: .4; }
 .cad-entity { fill: none; stroke: #263238; stroke-width: .45; vector-effect: non-scaling-stroke; }
 .cad-text { fill: #475467; stroke: none; dominant-baseline: middle; }
+/* 圖塊（消防設備符號）只畫插入點標記，幾何未展開 */
+.cad-block { fill: #1e88e5; fill-opacity: .55; stroke: #1565c0; stroke-width: .4; vector-effect: non-scaling-stroke; }
 .issue-marker ellipse { fill: rgba(215, 25, 32, .08); stroke-width: 2.8; vector-effect: non-scaling-stroke; }
 .issue-marker .issue-number { fill: #fff; text-anchor: middle; font-size: 8px; font-weight: 700; pointer-events: none; }
 .issue-marker.active ellipse { stroke-width: 5; fill: rgba(215, 25, 32, .18); }

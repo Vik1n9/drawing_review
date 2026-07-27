@@ -29,11 +29,18 @@ jobs:
                               tests.test_dxf_parse.DxfParseCliTest
           python3 -m pip install -r requirements.txt
 
+      # 結束碼 2 ＝ EXIT_NEEDS_ACTION（要使用者用 CAD 匯出 DXF），不是失敗。
+      # 倉庫內存在範例 DWG 是常態，這一步該驗的是「有給出引導」。
       - name: DWG 收件引導煙霧測試（無轉檔器亦須給出引導）
-        run: python3 tools/dwg_guide.py check --path input --format json
+        run: python3 tools/dwg_guide.py check --path input --format json || test $? -eq 2
 
       - name: 零相依 DXF 解析煙霧測試
         run: python3 tools/dxf_parse.py --help
+
+      # 範例圖是 R12＋Big5＋圖塊，真實案件的常見形態。
+      # 這條鏈曾經只被人造 DXF 測過，退化了也沒人知道。
+      - name: 真實範例圖解析煙霧測試
+        run: python3 tools/dxf_parse.py --input "input/範例/楷得立消防設備圖說.dxf" --format json > /dev/null
 
       - name: 引擎與規則庫自檢
         run: python3 tools/fire_code_calc.py self-test

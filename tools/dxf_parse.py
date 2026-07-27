@@ -20,6 +20,7 @@ Usage:
 import argparse
 import html
 import json
+import math
 import re
 import sys
 from pathlib import Path
@@ -38,7 +39,8 @@ CODEPAGES = {
     "ANSI_1257": "cp1257", "ANSI_1258": "cp1258",
 }
 
-SUPPORTED = {"LINE", "LWPOLYLINE", "POLYLINE", "CIRCLE", "ARC", "TEXT", "MTEXT"}
+SUPPORTED = {"LINE", "LWPOLYLINE", "POLYLINE", "CIRCLE", "ARC", "TEXT", "MTEXT",
+             "INSERT", "ATTRIB"}
 
 # R2004 以前的非 ASCII 字元逸出寫法
 UNICODE_ESCAPE = re.compile(r"\\U\+([0-9A-Fa-f]{4})")
@@ -74,7 +76,27 @@ def detect_encoding(raw):
         if codec:
             return codec, f"依 $DWGCODEPAGE = {codepage} 以 {codec} 解碼"
         return "utf-8", f"未知的 $DWGCODEPAGE = {codepage}，改以 utf-8 解碼（中文可能有誤）"
-    return None, None  # 交給 decode_bytes 依序嘗試
+    return None, None  # 交給 decode_bytes 比分決定
+
+
+def header_extents(text):
+    """讀 $EXTMIN／$EXTMAX——CAD 自己宣告的圖面範圍。
+
+    只用來對照，不用來裁切：這兩個值是 ZOOM EXTENTS 時才更新的，
+    可能過期，而落在宣告範圍外的實體有可能正是該被審出來的東西。
+    """
+    lines = [line.strip() for line in text[:8192].splitlines()]
+    box = []
+    for key in ("$EXTMIN", "$EXTMAX"):
+        index = next((i for i, line in enumerate(lines) if line == key), None)
+        if index is None or index + 4 >= len(lines):
+            return None
+        try:
+            box.append((float(lines[index + 2]), float(lines[index + 4])))
+        except ValueError:
+            return None
+    (min_x, min_y), (max_x, max_y) = box
+    return [min_x, min_y, max_x, max_y]
 
 
 def value_after(lines, key):
@@ -85,25 +107,71 @@ def value_after(lines, key):
     return None
 
 
+# 標頭沒交代編碼時的候選順序。繁中舊圖以 cp950 為主，
+# big5hkscs 多收 cp950 拒絕的造字區，utf-8 墊底。
+FALLBACK_CANDIDATES = ("cp950", "big5hkscs", "utf-8")
+
+REPLACEMENT = "�"
+
+
 def decode_bytes(raw):
-    """回傳 (文字, 警告清單)。"""
+    """回傳 (文字, 警告清單)。
+
+    候選編碼一律以 errors="replace" 解碼後比分（替代字元最少者勝），
+    不採「strict 全有全無」——真實 R12 圖面常在 LTYPE 說明字串裡夾帶
+    造字區位元組，全檔兩個壞位元組就足以讓整份正確的 cp950 解碼被丟棄，
+    退回 utf-8 容錯後 20 個中文圖層名全變亂碼。壞位元組落在與審圖
+    無關的線型定義裡，不該波及圖層名與文字標註。
+    """
     notes = []
     encoding, note = detect_encoding(raw)
     if note:
         notes.append(note)
 
-    candidates = [encoding] if encoding else ["utf-8", "cp950"]
-    for codec in candidates:
-        try:
-            text = raw.decode(codec)
-        except (UnicodeDecodeError, LookupError):
-            continue
-        if not encoding and codec != "utf-8":
-            notes.append(f"無 $DWGCODEPAGE 且非 utf-8，已改以 {codec} 解碼——中文請人工核對")
+    if encoding:
+        text, bad = decode_scored(raw, encoding)
+        if bad == 0:
+            return text, notes
+        # 標頭指定的編碼也解不乾淨：仍以它為準，但要講清楚有多少字失真
+        notes.append(
+            f"以 {encoding} 解碼有 {bad} 個字元無法還原，非 ASCII 內容請人工核對"
+        )
         return text, notes
 
-    notes.append("編碼無法確定，已以 utf-8 容錯解碼，非 ASCII 字元可能失真——需人工判讀")
-    return raw.decode("utf-8", errors="replace"), notes
+    # utf-8 的合法性本身就是強訊號：cp950 位元組流幾乎不可能剛好是合法 utf-8。
+    # 反過來不成立——utf-8 位元組以 cp950 解碼往往「不報錯但全是亂碼」，
+    # 所以不能單靠替代字元數比分，必須先問「是不是合法 utf-8」。
+    try:
+        return raw.decode("utf-8"), notes
+    except UnicodeDecodeError:
+        pass
+
+    scored = []
+    for codec in FALLBACK_CANDIDATES:
+        try:
+            text, bad = decode_scored(raw, codec)
+        except LookupError:  # pragma: no cover - 直譯器缺該 codec
+            continue
+        scored.append((bad, FALLBACK_CANDIDATES.index(codec), codec, text))
+    if not scored:  # pragma: no cover - 防禦
+        notes.append("編碼無法確定，已以 utf-8 容錯解碼，非 ASCII 字元可能失真——需人工判讀")
+        return raw.decode("utf-8", errors="replace"), notes
+
+    scored.sort()
+    bad, _, codec, text = scored[0]
+    if bad:
+        notes.append(
+            f"標頭未載明編碼，比對後以 {codec} 解碼（{bad} 個字元無法還原）——中文請人工核對"
+        )
+    else:
+        notes.append(f"標頭未載明編碼，比對後以 {codec} 解碼——中文請人工核對")
+    return text, notes
+
+
+def decode_scored(raw, codec):
+    """以 errors="replace" 解碼，回傳 (文字, 失真字元數)。"""
+    text = raw.decode(codec, errors="replace")
+    return text, text.count(REPLACEMENT)
 
 
 # ---------------------------------------------------------------------------
@@ -232,8 +300,29 @@ def mtext_plain(tags):
 # ---------------------------------------------------------------------------
 # 實體轉換
 
+def arc_extent(center, radius, start, end):
+    """弧的實際包絡點：起訖端點，加上掃掠範圍內的象限極值點。
+
+    用 center ± radius 的正方形當包絡是嚴重高估——真實圖面上一段
+    r=68563 的極扁弧就足以把整張圖的 bbox 撐大數百倍，SVG 一縮放，
+    平面圖就只剩一個點。dxf_svg_review 的 ezdxf 參考實作共用本函式，
+    兩條路徑不得各算各的。
+    """
+    cx, cy = center
+    span = (end - start) % 360 or (360.0 if start != end else 0.0)
+    angles = [start, end]
+    for quadrant in (0.0, 90.0, 180.0, 270.0):
+        if (quadrant - start) % 360 <= span:
+            angles.append(quadrant)
+    return [
+        (cx + radius * math.cos(math.radians(a)), cy + radius * math.sin(math.radians(a)))
+        for a in angles
+    ]
+
+
 def convert(dxftype, tags, layer_escaped):
     """單一實體 → 繪製用結構；不支援者回 None。"""
+
     if dxftype == "LINE":
         start = (as_float(tags, 10), as_float(tags, 20))
         end = (as_float(tags, 11), as_float(tags, 21))
@@ -249,22 +338,37 @@ def convert(dxftype, tags, layer_escaped):
             points,
         )
 
-    if dxftype in ("CIRCLE", "ARC"):
+    if dxftype == "CIRCLE":
         center = (as_float(tags, 10), as_float(tags, 20))
         radius = as_float(tags, 40)
-        extent = [(center[0] - radius, center[1] - radius),
-                  (center[0] + radius, center[1] + radius)]
-        if dxftype == "CIRCLE":
-            return ({"type": "circle", "center": center, "radius": radius,
-                     "layer": layer_escaped}, extent)
         return (
-            {"type": "arc", "center": center, "radius": radius,
-             "start": as_float(tags, 50), "end": as_float(tags, 51),
-             "layer": layer_escaped},
-            extent,
+            {"type": "circle", "center": center, "radius": radius, "layer": layer_escaped},
+            [(center[0] - radius, center[1] - radius),
+             (center[0] + radius, center[1] + radius)],
         )
 
-    if dxftype == "TEXT":
+    if dxftype == "ARC":
+        center = (as_float(tags, 10), as_float(tags, 20))
+        radius = as_float(tags, 40)
+        start = as_float(tags, 50)
+        end = as_float(tags, 51)
+        return (
+            {"type": "arc", "center": center, "radius": radius,
+             "start": start, "end": end, "layer": layer_escaped},
+            arc_extent(center, radius, start, end),
+        )
+
+    if dxftype == "INSERT":
+        # 圖塊幾何刻意不展開：消防設備符號只要有插入點就能清點數量與定位缺失，
+        # 展開 BLOCKS 的工作量與風險大得多，對審圖結論沒有幫助。
+        insert = (as_float(tags, 10), as_float(tags, 20))
+        return (
+            {"type": "insert", "insert": insert, "block": first(tags, 2, ""),
+             "rotation": as_float(tags, 50, 0.0), "layer": layer_escaped},
+            [insert],
+        )
+
+    if dxftype in ("TEXT", "ATTRIB"):
         insert = (as_float(tags, 10), as_float(tags, 20))
         return (
             {"type": "text", "insert": insert, "text": unescape_text(first(tags, 1, "")),
@@ -311,6 +415,29 @@ def merge_polyline_vertices(blocks):
 # ---------------------------------------------------------------------------
 # 對外介面
 
+def summarise_unsupported(items):
+    """把「不支援的實體」警告依型別彙總成一條，附數量與圖層。
+
+    逐一列出會失控：真實圖面一張就能產生上百個同型別實體，
+    整批灌進交付物1 的警告區，把真正該看的訊息淹掉。
+    """
+    grouped = {}
+    for dxftype, layer in items:
+        entry = grouped.setdefault(dxftype, {"count": 0, "layers": []})
+        entry["count"] += 1
+        if layer not in entry["layers"]:
+            entry["layers"].append(layer)
+
+    warnings = []
+    for dxftype, entry in sorted(grouped.items()):
+        layers = entry["layers"]
+        shown = "、".join(layers[:5]) + ("…" if len(layers) > 5 else "")
+        warnings.append(
+            f"不支援的 DXF 實體：{dxftype} ×{entry['count']}（圖層 {shown}）"
+        )
+    return warnings
+
+
 def parse(dxf_path):
     """解析 ASCII DXF，回傳與 collect_dxf_entities() 相同的結構。"""
     path = Path(dxf_path)
@@ -330,6 +457,8 @@ def parse(dxf_path):
     blocks = merge_polyline_vertices(entity_blocks(read_tags(text)))
 
     entities, warnings, points, layers = [], list(notes), [], set()
+    unsupported = []
+    anonymous = 0
 
     for dxftype, tags in blocks:
         if dxftype in ("VERTEX", "SEQEND"):
@@ -339,11 +468,20 @@ def parse(dxf_path):
             continue
 
         layer = first(tags, 8, "0")
+        # 圖層先收再看型別支不支援：圖層清單是判讀設備圖層的依據，
+        # 不能因為型別不支援就整個圖層消失（ezdxf 參考實作也是先收圖層）
+        layers.add(str(layer))
+
         if dxftype not in SUPPORTED:
-            warnings.append(f"不支援的 DXF 實體：{dxftype}（圖層 {layer}）")
+            unsupported.append((dxftype, str(layer)))
             continue
 
-        layers.add(str(layer))
+        # 匿名圖塊（*U22、*X96…）是 CAD 內部產物：R12 用它來表示 HATCH、
+        # 標註等實體。插入點一律在原點，既不是設備符號，又會把 bbox 拉到原點。
+        if dxftype == "INSERT" and first(tags, 2, "").startswith("*"):
+            anonymous += 1
+            continue
+
         try:
             converted, extent = convert(dxftype, tags, html.escape(str(layer)))
         except Exception as exc:  # pragma: no cover - 防禦畸形 CAD 實體
@@ -353,18 +491,47 @@ def parse(dxf_path):
             entities.append(converted)
             points.extend(extent)
 
+    warnings.extend(summarise_unsupported(unsupported))
+    if anonymous:
+        warnings.append(
+            f"略過匿名圖塊 ×{anonymous}（CAD 內部產物，非設備符號；"
+            "多為舊版 DXF 用來表示填充線或標註）"
+        )
+
     if not points:
         points = [(0.0, 0.0), (100.0, 100.0)]
         warnings.append("DXF 未解析到可繪製實體，已使用空白檢視框。")
 
     xs = [p[0] for p in points]
     ys = [p[1] for p in points]
+    bbox = [min(xs), min(ys), max(xs), max(ys)]
+
+    warnings.extend(extent_mismatch_warning(bbox, header_extents(text)))
+
     return {
         "entities": entities,
         "warnings": warnings,
-        "bbox": [min(xs), min(ys), max(xs), max(ys)],
+        "bbox": bbox,
         "layers": sorted(layers),
     }
+
+
+def extent_mismatch_warning(bbox, declared, ratio=4.0):
+    """實際範圍遠大於 CAD 宣告範圍時提醒——通常是圖框外有殘留圖元。
+
+    不自動裁切：落在圖框外的東西有可能正是缺失本身，
+    該由審圖人員判斷，不該由工具無聲丟掉。
+    """
+    if not declared:
+        return []
+    area = (bbox[2] - bbox[0]) * (bbox[3] - bbox[1])
+    declared_area = (declared[2] - declared[0]) * (declared[3] - declared[1])
+    if declared_area <= 0 or area <= declared_area * ratio:
+        return []
+    return [
+        f"實際圖元範圍比圖面宣告範圍（$EXTMIN/$EXTMAX）大 {area / declared_area:.0f} 倍，"
+        "圖框外可能有殘留圖元；SVG 會因此縮得很小——需人工判讀是否為應審內容"
+    ]
 
 
 def main(argv=None):
@@ -385,9 +552,35 @@ def main(argv=None):
     print(f"外框 bbox：{result['bbox']}")
     if result["layers"]:
         print("圖層：" + "、".join(result["layers"]))
+
+    blocks = block_counts(result["entities"])
+    if blocks:
+        total = sum(blocks.values())
+        print(f"\n圖塊統計（共 {total} 個插入點）——消防設備符號多半是圖塊，"
+              "可據此清點實設數量：")
+        for (layer, name), count in sorted(blocks.items(), key=lambda kv: (-kv[1], kv[0])):
+            print(f"  {count:5}  {name or '（無名稱）'}　［圖層 {layer}］")
+        print("※ 數量為圖面上的圖塊插入點，仍須人工核對是否等同實際設置數量")
+
     for warning in result["warnings"]:
         print(f"⚠️ {warning}")
     return 0
+
+
+def block_counts(entities):
+    """依 (圖層, 圖塊名) 統計圖塊插入點數量。
+
+    gap-analysis 要比對「應設 vs 實設」，實設數量的來源就是這裡——
+    偵煙探測器、緊急照明燈、揚聲器在真實圖面上都是圖塊。圖塊名通常比
+    圖層名更精確（例如「偵煙探測器一種」對上圖層「1_偵煙探測器」），
+    兩者一起列出才夠人工核對。
+    """
+    counts = {}
+    for entity in entities:
+        if entity["type"] == "insert":
+            key = (html.unescape(entity["layer"]), entity.get("block", ""))
+            counts[key] = counts.get(key, 0) + 1
+    return counts
 
 
 if __name__ == "__main__":

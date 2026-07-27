@@ -121,7 +121,7 @@ python3 tools/regulation_index.py lookup --article '§4'
   "floor": "1F",
   "space": "客席區",
   "evidence_text": "餐廳",
-  "source_document": "input/範例/消防安全設備審查表.pdf",
+  "source_document": "input/{案件名}/消防安全設備審查表.pdf",
   "source_type": "審查文件",
   "confidence": "high"
 }

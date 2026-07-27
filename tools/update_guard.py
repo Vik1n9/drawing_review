@@ -103,7 +103,9 @@ UPSTREAM_EXCLUDE = (
 # 誰擁有這個檔案——決定 restore 敢不敢整檔蓋回去。先命中先算。
 OWNER_RULES = (
     ("rules/*", SHARED),          # 規則參數與法規全文都與上游共編
-    ("graphify-out/*", SHARED),   # 法規圖譜，重建會覆寫；訓練成果不在這裡（見 training/）
+    # 法規圖譜與它的 id 台帳（node_ledger.json 必須與 graph.json 同版本——
+    # 台帳斷了，抽取檔與訓練圖譜的跨圖譜參照就掛不回法規）。訓練成果不在這裡，見 training/。
+    ("graphify-out/*", SHARED),
     ("governance/*", USER),
     ("practice_notes/*", USER),
     ("training/*", USER),

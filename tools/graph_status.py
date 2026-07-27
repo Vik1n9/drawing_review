@@ -34,9 +34,10 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 try:
-    from tools import practice_note_graph, training_graph_build
+    from tools import practice_note_graph, regulation_graph_build, training_graph_build
 except ImportError:
     import practice_note_graph  # noqa: F401  （其他模組沿用 graph_status.practice_note_graph）
+    import regulation_graph_build
     import training_graph_build
 
 FINGERPRINT_PATH = "graphify-out/source_fingerprint.json"
@@ -183,7 +184,7 @@ def evaluate_regulation(root="."):
         return {"state": "no_baseline", "source_count": len(current),
                 "diff": {"added": sorted(current), "removed": [], "changed": []},
                 "stamped_at": None, "untracked_sources": untracked,
-                "excluded_notes": []}
+                "excluded_notes": [], "semantic_layer": regulation_graph_build.check(root)}
     changes = diff_sources(doc.get("sources", {}), current)
     if untracked:
         state = "untracked_sources"
@@ -191,9 +192,13 @@ def evaluate_regulation(root="."):
         state = "stale"
     else:
         state = "fresh"
+    # 語意層只是「建議重抽」——重建只增不減，沒重抽也不會弄丟既有語意，
+    # 所以它不當關卡，只在輸出裡提醒。
+    semantic = regulation_graph_build.check(root)
     return {"state": state, "source_count": len(current), "diff": changes,
             "stamped_at": doc.get("stamped_at"), "untracked_sources": untracked,
-            "excluded_notes": doc.get("practice_notes_excluded") or []}
+            "excluded_notes": doc.get("practice_notes_excluded") or [],
+            "semantic_layer": semantic}
 
 
 # ---------------------------------------------------------------------------
@@ -242,6 +247,15 @@ def evaluate(root="."):
     }
 
 
+def _semantic_hint(result):
+    pending = (result.get("semantic_layer") or {}).get("pending") or []
+    if not pending:
+        return []
+    return [f"ℹ️ 有 {len(pending)} 個切塊的條文改過、語意層還沒重抽"
+            "（既有語意不會因此消失；要補就跑 "
+            "python3 tools/regulation_graph_build.py plan）"]
+
+
 def format_regulation(result):
     lines = ["== 法規圖譜 =="]
     if result["state"] == "fresh":
@@ -250,6 +264,7 @@ def format_regulation(result):
         if result["excluded_notes"]:
             lines.append(f"⚠️ 上次蓋章時排除了 {len(result['excluded_notes'])} 則實務註解："
                          f"{'、'.join(result['excluded_notes'])}")
+        lines.extend(_semantic_hint(result))
         return "\n".join(lines)
 
     if result["state"] == "no_baseline":
@@ -273,6 +288,7 @@ def format_regulation(result):
     for label, key in (("新增", "added"), ("刪除", "removed"), ("變更", "changed")):
         for path in diff[key]:
             lines.append(f"  [{label}] {path}")
+    lines.extend(_semantic_hint(result))
     lines.append(f"→ {REBUILD_HINT}")
     return "\n".join(lines)
 

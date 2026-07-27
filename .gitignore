@@ -48,5 +48,7 @@ graphify-out/.graphify_analysis.json
 graphify-out/.graphify_incremental.json
 graphify-out/.graphify_old.json
 graphify-out/.graphify_cached.json
+# 重建的中間產物：rebuild 預設寫這裡，verify 全綠後才以 --commit 覆寫 graph.json
+graphify-out/graph.rebuilt.json
 graphify-out/.graphify_uncached.txt
 graphify-out/.graphify_chunk_*.json

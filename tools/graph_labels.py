@@ -179,9 +179,29 @@ _ARTICLE_MENTION = re.compile(
     r"|第\s*(?:[0-9０-９]+|[〇零一二三四五六七八九十百千]+)\s*條(?:\s*之\s*(?:[0-9０-９]+|[〇零一二三四五六七八九十百千]+))?)"
 )
 
-# 判斷「這個條號是不是掛在別部法規底下」時，往前看的字數。
-# 法名與條號之間最多隔幾個字（例：`依消防法第六條`、`建築技術規則第九十九條`）。
-_EXTERNAL_LOOKBEHIND = 12
+# 指本法典自己的說法。與外部法名一起參與「最近的法名標記說了算」的判定。
+SELF_LAW_NAMES = ("本標準", "本辦法", "本規則")
+
+# 往前看多少字找法名標記。實測最遠的一例是
+# `建築技術規則建築設計施工篇第八十八條`——法名 6 字、中間還隔 7 字，
+# 固定 12 字的視窗會漏掉它而生出一條指向本標準第 88 條的假邊。
+_LAW_LOOKBEHIND = 24
+
+
+def governing_law(text, position, window=_LAW_LOOKBEHIND):
+    """這個位置的條號歸哪部法管：`external`／`self`／None（沒有線索）。
+
+    取**最近的**法名標記，而不是「視窗內有沒有出現過外部法名」——
+    `本標準依消防法（以下簡稱本法）第六條` 與 `本標準第19條` 的差別就在誰比較近。
+    """
+    segment = text[max(0, position - window):position]
+    best = None
+    for kind, names in (("external", EXTERNAL_LAW_NAMES), ("self", SELF_LAW_NAMES)):
+        for name in names:
+            index = segment.rfind(name)
+            if index >= 0 and (best is None or index > best[0]):
+                best = (index, kind)
+    return best[1] if best else None
 
 
 def find_article_refs(text, exclude_external=True):
@@ -195,10 +215,8 @@ def find_article_refs(text, exclude_external=True):
     text = normalize_text(text)
     found = []
     for match in _ARTICLE_MENTION.finditer(text):
-        if exclude_external:
-            window = text[max(0, match.start() - _EXTERNAL_LOOKBEHIND):match.start()]
-            if any(name in window for name in EXTERNAL_LAW_NAMES):
-                continue
+        if exclude_external and governing_law(text, match.start()) == "external":
+            continue
         number = parse_article_ref(match.group(0))
         if number and number not in found:
             found.append(number)

@@ -420,7 +420,8 @@ def status(root="."):
         "practice_notes_staging": staging_notes,
         "graph": graph,
         "graph_pending": pending,
-        "ready": graph["state"] == "fresh" and not pending,
+        # 兩個圖譜都要跟上才算可續行——但它們各自獨立，訊息會分開講是哪一個卡住。
+        "ready": graph["exit_code"] == 0 and not pending,
     }
 
 
@@ -436,7 +437,10 @@ def format_status(result):
     lines.append(f"規則庫：{result['unverified_rules']} 條尚未逐條確認（verified: false）"
                  " —— 跑 python3 tools/verification_sheet.py list 列給使用者確認")
     notes_state = (result["graph"].get("notes") or {}).get("state", "covered")
-    merged_mark = {"covered": "✅ 已納入圖譜", "uncovered": "⛔ 尚未併入圖譜（查圖譜查不到）"}
+    merged_mark = {"covered": "✅ 已納入訓練圖譜",
+                   "not_built": "⚠️ 訓練圖譜尚未建置",
+                   "absent": "⛔ 訓練圖譜尚未建置（查圖譜查不到）",
+                   "uncovered": "⛔ 訓練圖譜未跟上（查圖譜查不到）"}
     mark = f"（{merged_mark.get(notes_state, notes_state)}）" if result["practice_notes_active"] else ""
     lines.append(f"實務註解（active）：{result['practice_notes_active']} 則{mark}"
                  " —— check-gap 會自動比對；引用時須同時列出所補充的法條與註解 ID")
@@ -452,22 +456,30 @@ def format_status(result):
                      f"蓋章 {graph['stamped_at'] or '未記錄'}）")
     elif graph["state"] == "no_baseline":
         lines.append("法規圖譜：⚠️ 尚未建立指紋基準 —— 先確認圖譜為當前規則庫所建，"
-                     "再跑 python3 tools/graph_status.py stamp")
-    elif graph["state"] == "notes_missing":
-        lines.append("法規圖譜：⛔ 實務註解未納入 —— 來源檔沒變，但註解不在圖譜裡，"
-                     "審圖查圖譜會查不到這些訓練成果")
-        lines.append(f"  → {graph_status.practice_note_graph.MERGE_HINT}")
-        lines.append("    合併後重新 python3 tools/graph_status.py stamp 蓋章")
+                     "再跑 python3 tools/graph_status.py stamp --graph regulation")
     else:
         total = sum(len(v) for v in graph["diff"].values())
         lines.append(f"法規圖譜：⛔ 已過期（{total} 個來源檔異動）"
                      " —— 查圖譜會查到舊資料，續行前先補建")
         lines.append(f"  → {graph_status.REBUILD_HINT}")
+
+    training = (graph.get("training") or {}).get("coverage") or {}
+    if training.get("state") == "covered":
+        lines.append(f"訓練圖譜：✅ 跟上（實務註解 {training['active']} 則、"
+                     f"markdown 筆記 {training['entries']} 則）")
+    elif training.get("state") == "not_built":
+        lines.append(f"訓練圖譜：⚠️ 尚未建置（倉庫已有 {training['entries']} 則筆記可入圖譜）"
+                     " —— python3 tools/training_graph_build.py build")
+    elif training:
+        lines.append("訓練圖譜：⛔ 未跟上素材 —— 審圖查圖譜會查不到這些訓練成果")
+        lines.append(f"  → {graph_status.TRAINING_HINT}")
+
     if result["graph_pending"]:
         lines.append(f"⛔ 存在 {GRAPH_PENDING_PATH}：上次訓練的圖譜自動重建未完成，必須補建後刪除此旗標")
 
     lines.append("✅ 可續行後續工作流程" if result["ready"]
-                 else "⛔ 圖譜未跟上規則庫與註解庫：補建圖譜、併入註解層並蓋章後再續行")
+                 else "⛔ 有圖譜未跟上素材：依上方指示補建該圖譜後再續行"
+                      "（兩個圖譜各自獨立，通常只需要更新其中一個）")
     return "\n".join(lines)
 
 

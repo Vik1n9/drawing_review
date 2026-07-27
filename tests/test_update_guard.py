@@ -168,6 +168,16 @@ class ProtectedScopeTest(GuardTestCase):
         self.assertEqual(USER, guard.owner_for("input/案件/圖.dxf"))
         self.assertEqual(USER, guard.owner_for("待確認事項.md"))
 
+    def test_training_graph_belongs_to_the_user_not_upstream(self):
+        """底線 6：訓練成果不得住在會被上游覆寫的地段。
+
+        分家前實務註解是併進 graphify-out/graph.json（SHARED）的，等於使用者的
+        訓練成果放在共編檔裡。訓練圖譜必須是 USER，restore 才不敢整檔蓋回去。
+        """
+        self.assertEqual(USER, guard.owner_for("training/graph.json"))
+        self.assertEqual(USER, guard.owner_for("training/graph_extractions/x.json"))
+        self.assertEqual(USER, guard.owner_for("practice_notes/active/PN-1.json"))
+
 
 class StateMachineTest(GuardTestCase):
 

@@ -16,6 +16,10 @@ __pycache__/
 !/training/inbox/
 /training/inbox/*
 !/training/inbox/.gitkeep
+# 訓練圖譜是**衍生**產物，且落在使用者所有的分區（update_guard 的 training/* → USER）。
+# 上游不出貨它：出貨了就會與使用者自己建的版本互相覆蓋，正是底線 6 要避免的事。
+# 由 tools/training_graph_build.py 從素材重建，只要幾毫秒。
+/training/graph.json
 /practice_notes/active/*.json
 /practice_notes/staging/*.json
 /practice_notes/graph_extractions/*.json

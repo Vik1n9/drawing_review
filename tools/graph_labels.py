@@ -22,41 +22,52 @@
 """
 
 import re
-import unicodedata
 from collections import namedtuple
 
 # ---------------------------------------------------------------------------
 # 文字正規化
 
-# NFKC 處理不掉的空白：全形空格、NBSP、窄 NBSP、零寬字元。
+# 看不見卻會讓字串比對失敗的字元：全形空格、NBSP、窄 NBSP、零寬字元。
 # 零寬字元特別重要——它從 PDF／網頁複製條文時很常混進來，肉眼完全看不出來，
 # 卻會讓 label 對不上而整條邊被丟掉。
 _INVISIBLE = "　  ​‌‍﻿"
 
-# 括號寫法統一為全形——圖譜既有 label 用的是全形（例：`甲類（一）電影片映演場所`）。
-# NFKC 會把全形括號拆成半形，所以正規化之後要轉回來，否則 label 對不上。
+# 全形英數 → 半形。**刻意不用 NFKC**：NFKC 會連全形標點一起轉掉
+# （`，`→`,`、`；`→`;`、`：`→`:`），而本專案的產出是繁體中文審圖報告，
+# 標點被改成半形是品質倒退。這裡只收斂「同一個字的不同寬度」，不動標點。
+_WIDTH_TABLE = str.maketrans(
+    "０１２３４５６７８９"
+    "ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ"
+    "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ",
+    "0123456789"
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    "abcdefghijklmnopqrstuvwxyz")
+
+# 括號寫法統一——圖譜既有 label 用全形（例：`甲類（一）電影片映演場所`）。
+# 只在**比對鍵**上做，不動原文，免得顯示用的文字被改寫。
 _PAREN_TABLE = str.maketrans({"(": "（", ")": "）"})
 
 
 def normalize_text(value):
-    """一般文字正規化：NFKC → 統一括號 → 去除不可見字元 → 摺疊空白為單一半形空格。
+    """一般文字正規化：全形英數轉半形 → 去除不可見字元 → 摺疊空白為單一半形空格。
 
+    **標點原樣保留**——這個函式的輸出會直接顯示給使用者看。
     給「要保留詞間空白」的場合用（例：`第 18 條官方完整條文附件，第 1 頁`）。
     """
-    text = unicodedata.normalize("NFKC", str(value))
-    text = text.translate(_PAREN_TABLE)
+    text = str(value).translate(_WIDTH_TABLE)
     for ch in _INVISIBLE:
         text = text.replace(ch, " ")
     return re.sub(r"\s+", " ", text).strip()
 
 
 def label_key(value):
-    """label 的比對鍵：`normalize_text` 之後**移除所有空白**並轉小寫。
+    """label 的比對鍵：正規化後**移除所有空白**、統一括號、轉小寫。
 
-    `第 19 條` 與 `第19條` 必須是同一個鍵；ASCII 大小寫差異（`README` vs `readme`）
-    也不該讓 label 對不上。中日文不受 lower() 影響。
+    `第 19 條` 與 `第19條` 必須是同一個鍵；`甲類（一）` 與 `甲類(一)` 也是；
+    ASCII 大小寫差異（`README` vs `readme`）同樣不該讓 label 對不上。
     """
-    return re.sub(r"\s+", "", normalize_text(value)).lower()
+    text = normalize_text(value).translate(_PAREN_TABLE)
+    return re.sub(r"\s+", "", text).lower()
 
 
 # ---------------------------------------------------------------------------
@@ -154,6 +165,44 @@ def article_label(value):
     """任何條號寫法 → 圖譜 label 的正典寫法 `第19條`／`第146-5條`；解析不到回 None。"""
     number = parse_article_ref(value)
     return f"第{number}條" if number else None
+
+
+# 條文與筆記裡會引用「別部法規」的條號。`本標準依消防法第六條第一項規定訂定之`
+# 若照抽，會生出一條指向本標準第6條的假邊——那是完全不同的一條條文。
+EXTERNAL_LAW_NAMES = ("消防法", "本法", "建築法", "建築技術規則", "公寓大廈管理條例",
+                      "災害防救法", "石油管理法", "民法", "刑法", "行政程序法",
+                      "公共危險物品及可燃性高壓氣體製造儲存處理場所設置標準暨安全管理辦法")
+
+# 自由文字中的條號引用。中文數字與阿拉伯數字都要抓，並允許「之N」子條號。
+_ARTICLE_MENTION = re.compile(
+    r"(?:§\s*\d+(?:\s*[-之]\s*\d+)?"
+    r"|第\s*(?:[0-9０-９]+|[〇零一二三四五六七八九十百千]+)\s*條(?:\s*之\s*(?:[0-9０-９]+|[〇零一二三四五六七八九十百千]+))?)"
+)
+
+# 判斷「這個條號是不是掛在別部法規底下」時，往前看的字數。
+# 法名與條號之間最多隔幾個字（例：`依消防法第六條`、`建築技術規則第九十九條`）。
+_EXTERNAL_LOOKBEHIND = 12
+
+
+def find_article_refs(text, exclude_external=True):
+    """從自由文字中找出**本法典**的條號引用，回傳正典條號清單（去重、保序）。
+
+    `exclude_external` 會濾掉掛在別部法規名稱底下的條號（見 EXTERNAL_LAW_NAMES）——
+    這是確定性引用抽取最容易出的錯：`本標準依消防法第六條…` 會生出一條假的內部引用。
+    """
+    if not text:
+        return []
+    text = normalize_text(text)
+    found = []
+    for match in _ARTICLE_MENTION.finditer(text):
+        if exclude_external:
+            window = text[max(0, match.start() - _EXTERNAL_LOOKBEHIND):match.start()]
+            if any(name in window for name in EXTERNAL_LAW_NAMES):
+                continue
+        number = parse_article_ref(match.group(0))
+        if number and number not in found:
+            found.append(number)
+    return found
 
 
 def article_sort_key(value):
@@ -276,6 +325,22 @@ class LabelIndex:
 
     def labels(self):
         return set(self._by_label) | set(self._declared)
+
+    def with_declared(self, labels):
+        """衍生一份索引，額外認得這些「尚未進圖譜」的概念 label。
+
+        驗證抽取檔時要用：抽取檔自己宣告的 concepts 也是合法的 edge target，
+        但那些概念還不在圖譜裡，不該污染呼叫端持有的索引。
+        """
+        derived = LabelIndex()
+        derived._by_label = {k: list(v) for k, v in self._by_label.items()}
+        derived._by_key = {k: list(v) for k, v in self._by_key.items()}
+        derived._by_article = {k: list(v) for k, v in self._by_article.items()}
+        derived._label_by_id = dict(self._label_by_id)
+        derived._declared = dict(self._declared)
+        for label in labels:
+            derived.declare(label)
+        return derived
 
     @classmethod
     def from_labels(cls, labels):

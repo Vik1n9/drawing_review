@@ -10,7 +10,9 @@ from tools.regulation_graph import (
     article_label,
     article_numbers,
     load_graph,
+    load_graphs,
     main,
+    sibling_training_graph,
 )
 
 PREFIX = "rules_core_1各類場所消防安全設備設置標準"
@@ -111,7 +113,9 @@ class GraphQueryTest(unittest.TestCase):
     def test_missing_graph_file_exits_with_rebuild_hint(self):
         with self.assertRaises(SystemExit) as ctx:
             main(["--graph", "/nonexistent/graph.json", "neighbors", "--article", "§28"])
-        self.assertIn("graphify rules", str(ctx.exception))
+        # 重建已收回第一方——訊息不得再把使用者指向裝不起來的 graphify
+        self.assertIn("regulation_graph_build.py", str(ctx.exception))
+        self.assertNotIn("graphify", str(ctx.exception))
 
 
 def graph_with_practice_note():
@@ -196,11 +200,72 @@ class PracticeNoteQueryTest(unittest.TestCase):
 
 class RealGraphTest(unittest.TestCase):
     def test_repo_graph_answers_the_documented_queries(self):
-        nodes, out, into = load_graph(DEFAULT_GRAPH)
+        nodes, out, into = load_graphs(DEFAULT_GRAPH)
         self.assertGreater(len(nodes), 100)
         with contextlib.redirect_stdout(io.StringIO()) as buffer:
             main(["--format", "json", "articles", "--equipment", "排煙設備"])
         self.assertIn("§28", json.loads(buffer.getvalue())["articles"])
+
+
+class TwoGraphLoadTest(unittest.TestCase):
+    """查詢時把兩個圖譜合併在記憶體裡——它們在磁碟上始終是分開的兩個檔。"""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        root = Path(self.tmp.name)
+        self.regulation = root / "graphify-out" / "graph.json"
+        self.regulation.parent.mkdir(parents=True)
+        self.regulation.write_text(json.dumps(fake_graph(), ensure_ascii=False), encoding="utf-8")
+        self.training = root / "training" / "graph.json"
+        self.training.parent.mkdir(parents=True)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def write_training(self, target_id, target_label="第28條"):
+        self.training.write_text(json.dumps({
+            "nodes": [{"id": "correction_x", "label": "某修正筆記",
+                       "layer": "review_correction", "entry_id": "correction_x",
+                       "summary": "摘要", "notice": "實務慣例，非法規條文"}],
+            "links": [{"source": "correction_x", "target": target_id,
+                       "target_label": target_label, "target_graph": "regulation",
+                       "relation": "supplements", "dangling": target_id is None}],
+        }, ensure_ascii=False), encoding="utf-8")
+
+    def test_training_graph_is_absent_without_error(self):
+        nodes, _, _ = load_graphs(str(self.regulation))
+        self.assertNotIn("correction_x", nodes)
+
+    def test_training_nodes_join_the_query(self):
+        self.write_training(f"{PREFIX}_第28條")
+        nodes, _, into = load_graphs(str(self.regulation))
+        self.assertIn("correction_x", nodes)
+        self.assertTrue(any(e["source"] == "correction_x"
+                            for e in into[f"{PREFIX}_第28條"]))
+
+    def test_stale_target_id_is_recovered_through_the_label(self):
+        """法規圖譜重建後 id 變了，訓練成果仍靠 target_label 掛回去。"""
+        self.write_training("id_from_a_previous_rebuild")
+        _, _, into = load_graphs(str(self.regulation))
+        self.assertTrue(any(e["source"] == "correction_x"
+                            for e in into[f"{PREFIX}_第28條"]))
+
+    def test_dangling_edge_is_skipped_but_the_node_survives(self):
+        self.write_training(None, target_label="第999條")
+        nodes, out, _ = load_graphs(str(self.regulation))
+        self.assertIn("correction_x", nodes)
+        self.assertEqual([], out.get("correction_x", []))
+
+    def test_only_regulation_excludes_training_nodes(self):
+        self.write_training(f"{PREFIX}_第28條")
+        nodes, _, _ = load_graphs(str(self.regulation), only="regulation")
+        self.assertNotIn("correction_x", nodes)
+
+    def test_training_graph_follows_the_regulation_graph_repo(self):
+        """--graph 指到別的倉庫時，訓練圖譜必須跟著走，不能混入當前目錄的成果。"""
+        self.assertEqual(str(self.training),
+                         sibling_training_graph(str(self.regulation)))
+
 
 
 if __name__ == "__main__":

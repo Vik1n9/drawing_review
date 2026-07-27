@@ -229,39 +229,53 @@ def step_pending(env):
 def step_graph(env):
     py = env["interpreter"]
     graph = graph_status.evaluate(".")
-    state_name = graph["state"]
+    regulation = graph["regulation"]
+    training = graph["training"]
 
-    lines = ["查詢現在就能用——graph.json 已在倉庫內，"
-             "regulation_graph.py 只用標準庫，不必安裝任何東西"]
+    lines = ["兩個圖譜：法規圖譜（條文關聯）與訓練圖譜（你確認過的實務見解），"
+             "審圖時會同時查；查詢只用標準庫，不必安裝任何東西"]
     commands = [command(
         f"{py} tools/regulation_graph.py neighbors --article §24", READ)]
 
-    if env["graphify"]:
-        lines.append("graphify 已安裝，可重建圖譜")
-    else:
-        lines.append("graphify 未安裝——只查詢法規的話不用裝；"
-                     "要重建圖譜（改了法規全文）才需要")
-        install = ("bash tools/setup.sh --with-graph" if env["has_bash"]
-                   else f"{py} -m pip install graphifyy")
-        commands.append(command(install, WRITE, optional=True))
-
-    if state_name == "fresh":
-        lines.append(f"新鮮度：圖譜與 {graph['source_count']} 個來源檔一致"
-                     f"（蓋章時間：{graph.get('stamped_at') or '—'}）")
+    if regulation["state"] == "fresh":
+        lines.append(f"法規圖譜：✅ 與 {regulation['source_count']} 個來源檔一致"
+                     f"（蓋章時間：{regulation.get('stamped_at') or '—'}）")
         step_state = "ready"
-    elif state_name == "no_baseline":
-        lines.append("新鮮度：尚未建立基準——圖譜沒蓋章過，先重建再蓋章")
+    elif regulation["state"] == "no_baseline":
+        lines.append("法規圖譜：⚠️ 尚未建立基準——沒蓋章過，先重建再蓋章")
         step_state = "blocked"
     else:
-        diff = graph.get("diff") or {}
+        diff = regulation.get("diff") or {}
         changed = sum(len(diff.get(k, [])) for k in ("added", "removed", "changed"))
-        lines.append(f"新鮮度：{state_name}——來源檔有 {changed} 處異動未反映到圖譜，"
+        lines.append(f"法規圖譜：⛔ 來源檔有 {changed} 處異動未反映到圖譜，"
                      "此時查到的關聯可能不是最新的")
         lines.append(graph_status.REBUILD_HINT)
         step_state = "blocked"
 
+    coverage = training["coverage"]
+    if coverage["state"] == "covered":
+        lines.append(f"訓練圖譜：✅ 實務註解 {coverage['active']} 則、"
+                     f"markdown 筆記 {coverage['entries']} 則都查得到")
+    elif coverage["state"] == "not_built":
+        lines.append(f"訓練圖譜：尚未建置——倉庫已有 {coverage['entries']} 則審圖筆記與"
+                     "判斷慣例，建起來審圖時就查得到")
+        commands.append(command(f"{py} tools/training_graph_build.py build", WRITE,
+                                optional=True))
+    else:
+        lines.append("訓練圖譜：⛔ 沒跟上素材——審圖查圖譜會查不到你的訓練成果")
+        commands.append(command(f"{py} tools/training_graph_build.py build", WRITE))
+        step_state = "blocked"
+
+    # graphify 排在最後，而且是純加值：重建圖譜已不需要它。
+    if not env["graphify"]:
+        lines.append("graphify 未安裝——不影響查詢，也不影響重建（重建已內建於本倉庫、"
+                     "只用標準庫）；它只用來重繪 graph.html 與提供 query/explain/path CLI")
+        install = ("bash tools/setup.sh --with-graph" if env["has_bash"]
+                   else f"{py} -m pip install graphifyy")
+        commands.append(command(install, WRITE, optional=True))
+
     return step(
-        "法規圖譜", step_state,
+        "法規圖譜與訓練圖譜", step_state,
         "圖譜只是索引與導覽，用來定位條號與關聯；門檻數值與計算一律回法條原文與 "
         "fire_code_calc.py，不得引用圖譜節點標題當法規數值",
         lines, commands,

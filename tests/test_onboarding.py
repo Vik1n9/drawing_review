@@ -84,13 +84,27 @@ def stamp_fresh_graph(root):
     assert code == 0, f"stamp 失敗（結束碼 {code}）"
 
 
+def guard_result(state="no_local_data"):
+    """update_guard.evaluate() 的最小回傳形狀。"""
+    return {"state": state, "repo_path": "/tmp/測試", "baseline": "git",
+            "protected_count": 0, "local_count": 0, "local": [], "lost": [],
+            "drift": {"added": [], "changed": [], "removed": []},
+            "unlisted": [], "backup": None, "foreign_backups": [],
+            "backup_hint": "/tmp/測試-本機備份-20260727-120000.zip"}
+
+
 @contextlib.contextmanager
-def temp_repo(*, findings=None, fresh_graph=True, env=None, calc_ok=True):
+def temp_repo(*, findings=None, fresh_graph=True, env=None, calc_ok=True,
+              guard_state="no_local_data"):
     """臨時倉庫 ＋ 打樁掉外部相依，讓每個測試只驗一件事。
 
     onboarding 會 chdir 到 --root，所以結束時要把 cwd 還原。
+
+    `guard_snapshot` 一定要打樁：真的跑起來會去讀**使用者的家目錄**找備份索引，
+    測試不得碰真實家目錄，而且結果會隨執行環境浮動。
     """
-    original = (ob.check_env.probe, ob.run_calc, ob.training_snapshot, os.getcwd())
+    original = (ob.check_env.probe, ob.run_calc, ob.training_snapshot,
+                ob.guard_snapshot, os.getcwd())
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
         if findings is not None:
@@ -100,11 +114,14 @@ def temp_repo(*, findings=None, fresh_graph=True, env=None, calc_ok=True):
         ob.check_env.probe = lambda: dict(env or ALL_READY_ENV)
         ob.run_calc = lambda args, timeout=90: (calc_ok, "" if calc_ok else "測試用失敗")
         ob.training_snapshot = lambda: {}
+        ob.guard_snapshot = lambda: (guard_result(guard_state)
+                                     if guard_state else None)
         try:
             yield root
         finally:
-            (ob.check_env.probe, ob.run_calc, ob.training_snapshot, _) = original
-            os.chdir(original[3])
+            (ob.check_env.probe, ob.run_calc, ob.training_snapshot,
+             ob.guard_snapshot, _) = original
+            os.chdir(original[4])
 
 
 def steps_by_title(result):
@@ -301,8 +318,45 @@ class OnboardingContractTest(unittest.TestCase):
         with temp_repo() as root:
             result = self.build(root)
         self.assertEqual(
-            ["待確認事項裁示", "法規圖譜", "環境工具", "規則庫健康", "操作簡介"],
+            ["本機成果保護", "待確認事項裁示", "法規圖譜", "環境工具",
+             "規則庫健康", "操作簡介"],
             [s["title"] for s in result["steps"]])
+
+    def test_local_data_protection_comes_first(self):
+        """排序理由是可逆性：疑義表、圖譜、套件事後都補得回來，成果被蓋掉不行。"""
+        with temp_repo(findings=[finding("D-1", "r1")], fresh_graph=False) as root:
+            result = self.build(root)
+        self.assertEqual("本機成果保護", result["steps"][0]["title"])
+
+    def test_suspected_loss_blocks_the_walkthrough(self):
+        with temp_repo(guard_state="suspected_loss") as root:
+            result = self.build(root)
+        guard_step = steps_by_title(result)["本機成果保護"]
+        self.assertEqual("blocked", guard_step["state"])
+        self.assertIn(1, result["outstanding"])
+        self.assertFalse(result["ready"])
+
+    def test_clean_install_does_not_show_a_red_light(self):
+        """全新使用者第一步就卡住的話，導引沒有人會走完。"""
+        with temp_repo() as root:
+            result = self.build(root)
+        self.assertEqual("ready", steps_by_title(result)["本機成果保護"]["state"])
+
+    def test_guard_failure_degrades_instead_of_crashing(self):
+        """守門工具自己壞掉，不該讓使用者連其他狀態都看不到。"""
+        with temp_repo(guard_state=None) as root:
+            result = self.build(root)
+        guard_step = steps_by_title(result)["本機成果保護"]
+        self.assertEqual("ready", guard_step["state"])
+        self.assertTrue(guard_step["lines"])
+
+    def test_snapshot_is_tagged_as_a_write_command(self):
+        with temp_repo(guard_state="unprotected") as root:
+            result = self.build(root)
+        guard_step = steps_by_title(result)["本機成果保護"]
+        snapshot = [c for c in guard_step["commands"] if "snapshot" in c["cmd"]]
+        self.assertTrue(snapshot, "尚未備份時沒給出備份命令")
+        self.assertEqual(WRITE, snapshot[0]["kind"])
 
 
 class ContractFilesStayLeanTest(unittest.TestCase):
@@ -366,6 +420,10 @@ class ContractFilesStayLeanTest(unittest.TestCase):
         "verified: false": ("skills/code-requirements.md",
                             "skills/mixed-use-review.md"),
         "Verify RED": ("skills/red-green.md",),
+        # 底線 6 只講「不得執行任何會還原或清除工作目錄的 git 操作」；
+        # 逐條命令清單留在 skill，契約塞不下也不該塞
+        "reset --hard": ("skills/safe-update.md",),
+        "git clean": ("skills/safe-update.md",),
     }
 
     def test_demoted_rules_have_a_home(self):

@@ -1,7 +1,7 @@
 # 開場導引（載入本倉庫後的第一件事）
 
 把剛載入本倉庫的使用者帶到「可以開始審圖」的狀態：診斷環境與資料狀態，
-依序引導他裁示疑義表、確認法規圖譜、補齊環境套件，最後印出操作簡介。
+依序引導他保住本機成果、裁示疑義表、確認法規圖譜、補齊環境套件，最後印出操作簡介。
 
 觸發時機：**只有 `python3 tools/onboarding.py status` 的結束碼為 `2` 時才需要讀本檔。**
 結束碼 `0` 代表導引已經走完，直接開始審圖即可——不要載入本檔、不要把導引內容講給使用者。
@@ -18,7 +18,7 @@ Claude Code 由 SessionStart hook 自動跑出診斷；其他 AI 工具（Codex�
 ## 前置檢查
 
 1. 本流程**不做任何法規判斷**（審圖最高原則 2／4／5）——只做狀態診斷與流程引導
-2. 本流程**不得代替使用者裁示**任何規則參數（見第一步）
+2. 本流程**不得代替使用者裁示**任何規則參數（見第二步）
 3. 不需要先安裝任何東西：`tools/onboarding.py` 只用 Python 標準庫
 
 ## 工具中立條款（每一步都適用）
@@ -47,11 +47,12 @@ Claude Code 由 SessionStart hook 自動跑出診斷；其他 AI 工具（Codex�
 | `onboarding.py status` / `intro` | `bash tools/setup.sh`（安裝套件，動到他的電腦） |
 | `check_env.py` | `bash tools/setup.sh --with-graph`（安裝 graphify） |
 | `dwg_guide.py check` | `dwg_guide.py convert`（寫出轉檔產物） |
-| `dxf_parse.py` | |
+| `dxf_parse.py` | `update_guard.py snapshot`（寫到他電腦的其他位置） |
 | `pending_review.py list` / `show` | `pending_review.py decide` / `apply`（改規則庫） |
 | `graph_status.py check` | `pending_review.py render`（改倉庫檔案） |
 | `fire_code_calc.py self-test` / `run-tests --strict` | 圖譜重建與 `graph_status.py stamp` |
-| `verification_sheet.py list` / `discrepancies` | 任何 `git` 寫入操作 |
+| `verification_sheet.py list` / `discrepancies` | `update_guard.py restore` / `commit` / `install` |
+| `update_guard.py check` / `list` / `diff` | 任何 `git` 寫入操作（程序見 `safe-update.md`） |
 
 `status` 的輸出已把每條命令標成`（唯讀，可直接跑）`或`（寫入，需你同意）`——照著標記走即可。
 
@@ -69,7 +70,33 @@ python3 tools/onboarding.py status
 **只把待處理的步驟講給使用者**，已就緒（✅）的不必逐項朗誦——他不需要知道系統內部有幾個檢查。
 需要精確欄位時用 `--format json`。
 
-### 第一步 待確認事項裁示（最先處理）
+### 第一步 本機成果保護（最先處理）
+
+排在最前面的理由是**可逆性**，不是重要性：疑義表沒裁示、圖譜過期、套件沒裝，
+事後都補得回來；使用者的訓練成果（裁示紀錄、實務見解、案件圖面）被覆蓋掉則救不回來。
+
+`status` 的這一步直接呈現 `update_guard.py check` 的結果，照狀態處理：
+
+| 狀態 | 意思 | 你要做的 |
+|---|---|---|
+| ✅ | 沒有本機成果，或成果都已備份 | 一句話帶過，往下走 |
+| ⚪ 尚未備份／備份過期 | 有成果但沒備份，或備份後又改了東西 | 不擋審圖。告訴他「更新倉庫前記得先備份」，取得同意後跑 `snapshot` |
+| ⚪ 保護清單需複核 | 有檔案不屬於任何已知分區 | 這是給維護者的訊號，不是使用者的事——照 `check` 的提示回報即可 |
+| ⛔ 疑似成果遺失 | 備份裡的成果不見了或被還原成上游版本 | **這是阻擋項**：先不要再跑任何 `git` 命令，改走 `skills/safe-update.md` 的救援程序 |
+| ⛔ 這台電腦有先前的備份 | 倉庫是全新的，但索引找得到舊備份 | 通常是重新下載或重裝過。用 `list`／`diff` 給他看，問他要不要救回 |
+
+```bash
+python3 tools/update_guard.py check      # 唯讀
+python3 tools/update_guard.py snapshot --note "更新前"   # 寫入，先取得同意
+```
+
+`snapshot` 會寫到**倉庫外面**的同層目錄——`git clean`、重裝、刪目錄都動不到它。
+執行後把絕對路徑唸給使用者聽，並告訴他「這是你的成果，更新動不到這個檔案」。
+
+**使用者提到「更新」「新版」「重新下載」時，一律先讀 `skills/safe-update.md`**，
+不要自行操作 git。禁止清單與救援程序都在那裡。
+
+### 第二步 待確認事項裁示
 
 規則庫裡有些參數與現行條文比對出差異，差異寫在 `governance/待確認清單/`，
 並以 `待確認事項.md` 呈現。這些**必須由使用者本人（他就是消防專業人員）逐則裁示**。
@@ -116,7 +143,7 @@ python3 tools/pending_review.py apply --all --by "{確認人}"
 python3 tools/fire_code_calc.py self-test && python3 tools/fire_code_calc.py run-tests --strict
 ```
 
-### 第二步 法規圖譜
+### 第三步 法規圖譜
 
 **先講清楚「查詢不用裝任何東西」**——`graphify-out/graph.json` 已在倉庫內，
 `tools/regulation_graph.py` 只用標準庫。使用者只是要查法規的話，這一步什麼都不用做：
@@ -140,7 +167,7 @@ python3 tools/regulation_graph.py neighbors --article §24
 **邊界**：圖譜只是索引與導覽，用來定位條號與關聯。門檻數值與計算一律回法條原文與
 `fire_code_calc.py`，不得引用圖譜節點標題當作法規數值。
 
-### 第三步 環境工具
+### 第四步 環境工具
 
 **這一步永遠是 ✅，不是關卡。** 多數使用者裝不了套件，把他卡在「還不能開始」是錯的。
 `status` 給的是**能力矩陣**，照著講「現在能做什麼」，不要複述套件名稱。
@@ -165,7 +192,7 @@ python3 tools/regulation_graph.py neighbors --article §24
 裝完重跑 `python3 tools/check_env.py` 確認。裝不起來是常態，不是失敗——
 上表每一項都有走得通的路。
 
-### 第四步 規則庫健康
+### 第五步 規則庫健康
 
 `status` 已跑過 `self-test` 與 `run-tests --strict`。
 
@@ -176,7 +203,7 @@ python3 tools/regulation_graph.py neighbors --article §24
 另外 `status` 會報「還有 N 條規則尚未逐條確認」——這些不阻擋審圖，但輸出時必須附
 「本參數尚未逐條確認」警語。使用者想一次清掉的話走 `verification_sheet.py list`。
 
-### 第五步 顯示操作簡介
+### 第六步 顯示操作簡介
 
 ```bash
 python3 tools/onboarding.py intro
@@ -203,6 +230,9 @@ python3 tools/onboarding.py intro
 - **未經同意就跑 `setup.sh`**——那會動到他自己的電腦環境。
 - **硬貼 `python3` 或斜線指令**——先看 `status` 回報的 `interpreter`；斜線指令只有 Claude Code 有。
 - **把 ✅ 的步驟也逐項朗誦**——使用者只需要知道還有什麼要做。
-- **跳過第五步**——操作簡介是整條流程的目的，不是可選的收尾。
+- **跳過第六步**——操作簡介是整條流程的目的，不是可選的收尾。
+- **未經同意就跑 `update_guard.py snapshot`**——它會寫到他電腦上倉庫以外的位置。
+- **看到本機成果的 ⛔ 還繼續往下走**——成果可能正在流失，先停下來走 `skills/safe-update.md`。
+- **使用者說「更新」就自己動手 `git pull`**——先讀 `skills/safe-update.md`，那裡有禁止清單。
 - **在導引過程中做法規判斷**——本流程只診斷狀態，任何應設／免設判斷都要走
   `/code-requirements`（或跟 AI 說「幫我算這個案件的設備需求」）與 `fire_code_calc.py`。

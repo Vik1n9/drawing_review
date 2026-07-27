@@ -6,6 +6,22 @@
 
 ---
 
+## 兩種取得方式，挑一種就好
+
+| | 給誰 | 怎麼拿 |
+|---|---|---|
+| **線2：安裝程式**（建議） | 消防專業人員，不必懂 git | 到 [Releases](https://github.com/Vik1n9/drawing_review/releases) 下載 `FireReview-{版本}-setup.exe`，雙擊執行、自己選一個安裝資料夾。裝完打開資料夾裡的「安裝完成-請把這段貼給你的AI.txt」，照著把那段話貼給你的 AI，它就會把那個資料夾當專案資料夾。不想安裝的話，同一頁也有免安裝的 `.zip` |
+| **線1：`git clone`** | 技術人員、要送 PR 的人 | 見下方「快速開始」 |
+
+> **Windows 會跳「已保護您的電腦」的藍色警告。** 那是因為安裝程式沒有買程式碼簽章憑證，
+> 不是偵測到病毒——點「其他資訊」→「仍要執行」即可。不放心就改用 `.zip`，內容完全相同。
+
+> **不論走哪一條，你的審圖成果都只存在你這台電腦。** 規則裁示、實務見解、案件圖面、
+> 交付物，全部在那個資料夾裡，沒有上傳到任何地方——所以**更新的方式錯了就救不回來**。
+> 要更新請看下面的「要更新到最新版？」。
+
+---
+
 ## 第一次使用？把這行貼給你的 AI
 
 不論你用的是 **Claude Code、Codex、OpenCode 或其他任何 AI 工具**，載入本倉庫後先跑這一行：
@@ -40,6 +56,29 @@ python3 tools/onboarding.py status
 
 ---
 
+## 要更新到最新版？先看這裡
+
+**你的訓練成果只存在你這台電腦，覆蓋掉不可逆。** 更新之前先跑這一行看看有什麼會被影響：
+
+```bash
+python3 tools/update_guard.py check      # 唯讀，隨時可跑
+python3 tools/update_guard.py snapshot --note "更新前"   # 備份到這個資料夾的外面
+```
+
+接著照你的取得方式：
+
+- **線2（安裝程式）**：到 Releases 下載新版，**裝到同一個資料夾**。安裝程式會先備份，
+  你沒改過的檔案直接更新，**你改過的檔案一律保住原檔**、上游新版另存成 `.上游新版`
+  讓你自己比對；你新增的案件圖面與實務見解完全不動。裝完會有一份「更新報告-日期.txt」
+- **線1（git）**：`python3 tools/update_guard.py commit` 之後再 `git pull --ff-only`
+
+> **給 AI 代理**：使用者說「更新」「拉最新的」「重新下載」時，**先讀 `skills/safe-update.md`**。
+> 在 `update_guard.py snapshot` 成功之前，`git reset --hard`、`git checkout -- .`、
+> `git restore`、`git clean`、以及刪目錄重新 clone **一律禁止**——那會抹掉使用者數月的成果，
+> 而且未提交的改動連 reflog 都救不回。Claude Code 另有 `PreToolUse` hook 會擋下這些命令。
+
+---
+
 ## 快速開始（任意 AI 代理 / 本地皆適用）
 
 > **給 AI 代理**：貼上本倉庫網址後，先讀 `AGENTS.md`（行為契約正本，跨 AI 工具共用；`CLAUDE.md` 只是指向它的指標），再依其中的路由表載入該階段的 `skills/*.md`。契約只放「載入任何 skill 之前就必須生效」的五條底線；**所有法規門檻與數量計算一律呼叫 `tools/fire_code_calc.py`，不得憑記憶或心算**。
@@ -50,6 +89,8 @@ python3 tools/onboarding.py status
    ```bash
    git clone https://github.com/Vik1n9/drawing_review.git && cd drawing_review
    ```
+   （不想碰 git 的話走線2 安裝程式，見最上方「兩種取得方式」。
+   之後要更新時**不要**用 `git pull` 以外的方式，程序見 `skills/safe-update.md`。）
 2. **確認環境能力**（不需要安裝任何東西——審圖主線全部零安裝）
    ```bash
    python3 tools/check_env.py   # 列出現在能做什麼、做不到的替代路徑

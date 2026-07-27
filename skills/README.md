@@ -14,6 +14,12 @@
 | `rules/article18_equipment_options.json` | ✅ | §18 各款可選設備對照 |
 | `skills/README.md`（本檔） | ❌ | 設計說明、維護規範 |
 
+`skills/safe-update.md` 也不在上表：它處理的是**更新倉庫與救回被蓋掉的成果**，
+與審圖 pipeline 無關。觸發時機是使用者說「更新」「拉最新的」「重新下載」，
+或 `tools/update_guard.py check` 回結束碼 2／3／4。它承接的是 `AGENTS.md` 底線 6——
+契約只放一句「未備份不得執行任何會還原或清除工作目錄的 git 操作」，
+逐條禁止命令與救援程序放在該 skill（契約有 30 行／2500 bytes 的預算上限）。
+
 `skills/onboarding.md` 不在上表：它是**入口導引**，不是 pipeline 的某個階段。
 使用者載入倉庫後由 `tools/onboarding.py status` 觸發（Claude Code 走 SessionStart hook、
 其他 AI 工具走 `AGENTS.md` 開場條文），負責把人帶到「可以開始審圖」的狀態——

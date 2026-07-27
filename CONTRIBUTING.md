@@ -20,7 +20,7 @@ python3 tools/onboarding.py status
 ```
 
 再跟你的 AI 說「照 `skills/onboarding.md` 帶我開始」，它會依序引導：
-① 待確認事項裁示 → ② 法規圖譜 → ③ 環境工具 → ④ 規則庫健康 → ⑤ 操作簡介。
+① 本機成果保護 → ② 待確認事項裁示 → ③ 法規圖譜 → ④ 環境工具 → ⑤ 規則庫健康 → ⑥ 操作簡介。
 
 導引的兩條安全底線：**唯讀檢查 AI 可直接跑；會改動系統的動作（安裝套件、回填裁示、重建圖譜）一律先說明並取得你的同意**，且 **AI 不得代替你裁示任何法規事項**。
 
@@ -41,10 +41,40 @@ python3 tools/onboarding.py status
 | 2 | `AGENTS.md`（行為契約**正本**；`CLAUDE.md` 只是指向它的指標） | Codex、OpenCode、Claude Code 等會讀代理指示檔的工具 |
 | 3 | `.claude/settings.json` 的 SessionStart hook | 僅 Claude Code——**加分自動化，不是機制本體** |
 
-兩條實作規範：
+三條實作規範：
 
 - **不得把導引綁在某家工具的專屬機制上。** 新增前置檢查時，入口一律是 `python3 tools/onboarding.py status`，不要只寫進 hook 或只寫進某一份代理指示檔
 - **面向使用者的文字不得只給斜線指令。** `/gap-analysis`、`/train` 這類指令只有 Claude Code 有；其他工具用自然語言＋`skills/*.md` 檔名。要寫斜線指令的話，只能作為附註
+- **新增的安全紅線三層都要涵蓋。** 只寫進 `.claude/settings.json` 的 `PreToolUse` hook 等於只保護 Claude Code 使用者；只寫進 `AGENTS.md` 則對不讀代理指示檔的工具無效。紅線本體放 `AGENTS.md`（受 30 行／2500 bytes 預算限制，逐條細節移到對應 skill）、程序放 `skills/`、`onboarding.py status` 給出狀態、hook 當加分層
+
+## 兩條發佈路線
+
+| 線 | 產物 | 給誰 | 更新方式 |
+|---|---|---|---|
+| 線1 | `git clone` | 技術人員、送 PR 的人 | `update_guard.py snapshot` → `commit` → `git pull --ff-only` |
+| 線2 | GitHub Release 的 `setup.exe` ＋ `.zip` | 消防專業人員 | 裝到同一個資料夾，`update_guard.py install` 逐檔判定 |
+
+線2 存在的理由：使用者不懂 git，而**讓 AI 代跑 git 正是本機訓練成果被蓋掉的來源**。安裝包沒有 `.git`，也就沒有 `git pull` 撞到本機改動的問題。
+
+發版流程（`.github/workflows/release.yml`，推 `v*` tag 觸發）：
+
+1. 跑完整把關（單元測試、`self-test`、`run-tests --strict`、圖譜新鮮度）——規則測試沒全綠的版本不得出貨
+2. `python3 tools/make_release.py --version {版本}` 打包，並產生 `安裝清單.json`
+3. 解壓安裝包、跑它自己的測試與開場診斷（驗「拿掉範例圖之後它還跑不跑得起來」）
+4. Windows runner 用 Inno Setup 編出 `setup.exe`，跑全新安裝煙霧測試
+5. 建立**草稿** Release，人工確認後才發佈
+
+`安裝清單.json` 是線2 的上游基準：安裝目錄沒有 git，靠它逐檔的 sha256 才分得出「上游出貨的原樣」與「使用者改過的」。它是打包產物，不需要人工維護。
+
+**`packaging/fire-review.iss` 的 Pascal Script 只做偵測與呼叫，逐檔判定邏輯一律放 Python**（`update_guard.py install`）——同一份邏輯寫兩次遲早漂移成兩種行為，而 Pascal Script 沒有任何測試。
+
+## 更新倉庫的規範
+
+- **`.gitignore` 收編使用者產物是防護的一部分，不只是「不進版控」。** `git clean -fd`（不加 `-x`）不刪 gitignored 檔案，`git checkout`／`reset` 也永遠不會碰它們——一段 `.gitignore` 就讓整類威脅對 `input/{案件}/`、`output/`、`training/{批次}/`、`practice_notes/*.json` 失效
+- **代價：使用者要送 PR 回饋 practice note 時需要 `git add -f`。** 這是刻意的取捨——保護數月的成果，值得換一個偶爾才用到的旗標
+- **已經被追蹤的檔案 ignore 無效**（`output/` 現有交付物、`training/registry.json`），那些只能靠 `update_guard.py` 的備份
+- 新增會寫入 `update_guard.py` `DATA_ZONES` 的工具時，**必須同步保護清單與 `OWNER_RULES`**。分區沒歸類的檔案會被 `check` 報成「保護清單需複核」（不變式測試 `test_known_zones_cover_the_whole_repository` 也會紅燈）
+- **`owner` 的 `user` 與 `shared` 要分對。** `shared` 是使用者裁示與上游修法交錯的檔案（`rules/`、`graphify-out/`），`restore` 對它預設拒絕整檔還原——標錯會讓救援把上游的法規更新一起吃掉
 
 ## 架構管理者的變更規範
 

@@ -34,6 +34,7 @@ from tools import check_env  # noqa: E402
 from tools import graph_status  # noqa: E402
 from tools import pending_review as pr  # noqa: E402
 from tools import training_intake  # noqa: E402
+from tools import update_guard  # noqa: E402
 
 EXIT_OK, EXIT_PENDING = 0, 2
 
@@ -43,7 +44,7 @@ READ, WRITE = "讀", "寫"
 MARKS = {"ready": "✅", "action": "⚪", "blocked": "⛔", "info": "📘"}
 BLOCKING = ("action", "blocked")
 
-STEP_TOTAL = 5
+STEP_TOTAL = 6
 
 CALC = "tools/fire_code_calc.py"
 
@@ -59,7 +60,68 @@ def step(title, state, why, lines, commands, say):
 
 
 # ---------------------------------------------------------------------------
-# 第一步：環境工具
+# 第一步：本機成果保護
+# ---------------------------------------------------------------------------
+
+def guard_snapshot():
+    """update_guard.evaluate() 的容錯包裝。
+
+    家目錄不可寫、git 壞掉、倉庫結構沒見過——任何一種都不該讓整份開場診斷掛掉。
+    診斷工具自己壞掉而讓使用者連狀態都看不到，比漏報一個步驟更糟。
+    """
+    try:
+        return update_guard.evaluate(".")
+    except Exception:  # noqa: BLE001 — 診斷工具不該因為附屬資訊掛掉
+        return None
+
+
+def step_local_data(env):
+    """排在最前面：資料被蓋掉不可逆，優先於任何其他待處理事項。
+
+    疑義表沒裁示、圖譜過期、套件沒裝，事後都補得回來；
+    使用者的訓練成果被 `git checkout -- .` 蓋掉則救不回來（除非有備份）。
+    不可逆的事項排在可逆的前面。
+    """
+    py = env["interpreter"]
+    result = guard_snapshot()
+
+    if result is None:
+        return step(
+            "本機成果保護", "ready",
+            "更新倉庫前先確認你的訓練成果不會被蓋掉",
+            ["守門工具跑不起來——不影響審圖，但更新倉庫前請先手動備份整個資料夾"],
+            [command(f"{py} tools/update_guard.py check", READ)],
+            "",
+        )
+
+    state = update_guard.STEP_STATES[result["state"]]
+    lines = update_guard.format_check(result).splitlines()
+
+    commands = [command(f"{py} tools/update_guard.py check", READ)]
+    if state != "ready":
+        commands.append(command(
+            f'{py} tools/update_guard.py snapshot --note "更新前"', WRITE))
+    if result["state"] == "suspected_loss":
+        commands.append(command(f"{py} tools/update_guard.py diff", READ))
+        commands.append(command(
+            f"{py} tools/update_guard.py restore --path {{路徑}} --apply", WRITE))
+
+    say = ""
+    if result["state"] == "suspected_loss":
+        say = "跟你的 AI 說：我的成果好像被蓋掉了，幫我看 diff 再逐項救回來"
+    elif state != "ready":
+        say = "跟你的 AI 說：更新倉庫之前先幫我把本機成果備份起來"
+
+    return step(
+        "本機成果保護", state,
+        "你的訓練成果只存在這台電腦，被覆蓋掉不可逆——"
+        "更新倉庫前一律先備份，且不得執行任何會還原或清除工作目錄的 git 操作",
+        lines, commands, say,
+    )
+
+
+# ---------------------------------------------------------------------------
+# 第二步：環境工具
 # ---------------------------------------------------------------------------
 
 def step_environment(env):
@@ -293,14 +355,19 @@ def step_intro(env):
 # ---------------------------------------------------------------------------
 
 def evaluate():
-    """五個步驟的診斷結果。
+    """六個步驟的診斷結果。
 
-    順序刻意是「先裁示疑義表 → 再確認圖譜 → 再補環境套件 → 規則庫健檢 → 操作簡介」：
-    疑義表裁示與圖譜查詢都只用標準庫，不必等套件裝完；而疑義表未裁示會影響
-    所有受影響規則的結論可信度，所以排在最前面。
+    順序刻意是「先保住本機成果 → 再裁示疑義表 → 再確認圖譜 → 再補環境套件
+    → 規則庫健檢 → 操作簡介」。
+
+    本機成果保護排第一的理由是**可逆性**，不是重要性：疑義表沒裁示、圖譜過期、
+    套件沒裝，事後都補得回來；訓練成果被覆蓋掉則救不回來。其餘順序沿用原設計——
+    疑義表裁示與圖譜查詢都只用標準庫，不必等套件裝完，而疑義表未裁示會影響
+    所有受影響規則的結論可信度。
     """
     env = check_env.probe()
-    builders = (step_pending, step_graph, step_environment, step_rules, step_intro)
+    builders = (step_local_data, step_pending, step_graph, step_environment,
+                step_rules, step_intro)
     steps = []
     for no, build in enumerate(builders, start=1):
         s = build(env)
@@ -321,7 +388,7 @@ def format_status(result):
     out = ["== Fire Review 開場導引 =="]
 
     if result["ready"]:
-        out.append("✅ 全部就緒（環境套件、待確認事項、法規圖譜、規則庫皆通過）"
+        out.append("✅ 全部就緒（本機成果、環境套件、待確認事項、法規圖譜、規則庫皆通過）"
                    "——可以開始審圖了。")
         out.append(f"→ 第一次使用請先看操作簡介：{py} tools/onboarding.py intro")
         return "\n".join(out)
@@ -392,6 +459,14 @@ def format_intro(py):
     （另有「建議事項」，代表沒有強制法源，會標明）
   · 標「需人工判讀」的項目系統不會替你猜——需要大樣圖或現場才能確認的
     （防火區劃、排煙開口、夾層面積…），一律留給你判斷
+
+【你的成果存在哪，以及怎麼保住它】
+  你的裁示、實務見解、案件圖面與交付物都在這個資料夾裡，**只存在這台電腦**。
+  更新到新版之前先備份一次（會寫到這個資料夾的外面，更新動不到）：
+    {py} tools/update_guard.py check      # 看有什麼會被影響
+    {py} tools/update_guard.py snapshot   # 備份
+  **不要讓 AI 用 git 指令幫你「清乾淨再更新」**——那會把成果一次抹掉，
+  而且救不回來。安全的更新程序見 skills/safe-update.md。
 
 【想查法規時】
   直接說「查第 24 條」或「排煙設備規定在哪幾條」，

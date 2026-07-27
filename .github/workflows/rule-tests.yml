@@ -54,10 +54,20 @@ jobs:
       - name: 實務註解語意抽取齊備檢查（有 active 註解未抽取即紅燈）
         run: python3 tools/practice_note_graph.py plan
 
-      - name: 實務註解圖譜納入把關（註解沒併進圖譜即紅燈）
-        run: python3 tools/practice_note_graph.py check
+      # 訓練圖譜是衍生產物、不進版控，所以 CI 從素材真的建一次——
+      # review_corrections.md／stage_two_judgment_rules.md 的格式被改壞時，
+      # 只驗 check 會因為「還沒建」而綠燈放過。
+      - name: 訓練圖譜建置煙霧測試（markdown 筆記解析壞掉即紅燈）
+        run: |
+          python3 tools/training_graph_build.py build
+          python3 tools/training_graph_build.py check
 
-      - name: 法規圖譜新鮮度把關（來源檔異動後未重建圖譜、或註解未納入即紅燈）
+      # 重建只增不減是這套工具的核心承諾。verify 的紅燈類別包含
+      # 「兩端都還在、邊卻不見了」——那種劣化使用者察覺不到，只能靠 CI 擋。
+      - name: 法規圖譜重建驗收（節點消失／label 變動／邊流失即紅燈）
+        run: python3 tools/regulation_graph_build.py verify
+
+      - name: 兩個圖譜的新鮮度把關（來源檔異動後未更新即紅燈）
         run: python3 tools/graph_status.py check
 
       - name: 開場導引煙霧測試（結束碼 2 ＝ 有待處理步驟，非失敗）

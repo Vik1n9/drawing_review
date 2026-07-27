@@ -2,7 +2,7 @@
 
 對 $ARGUMENTS（訓練批次名，例如「第18條附表補件」「主從用途判斷基準」）執行一次完整訓練：
 把使用者投放到 `training/inbox/` 的素材確定性歸類到既有正典位置，走先紅再綠把法規參數入庫、
-依既有格式追加實案回饋筆記，最後重建法規索引與知識圖譜，讓後續工作流程自動調用得到這次的訓練結果。
+依既有格式追加實案回饋筆記，最後更新法規索引與兩個知識圖譜，讓後續工作流程自動調用得到這次的訓練結果。
 
 **訓練不是模型微調。** 本專案刻意不信任模型記憶（見 `skills/red-green.md`）；
 訓練成果的載體是**規則即程式碼 ＋ 策展 markdown ＋ 知識圖譜**，全部可追溯、可重跑、可覆核。
@@ -11,7 +11,7 @@
 
 1. 讀 `rules/review_corrections.md` 全文——已確認的通案修正是本次訓練的既有事實，不得與之衝突
 2. 讀 `skills/red-green.md`——本次若要動任何法規參數，紀律以該檔為準，無例外
-3. 跑 `python3 tools/training_intake.py status`——確認起點狀態（現有批次、現有實務註解數、圖譜新鮮度）
+3. 跑 `python3 tools/training_intake.py status`——確認起點狀態（現有批次、現有實務註解數、兩個圖譜的新鮮度）
 4. `training/inbox/` 有素材，或使用者以口述提供實案回饋；兩者皆無則本次無事可訓練，直接結束
 
 ## 執行流程
@@ -24,7 +24,7 @@
 | 四 | 法源類 → `skills/regulation-intake.md` ＋ `skills/red-green.md` | 新測試＋新規則 |
 | 五 | 回饋類 → `/practice-note`（結構化）或追加 markdown 筆記 | `practice_notes/active/` ／ `review_corrections.md` 新條目 |
 | 六 | `regulation_index.py build` | 重建逐條索引 |
-| 七 | 自動重建圖譜 ＋ 併入實務註解層 ＋ 蓋章 | 新 `graphify-out/` ＋ `source_fingerprint.json` |
+| 七 | 更新兩個圖譜（法規／訓練，各自獨立）＋ 蓋章 | `training/graph.json`；動到法規全文才有 `graphify-out/` ＋ `source_fingerprint.json` |
 | 八 | `self-test` ＋ `run-tests --strict` | 綠燈驗收 |
 | 九 | 回填 `NOTES.md`／`manifest.json`，總結本次學到什麼 | 批次收尾 |
 
@@ -128,49 +128,65 @@ python3 tools/regulation_index.py build
 重建 `rules/regulation_index.json` 與 `rules/regulation_articles/article-*.json`。
 沒動到 `rules/core/` 就跳過這步，並在 `NOTES.md` 註明「本批次未變更法規全文」。
 
-### 第七步 自動重建知識圖譜（本 skill 的核心保證）
+### 第七步 自動更新知識圖譜（本 skill 的核心保證）
+
+**有兩個圖譜，各自獨立更新**：法規圖譜（`graphify-out/graph.json`，條文關聯）與
+訓練圖譜（`training/graph.json`，你確認過的實務見解）。審圖時 `regulation_graph.py`
+會同時查兩個，但更新是分開的——通常一次只需要更新其中一個。
 
 ```bash
 python3 tools/graph_status.py check
 ```
 
-結束碼 `0`＝新鮮（跳過重建）、`2`＝過期、`3`＝尚未建立指紋基準。
+輸出分兩段，直接寫明是哪一個圖譜跟不上；結束碼 `0`＝兩個都跟上、`2`＝有過期、
+`3`＝法規圖譜尚未建立指紋基準。過期時**自動**更新，不要等使用者開口。
 
-結束碼 `2` 有兩種成因，處理方式不同——訊息會直接寫明是哪一種：
-
-- **來源檔異動**（`已過期`）→ 重建圖譜（下方）
-- **實務註解未納入**（`註解未納入`）→ 只需補做註解層合併（下方第 3 行起）
-
-過期或無基準時，**自動**執行重建，不要等使用者開口：
+**訓練圖譜**（改了實務註解、`review_corrections.md` 或 `stage_two_judgment_rules.md`）：
 
 ```bash
-/graphify rules --update      # 增量：只重抽變更條文（一般情況）
-/graphify rules               # 大改：法規換版、全文替換時
-python3 tools/practice_note_graph.py plan     # 註解層：0=齊備 2=有待語意抽取
-python3 tools/practice_note_graph.py merge    # 把實務註解併回圖譜
-python3 tools/graph_status.py stamp
+python3 tools/training_graph_build.py plan     # 0=齊備 2=有註解待語意抽取
+python3 tools/training_graph_build.py build
 ```
 
-**`/graphify rules` 只掃 `rules/`，而且會覆寫 `graph.json`**——重建等於把實務註解層沖掉，
-所以每次重建後都必須重跑 `practice_note_graph.py merge`。`plan` 回報有待抽取的註解時，
-依 `skills/practice-note.md` 第七步做 LLM 語意抽取後再 merge；
-註解沒併回去，`graph_status.py stamp` 會拒絕蓋章（避免蓋出查不到註解的假綠燈）。
+`plan` 回報有待抽取的註解時，依 `skills/practice-note.md` 第七步做語意抽取後再 build。
+markdown 筆記的骨架（條目節點與條號引用）是確定性解析的，**不需要語意抽取也建得起來**；
+語意抽取只用來補「文字裡沒寫出條號的關聯」，是選用加值。
+一則註解卡住時可用 `build --skip-pending` 先建其餘者，或 `--only {id}` 指名重建——
+被略過的一律會留在 `check` 的紅字裡，不會靜默消失。
 
-法規是文字語料，必須走 skill 的語意抽取（子代理依編/章切塊）；CLI 的 `graphify update`
-（純 AST、免 LLM）**不適用**於法條語意圖譜。跨塊抽取後須以 `graphify.ids.make_id`
-統一正規化 node id（條號感知）再合併，避免共用概念無法去重。
+**法規圖譜**（改了 `rules/core/` 的法規全文）：
 
-**降級路徑（不得靜默跳過）**：`graphify` 只有「重建圖譜」需要，**查詢不需要**——
-`regulation_graph.py` 直接讀 `graphify-out/graph.json`，零安裝。未安裝時可試
-`bash tools/setup.sh --with-graph`（僅限 `has_bash` 為真且裝得起套件的環境）；
-裝不起來是常態（沙盒、無權限、離線），不必勉強，改走下列流程：
+```bash
+python3 tools/regulation_index.py build              # 先重建逐條 JSON（第六步）
+python3 tools/regulation_graph_build.py plan         # 哪些切塊的條文改了、建議重抽語意層
+python3 tools/regulation_graph_build.py rebuild      # 寫 graph.rebuilt.json，不覆寫
+python3 tools/regulation_graph_build.py verify       # 差異報表；紅燈類別必須全 0
+python3 tools/regulation_graph_build.py rebuild --commit
+python3 tools/graph_status.py stamp --graph regulation
+```
 
-1. 寫 `training/graph_pending.json`，記錄批次名、日期、待重建原因與待重建的來源檔清單
-2. 在本批次 `NOTES.md` 的圖譜項目保留未勾選狀態並註明原因
-3. **明確告知使用者**：「圖譜自動重建失敗，下次工作前必須補建，否則查圖譜會查到舊資料」
+**重建零安裝、不需要任何 API key**：條文節點、附表圖與條文互引都是確定性重建，
+概念層與語意邊**原樣保留**（重建只增不減），節點 id 由 `graphify-out/node_ledger.json`
+台帳沿用而不重算。`plan` 列出的切塊是**建議**重抽，不補也不會弄丟既有語意層；
+要補就跑 `contract --chunk {id}`，由你（對話中的模型）依契約產出抽取檔——不呼叫外部 API。
 
-此後每次 `training_intake.py status` 都會紅字警告、CI 的 `graph_status.py check` 也會紅燈，
-直到補建並 `stamp` 為止。補建完成後刪除 `training/graph_pending.json`。
+`verify` 是強制關卡：節點消失、label 變動、**兩端都還在卻不見的邊**、超邊斷裂
+任一項非 0，`rebuild --commit` 就會拒絕覆寫。使用者察覺不到邊變少（查詢只會少回幾筆、
+不會報錯），所以這一關由工具擋，不靠人眼。
+
+**外部套件 graphify 是選用的**，只影響 `graph.html` 視覺化重繪與 `query/explain/path`
+CLI；重建與查詢都不需要它。若上一輪工作有中斷，`training/graph_pending.json` 會讓
+`graph_status.py check` 持續紅燈，補建完成後刪除該檔。
+
+**從舊版升級**（分家前實務註解是併在 `graphify-out/graph.json` 裡的）：
+
+```bash
+python3 tools/training_graph_build.py migrate-from-legacy          # 乾跑，看會清掉什麼
+python3 tools/training_graph_build.py migrate-from-legacy --apply
+python3 tools/training_graph_build.py build
+```
+
+註解層由 `practice_notes/` 衍生，build 之後會在訓練圖譜裡重新長出來，不會遺失。
 
 圖譜的邊界不因訓練而改變：**它只是索引與導覽，不是門檻數值或計算結果的來源**
 （呼應 `AGENTS.md` 底線 1「禁止憑記憶引法規數值」與底線 2「case.json 是正典」）。
@@ -227,14 +243,14 @@ python3 tools/verification_sheet.py apply --results {結果JSON}
 | 法規參數 | `rules/equipment_rules.json` | `fire_code_calc.py check-threshold` 等全部子指令 |
 | 主從用途對照 | `rules/mixed_use_rules.json` | `fire_code_calc.py classify-mixed-use` |
 | §14~31 判斷表 | `rules/checklists/` | `standard_checklist_html.py`、`stage_report_xlsx.py` |
-| 實務註解 | `practice_notes/active/` ＋ `index.json` ＋ 圖譜註解層 | `fire_code_calc.py check-gap` 自動比對命中；`regulation_graph.py notes／neighbors／articles` 查得到（需先語意抽取並 `practice_note_graph.py merge`） |
-| 通案修正筆記 | `rules/review_corrections.md` | `/first-stage-review`、`/stage-two-review` 的必讀前置 |
-| 逐款判斷慣例 | `rules/stage_two_judgment_rules.md` | `/stage-two-review`、`tools/case_facts_gate.py` |
+| 實務註解 | `practice_notes/active/` ＋ `index.json` ＋ 訓練圖譜 | `fire_code_calc.py check-gap` 自動比對命中；`regulation_graph.py notes／neighbors／articles` 查得到（需先語意抽取並 `training_graph_build.py build`） |
+| 通案修正筆記 | `rules/review_corrections.md` ＋ 訓練圖譜 | `/first-stage-review`、`/stage-two-review` 的必讀前置；`regulation_graph.py notes --article §X` 也查得到 |
+| 逐款判斷慣例 | `rules/stage_two_judgment_rules.md` ＋ 訓練圖譜 | `/stage-two-review`、`tools/case_facts_gate.py`；`regulation_graph.py notes --article §X` 也查得到 |
 | 格式範本 | `training/{批次}/formats/` ＋ `registry.json` | `training_intake.py status` |
-| 條號關聯導覽 | `graphify-out/graph.json` | `tools/regulation_graph.py neighbors／articles／path／notes`（免安裝） |
+| 條號關聯導覽 | `graphify-out/graph.json` ＋ `training/graph.json` | `tools/regulation_graph.py neighbors／articles／path／notes`（免安裝，查詢時自動合併兩個圖譜） |
 
 各 pipeline skill 的前置檢查會跑 `python3 tools/training_intake.py status`
-（結束碼 `2` ＝ 圖譜未跟上規則庫），確保開場就知道有沒有新訓練成果、圖譜是否可信。
+（結束碼 `2` ＝ 有圖譜未跟上素材），確保開場就知道有沒有新訓練成果、圖譜是否可信。
 
 ## 重要注意事項
 

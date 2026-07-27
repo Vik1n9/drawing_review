@@ -283,7 +283,7 @@ drawing_review/
 │   ├── active/                       — 現行有效註解（PN-{日期}-{序號}.json）
 │   ├── staging/                      — 草擬中，待使用者「確認納入」
 │   └── index.json                    — 註解索引（by_article／by_equipment／by_rule_id）
-├── graphify-out/                     — 法規知識圖譜（含 source_fingerprint.json 新鮮度指紋）
+├── graphify-out/                     — 法規知識圖譜（含 source_fingerprint.json 指紋、node_ledger.json id 台帳）
 ├── governance/                       — 規則確認紀錄
 │   ├── 待確認清單/                   — 疑義檔（rule-discrepancies-{日期}.json）＋ 已裁示/ 封存
 │   ├── 核定表/                       — 核定表 HTML（需書面紀錄時）
@@ -331,11 +331,28 @@ DXF 提供座標、圖層、符號與標註位置，但消防設備應設需求�
 `rule_tests.json`——訓練模式讓入庫更順，不讓入庫更鬆。實務註解只補充法典、不推翻法典：
 免除法定應設設備的註解一律紅色警示，且未經使用者輸入「確認納入」禁止從 `staging` 移到 `active`。
 
-訓練寫入後，`/train` 會**自動重建法規知識圖譜**並以 `graph_status.py stamp` 蓋章。
-`graph_status.py check` 以 sha256 逐檔指紋（`graphify-out/source_fingerprint.json`）
-判斷圖譜是否跟上來源檔與註解庫——CI 也跑這一步，來源檔改了卻沒重建圖譜就是紅燈。
+訓練寫入後，`/train` 會**自動更新知識圖譜**。圖譜有兩個、各自獨立更新：
 
-圖譜的**來源檔**是 `rules/core/`（法規全文 md、附表 PDF 與附表圖檔）、`rules/README.md`、`rules/regulation_articles/` 與 `practice_notes/active/`——也就是圖譜真的從中抽出節點的檔案。`rules/equipment_rules.json` 與 `rules/mixed_use_rules.json` **不在**追蹤範圍：圖譜 482 個節點沒有一個出自它們，追蹤只會讓每次先紅再綠改參數都誤報過期。這個前提由 `check` 的 `untracked_graph_sources` 不變式持續驗證——日後重建出的圖譜若真的含有這些檔的節點，`check` 會直接紅燈要求把它們加回清單。
+| | 法規圖譜 | 訓練圖譜 |
+|---|---|---|
+| 檔案 | `graphify-out/graph.json`（與上游共編） | `training/graph.json`（**純使用者所有**，不進版控） |
+| 內容 | 條文節點、附表圖、法規術語概念 | 實務註解、審圖修正筆記、第二階段判斷慣例 |
+| 更新 | `tools/regulation_graph_build.py`（零安裝、不需 API key） | `tools/training_graph_build.py build`（毫秒級） |
+| 把關 | sha256 逐檔指紋 ＋ `verify` 差異關卡 | 節點內的語意摘要自證，不需指紋檔 |
+
+**為什麼分家**：混在同一個檔時，法典層一重建就會把訓練層沖掉，於是每次重建都被迫
+「先把註解併回去才准蓋章」，鏈上任一環卡住訓練成果就進不了圖譜；而 `graphify-out/*` 又被
+`update_guard` 標為與上游共編，等於使用者的訓練成果住在會被覆寫的地段。分家後兩者互不阻擋，
+`regulation_graph.py` 在**查詢時**合併，審圖指令完全不必改。
+
+訓練圖譜指向法規圖譜的關聯以 **label 為耐久鍵**（`target_label`），node id 只是快取——
+法規圖譜重建後 id 若對不上，關聯會標記為「懸空」留在圖譜裡等修，**絕不因為解析不到就
+刪掉使用者的訓練成果**。
+
+法規圖譜的**來源檔**是 `rules/core/`（法規全文 md、附表 PDF 與附表圖檔）、`rules/README.md`
+與 `rules/regulation_articles/`——也就是圖譜真的從中抽出節點的檔案。`rules/equipment_rules.json`
+與 `rules/mixed_use_rules.json` **不在**追蹤範圍：圖譜的節點沒有一個出自它們，追蹤只會讓每次
+先紅再綠改參數都誤報過期。這個前提由 `check` 的 `untracked_graph_sources` 不變式持續驗證。
 
 ---
 
@@ -346,7 +363,10 @@ DXF 提供座標、圖層、符號與標註位置，但消防設備應設需求�
 | `tools/onboarding.py` | 開場導引：載入倉庫後的狀態診斷（五步驟，結束碼 2 ＝ 有待處理）與操作簡介 | stdlib |
 | `tools/fire_code_calc.py` | 法規門檻、數量計算、§13 適用判斷、主從用途比對、規則測試、自檢 | stdlib |
 | `tools/regulation_index.py` | 法規 Markdown 轉逐條索引與按需查詢 | stdlib |
-| `tools/regulation_graph.py` | 法規圖譜查詢：條文引用網／設備對應條文／概念關聯路徑（免安裝 graphify） | stdlib |
+| `tools/regulation_graph.py` | 圖譜查詢：條文引用網／設備對應條文／概念關聯路徑／實務見解（查詢時自動合併法規與訓練兩個圖譜，免安裝 graphify） | stdlib |
+| `tools/regulation_graph_build.py` | 法規圖譜重建：確定性骨架＋保留式語意層＋`verify` 差異關卡（零安裝、不需 API key） | stdlib |
+| `tools/training_graph_build.py` | 訓練圖譜建置：實務註解、審圖修正筆記與判斷慣例 → `training/graph.json` | stdlib |
+| `tools/graph_labels.py` | 圖譜 label 與條號的唯一解析器（`§19`／`第 19 條`／`第十九條` 收斂為正典寫法） | stdlib |
 | `tools/article_checklist.py` | 依 case.json 產出 §14~§31 逐條窮舉 `check_results.json` | stdlib |
 | `tools/mixed_use_report.py` | case.json 轉複合用途及樓層屬性檢討 HTML（交付物4） | stdlib |
 | `tools/case_facts_gate.py` | 兩階段交付物匯出前的案件事實齊備關卡（不齊備結束碼 2） | stdlib |
@@ -358,7 +378,7 @@ DXF 提供座標、圖層、符號與標註位置，但消防設備應設需求�
 | `tools/dxf_svg_review.py` | `annotations.json` + DXF 轉互動式 SVG 圖面審查 HTML | stdlib（二進位 DXF 才需 `ezdxf`） |
 | `tools/pdf_annotate.py` | legacy：舊版 PDF 紅圈標註輸出 | `pymupdf` |
 | `tools/verification_sheet.py` | 規則核定表匯出與回填 | stdlib |
-| `tools/setup.sh` | 選用：一鍵安裝相依套件（`--with-graph` 併裝 graphify）。裝不起來不影響審圖主線 | bash + pip |
+| `tools/setup.sh` | 選用：一鍵安裝相依套件（`--with-graph` 併裝 graphify）。裝不起來不影響審圖主線，也不影響圖譜重建 | bash + pip |
 | `tools/check_env.py` | 環境自檢：能力矩陣——現在能做什麼、做不到的替代路徑 | stdlib |
 
 ### 環境（預設什麼都不用裝）
@@ -387,9 +407,13 @@ bash tools/setup.sh          # 安裝 requirements.txt 並自檢
 
 工具在缺套件時一律給出替代路徑，不會靜默失敗，也不會把使用者卡在「還不能開始」。
 
-#### 法規知識圖譜（選用）
+#### graphify（選用，純加值）
 
-`graphify-out/graph.html` 直接用瀏覽器開即可瀏覽，**無需安裝任何東西**。若要**重建圖譜或用 CLI 查詢**（`graphify query/explain/path`），才需要安裝 graphify：
+`graphify-out/graph.html` 直接用瀏覽器開即可瀏覽，**無需安裝任何東西**。
+**查詢與重建都不需要 graphify**——`tools/regulation_graph.py` 與
+`tools/regulation_graph_build.py` 都只用標準庫。裝了它只多兩件事：重繪 `graph.html`
+視覺化，以及 `graphify query/explain/path` CLI。（重建後 `graph.html` 會是舊版視覺化，
+查詢請以 `regulation_graph.py` 為準。）
 
 - 專案首頁：<https://github.com/Graphify-Labs/graphify>
 - 安裝（擇一）：
@@ -532,12 +556,12 @@ python3 tools/practice_note_engine.py conflict-check --draft practice_notes/stag
 python3 tools/practice_note_engine.py apply --draft practice_notes/staging/{id}.json --approved-by {批准人} --confirm 確認納入
 python3 tools/practice_note_engine.py test --strict
 
-# 實務註解 → 知識圖譜（LLM 語意抽取 ＋ 確定性合併；沒做完，後續查圖譜查不到訓練成果）
+# 實務註解 → 訓練圖譜（LLM 語意抽取 ＋ 確定性建層；沒做完，後續查圖譜查不到訓練成果）
 python3 tools/practice_note_graph.py plan                     # 0=齊備 2=有待語意抽取
 python3 tools/practice_note_graph.py contract --note {註解 id} # 印出抽取契約給 LLM 填
 python3 tools/practice_note_graph.py validate --extraction practice_notes/graph_extractions/{id}.json
-python3 tools/practice_note_graph.py merge                    # 併入 graph.json（冪等）
-python3 tools/practice_note_graph.py check                    # 0=已納入 2=未納入
+python3 tools/training_graph_build.py build                   # 建 training/graph.json（冪等）
+python3 tools/training_graph_build.py check                   # 0=已納入 2=未納入
 
 # 待確認事項（開場必做）
 python3 tools/pending_review.py status                        # 結束碼 2 = 有待確認事項

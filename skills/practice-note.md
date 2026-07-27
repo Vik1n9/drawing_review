@@ -105,10 +105,11 @@ python3 tools/fire_code_calc.py run-tests --strict
 
 三者全綠才算完成，接著做第七步（圖譜納入）。
 
-### 第七步 語意抽取並併入知識圖譜（本步驟不得省略）
+### 第七步 語意抽取並建入訓練圖譜（本步驟不得省略）
 
 註解是新的知識節點。**沒有做完這步，後續案件查圖譜就查不到這則訓練成果**——
-`/graphify rules` 只掃 `rules/`，不會把 `practice_notes/` 抽進圖譜。
+註解住在**訓練圖譜**（`training/graph.json`）而不是法規圖譜，法規圖譜重建碰不到它，
+但也不會替你把註解建進去。
 
 註解的 `scenario.summary`／`judgment.detail` 是自由文字、沒有固定格式，
 「這則註解牽涉哪些概念、關聯到哪些既有條文與設備」**只能靠語意理解抽取**——
@@ -135,21 +136,26 @@ python3 tools/practice_note_graph.py contract --note {註解 id}
 
 ```bash
 python3 tools/practice_note_graph.py validate --extraction practice_notes/graph_extractions/{id}.json
-python3 tools/practice_note_graph.py merge         # 冪等，可重複執行
-python3 tools/graph_status.py check                # 應為 ✅ 新鮮 ＋ 實務註解已納入
-python3 tools/graph_status.py stamp
+python3 tools/training_graph_build.py build        # 冪等，可重複執行
+python3 tools/graph_status.py check                # 訓練圖譜應為 ✅ 已納入
 ```
+
+訓練圖譜**不需要蓋章**——它的每個節點都帶著來源素材的語意摘要，`check` 直接比對得出來。
 
 工具的把關（都會擋下，不要繞過）：
 
-- 抽取檔以 `note_sha256` 綁定當時的註解內容——**註解改了就必須重新語意抽取**，
-  否則 `merge` 拒絕合併、`check` 標「過期」
-- `concepts` 與 `edges` 全空、`rationale` 留白、`target` 在圖譜與 concepts 都找不到 → 驗證不過
-- 有任何 active 註解沒抽取 → `merge` 整批拒絕、`graph_status.py stamp` 拒絕蓋章
-  （避免蓋出「燈是綠的但註解不在圖譜裡」的假綠燈）
+- 抽取檔綁的是註解的**語意摘要**（`id`／`ref_article`／`ref_rule_ids`／`scenario`／
+  `judgment`／`source_case`）。改 `judgment.detail` 這種語意欄位就必須重新抽取；
+  但補填 `approved`、`governance_log` 這類治理欄位**不會**要求你重抽
+- `concepts` 與 `edges` 全空、`rationale` 留白、`target` 解析不到 → 驗證不過。
+  `target` 寫 `§19`／`第 19 條`／`第十九條` 都可以，工具會收斂成正典寫法
+- 有任何 active 註解沒抽取 → `build` 預設整批拒絕。確知要先建其餘者時用
+  `build --skip-pending`，或 `--only {id}` 指名重建；**被略過的一律留在 `check` 的紅字裡**
+- 法規圖譜還沒建好時照樣建得起來：掛不上的關聯會標成「懸空」留在訓練圖譜裡，
+  等法規圖譜補上再跑一次 `build` 就會接回去。**工具絕不因為解析不到就刪掉你的訓練成果**
 
 無法完成時**不得靜默跳過**：寫 `training/graph_pending.json` 並明確告知使用者
-「本註解尚未併入圖譜，後續案件查圖譜查不到它」。
+「本註解尚未進訓練圖譜，後續案件查圖譜查不到它」。
 
 ### 第八步 回報使用者
 

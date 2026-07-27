@@ -7,7 +7,7 @@ from tools.graph_labels import LabelIndex
 from tools.practice_note_graph import semantic_digest
 from tools.training_graph_build import (CORRECTIONS_PATH, JUDGMENT_PATH, LAYER_CORRECTION,
                                         LAYER_JUDGMENT, TRAINING_GRAPH_PATH, build, check,
-                                        correction_entries, judgment_entries,
+                                        correction_entries, judgment_entries, migrate_from_legacy,
                                         parse_corrections, parse_judgment_rules,
                                         regulation_index)
 
@@ -268,6 +268,45 @@ class CheckTest(unittest.TestCase):
             build(root)
             (root / JUDGMENT_PATH).write_text("# 空", encoding="utf-8")
             self.assertEqual(4, len(check(root)["orphan"]))
+
+
+class LegacyMigrationTest(unittest.TestCase):
+    """分家前實務註解併在 graphify-out/graph.json 裡，本機升級的人要清得掉。"""
+
+    def legacy_graph(self, root):
+        write(root / "graphify-out" / "graph.json", {
+            "nodes": [{"id": "a19", "label": "第19條", "file_type": "document"},
+                      {"id": "practice_note_PN-1", "label": "PN-1", "layer": "practice_note",
+                       "note_id": "PN-1", "file_type": "practice_note"},
+                      {"id": "practice_note_concept_挑空區", "label": "挑空區",
+                       "layer": "practice_note", "file_type": "concept"}],
+            "links": [{"source": "practice_note_PN-1", "target": "a19",
+                       "relation": "supplements"}]})
+
+    def test_dry_run_reports_without_writing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(tmp, with_regulation=False)
+            self.legacy_graph(root)
+            before = (root / "graphify-out" / "graph.json").read_text(encoding="utf-8")
+            result = migrate_from_legacy(root, dry_run=True)
+            self.assertEqual(["PN-1"], result["note_ids"])
+            self.assertEqual(2, len(result["nodes"]))
+            self.assertEqual(before,
+                             (root / "graphify-out" / "graph.json").read_text(encoding="utf-8"))
+
+    def test_apply_removes_the_legacy_layer_and_its_edges(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(tmp, with_regulation=False)
+            self.legacy_graph(root)
+            migrate_from_legacy(root, dry_run=False)
+            graph = json.loads((root / "graphify-out" / "graph.json").read_text(encoding="utf-8"))
+            self.assertEqual(["a19"], [n["id"] for n in graph["nodes"]])
+            self.assertEqual([], graph["links"])
+
+    def test_nothing_to_do_on_a_clean_graph(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(tmp)
+            self.assertEqual([], migrate_from_legacy(root, dry_run=True)["nodes"])
 
 
 class RealRepoTest(unittest.TestCase):

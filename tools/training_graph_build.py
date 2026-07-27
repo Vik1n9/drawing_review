@@ -460,6 +460,61 @@ BUILD_HINT = ("重建訓練圖譜：python3 tools/training_graph_build.py plan �
               "依契約做語意抽取 → python3 tools/training_graph_build.py build")
 
 
+# ---------------------------------------------------------------------------
+# 舊版遷移：把併在法規圖譜裡的訓練層搬出來
+
+def migrate_from_legacy(root=".", dry_run=True):
+    """分家前實務註解是併進 `graphify-out/graph.json` 的，把它們清出來。
+
+    註解層本來就是由 `practice_notes/` 衍生的，所以**不需要搬運內容**——
+    跑一次 build 就會在訓練圖譜裡重新長出來。這裡只負責把法規圖譜裡的殘留清掉，
+    否則查詢會同時看到新舊兩份，數量對不上。
+
+    預設乾跑：這動的是使用者本機的圖譜檔（底線 6）。
+    """
+    root = Path(root)
+    graph_path = root / REGULATION_GRAPH_PATH
+    graph = load_json(graph_path)
+    if graph is None:
+        return {"ok": False, "error": f"找不到 {REGULATION_GRAPH_PATH}"}
+
+    legacy = [n for n in graph.get("nodes", [])
+              if n.get("layer") in TRAINING_LAYERS and n.get("id")]
+    legacy_ids = {n["id"] for n in legacy}
+    kept_links = [l for l in graph.get("links", [])
+                  if l.get("source") not in legacy_ids and l.get("target") not in legacy_ids]
+    removed_links = len(graph.get("links", [])) - len(kept_links)
+
+    if legacy and not dry_run:
+        graph["nodes"] = [n for n in graph.get("nodes", []) if n.get("id") not in legacy_ids]
+        graph["links"] = kept_links
+        write_json(graph_path, graph)
+    return {"ok": True, "dry_run": dry_run, "nodes": sorted(legacy_ids),
+            "removed_links": removed_links,
+            "note_ids": sorted({n.get("note_id") for n in legacy if n.get("note_id")})}
+
+
+def format_migrate(result):
+    if not result["ok"]:
+        return f"⛔ {result['error']}"
+    if not result["nodes"]:
+        return "✅ 法規圖譜裡沒有舊版遺留的訓練層節點，不需要遷移。"
+    prefix = "（乾跑，未寫檔）" if result["dry_run"] else ""
+    lines = [f"== 舊版訓練層遷移{prefix} ==",
+             f"法規圖譜內找到 {len(result['nodes'])} 個訓練層節點、"
+             f"{result['removed_links']} 條相關的邊"]
+    if result["note_ids"]:
+        lines.append(f"  涉及實務註解：{'、'.join(result['note_ids'])}")
+    lines.append("這些內容由 practice_notes/ 衍生，訓練圖譜 build 之後就會重新長出來，"
+                 "不會遺失。")
+    if result["dry_run"]:
+        lines.append("→ 確認無誤後：python3 tools/training_graph_build.py "
+                     "migrate-from-legacy --apply，再跑 build")
+    else:
+        lines.append("→ 接續：python3 tools/training_graph_build.py build")
+    return "\n".join(lines)
+
+
 def format_check(result):
     lines = ["== 訓練圖譜納入狀態 =="]
     if not result.get("graph_present", True):
@@ -611,6 +666,15 @@ def cmd_check(args):
     return 0 if result["state"] in OK_STATES else 2
 
 
+def cmd_migrate(args):
+    result = migrate_from_legacy(args.root, dry_run=not args.apply)
+    if args.format == "json":
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    else:
+        print(format_migrate(result))
+    return 0 if result["ok"] else 1
+
+
 def cmd_contract(args):
     root = Path(args.root)
     entries = {e["id"]: e for e in markdown_entries(root)}
@@ -680,6 +744,12 @@ def build_parser():
                    help="尚未完成語意抽取的註解列入略過清單，先建其餘者")
     s.add_argument("--format", choices=("text", "json"), default="text")
     s.set_defaults(func=cmd_build)
+
+    s = sub.add_parser("migrate-from-legacy",
+                       help="把舊版併在法規圖譜裡的訓練層清出來（預設乾跑）")
+    s.add_argument("--apply", action="store_true", help="實際寫檔")
+    s.add_argument("--format", choices=("text", "json"), default="text")
+    s.set_defaults(func=cmd_migrate)
 
     s = sub.add_parser("check", help="訓練圖譜是否跟上素材（0=跟上 2=沒跟上）")
     s.add_argument("--format", choices=("text", "json"), default="text")

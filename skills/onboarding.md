@@ -143,26 +143,27 @@ python3 tools/pending_review.py apply --all --by "{確認人}"
 python3 tools/fire_code_calc.py self-test && python3 tools/fire_code_calc.py run-tests --strict
 ```
 
-### 第三步 法規圖譜
+### 第三步 法規圖譜與訓練圖譜
 
-**先講清楚「查詢不用裝任何東西」**——`graphify-out/graph.json` 已在倉庫內，
-`tools/regulation_graph.py` 只用標準庫。使用者只是要查法規的話，這一步什麼都不用做：
+**先講清楚「查詢不用裝任何東西」**——`tools/regulation_graph.py` 只用標準庫，
+查詢時會自動同時載入法規圖譜（`graphify-out/graph.json`）與訓練圖譜
+（`training/graph.json`）。使用者只是要查法規的話，這一步什麼都不用做：
 
 ```bash
 python3 tools/regulation_graph.py neighbors --article §24
 ```
 
-只有兩種情況才需要安裝 `graphify`（**不要對只查詢的使用者推銷安裝**）：
+`status` 顯示訓練圖譜「尚未建置」時，那不是錯誤——它是衍生產物，倉庫本來就帶了
+審圖修正筆記與判斷慣例，建起來（`python3 tools/training_graph_build.py build`，幾毫秒）
+審圖時就查得到。使用者有自己的實務註解卻沒建，才是紅燈。
 
-1. 他改了 `rules/core/` 的法規全文，需要重建圖譜
-2. 他想用 `graphify query/explain/path` 的 CLI 查詢
+法規圖譜顯示 `stale`／`no_baseline` 時，代表 `rules/core/` 改了但圖譜沒跟上，
+此時查到的關聯可能不是最新的——照 `status` 印出的 `REBUILD_HINT` 處理。
+**重建零安裝、不需要 API key**（`tools/regulation_graph_build.py` 只用標準庫）。
 
-要裝的話先取得同意，再依 `status` 給的命令執行（有 bash 用 `bash tools/setup.sh --with-graph`，
-沒有 bash 用 `{interpreter} -m pip install graphifyy`）。
-
-`status` 顯示圖譜新鮮度為 `stale`／`notes_missing`／`no_baseline` 時，代表來源檔改了
-但圖譜沒跟上，此時查到的關聯可能不是最新的——照 `status` 印出的 `REBUILD_HINT` 處理，
-重建後必須重跑 `practice_note_graph.py merge` 再 `graph_status.py stamp`。
+`graphify` 是**選用**的，不影響查詢也不影響重建，只用來重繪 `graph.html` 視覺化與
+提供 `graphify query/explain/path` CLI。**不要對只查詢的使用者推銷安裝**；
+要裝的話先取得同意，再依 `status` 給的命令執行。
 
 **邊界**：圖譜只是索引與導覽，用來定位條號與關聯。門檻數值與計算一律回法條原文與
 `fire_code_calc.py`，不得引用圖譜節點標題當作法規數值。

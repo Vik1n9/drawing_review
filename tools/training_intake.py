@@ -254,8 +254,9 @@ NOTES_TEMPLATE = """# 訓練批次紀錄：{batch}
 - [ ] 新增測試（先紅再綠 RED）：`rules/rule_tests.json` 的測試 ID —— 待填
 - [ ] 新增規則（GREEN）：`rules/equipment_rules.json` 的規則 ID —— 待填（一律 `verified: false`）
 - [ ] 回饋筆記追加：`rules/review_corrections.md` / `rules/stage_two_judgment_rules.md` 的日期標題 —— 待填
-- [ ] 圖譜重建：`/graphify rules --update` → `python3 tools/practice_note_graph.py merge`
-      （重建會覆寫 graph.json，須把實務註解層併回去）→ `python3 tools/graph_status.py stamp`
+- [ ] 訓練圖譜：`python3 tools/training_graph_build.py build`
+- [ ] 法規圖譜（動到 rules/core/ 才需要）：`python3 tools/regulation_graph_build.py verify`
+      → `rebuild --commit` → `python3 tools/graph_status.py stamp --graph regulation`
 - [ ] 送核定：`python3 tools/verification_sheet.py export`
 
 ## 注意
@@ -540,8 +541,9 @@ def cmd_apply(args):
     print("  1. rules/core/ 有變更 → python3 tools/regulation_index.py build")
     print("  2. 法規參數入庫 → 走 skills/red-green.md（RED → Verify RED → GREEN → Verify GREEN）")
     print("  3. 回饋筆記 → 依 rules/review_corrections.md 既有格式，經使用者確認後追加")
-    print("  4. 圖譜重建 → /graphify rules --update → python3 tools/practice_note_graph.py merge "
-          "→ python3 tools/graph_status.py stamp")
+    print("  4. 更新圖譜（兩個各自獨立，先跑 graph_status.py check 看是哪一個）→ "
+          "python3 tools/training_graph_build.py build；動到 rules/core/ 才需要 "
+          "python3 tools/regulation_graph_build.py rebuild --commit → graph_status.py stamp")
     print("  5. 綠燈驗收 → python3 tools/fire_code_calc.py self-test && "
           "python3 tools/fire_code_calc.py run-tests --strict")
     return 0

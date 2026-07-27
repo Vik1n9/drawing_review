@@ -153,8 +153,10 @@ def main(argv=None):
     for dep in env["deps"]:
         print(f"  {'✓' if dep['ok'] else '✗'} {dep['package']:10} — {dep['use']}")
 
-    print("\n[法規知識圖譜] 選用（graph.html 直接開瀏覽器即可看）：")
-    print(f"  {'✓' if env['graphify'] else '✗'} graphify — 圖譜重建與 query/explain/path 查詢")
+    print("\n[graphify] 純加值，裝不裝都不影響審圖："
+          "圖譜查詢與重建都只用標準庫（regulation_graph.py／regulation_graph_build.py）")
+    print(f"  {'✓' if env['graphify'] else '✗'} graphify — 重繪 graph.html 視覺化與 "
+          "query/explain/path CLI")
 
     if env["missing"]:
         print("\n→ 這台電腦裝得起套件的話，可補齊：" +

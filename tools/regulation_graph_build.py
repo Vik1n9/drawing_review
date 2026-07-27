@@ -45,10 +45,11 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 try:
-    from tools import graph_labels, practice_note_graph
+    from tools import graph_labels, practice_note_graph, training_graph_build
 except ImportError:
     import graph_labels
     import practice_note_graph
+    import training_graph_build
 
 load_json = practice_note_graph.load_json
 write_json = practice_note_graph.write_json
@@ -384,8 +385,14 @@ def rebuild(root=".", graph_path=None):
                           for number in c["articles"]}
     refreshed_sources = {article_ids[n] for n in refreshed_articles if n in article_ids}
 
+    # 分家前實務註解是併進 graph.json 的。那些節點現在屬於訓練圖譜，
+    # 留在法規圖譜裡會讓查詢重複計算——重建時逐出，並回報讓使用者知道搬去哪了。
+    evicted = [n for n in existing.get("nodes", [])
+               if n.get("layer") in training_graph_build.TRAINING_LAYERS and n.get("id")]
+    evicted_ids = {n["id"] for n in evicted}
     concept_nodes = [n for n in existing.get("nodes", [])
-                     if n.get("file_type") not in (DOCUMENT, IMAGE) and n.get("id")]
+                     if n.get("file_type") not in (DOCUMENT, IMAGE) and n.get("id")
+                     and n["id"] not in evicted_ids]
     nodes.extend(n for n in concept_nodes if n["id"] not in skeleton_ids)
     live_ids = {n["id"] for n in nodes}
 
@@ -449,6 +456,7 @@ def rebuild(root=".", graph_path=None):
         "minted_ids": ledger.minted,
         "added_citations": added_citations,
         "dropped_edges": dropped,
+        "evicted_training_nodes": sorted(evicted_ids),
         "refreshed_chunks": sorted(c for c, d in refreshed.items() if d),
         "unresolved": unresolved,
         "hyperedge_problems": _hyperedge_problems(graph),
@@ -513,14 +521,18 @@ def verify(root=".", against=None):
     new_edges = {(e.get("source"), e.get("target")) for e in new["links"]}
     removed = sorted(old_edges - new_edges)
 
+    # 舊版遺留的訓練層節點被逐出是**預期**的搬遷，不是流失——它們在訓練圖譜裡。
+    evicted = set(report["evicted_training_nodes"])
     return {
-        "nodes_removed": sorted(set(old_nodes) - set(new_nodes)),
+        "nodes_removed": sorted(set(old_nodes) - set(new_nodes) - evicted),
+        "nodes_moved_to_training": sorted(evicted),
         "nodes_added": sorted(set(new_nodes) - set(old_nodes)),
         "labels_changed": sorted(i for i in set(old_nodes) & set(new_nodes)
                                  if old_nodes[i].get("label") != new_nodes[i].get("label")),
         "edges_removed": removed,
         "edges_lost": [pair for pair in removed
-                       if pair[0] in new_nodes and pair[1] in new_nodes],
+                       if pair[0] in new_nodes and pair[1] in new_nodes
+                       and pair[0] not in evicted and pair[1] not in evicted],
         "edges_added": sorted(new_edges - old_edges),
         "hyperedge_problems": report["hyperedge_problems"],
         "unresolved": report["unresolved"],
@@ -551,6 +563,9 @@ def format_verify(result):
         lines.append(f"🔴 超邊引用到不存在的節點：{len(result['hyperedge_problems'])} 條")
         for item in result["hyperedge_problems"][:5]:
             lines.append(f"    {item['id']} → {item['missing']}")
+    if result.get("nodes_moved_to_training"):
+        lines.append(f"ℹ️ {len(result['nodes_moved_to_training'])} 個舊版遺留的訓練層節點"
+                     "移出法規圖譜（它們現在住在 training/graph.json）")
     if result["nodes_added"]:
         lines.append(f"🟡 新增節點 {len(result['nodes_added'])} 個（逐一確認）")
         for item in result["nodes_added"][:10]:

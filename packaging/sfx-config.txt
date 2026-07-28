@@ -1,0 +1,5 @@
+;!@Install@!UTF-8!
+Title="Fire Review 消防審圖輔助系統"
+BeginPrompt="要安裝 Fire Review 嗎？\n\n接下來會請你選一個安裝資料夾。\n如果你已經裝過，選同一個資料夾即可——你既有的裁示、實務見解與案件圖面都不會被覆蓋。"
+RunProgram="安裝.bat"
+;!@InstallEnd@!

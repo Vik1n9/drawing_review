@@ -1,7 +1,10 @@
 name: release
 
-# 線2 發佈：打包成 Windows 安裝程式，讓不懂 git 的消防專業人員裝得起來。
+# 線2 發佈：打包成 Windows 自解壓縮檔，讓不懂 git 的消防專業人員裝得起來。
 # 線1（git clone）不受影響——兩條路徑並行，見 README.md「兩種取得方式」。
+#
+# 整條流程都在 ubuntu 上跑得完：7-Zip SFX 只是「模組 ＋ 設定 ＋ 封存」的串接，
+# 不需要 Windows 工具鏈。windows job 留下來的唯一理由是**驗證**，不是建置。
 on:
   push:
     tags: ["v*"]
@@ -78,7 +81,7 @@ jobs:
 
   installer:
     needs: [verify, package]
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -87,38 +90,96 @@ jobs:
           name: stage
           path: dist/FireReview-${{ needs.verify.outputs.version }}
 
-      - name: 安裝 Inno Setup
-        run: choco install innosetup -y --no-progress
+      - name: 安裝 7z
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq p7zip-full
 
-      - name: 編譯安裝程式
-        shell: cmd
+      # SFX 殼層模組來自 LZMA SDK（現代的 7z*-extra.7z 已經不含 .sfx 了）。
+      # 這是**建置輸入**，會原封不動接進我們發出去的 exe，所以 sha256 釘死並在此核對。
+      - name: 取得並核對 SFX 模組
         run: |
-          "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" ^
-            /DMyVersion=${{ needs.verify.outputs.version }} ^
-            "/DStageDir=..\dist\FireReview-${{ needs.verify.outputs.version }}" ^
-            packaging\fire-review.iss
+          set -e
+          url=$(python3 -c "import json;print(json.load(open('packaging/sfx-module.json'))['url'])")
+          want=$(python3 -c "import json;print(json.load(open('packaging/sfx-module.json'))['sha256'])")
+          member=$(python3 -c "import json;print(json.load(open('packaging/sfx-module.json'))['member'])")
+          want_member=$(python3 -c "import json;print(json.load(open('packaging/sfx-module.json'))['member_sha256'])")
+          curl -sSL --fail -o sdk.7z "$url"
+          echo "$want  sdk.7z" | sha256sum -c -
+          7z e -ovendor sdk.7z "$member" > /dev/null
+          echo "$want_member  vendor/$(basename "$member")" | sha256sum -c -
 
-      # 全新安裝跑一次，確認裝出來的東西真的能動。
-      # 升級路徑的逐檔判定由 tests/test_update_guard_install.py 涵蓋
-      # （邏輯刻意放在 Python 端，就是為了讓它測得到）。
-      - name: 全新安裝煙霧測試
-        shell: cmd
+      # python.org 換路徑要在**發版時**失敗，不是在使用者的電腦上失敗。
+      - name: 確認 Python 安裝程式網址可達
         run: |
-          dist\FireReview-${{ needs.verify.outputs.version }}-setup.exe /VERYSILENT /DIR="%RUNNER_TEMP%\FireReview"
-          if errorlevel 1 exit /b 1
-          cd /d "%RUNNER_TEMP%\FireReview"
-          python tools\onboarding.py status --format json >nul || if errorlevel 3 exit /b 1
-          python tools\update_guard.py check
-          if not exist "安裝清單.json" exit /b 1
-          if not exist "開場診斷.bat" exit /b 1
+          set -e
+          url=$(python3 -c "
+          import json
+          d = json.load(open('packaging/python-runtime.json'))
+          print(d['url_template'].format(version=d['version']))")
+          code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 120 "$url")
+          echo "$url -> $code"
+          test "$code" = "200"
+
+      - name: 組出自解壓縮檔
+        run: |
+          python3 tools/make_sfx.py \
+            --version "${{ needs.verify.outputs.version }}" \
+            --stage "dist/FireReview-${{ needs.verify.outputs.version }}" \
+            --sfx-module vendor/7zS2.sfx \
+            --out dist
 
       - uses: actions/upload-artifact@v4
         with:
           name: setup
           path: dist/FireReview-${{ needs.verify.outputs.version }}-setup.exe
 
+  # 不裝任何工具鏈——windows runner 本來就有 Python。這一步驗的是
+  # **中文檔名在 Windows 上的編碼**：安裝清單.json、待確認事項.md、.上游新版
+  # 全是非 ASCII，cp950 主控台是經典地雷，而這在 Linux 上永遠測不出來。
+  windows-check:
+    needs: [verify, package]
+    runs-on: windows-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: stage
+          path: stage
+
+      - name: 全新安裝
+        shell: cmd
+        run: |
+          python stage\tools\installer.py --source stage --target "%RUNNER_TEMP%\FireReview" --yes --no-optional --no-pause
+          if errorlevel 1 exit /b 1
+          if not exist "%RUNNER_TEMP%\FireReview\安裝清單.json" exit /b 1
+          if not exist "%RUNNER_TEMP%\FireReview\開場診斷.bat" exit /b 1
+
+      - name: 裝完就要跑得動
+        shell: cmd
+        run: |
+          cd /d "%RUNNER_TEMP%\FireReview"
+          python tools\onboarding.py status --format json >nul
+          if errorlevel 3 exit /b 1
+          python tools\update_guard.py check
+          if errorlevel 1 exit /b 1
+
+      # 升級語意的逐檔判定由 tests/test_update_guard_install.py 涵蓋；
+      # 這裡驗的是同一套邏輯在 Windows 的檔案系統與編碼下也成立。
+      - name: 對同一個資料夾再裝一次（升級路徑）
+        shell: cmd
+        run: |
+          cd /d "%RUNNER_TEMP%\FireReview"
+          echo {"threshold": 999} > rules\equipment_rules.json
+          cd /d "%GITHUB_WORKSPACE%"
+          python stage\tools\installer.py --source stage --target "%RUNNER_TEMP%\FireReview" --yes --no-optional --no-pause
+          if errorlevel 1 exit /b 1
+          if not exist "%RUNNER_TEMP%\FireReview\rules\equipment_rules.json.上游新版" (
+            echo 使用者改過的檔案沒有被保留，或上游新版沒有另存
+            exit /b 1
+          )
+          findstr /C:"999" "%RUNNER_TEMP%\FireReview\rules\equipment_rules.json" >nul
+          if errorlevel 1 (echo 使用者的改動被覆蓋了 & exit /b 1)
+
   publish:
-    needs: [verify, package, installer]
+    needs: [verify, package, installer, windows-check]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
@@ -143,16 +204,21 @@ jobs:
             ## 給消防專業使用者（不需要懂 git）
 
             下載 **FireReview-${{ needs.verify.outputs.version }}-setup.exe**，
-            雙擊執行，選一個你想安裝的資料夾即可。裝完打開資料夾裡的
+            雙擊執行，選一個你想安裝的資料夾即可。**沒有 Python 也沒關係**——
+            安裝程式偵測不到時會自動下載官方安裝程式（會先驗證是 Python
+            官方簽章的檔案才執行）。裝完打開資料夾裡的
             「安裝完成-請把這段貼給你的AI.txt」，照著把那段話貼給你的 AI。
 
             > **Windows 會跳出「已保護您的電腦」的藍色警告。**
             > 這是因為安裝程式沒有購買程式碼簽章憑證，不是偵測到病毒。
-            > 點「其他資訊」→「仍要執行」即可。不放心的話，改用下面的 zip：
-            > 解壓縮到任一資料夾，效果完全相同。
+            > 點「其他資訊」→「仍要執行」即可。
+            >
+            > **如果防毒軟體直接把它擋掉或刪掉**——自解壓縮檔這種格式常被防毒
+            > 視為可疑（惡意程式也愛用這種殼），企業電腦尤其容易被隔離。
+            > 遇到這種情形請改用下面的 **.zip**：解壓縮到任一資料夾，
+            > 內容與安裝程式**完全相同**，只是要自己選資料夾、自己裝 Python。
 
-            另附 **FireReview-${{ needs.verify.outputs.version }}.zip**（免安裝，
-            解壓縮即可用）。
+            另附 **FireReview-${{ needs.verify.outputs.version }}.zip**（免安裝）。
 
             ### 已經裝過舊版？
 
@@ -164,6 +230,9 @@ jobs:
             4. 你自己新增的案件圖面與實務見解，完全不動
 
             裝完會產生「更新報告-日期.txt」，逐檔說明發生了什麼事。
+
+            在逐檔判定跑起來之前，**你的資料夾一個位元組都不會被碰到**——
+            安裝程式是先解壓到暫存區，確認過才逐檔處理。
 
             ⚠️ **不要請 AI 幫你「更新倉庫」**——它可能用 git 指令把你的成果清掉。
             你的訓練成果只存在你這台電腦，覆蓋掉救不回來。詳見 `skills/safe-update.md`。

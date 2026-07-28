@@ -10,6 +10,10 @@
 4. **缺 7z 要講清楚**——不能靜默產出半成品
 
 `7z` 不在時只跳過真的要壓縮的測試；批次檔與設定的驗證不需要 7z。
+
+**在安裝包裡跑時整批跳過。** `packaging/` 是建置輸入，使用者的安裝資料夾不需要，
+`make_release.py` 也就沒把它打包進去——但 `tests/` 是整個包進去的，所以這些測試
+會在使用者的安裝包裡找不到建置輸入。發版工具的測試對「已安裝的系統」本來就不適用。
 """
 
 import json
@@ -25,6 +29,14 @@ REPO = Path(__file__).resolve().parent.parent
 
 # 假的 SFX 模組：測串接順序不需要真的 7zS2.sfx（那是 CI 才下載的東西）
 FAKE_SFX = b"MZ\x90\x00" + b"FAKE-7ZS2-SFX-MODULE" * 64
+
+# 判準刻意是「有沒有安裝清單.json」而不是「packaging/ 在不在」：
+# 後者會讓有人不小心刪掉建置輸入時，倉庫自己的測試**靜默跳過**而不是紅燈——
+# 那等於把守門變成裝飾。安裝清單只有 make_release.py 會產生，是可靠的身分證。
+IS_INSTALLED_PACKAGE = (REPO / "安裝清單.json").is_file()
+
+needs_build_inputs = unittest.skipIf(
+    IS_INSTALLED_PACKAGE, "安裝包沒有 packaging/ 建置輸入——發版工具的測試不適用")
 
 
 def has_7z():
@@ -45,6 +57,7 @@ def make_stage(base):
     return stage
 
 
+@needs_build_inputs
 class RuntimePinTest(unittest.TestCase):
     """釘選資料是真的資料檔，不是散在程式裡的字串。"""
 
@@ -70,6 +83,7 @@ class RuntimePinTest(unittest.TestCase):
                 make_sfx.load_runtime(tmp)
 
 
+@needs_build_inputs
 class BatchFileTest(unittest.TestCase):
     """整個方案唯一沒被單元測試涵蓋的執行路徑——所以它的內容必須被測到。"""
 
@@ -136,6 +150,7 @@ class ArtifactHandoffTest(unittest.TestCase):
         self.assertIn(make_sfx.BATCH_NAME, installer.INSTALLER_ARTIFACTS)
 
 
+@needs_build_inputs
 class ConfigTest(unittest.TestCase):
 
     def setUp(self):
@@ -152,6 +167,7 @@ class ConfigTest(unittest.TestCase):
         self.assertIn("不會被覆蓋", self.config)
 
 
+@needs_build_inputs
 @unittest.skipUnless(has_7z(), "這台機器沒有 7z")
 class AssemblyTest(unittest.TestCase):
 

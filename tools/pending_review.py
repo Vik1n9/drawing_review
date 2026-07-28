@@ -40,6 +40,13 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tools import fire_code_calc as calc  # noqa: E402
 from tools import verification_sheet as vs  # noqa: E402
 
+try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
 TESTS_PATH = "rules/rule_tests.json"
 DOC_PATH = "待確認事項.md"
 README_PATH = "README.md"

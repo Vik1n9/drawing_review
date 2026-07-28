@@ -34,6 +34,13 @@ from collections import namedtuple
 from datetime import datetime, timezone
 from pathlib import Path
 
+try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 EXIT_OK, EXIT_NEEDS_ACTION = 0, 2

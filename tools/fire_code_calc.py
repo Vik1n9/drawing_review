@@ -26,6 +26,13 @@ import re
 import sys
 from decimal import Decimal, Context, ROUND_HALF_EVEN
 
+try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
 _CTX = Context(prec=28, rounding=ROUND_HALF_EVEN)
 
 UNVERIFIED_WARNING = ("⚠️ 本參數尚未逐條確認（verified: false）——請對照法條原文確認，"

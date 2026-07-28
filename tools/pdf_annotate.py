@@ -37,6 +37,13 @@ import argparse
 import json
 import sys
 
+try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
 SEVERITY_COLOR = {
     "重大缺失": (0.85, 0.0, 0.0),
     "一般缺失": (0.95, 0.45, 0.0),

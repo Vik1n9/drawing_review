@@ -40,6 +40,13 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
 PRODUCT = "FireReview"
 BATCH_NAME = "安裝.bat"
 RUNTIME_JSON = Path("packaging") / "python-runtime.json"
@@ -53,6 +60,7 @@ CRLF = "\r\n"
 # 檔案本身寫成 **UTF-8 無 BOM**：.bat 開頭有 BOM 會讓 cmd 把它當成命令而報錯。
 BATCH_TEMPLATE = """@echo off
 chcp 65001 >nul
+set PYTHONUTF8=1
 cd /d "%~dp0"
 echo(
 echo === Fire Review 消防審圖輔助系統 ===

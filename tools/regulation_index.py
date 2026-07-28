@@ -11,6 +11,13 @@ import json
 import re
 from pathlib import Path
 
+try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
 
 ARTICLE_HEADING_RE = re.compile(r"^(#{2,6})\s*第\s*([0-9０-９]+(?:-[0-9０-９]+)?)\s*條\s*$")
 HEADING_RE = re.compile(r"^(#{1,6})\s*(.+?)\s*$")

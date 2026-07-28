@@ -25,6 +25,13 @@ import re
 import sys
 from pathlib import Path
 
+try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
 BINARY_SENTINEL = b"AutoCAD Binary DXF\r\n\x1a\x00"
 
 # R2007（AC1021）起 DXF 一律 UTF-8；之前的版本看 $DWGCODEPAGE

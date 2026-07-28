@@ -14,6 +14,13 @@ from pathlib import Path
 from typing import Optional
 
 try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
+try:
     import openpyxl
 except ImportError as exc:  # pragma: no cover - exercised by runtime environment
     raise SystemExit("缺少 openpyxl，請先安裝 requirements.txt") from exc

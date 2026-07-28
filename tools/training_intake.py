@@ -28,6 +28,13 @@ import sys
 from datetime import date
 from pathlib import Path
 
+try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
 try:  # 以 tools.training_intake 匯入（測試）
     from tools import graph_status
 except ImportError:  # 以 python3 tools/training_intake.py 執行（sys.path[0] = tools/）

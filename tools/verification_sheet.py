@@ -48,6 +48,13 @@ import os
 import sys
 from datetime import date
 
+try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
 RULES_PATH = "rules/equipment_rules.json"
 TESTS_PATH = "rules/rule_tests.json"
 DISCREPANCY_DIR = os.path.join("governance", "待確認清單")

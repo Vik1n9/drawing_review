@@ -74,26 +74,68 @@ class ForceUtf8OutputTest(unittest.TestCase):
             self.assertEqual([], force_utf8_output(["stdout"]))
 
 
+# 缺選用套件時「乾淨地報錯退出」是**正確行為**（見 requirements.txt 的零安裝哲學），
+# 不是這條測試要抓的東西。第一版把整個環境洗掉（寫死 PATH、HOME）想求「乾淨」，
+# 結果只是把 CI 裝在 user site 的套件藏起來——本機 pip 裝到 dist-packages 所以測不出來，
+# 到了 CI 才紅。環境要繼承，只覆寫真正要測的那一個變數。
+ENCODING_ERRORS = ("UnicodeEncodeError", "codec can't encode")
+
+# 只用標準庫的工具：任何環境都該跑得起來，所以連結束碼都可以斷言。
+# 其餘工具可能因為缺選用套件而正當地非零退出。
+STDLIB_ONLY = ("check_env.py", "update_guard.py", "onboarding.py",
+               "installer.py", "guard_hook.py", "make_release.py",
+               "regulation_graph.py", "regulation_index.py", "graph_status.py")
+
+
+class EveryCliToolDeclaresItTest(unittest.TestCase):
+    """靜態不變式：每個 CLI 入口都要自己呼叫一次。
+
+    為什麼光靠下面的實跑不夠：工具彼此 import，而被 import 的模組在載入時就會
+    呼叫 force_utf8_output()，所以某個檔案漏掉時，往往被它 import 的別人「順便」
+    救了——實跑因此看不出來。**那種靠 import 副作用成立的正確性，會在有人重構
+    掉一行 import 的那天無聲消失。**
+
+    實測過：拿掉 pending_review.py 的呼叫，實跑仍然全綠（它 import 的模組已經
+    把 stdout 重設好了）；拿掉 check_env.py 的（它不 import 別的工具）才會紅。
+    """
+
+    def test_every_cli_tool_calls_force_utf8_output(self):
+        for path in cli_tools():
+            with self.subTest(tool=path.name):
+                self.assertIn(
+                    "force_utf8_output()", path.read_text(encoding="utf-8"),
+                    f"{path.name} 沒有呼叫 force_utf8_output()——"
+                    "現在可能因為 import 了別的工具而僥倖沒事，"
+                    "但那份保護會隨著任何一次 import 重構消失")
+
+
 class EveryCliToolSurvivesALegacyCodepageTest(unittest.TestCase):
-    """實測：每個工具在 cp1252 管道下都要跑得完。"""
+    """實測：每個工具在 cp1252 管道下都不得因為編碼而中斷。"""
 
     def run_tool(self, path, *args):
+        import os
         return subprocess.run(
             [sys.executable, str(path), *args],
             cwd=REPO, capture_output=True, text=True, timeout=120,
-            env={"PYTHONIOENCODING": "cp1252", "PATH": "/usr/bin:/bin",
-                 "HOME": "/tmp"})
+            env=dict(os.environ, PYTHONIOENCODING="cp1252"))
 
-    def test_every_cli_tool_prints_its_help(self):
+    def assert_no_encoding_error(self, proc, name):
+        for marker in ENCODING_ERRORS:
+            self.assertNotIn(
+                marker, proc.stderr,
+                f"{name} 在 cp1252 管道下印不出中文——"
+                f"Windows 使用者把輸出導向檔案、或 AI 代理讀取輸出就會炸\n"
+                f"{proc.stderr[-600:]}")
+
+    def test_every_cli_tool_survives(self):
         tools = cli_tools()
         self.assertGreater(len(tools), 20, "工具怎麼變這麼少？清單掃描可能壞了")
         for path in tools:
             with self.subTest(tool=path.name):
                 proc = self.run_tool(path, "--help")
-                self.assertNotIn("UnicodeEncodeError", proc.stderr,
-                                 f"{path.name} 在 cp1252 管道下印不出中文——"
-                                 "Windows 使用者把輸出導向檔案就會炸")
-                self.assertEqual(0, proc.returncode, proc.stderr[-500:])
+                self.assert_no_encoding_error(proc, path.name)
+                if path.name in STDLIB_ONLY:
+                    self.assertEqual(0, proc.returncode, proc.stderr[-500:])
 
     def test_the_tools_users_actually_run_produce_chinese_output(self):
         """--help 可能只有英文；這幾支是一定會吐中文的，要真的跑一次。"""
@@ -102,9 +144,14 @@ class EveryCliToolSurvivesALegacyCodepageTest(unittest.TestCase):
                      ["tools/onboarding.py", "status"]):
             with self.subTest(tool=args[0]):
                 proc = self.run_tool(REPO / args[0], *args[1:])
-                self.assertNotIn("UnicodeEncodeError", proc.stderr)
+                self.assert_no_encoding_error(proc, args[0])
                 self.assertIn(proc.returncode, (0, 2, 3),
                               f"非預期結束碼：{proc.stderr[-500:]}")
+                self.assertTrue(
+                    any("一" <= ch <= "鿿"
+                        for ch in proc.stdout + proc.stderr),
+                    f"{args[0]} 在 cp1252 下沒吐出任何中文——"
+                    "可能被靜默吞掉了，那比報錯更糟")
 
 
 class LaunchersSetUtf8Test(unittest.TestCase):

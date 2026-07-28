@@ -22,6 +22,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from tools import dxf_parse  # noqa: E402
 
+try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
 
 SEVERITY_CLASS = {
     "重大缺失": "critical",

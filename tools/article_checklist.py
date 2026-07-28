@@ -25,6 +25,13 @@ from datetime import date
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import fire_code_calc as fcc  # noqa: E402
 
+try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
 ARTICLE_FIRST, ARTICLE_LAST = 14, 31
 
 # 設備名稱 → case.json floors[].existing_equipment 鍵（僅做有/無初篩）

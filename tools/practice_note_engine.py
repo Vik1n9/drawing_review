@@ -27,6 +27,13 @@ import sys
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
+try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
 NOTES_DIR = "practice_notes"
 ACTIVE_DIR = "practice_notes/active"
 STAGING_DIR = "practice_notes/staging"

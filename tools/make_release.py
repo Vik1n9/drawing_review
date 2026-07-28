@@ -37,6 +37,13 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
+try:
     from tools import update_guard as guard
 except ImportError:  # 直接以 tools/ 為工作目錄執行時
     import update_guard as guard
@@ -65,6 +72,7 @@ EXCLUDE_PATTERNS = (
 # 安裝後留在資料夾裡、給不熟終端機的人用的東西。
 DIAGNOSTIC_BAT = """@echo off
 chcp 65001 >nul
+set PYTHONUTF8=1
 cd /d "%~dp0"
 echo === Fire Review 開場診斷 ===
 echo.

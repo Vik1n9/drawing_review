@@ -31,6 +31,13 @@ import re
 import sys
 from collections import deque
 
+try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
 DEFAULT_GRAPH = os.path.join("graphify-out", "graph.json")
 DEFAULT_TRAINING_GRAPH = os.path.join("training", "graph.json")
 

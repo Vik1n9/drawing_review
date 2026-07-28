@@ -54,6 +54,13 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
+try:
     from tools.graph_status import sha256_file
 except ImportError:  # 直接以 tools/ 為工作目錄執行時
     from graph_status import sha256_file

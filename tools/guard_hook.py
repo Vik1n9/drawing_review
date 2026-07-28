@@ -29,6 +29,13 @@ import re
 import shlex
 import sys
 
+try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
 EXIT_ALLOW, EXIT_BLOCK = 0, 2
 
 SKILL = "skills/safe-update.md"

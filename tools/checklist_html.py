@@ -30,6 +30,13 @@ import html
 import json
 from datetime import date
 
+try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
 STATUS = {
     "pass":   ("☑", "符合", "pass"),
     "fail":   ("☒", "不符合", "fail"),

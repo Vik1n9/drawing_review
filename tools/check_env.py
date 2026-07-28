@@ -15,6 +15,13 @@ import importlib.util
 import shutil
 import sys
 
+try:
+    from tools.console import force_utf8_output
+except ImportError:  # 直接以 tools/ 為工作目錄執行時
+    from console import force_utf8_output
+
+force_utf8_output()
+
 # (import 名稱, 套件名稱, 用途/對應工具)
 # 三者皆為**選用**——缺席時各有替代路徑，見 CAPABILITY_SPECS。
 PY_DEPS = [

@@ -174,8 +174,9 @@ def source_commit(root):
 def stage(root, out_dir, version, now=None):
     """把安裝包內容攤到一個目錄，並寫出 安裝清單.json 與輔助檔。
 
-    先攤成目錄再壓縮，是因為 Inno Setup 要的就是一棵目錄樹，
-    而 `update_guard.py install --from` 吃的也是目錄——一份產物餵兩條路。
+    先攤成目錄再壓縮，是因為下游三條路吃的都是目錄：`tools/make_sfx.py` 要把它
+    壓成自解壓縮檔的酬載、`tools/installer.py --source` 直接讀它、
+    `update_guard.py install --from` 也讀它——一份產物餵三條路。
     """
     root = Path(root)
     stage_dir = Path(out_dir) / f"{PRODUCT}-{version}"
@@ -250,7 +251,7 @@ def main(argv=None):
     p.add_argument("--version", required=True, help="版本號，例如 v1.2.0")
     p.add_argument("--out", default="dist", help="輸出目錄（預設 dist/）")
     p.add_argument("--stage-only", action="store_true",
-                   help="只攤出目錄，不壓縮（給 Inno Setup 用）")
+                   help="只攤出目錄，不壓縮（給 tools/make_sfx.py 用）")
     args = p.parse_args(argv)
 
     result = build(args.root, args.out, args.version, stage_only=args.stage_only)

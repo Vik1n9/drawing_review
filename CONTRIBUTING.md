@@ -52,7 +52,7 @@ python3 tools/onboarding.py status
 | 線 | 產物 | 給誰 | 更新方式 |
 |---|---|---|---|
 | 線1 | `git clone` | 技術人員、送 PR 的人 | `update_guard.py snapshot` → `commit` → `git pull --ff-only` |
-| 線2 | GitHub Release 的 `setup.exe` ＋ `.zip` | 消防專業人員 | 裝到同一個資料夾，`update_guard.py install` 逐檔判定 |
+| 線2 | GitHub Release 的 `setup.exe`（7-Zip 自解壓縮檔）＋ `.zip` | 消防專業人員 | 裝到同一個資料夾，`update_guard.py install` 逐檔判定 |
 
 線2 存在的理由：使用者不懂 git，而**讓 AI 代跑 git 正是本機訓練成果被蓋掉的來源**。安裝包沒有 `.git`，也就沒有 `git pull` 撞到本機改動的問題。
 
@@ -61,12 +61,32 @@ python3 tools/onboarding.py status
 1. 跑完整把關（單元測試、`self-test`、`run-tests --strict`、圖譜新鮮度）——規則測試沒全綠的版本不得出貨
 2. `python3 tools/make_release.py --version {版本}` 打包，並產生 `安裝清單.json`
 3. 解壓安裝包、跑它自己的測試與開場診斷（驗「拿掉範例圖之後它還跑不跑得起來」）
-4. Windows runner 用 Inno Setup 編出 `setup.exe`，跑全新安裝煙霧測試
-5. 建立**草稿** Release，人工確認後才發佈
+4. `python3 tools/make_sfx.py` 串成 `setup.exe`——**整條建置都在 ubuntu**，7-Zip SFX 只是「模組 ＋ 設定 ＋ 封存」的串接，不需要 Windows 工具鏈
+5. windows runner 只做**驗證**（不裝任何工具鏈）：全新安裝 → 開場診斷 → 對同一資料夾再裝一次驗升級語意
+6. 建立**草稿** Release，人工確認後才發佈
+
+保留 windows job 的理由不是建置，是**中文檔名在 Windows 上的編碼**：`安裝清單.json`、`待確認事項.md`、`.上游新版` 全是非 ASCII，cp950 主控台是經典地雷，而這在 Linux 上永遠測不出來。
 
 `安裝清單.json` 是線2 的上游基準：安裝目錄沒有 git，靠它逐檔的 sha256 才分得出「上游出貨的原樣」與「使用者改過的」。它是打包產物，不需要人工維護。
 
-**`packaging/fire-review.iss` 的 Pascal Script 只做偵測與呼叫，逐檔判定邏輯一律放 Python**（`update_guard.py install`）——同一份邏輯寫兩次遲早漂移成兩種行為，而 Pascal Script 沒有任何測試。
+### 為什麼從 Inno Setup 換成自解壓縮檔
+
+前一版用 Inno Setup，代價是 220 行的 `.iss`，其中 **136 行 Pascal Script 沒有任何測試涵蓋**，且 CI 需要一台 `windows-latest` 跑 `choco install innosetup`。換掉之後那 136 行變成 20 行以內的 `安裝.bat`（由 `make_sfx.py` 產生，內容有測試釘住）。
+
+**而且結構上更安全。** `7zS2.sfx` 把酬載解到 `%TEMP%`、執行 `RunProgram`、結束後清掉——在 `tools/installer.py` 跑起來之前，**使用者的資料夾一個位元組都沒被碰過**。Inno Setup 是在安裝過程中逐檔複製到 `{app}`，靠 Pascal 判斷該落在暫存還是本體，判斷錯就是部分覆蓋；SFX 讓這種錯誤不可能發生。
+
+代價要誠實記著：**自解壓縮檔被防毒誤判、隔離的機率比 Inno Setup 高**（惡意程式常用這種殼），企業電腦尤其明顯。所以 `.zip` 不是可有可無的附屬品，是唯一退路，Release notes 必須寫明顯。
+
+### 建置輸入的釘選規則
+
+兩個資料檔，兩種相反的處理，理由不同：
+
+| 檔案 | 釘 sha256？ | 為什麼 |
+|---|:---:|---|
+| `packaging/sfx-module.json` | ✅ | 這是**建置輸入**，會原封不動接進我們發出去的 exe，完整性要釘死；而且它極少更新，釘住不會腐爛。（注意：現代的 `7z*-extra.7z` 已不含 `.sfx`，模組的家在 LZMA SDK 的 `bin/`） |
+| `packaging/python-runtime.json` | ❌ | Python 要跟著安全更新走。**釘死雜湊會腐爛**——一出安全更新，釘住的就是舊版，而要跟上就得每次人工重算，這種維護稅遲早沒人繳。改成在 `安裝.bat` 裡驗 **Authenticode 發行者簽章**，檢查的是「這真的是 Python Software Foundation 出的」，換版本不必改任何雜湊 |
+
+**安裝殼層只做偵測與呼叫，逐檔判定一律放 Python**（`tools/installer.py` ＋ `update_guard.py install`）——同一份邏輯寫兩次遲早漂移成兩種行為，而殼層腳本沒有單元測試。`安裝.bat` 的**內容**由 `tests/test_make_sfx.py` 釘住（切碼頁、驗簽章、行數上限）。
 
 ## 更新倉庫的規範
 

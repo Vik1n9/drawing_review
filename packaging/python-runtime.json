@@ -1,0 +1,9 @@
+{
+  "_說明": "安裝程式在偵測不到 Python 時要下載哪一版。這是資料不是程式——由 tools/make_sfx.py 烘進「安裝.bat」，發版 CI 會先確認網址可達，所以 python.org 換路徑會在發版時失敗，而不是在使用者電腦上失敗。",
+  "_為什麼不釘 sha256": "釘死的雜湊會腐爛：Python 一出安全更新，釘住的就是舊版；要跟上就得每次人工重算，這種維護稅遲早沒人繳。改用 Authenticode 簽章驗證發行者身分，那才是真正在乎的性質，而且換版本不必改任何雜湊。",
+  "_怎麼升版": "改 version 就好，url 會跟著算出來。改完跑一次 python3 tools/make_sfx.py --help 之外的完整發版流程，CI 的 HEAD 檢查會驗網址。",
+  "version": "3.12.10",
+  "url_template": "https://www.python.org/ftp/python/{version}/python-{version}-amd64.exe",
+  "publisher": "Python Software Foundation",
+  "install_args": "/passive InstallAllUsers=0 PrependPath=1 Include_test=0"
+}

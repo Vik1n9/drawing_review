@@ -1,0 +1,11 @@
+{
+  "_說明": "自解壓縮檔的殼層模組。發版 CI 依此下載並核對 sha256，再取出 member 交給 tools/make_sfx.py --sfx-module。",
+  "_為什麼來源是 LZMA SDK 而不是 7-Zip Extra": "現代的 7z{版本}-extra.7z 已經不含 SFX 模組了（實測 25.01 版只有 7za.exe 與 Far 外掛）。SFX 模組的正式家在 LZMA SDK 的 bin/ 底下。",
+  "_為什麼這裡釘 sha256、python-runtime.json 卻不釘": "這是**建置輸入**，會被原封不動接進我們發出去的 exe，所以完整性要釘死；而且它極少需要更新，釘住不會腐爛。Python 安裝程式相反：它要跟著安全更新走，釘死雜湊只會讓使用者裝到舊版，所以那邊改驗 Authenticode 發行者簽章。",
+  "version": "25.01",
+  "url": "https://www.7-zip.org/a/lzma2501.7z",
+  "sha256": "cbc3babd589d971e45971d787ff100be8aaa5eab15b2694497ec3e447009e1f2",
+  "member": "bin/7zS2.sfx",
+  "member_sha256": "57293a9c7792d6118ccf8b72d8d5104cb7cd4bb1999227621e8a93bd13b66f21",
+  "license": "LGPL（7-Zip／LZMA SDK，允許再散布；授權全文在 SDK 內的 License.txt）"
+}

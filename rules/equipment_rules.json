@@ -18,7 +18,9 @@
       "legal_basis": "§14",
       "params": {
         "always_required_uses": [
-          "甲"
+          "甲",
+          "乙12",
+          "戊3"
         ],
         "total_area_threshold_other_uses": {
           "value": 150,
@@ -34,12 +36,17 @@
           "value": 50,
           "scope": "per_floor",
           "unit": "㎡"
-        }
+        },
+        "manual_review_conditions": [
+          "四、設有放映室或變壓器、配電盤及其他類似電氣設備之各類場所。",
+          "五、設有鍋爐房、廚房等大量使用火源之各類場所。"
+        ]
       },
-      "verified": false,
-      "verified_by": null,
-      "verified_date": null,
-      "note": "甲類場所應設；其他類別依總樓地板面積門檻；地下層/無開口樓層另有較低門檻。示例參數，以現行條文為準。"
+      "verified": true,
+      "verified_by": "User",
+      "verified_date": "2026-07-29",
+      "note": "甲類場所、地下建築物（戊3）、幼兒園（乙12）一律應設；其他類別依總樓地板面積 150 ㎡；地下層／無開口樓層 50 ㎡。第四款（放映室、電氣設備）與第五款（鍋爐房、廚房）之有無需依圖面判讀，列於 manual_review_conditions。",
+      "verification_evidence": "待確認事項逐則裁示並經 pending_review.py apply 先紅再綠更正（疑義檔：governance/待確認清單）"
     },
     {
       "id": "extinguisher-count",
@@ -51,15 +58,19 @@
           "甲": 100,
           "乙": 200,
           "丙": 200,
-          "丁": 200
+          "丁": 200,
+          "戊": 100
         },
         "scope": "per_floor",
-        "max_walking_distance_m": 20
+        "max_walking_distance_m": 20,
+        "boiler_kitchen_area_per_unit": 25,
+        "projection_and_electrical_extra_per_sqm": 100
       },
-      "verified": false,
-      "verified_by": null,
-      "verified_date": null,
-      "note": "每 N ㎡ 一滅火效能值（依用途類別），且任一點步行距離 20m 內。步行距離需圖面動線檢核，工具僅算效能值。"
+      "verified": true,
+      "verified_by": "User",
+      "verified_date": "2026-07-29",
+      "note": "每 N ㎡ 一滅火效能值（依用途類別），且任一點步行距離 20m 內。步行距離需圖面動線檢核，工具僅算效能值。",
+      "verification_evidence": "待確認事項逐則裁示並經 pending_review.py apply 先紅再綠更正（疑義檔：governance/待確認清單）"
     },
     {
       "id": "indoor-hydrant-threshold",
@@ -70,23 +81,29 @@
         "low_rise": {
           "max_floors": 5,
           "per_floor_area_threshold": {
-            "甲": 300,
+            "甲1": 300,
             "other": 500
           }
         },
         "mid_rise": {
           "min_floors": 6,
           "per_floor_area_threshold": {
-            "甲": 150,
-            "other": 300
+            "any": 150
           }
         },
-        "scope": "per_floor"
+        "scope": "per_floor",
+        "school_classroom_per_floor_threshold": 1400,
+        "underground_building_total_threshold": 150,
+        "basement_or_windowless_per_floor_threshold": {
+          "甲1": 100,
+          "other": 150
+        }
       },
-      "verified": false,
-      "verified_by": null,
-      "verified_date": null,
-      "note": "五層以下與六層以上門檻不同。示例參數；學校等另有特別門檻，未納入。"
+      "verified": true,
+      "verified_by": "User",
+      "verified_date": "2026-07-29",
+      "note": "§15 逐款：第一款五層以下（甲1 300／其餘 500／學校教室 1400，學校教室屬場所層級，需人工判讀）、第二款六層以上不分用途 150、第三款地下建築物合計 150、第四款地下層或無開口樓層（甲1 100／其餘 150）。第二項免設但書（已設其他滅火設備）需人工判讀。",
+      "verification_evidence": "待確認事項逐則裁示並經 pending_review.py apply 先紅再綠更正（疑義檔：governance/待確認清單）"
     },
     {
       "id": "indoor-hydrant-coverage",
@@ -95,12 +112,17 @@
       "legal_basis": "§34",
       "params": {
         "type1_horizontal_distance_m": 25,
-        "type2_horizontal_distance_m": 15
+        "type2_horizontal_distance_m": 25,
+        "type1_mandatory_uses": [
+          "乙11",
+          "丁"
+        ]
       },
-      "verified": false,
-      "verified_by": null,
-      "verified_date": null,
-      "note": "第一種/第二種消防栓水平距離。歷次修法對第二種距離有調整，核定時特別確認現行值。"
+      "verified": true,
+      "verified_by": "User",
+      "verified_date": "2026-07-29",
+      "note": "第一種、第二種消防栓之水平距離現行條文均為 25 m。第十二條第二款第十一目（倉庫、傢俱展示販售場）與第四款（丁類）應設第一種消防栓。",
+      "verification_evidence": "待確認事項逐則裁示並經 pending_review.py apply 先紅再綠更正（疑義檔：governance/待確認清單）"
     },
     {
       "id": "sprinkler-threshold",
@@ -109,23 +131,39 @@
       "legal_basis": "§17",
       "params": {
         "low_rise_total_area_threshold": {
-          "value": 1500,
           "scope": "total",
-          "applies_to": [
-            "甲"
-          ],
-          "max_floors": 10
+          "max_floors": 10,
+          "by_use": {
+            "甲1": 300,
+            "甲2": 1500,
+            "甲3": 1500,
+            "甲4": 1500,
+            "甲5": 1500,
+            "甲6": 1500,
+            "甲7": 1500,
+            "乙1": 1500
+          }
         },
         "high_rise_per_floor_threshold": {
           "value": 100,
           "scope": "per_floor",
           "min_floor_index": 11
-        }
+        },
+        "uncovered_items": [
+          "三、地下層或無開口樓層，供第十二條第一款所列場所使用，樓地板面積在一千平方公尺以上者。",
+          "四、十一層以上建築物供第十二條第一款所列場所或第五款第一目使用者。",
+          "五、供第十二條第五款第一目使用之建築物中，甲類場所樓地板面積合計達三千平方公尺以上時，供甲類場所使用之樓層。",
+          "六、供第十二條第二款第十一目使用之場所，樓層高度超過十公尺且樓地板面積在七百平方公尺以上之高架儲存倉庫。",
+          "七、總樓地板面積在一千平方公尺以上之地下建築物。",
+          "八、高層建築物。",
+          "九、供第十二條第一款第六目所定榮譽國民之家、長期照顧服務機構等使用之場所。"
+        ]
       },
-      "verified": false,
-      "verified_by": null,
-      "verified_date": null,
-      "note": "十層以下甲類合計面積門檻；十一層以上樓層另有較低門檻。舞台、地下建築物等特別規定未納入示例。"
+      "verified": true,
+      "verified_by": "User",
+      "verified_date": "2026-07-29",
+      "note": "第一款依目別：甲類第一目合計 300 ㎡、甲類其他各目及乙類第一目 1500 ㎡；第二款十一層以上樓層 100 ㎡。第三~九款收錄於 uncovered_items，尚未進引擎判斷，一律需人工判讀。",
+      "verification_evidence": "待確認事項逐則裁示並經 pending_review.py apply 先紅再綠更正（疑義檔：governance/待確認清單）"
     },
     {
       "id": "sprinkler-head-spacing",
@@ -134,16 +172,35 @@
       "legal_basis": "§46",
       "params": {
         "horizontal_distance_m": {
-          "standard_nonfireproof": 2.1,
-          "standard_fireproof": 2.3,
-          "fast_response": 2.6
+          "general_2nd_sensitivity": {
+            "nonfireproof": 2.1,
+            "fireproof": 2.3
+          },
+          "fast_response_1st_sensitivity": {
+            "nonfireproof": 2.3,
+            "fireproof": 2.6
+          }
         },
-        "square_layout_coverage_formula": "每頭涵蓋 = 2 × r²（正方形配置）"
+        "square_layout_coverage_formula": "每頭涵蓋 = 2 × r²（正方形配置）",
+        "special_places": {
+          "舞臺及道具室、放映室、易燃物品倉庫": 1.7,
+          "汽車修理廠、室內停車空間及昇降機械式停車場": 2.1,
+          "小區劃型（第一種感度）": {
+            "horizontal_distance_m": 2.6,
+            "min_spacing_m": 3,
+            "max_protected_area_sqm": 13
+          },
+          "側壁型（第一種感度）": {
+            "wall_sides_m": 1.8,
+            "wall_front_m": 3.6
+          }
+        }
       },
-      "verified": false,
-      "verified_by": null,
-      "verified_date": null,
-      "note": "撒水頭水平距離依構造與撒水頭種類。工具以正方形配置估算下限。"
+      "verified": true,
+      "verified_by": "User",
+      "verified_date": "2026-07-29",
+      "note": "撒水頭水平距離依構造與撒水頭種類。工具以正方形配置估算下限。",
+      "verification_evidence": "待確認事項逐則裁示並經 pending_review.py apply 先紅再綠更正（疑義檔：governance/待確認清單）"
     },
     {
       "id": "fire-alarm-threshold",
@@ -155,6 +212,7 @@
           "max_floors": 5,
           "per_floor_area_threshold": {
             "甲": 300,
+            "乙12": 300,
             "other": 500
           }
         },
@@ -170,14 +228,16 @@
           "rule": "全部應設"
         },
         "basement_windowless_threshold": {
-          "甲": 100,
+          "甲1": 100,
+          "甲5": 100,
           "other": 300
         }
       },
-      "verified": false,
-      "verified_by": null,
-      "verified_date": null,
-      "note": "示例參數。十一層以上建築物全部應設。"
+      "verified": true,
+      "verified_by": "User",
+      "verified_date": "2026-07-29",
+      "note": "第一款五層以下：甲類全部與乙類第十二目（幼兒園）300 ㎡、其餘 500 ㎡；第二款六~十層 300 ㎡；第三款十一層以上全部應設；第四款地下層／無開口樓層：甲類第一目、第五目 100 ㎡（戊1 限供該二目者，需人工判讀）、其餘 300 ㎡。第五~七款尚未入庫。",
+      "verification_evidence": "待確認事項逐則裁示並經 pending_review.py apply 先紅再綠更正（疑義檔：governance/待確認清單）"
     },
     {
       "id": "detector-coverage",
@@ -224,10 +284,11 @@
           }
         }
       },
-      "verified": false,
-      "verified_by": null,
-      "verified_date": null,
-      "note": "差動式局限型/偵煙式探測器每只有效探測面積，依裝置高度與構造。探測區域劃分（樑深、隔間）需人工判讀。"
+      "verified": true,
+      "verified_by": "User",
+      "verified_date": "2026-07-29",
+      "note": "差動式局限型/偵煙式探測器每只有效探測面積，依裝置高度與構造。探測區域劃分（樑深、隔間）需人工判讀。",
+      "verification_evidence": "待確認事項逐則裁示並經 pending_review.py apply 先紅再綠更正（疑義檔：governance/待確認清單）"
     },
     {
       "id": "exit-light-threshold",
@@ -237,16 +298,22 @@
       "params": {
         "required_uses": [
           "甲",
-          "乙",
-          "丙",
-          "丁"
+          "乙12",
+          "戊1",
+          "戊3"
         ],
-        "placement": "各出入口上方及避難動線，數量依圖面動線判定"
+        "placement": "各出入口上方及避難動線，數量依圖面動線判定",
+        "other_uses_required_when": [
+          "地下層",
+          "無開口樓層",
+          "十一層以上之樓層"
+        ]
       },
-      "verified": false,
-      "verified_by": null,
-      "verified_date": null,
-      "note": "適用範圍廣、免設條件多（步行距離、居室條件），數量無法純面積計算，判定以圖面動線為主 → 配置疑義/需人工判讀。"
+      "verified": true,
+      "verified_by": "User",
+      "verified_date": "2026-07-29",
+      "note": "第一、二款：甲類、乙類第十二目、戊類第一目與第三目無條件應設；其他各款目僅於地下層、無開口樓層、十一層以上之樓層應設。第三款觀眾席引導燈與第四款避難指標尚未入庫，需人工判讀。數量與位置一律依避難動線圖面判定。",
+      "verification_evidence": "待確認事項逐則裁示並經 pending_review.py apply 先紅再綠更正（疑義檔：governance/待確認清單）"
     },
     {
       "id": "emergency-light-threshold",
@@ -255,12 +322,35 @@
       "legal_basis": "§24",
       "params": {
         "required": "原則各類場所居室及避難動線均應設，除但書免設條件",
-        "exemption_note": "採光良好直通避難層等免設條件需人工判讀"
+        "exemption_note": "採光良好直通避難層等免設條件需人工判讀",
+        "total_area_threshold_sqm": 1000,
+        "daylight_ratio_threshold": 0.05,
+        "required_uses_by_item": {
+          "第一款": [
+            "甲",
+            "丙",
+            "戊"
+          ],
+          "第二款": [
+            "乙1",
+            "乙2",
+            "乙3（學校教室除外）",
+            "乙4",
+            "乙5",
+            "乙6",
+            "乙7（限住宿型精神復健機構）",
+            "乙8",
+            "乙9",
+            "乙12"
+          ]
+        },
+        "egress_route_required": true
       },
-      "verified": false,
-      "verified_by": null,
-      "verified_date": null,
-      "note": "原則應設、但書免設；免設判定一律需人工判讀。"
+      "verified": true,
+      "verified_by": "User",
+      "verified_date": "2026-07-29",
+      "note": "原則應設、但書免設；免設判定一律需人工判讀。",
+      "verification_evidence": "待確認事項逐則裁示並經 pending_review.py apply 先紅再綠更正（疑義檔：governance/待確認清單）"
     },
     {
       "id": "applicability-article-13",
@@ -297,21 +387,28 @@
       "id": "smoke-exhaust-threshold",
       "equipment": "排煙設備",
       "category": "消防搶救上之必要設備",
-      "legal_basis": "§28",
+      "legal_basis": "§28、§188",
       "params": {
         "total_area_threshold": {
           "value": 500,
           "scope": "total",
           "applies_to": [
-            "甲"
+            "甲",
+            "戊3"
           ]
         },
-        "smoke_compartment_max_sqm": 500
+        "smoke_compartment_max_sqm": 500,
+        "windowless_floor_threshold": {
+          "value": 1000,
+          "scope": "per_floor",
+          "unit": "㎡"
+        }
       },
-      "verified": false,
-      "verified_by": null,
-      "verified_date": null,
-      "note": "甲類合計面積門檻為示例；居室開口有效通風面積不足之適用、防煙區劃劃設均需人工判讀。"
+      "verified": true,
+      "verified_by": "User",
+      "verified_date": "2026-07-29",
+      "note": "第一款：第十二條第一款（甲類）及第五款第三目（地下建築物）合計 500 ㎡；第三款：無開口樓層 1000 ㎡。第二款（居室 100 ㎡且有效通風未達 2%）、第四款（舞臺 500 ㎡）、第五款（特別安全梯、緊急昇降機間）需人工判讀。防煙區劃每 500 ㎡ 之依據為 §188 第一項第一款。",
+      "verification_evidence": "待確認事項逐則裁示並經 pending_review.py apply 先紅再綠更正（疑義檔：governance/待確認清單）"
     }
   ],
   "occupancy_ratios_example": {

@@ -977,7 +977,7 @@
             "place": "電信機器室",
             "main_parts": [
               "電信機房",
-              "電器室",
+              "電氣室",
               "電腦室",
               "作業室",
               "辦公室",
@@ -992,7 +992,11 @@
             "remark": null,
             "source": {
               "page": 5
-            }
+            },
+            "source_text": {
+              "main_parts_item": "電器室"
+            },
+            "transcription_note": "「電器室」經校讀更正為「電氣室」（原印字見 source_text）"
           },
           {
             "no": 29,
@@ -1000,7 +1004,7 @@
             "use_codes": [
               "丙2"
             ],
-            "place": "汽車修護場、飛機修理廠、飛機庫",
+            "place": "汽車修護廠、飛機修理廠、飛機庫",
             "main_parts": [
               "車庫",
               "車道",
@@ -1021,7 +1025,11 @@
             "remark": null,
             "source": {
               "page": 5
-            }
+            },
+            "source_text": {
+              "place": "汽車修護場、飛機修理廠、飛機庫"
+            },
+            "transcription_note": "「汽車修護場」經校讀更正為「汽車修護廠」（設置標準第 12 條第 3 款第 2 目用語；原印字見 source_text）"
           },
           {
             "no": 30,

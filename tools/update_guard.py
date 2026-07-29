@@ -90,7 +90,7 @@ ROOT_FILES = ("待確認事項.md",)
 
 # 明確屬於上游的分區——不是使用者產物，改了不該觸發保護清單複核。
 # 兩份清單合起來要涵蓋整個倉庫：漏掉的就是 unlisted_changes() 要叫出來的。
-UPSTREAM_ZONES = ("tools", "skills", "tests", ".github", ".claude", "packaging")
+UPSTREAM_ZONES = ("tools", "skills", "tests", "docs", ".github", ".claude", "packaging")
 UPSTREAM_ROOT_FILES = ("README.md", "AGENTS.md", "CLAUDE.md", "CONTRIBUTING.md",
                        "requirements.txt", ".gitignore",
                        # 線2 安裝包放的雙擊入口與說明

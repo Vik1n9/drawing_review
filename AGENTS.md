@@ -27,4 +27,4 @@ Claude Code 由 SessionStart hook 自動執行。規則差異未裁示前照常�
 改規則參數走 `red-green` ＋ `regulation-intake`，訓練素材與實務見解走 `training-mode`／`practice-note`，
 更新或重裝倉庫走 `safe-update`。
 查法規先 `tools/regulation_graph.py neighbors --article §X` 定位，再 `regulation_index.py lookup` 只載入那幾條。
-目錄結構、完整命令與設計背景見 `README.md`、`skills/README.md`、`CONTRIBUTING.md`；工具用法一律 `--help`。
+關卡與完整命令見 `docs/AI-作業流程.md`，設計背景見 `docs/架構.md`；工具用法一律 `--help`。

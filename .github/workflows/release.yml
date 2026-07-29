@@ -1,7 +1,7 @@
 name: release
 
 # 線2 發佈：打包成 Windows 自解壓縮檔，讓不懂 git 的消防專業人員裝得起來。
-# 線1（git clone）不受影響——兩條路徑並行，見 README.md「兩種取得方式」。
+# 線1（git clone）不受影響——兩條路徑並行，見 docs/使用手冊.md「先拿到這套系統」。
 #
 # 整條流程都在 ubuntu 上跑得完：7-Zip SFX 只是「模組 ＋ 設定 ＋ 封存」的串接，
 # 不需要 Windows 工具鏈。windows job 留下來的唯一理由是**驗證**，不是建置。

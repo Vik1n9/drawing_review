@@ -55,19 +55,9 @@ python3 tools/onboarding.py intro    # 只想看操作簡介的話
 ---
 
 <!-- PENDING-REVIEW:BEGIN -->
-### ⚠️ 有 14 則待確認事項——請先處理再開始審圖
+### ✅ 目前沒有待確認事項
 
-規則參數與現行條文（各類場所消防安全設備設置標準 民國 113 年 04 月 24 日修正）比對出 14 則差異，其中 14 則尚未裁示。受影響的規則：`18-8`、`18-9`、`detector-coverage`、`emergency-light-threshold`、`exit-light-threshold`、`extinguisher-count`、`extinguisher-threshold`、`fire-alarm-threshold`、`indoor-hydrant-coverage`、`indoor-hydrant-threshold`、`smoke-exhaust-threshold`、`sprinkler-head-spacing`、`sprinkler-threshold`、`subordinate-table`。
-
-完整內容見 **[`待確認事項.md`](待確認事項.md)**。
-
-```bash
-python3 tools/pending_review.py status   # 開場檢查（有待確認事項會回結束碼 2）
-python3 tools/pending_review.py list     # 逐則列出，交給具消防專業的使用者裁示
-python3 tools/pending_review.py apply --all --by "○○○（消防設備師）"
-```
-
-裁示完成後 `apply` 會自動走先紅再綠更正參數、回填 `verified`、更新本區塊並移除疑義檔。在此之前，這些規則的輸出一律附「本參數尚未逐條確認」警語。
+規則參數與現行條文的比對差異都已裁示完畢。本區塊由 `python3 tools/pending_review.py render` 自動維護。
 <!-- PENDING-REVIEW:END -->
 
 ---

@@ -151,29 +151,27 @@
       "id": "T-hydrant-threshold-lowrise-甲",
       "rule_id": "indoor-hydrant-threshold",
       "type": "param-equals",
-      "path": "params.low_rise.per_floor_area_threshold.甲",
+      "path": "params.low_rise.per_floor_area_threshold.甲1",
       "expected": 300,
       "source": {
         "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
         "article": "§15",
         "page": null,
         "quote": "一、五層以下建築物，供第十二條第一款第一目所列場所使用，任何一層樓地板面積在三百平方公尺以上者；供同款其他各目及第二款至第四款所列場所使用，任何一層樓地板面積在五百平方公尺以上者；或為學校教室任何一層樓地板面積在一千四百平方公尺以上者。"
-      },
-      "discrepancy_ref": "D-015-01"
+      }
     },
     {
       "id": "T-sprinkler-threshold-lowrise",
       "rule_id": "sprinkler-threshold",
       "type": "param-equals",
-      "path": "params.low_rise_total_area_threshold.value",
+      "path": "params.low_rise_total_area_threshold.by_use.甲2",
       "expected": 1500,
       "source": {
         "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
         "article": "§17",
         "page": null,
         "quote": "一、十層以下建築物之樓層，供第十二條第一款第一目所列場所使用，樓地板面積合計在三百平方公尺以上者；供同款其他各目及第二款第一目所列場所使用，樓地板面積在一千五百平方公尺以上者。"
-      },
-      "discrepancy_ref": "D-017-01"
+      }
     },
     {
       "id": "T-exitlight-required-uses",
@@ -182,17 +180,16 @@
       "path": "params.required_uses",
       "expected": [
         "甲",
-        "乙",
-        "丙",
-        "丁"
+        "乙12",
+        "戊1",
+        "戊3"
       ],
       "source": {
         "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
         "article": "§23",
         "page": null,
         "quote": "一、供第十二條第一款、第二款第十二目、第五款第一目、第三目使用之場所，或地下層、無開口樓層、十一層以上之樓層供同條其他各款目所列場所使用，應設置出口標示燈。"
-      },
-      "discrepancy_ref": "D-023-01"
+      }
     },
     {
       "id": "T-emergency-light-required",
@@ -373,6 +370,384 @@
         "page": 5,
         "quote": "（31）丁類（一）高度危險工作場所（二）中度危險工作場所（三）低度危險工作場所"
       }
+    },
+    {
+      "id": "T-extinguisher-always-required",
+      "rule_id": "extinguisher-threshold",
+      "type": "param-equals",
+      "path": "params.always_required_uses",
+      "expected": [
+        "甲",
+        "乙12",
+        "戊3"
+      ],
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§14",
+        "page": null,
+        "quote": "下列場所應設置滅火器：一、甲類場所、地下建築物、幼兒園。……四、設有放映室或變壓器、配電盤及其他類似電氣設備之各類場所。五、設有鍋爐房、廚房等大量使用火源之各類場所。"
+      }
+    },
+    {
+      "id": "T-extinguisher-manual-items",
+      "rule_id": "extinguisher-threshold",
+      "type": "param-equals",
+      "path": "params.manual_review_conditions",
+      "expected": [
+        "四、設有放映室或變壓器、配電盤及其他類似電氣設備之各類場所。",
+        "五、設有鍋爐房、廚房等大量使用火源之各類場所。"
+      ],
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§14",
+        "page": null,
+        "quote": "下列場所應設置滅火器：一、甲類場所、地下建築物、幼兒園。……四、設有放映室或變壓器、配電盤及其他類似電氣設備之各類場所。五、設有鍋爐房、廚房等大量使用火源之各類場所。"
+      }
+    },
+    {
+      "id": "T-extinguisher-param-戊",
+      "rule_id": "extinguisher-count",
+      "type": "param-equals",
+      "path": "params.effectiveness_area_per_unit.戊",
+      "expected": 100,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§31",
+        "page": null,
+        "quote": "供第十二條第一款及第五款使用之場所，各層樓地板面積每一百平方公尺（含未滿）有一滅火效能值。"
+      }
+    },
+    {
+      "id": "T-extinguisher-boiler-kitchen",
+      "rule_id": "extinguisher-count",
+      "type": "param-equals",
+      "path": "params.boiler_kitchen_area_per_unit",
+      "expected": 25,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§31",
+        "page": null,
+        "quote": "鍋爐房、廚房等大量使用火源之處所，以樓地板面積每二十五平方公尺（含未滿）有一滅火效能值。"
+      }
+    },
+    {
+      "id": "T-extinguisher-projection-extra",
+      "rule_id": "extinguisher-count",
+      "type": "param-equals",
+      "path": "params.projection_and_electrical_extra_per_sqm",
+      "expected": 100,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§31",
+        "page": null,
+        "quote": "電影片映演場所放映室及電氣設備使用之處所，每一百平方公尺（含未滿）另設一滅火器。"
+      }
+    },
+    {
+      "id": "T-hydrant-school-classroom",
+      "rule_id": "indoor-hydrant-threshold",
+      "type": "param-equals",
+      "path": "params.school_classroom_per_floor_threshold",
+      "expected": 1400,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§15",
+        "page": null,
+        "quote": "一、五層以下建築物，供第十二條第一款第一目所列場所使用，任何一層樓地板面積在三百平方公尺以上者；供同款其他各目及第二款至第四款所列場所使用，任何一層樓地板面積在五百平方公尺以上者；或為學校教室任何一層樓地板面積在一千四百平方公尺以上者。"
+      }
+    },
+    {
+      "id": "T-hydrant-midrise-any",
+      "rule_id": "indoor-hydrant-threshold",
+      "type": "param-equals",
+      "path": "params.mid_rise.per_floor_area_threshold.any",
+      "expected": 150,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§15",
+        "page": null,
+        "quote": "二、六層以上建築物，供第十二條第一款至第四款所列場所使用，任何一層之樓地板面積在一百五十平方公尺以上者。"
+      }
+    },
+    {
+      "id": "T-hydrant-underground-building",
+      "rule_id": "indoor-hydrant-threshold",
+      "type": "param-equals",
+      "path": "params.underground_building_total_threshold",
+      "expected": 150,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§15",
+        "page": null,
+        "quote": "三、總樓地板面積在一百五十平方公尺以上之地下建築物。"
+      }
+    },
+    {
+      "id": "T-hydrant-basement-甲1",
+      "rule_id": "indoor-hydrant-threshold",
+      "type": "param-equals",
+      "path": "params.basement_or_windowless_per_floor_threshold.甲1",
+      "expected": 100,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§15",
+        "page": null,
+        "quote": "四、地下層或無開口之樓層，供第十二條第一款第一目所列場所使用，樓地板面積在一百平方公尺以上者；供第一款其他各目及第二款至第四款所列場所使用，樓地板面積在一百五十平方公尺以上者。"
+      }
+    },
+    {
+      "id": "T-hydrant-basement-other",
+      "rule_id": "indoor-hydrant-threshold",
+      "type": "param-equals",
+      "path": "params.basement_or_windowless_per_floor_threshold.other",
+      "expected": 150,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§15",
+        "page": null,
+        "quote": "四、地下層或無開口之樓層，供第十二條第一款第一目所列場所使用，樓地板面積在一百平方公尺以上者；供第一款其他各目及第二款至第四款所列場所使用，樓地板面積在一百五十平方公尺以上者。"
+      }
+    },
+    {
+      "id": "T-hydrant-param-type2",
+      "rule_id": "indoor-hydrant-coverage",
+      "type": "param-equals",
+      "path": "params.type2_horizontal_distance_m",
+      "expected": 25,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§34",
+        "page": null,
+        "quote": "二、第二種消防栓，依下列規定設置：（一）各層任一點至消防栓接頭之水平距離在二十五公尺以下。"
+      }
+    },
+    {
+      "id": "T-hydrant-type1-mandatory",
+      "rule_id": "indoor-hydrant-coverage",
+      "type": "param-equals",
+      "path": "params.type1_mandatory_uses",
+      "expected": [
+        "乙11",
+        "丁"
+      ],
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§34",
+        "page": null,
+        "quote": "除第十二條第二款第十一目或第四款之場所，應設置第一種消防栓外，其他場所應就下列二種消防栓選擇設置之。"
+      }
+    },
+    {
+      "id": "T-sprinkler-lowrise-甲1",
+      "rule_id": "sprinkler-threshold",
+      "type": "param-equals",
+      "path": "params.low_rise_total_area_threshold.by_use.甲1",
+      "expected": 300,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§17",
+        "page": null,
+        "quote": "一、十層以下建築物之樓層，供第十二條第一款第一目所列場所使用，樓地板面積合計在三百平方公尺以上者；供同款其他各目及第二款第一目所列場所使用，樓地板面積在一千五百平方公尺以上者。"
+      }
+    },
+    {
+      "id": "T-sprinkler-lowrise-乙1",
+      "rule_id": "sprinkler-threshold",
+      "type": "param-equals",
+      "path": "params.low_rise_total_area_threshold.by_use.乙1",
+      "expected": 1500,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§17",
+        "page": null,
+        "quote": "一、十層以下建築物之樓層，供第十二條第一款第一目所列場所使用，樓地板面積合計在三百平方公尺以上者；供同款其他各目及第二款第一目所列場所使用，樓地板面積在一千五百平方公尺以上者。"
+      }
+    },
+    {
+      "id": "T-alarm-lowrise-乙12",
+      "rule_id": "fire-alarm-threshold",
+      "type": "param-equals",
+      "path": "params.low_rise.per_floor_area_threshold.乙12",
+      "expected": 300,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§19",
+        "page": null,
+        "quote": "一、五層以下之建築物，供第十二條第一款及第二款第十二目所列場所使用，任何一層之樓地板面積在三百平方公尺以上者；或供同條第二款（第十二目除外）至第四款所列場所使用，任何一層樓地板面積在五百平方公尺以上者。"
+      }
+    },
+    {
+      "id": "T-alarm-basement-甲1",
+      "rule_id": "fire-alarm-threshold",
+      "type": "param-equals",
+      "path": "params.basement_windowless_threshold.甲1",
+      "expected": 100,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§19",
+        "page": null,
+        "quote": "四、地下層或無開口樓層，供第十二條第一款第一目、第五目及第五款（限其中供第一款第一目或第五目使用者）使用之場所，樓地板面積在一百平方公尺以上者；供同條第一款其他各目及其他各款所列場所使用，樓地板面積在三百平方公尺以上者。"
+      }
+    },
+    {
+      "id": "T-alarm-basement-甲5",
+      "rule_id": "fire-alarm-threshold",
+      "type": "param-equals",
+      "path": "params.basement_windowless_threshold.甲5",
+      "expected": 100,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§19",
+        "page": null,
+        "quote": "四、地下層或無開口樓層，供第十二條第一款第一目、第五目及第五款（限其中供第一款第一目或第五目使用者）使用之場所，樓地板面積在一百平方公尺以上者；供同條第一款其他各目及其他各款所列場所使用，樓地板面積在三百平方公尺以上者。"
+      }
+    },
+    {
+      "id": "T-exitlight-conditional-uses",
+      "rule_id": "exit-light-threshold",
+      "type": "param-equals",
+      "path": "params.other_uses_required_when",
+      "expected": [
+        "地下層",
+        "無開口樓層",
+        "十一層以上之樓層"
+      ],
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§23",
+        "page": null,
+        "quote": "一、供第十二條第一款、第二款第十二目、第五款第一目、第三目使用之場所，或地下層、無開口樓層、十一層以上之樓層供同條其他各款目所列場所使用，應設置出口標示燈。"
+      }
+    },
+    {
+      "id": "T-emergency-light-total-area",
+      "rule_id": "emergency-light-threshold",
+      "type": "param-equals",
+      "path": "params.total_area_threshold_sqm",
+      "expected": 1000,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§24",
+        "page": null,
+        "quote": "三、總樓地板面積在一千平方公尺以上建築物之居室（學校教室除外）。四、有效採光面積未達該居室樓地板面積百分之五者。"
+      }
+    },
+    {
+      "id": "T-emergency-light-daylight",
+      "rule_id": "emergency-light-threshold",
+      "type": "param-equals",
+      "path": "params.daylight_ratio_threshold",
+      "expected": 0.05,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§24",
+        "page": null,
+        "quote": "三、總樓地板面積在一千平方公尺以上建築物之居室（學校教室除外）。四、有效採光面積未達該居室樓地板面積百分之五者。"
+      }
+    },
+    {
+      "id": "T-smoke-exhaust-applies-to",
+      "rule_id": "smoke-exhaust-threshold",
+      "type": "param-equals",
+      "path": "params.total_area_threshold.applies_to",
+      "expected": [
+        "甲",
+        "戊3"
+      ],
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§28",
+        "page": null,
+        "quote": "一、供第十二條第一款及第五款第三目所列場所使用，樓地板面積合計在五百平方公尺以上。"
+      }
+    },
+    {
+      "id": "T-smoke-exhaust-windowless",
+      "rule_id": "smoke-exhaust-threshold",
+      "type": "param-equals",
+      "path": "params.windowless_floor_threshold.value",
+      "expected": 1000,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§28",
+        "page": null,
+        "quote": "三、樓地板面積在一千平方公尺以上之無開口樓層。"
+      }
+    },
+    {
+      "id": "T-sprinkler-head-general-fireproof",
+      "rule_id": "sprinkler-head-spacing",
+      "type": "param-equals",
+      "path": "params.horizontal_distance_m.general_2nd_sensitivity.fireproof",
+      "expected": 2.3,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§46",
+        "page": null,
+        "quote": "（一）一般反應型撒水頭（第二種感度），各層任一點至撒水頭之水平距離在二點一公尺以下。但防火構造建築物，其水平距離，得增加為二點三公尺以下。（二）快速反應型撒水頭（第一種感度），各層任一點至撒水頭之水平距離在二點三公尺以下。但設於防火構造建築物，其水平距離，得增加為二點六公尺以下。"
+      }
+    },
+    {
+      "id": "T-sprinkler-head-fast-nonfireproof",
+      "rule_id": "sprinkler-head-spacing",
+      "type": "param-equals",
+      "path": "params.horizontal_distance_m.fast_response_1st_sensitivity.nonfireproof",
+      "expected": 2.3,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§46",
+        "page": null,
+        "quote": "（一）一般反應型撒水頭（第二種感度），各層任一點至撒水頭之水平距離在二點一公尺以下。但防火構造建築物，其水平距離，得增加為二點三公尺以下。（二）快速反應型撒水頭（第一種感度），各層任一點至撒水頭之水平距離在二點三公尺以下。但設於防火構造建築物，其水平距離，得增加為二點六公尺以下。"
+      }
+    },
+    {
+      "id": "T-sprinkler-head-fast-fireproof",
+      "rule_id": "sprinkler-head-spacing",
+      "type": "param-equals",
+      "path": "params.horizontal_distance_m.fast_response_1st_sensitivity.fireproof",
+      "expected": 2.6,
+      "source": {
+        "pdf": "rules/core/1各類場所消防安全設備設置標準.md",
+        "article": "§46",
+        "page": null,
+        "quote": "（一）一般反應型撒水頭（第二種感度），各層任一點至撒水頭之水平距離在二點一公尺以下。但防火構造建築物，其水平距離，得增加為二點三公尺以下。（二）快速反應型撒水頭（第一種感度），各層任一點至撒水頭之水平距離在二點三公尺以下。但設於防火構造建築物，其水平距離，得增加為二點六公尺以下。"
+      }
+    },
+    {
+      "id": "T-mixed-e28-main-parts",
+      "rule_id": "subordinate-table",
+      "type": "param-equals",
+      "path": "params.entries.27.main_parts",
+      "expected": [
+        "電信機房",
+        "電氣室",
+        "電腦室",
+        "作業室",
+        "辦公室",
+        "休息室",
+        "器材室"
+      ],
+      "source": {
+        "pdf": "rules/mixed_use_rules.json",
+        "article": "附表 p.5",
+        "page": null,
+        "quote": "（28）丙類（一）電信機器室｜電信機房、電器室、電腦室、作業室、辦公室、休息室、器材室。"
+      },
+      "rules_file": "rules/mixed_use_rules.json"
+    },
+    {
+      "id": "T-mixed-e29-place",
+      "rule_id": "subordinate-table",
+      "type": "param-equals",
+      "path": "params.entries.28.place",
+      "expected": "汽車修護廠、飛機修理廠、飛機庫",
+      "source": {
+        "pdf": "rules/mixed_use_rules.json",
+        "article": "附表 p.5",
+        "page": null,
+        "quote": "（29）丙類（二）汽車修護場、飛機修理廠、飛機庫"
+      },
+      "rules_file": "rules/mixed_use_rules.json"
     }
   ]
 }

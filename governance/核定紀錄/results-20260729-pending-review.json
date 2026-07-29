@@ -1,0 +1,73 @@
+{
+  "verified_by": "User",
+  "verified_date": "2026-07-29",
+  "evidence": "待確認事項逐則裁示並經 pending_review.py apply 先紅再綠更正（疑義檔：governance/待確認清單）",
+  "results": [
+    {
+      "rule_id": "extinguisher-threshold",
+      "result": "correct",
+      "override_discrepancy": true,
+      "note": "待確認事項全部裁示完畢：D-014-01 裁示採納更正"
+    },
+    {
+      "rule_id": "extinguisher-count",
+      "result": "correct",
+      "override_discrepancy": true,
+      "note": "待確認事項全部裁示完畢：D-031-01 裁示採納更正"
+    },
+    {
+      "rule_id": "indoor-hydrant-threshold",
+      "result": "correct",
+      "override_discrepancy": true,
+      "note": "待確認事項全部裁示完畢：D-015-01 裁示採納更正"
+    },
+    {
+      "rule_id": "indoor-hydrant-coverage",
+      "result": "correct",
+      "override_discrepancy": true,
+      "note": "待確認事項全部裁示完畢：D-034-01 裁示採納更正"
+    },
+    {
+      "rule_id": "sprinkler-threshold",
+      "result": "correct",
+      "override_discrepancy": true,
+      "note": "待確認事項全部裁示完畢：D-017-01 裁示採納更正"
+    },
+    {
+      "rule_id": "fire-alarm-threshold",
+      "result": "correct",
+      "override_discrepancy": true,
+      "note": "待確認事項全部裁示完畢：D-019-01 裁示採納更正"
+    },
+    {
+      "rule_id": "exit-light-threshold",
+      "result": "correct",
+      "override_discrepancy": true,
+      "note": "待確認事項全部裁示完畢：D-023-01 裁示採納更正"
+    },
+    {
+      "rule_id": "emergency-light-threshold",
+      "result": "correct",
+      "override_discrepancy": true,
+      "note": "待確認事項全部裁示完畢：D-024-01 裁示採納更正"
+    },
+    {
+      "rule_id": "smoke-exhaust-threshold",
+      "result": "correct",
+      "override_discrepancy": true,
+      "note": "待確認事項全部裁示完畢：D-028-01 裁示採納更正"
+    },
+    {
+      "rule_id": "sprinkler-head-spacing",
+      "result": "correct",
+      "override_discrepancy": true,
+      "note": "待確認事項全部裁示完畢：D-046-01 裁示採納更正"
+    },
+    {
+      "rule_id": "detector-coverage",
+      "result": "correct",
+      "override_discrepancy": true,
+      "note": "待確認事項全部裁示完畢：D-122-01 裁示維持現值；D-120-01 裁示已更正（條號更正不涉參數值）"
+    }
+  ]
+}

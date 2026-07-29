@@ -54,7 +54,7 @@ UPSTREAM_OWNER = "upstream"
 
 # 包進安裝包的東西。使用者要能開箱審圖，也要能自己驗證安裝完整
 # （tests/ 全部用 tempfile，不依賴 input/範例 或 output/，拿掉範例圖也跑得起來）。
-INCLUDE_DIRS = ("tools", "skills", "rules", "graphify-out", "governance",
+INCLUDE_DIRS = ("tools", "skills", "docs", "rules", "graphify-out", "governance",
                 "practice_notes", "training", "tests", ".claude")
 INCLUDE_FILES = ("AGENTS.md", "CLAUDE.md", "README.md", "CONTRIBUTING.md",
                  "requirements.txt", "待確認事項.md", "input/README.md")

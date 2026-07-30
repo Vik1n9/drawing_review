@@ -1,0 +1,15 @@
+schema_version: 1
+module_path: tools/utilities_and_build
+title: utilities_and_build
+scope:
+    - tools/console.py
+    - tools/make_sfx.py
+    - tools/setup.sh
+    - tools/update_guard.py
+    - tools/guard_hook.py
+    - tools/fire_code_calc.py
+    - tools/verification_sheet.py
+    - tools/dwg_guide.py
+source_files: []
+depends_on: []
+related_to: []

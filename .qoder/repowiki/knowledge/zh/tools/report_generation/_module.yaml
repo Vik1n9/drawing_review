@@ -1,0 +1,10 @@
+schema_version: 1
+module_path: tools/report_generation
+title: report_generation
+scope:
+    - tools/review_summary_pdf.py
+    - tools/stage_report_xlsx.py
+    - tools/pdf_annotate.py
+source_files: []
+depends_on: []
+related_to: []

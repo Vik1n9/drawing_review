@@ -1,0 +1,8 @@
+schema_version: 1
+module_path: governance
+title: governance
+scope:
+    - governance/
+source_files: []
+depends_on: []
+related_to: []

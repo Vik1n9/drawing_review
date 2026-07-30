@@ -1,0 +1,11 @@
+schema_version: 1
+module_path: tools/checklist_tools
+title: checklist_tools
+scope:
+    - tools/article_checklist.py
+    - tools/checklist_html.py
+    - tools/review_checklist_xlsx.py
+    - tools/standard_checklist_html.py
+source_files: []
+depends_on: []
+related_to: []

@@ -1,0 +1,124 @@
+# 知识卡导出索引文件
+schema_version: 1
+locale: zh-CN
+branch: main
+nodes_managed: true
+exported_at: "2026-07-30T19:26:22Z"
+modules:
+    governance:
+        dir_name: governance
+        title: governance
+        scope:
+            - governance/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
+    graphify_out:
+        dir_name: graphify_out
+        title: graphify_out
+        scope:
+            - graphify-out/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
+    packaging:
+        dir_name: packaging
+        title: packaging
+        scope:
+            - packaging/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
+    rules:
+        dir_name: rules
+        title: rules
+        scope:
+            - rules/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
+    skills:
+        dir_name: skills
+        title: skills
+        scope:
+            - skills/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
+    tests:
+        dir_name: tests
+        title: tests
+        scope:
+            - tests/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
+    tools:
+        dir_name: tools
+        title: tools
+        scope:
+            - tools/
+        source_files: []
+        children:
+            - tools/case_management
+            - tools/checklist_tools
+            - tools/report_generation
+            - tools/utilities_and_build
+        depends_on: []
+        related_to: []
+    tools/case_management:
+        dir_name: case_management
+        title: case_management
+        scope:
+            - tools/case_facts_gate.py
+            - tools/pending_review.py
+            - tools/mixed_use_report.py
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
+    tools/checklist_tools:
+        dir_name: checklist_tools
+        title: checklist_tools
+        scope:
+            - tools/article_checklist.py
+            - tools/checklist_html.py
+            - tools/review_checklist_xlsx.py
+            - tools/standard_checklist_html.py
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
+    tools/report_generation:
+        dir_name: report_generation
+        title: report_generation
+        scope:
+            - tools/review_summary_pdf.py
+            - tools/stage_report_xlsx.py
+            - tools/pdf_annotate.py
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
+    tools/utilities_and_build:
+        dir_name: utilities_and_build
+        title: utilities_and_build
+        scope:
+            - tools/console.py
+            - tools/make_sfx.py
+            - tools/setup.sh
+            - tools/update_guard.py
+            - tools/guard_hook.py
+            - tools/fire_code_calc.py
+            - tools/verification_sheet.py
+            - tools/dwg_guide.py
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []

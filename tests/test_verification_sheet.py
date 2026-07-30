@@ -4,7 +4,7 @@ import unittest
 from argparse import Namespace
 from pathlib import Path
 
-from tools.verification_sheet import cmd_apply, open_findings_by_rule, verifiable_entries
+from tools.verification_sheet import cmd_apply, cmd_export, open_findings_by_rule, verifiable_entries
 
 
 def write(path, doc):
@@ -70,6 +70,46 @@ class OpenFindingsTest(unittest.TestCase):
             path = Path(tmp) / "rule-discrepancies-20260725.json"
             write(path, sheet_doc(status="resolved"))
             self.assertEqual(open_findings_by_rule(str(path)), {})
+
+
+class ExportTest(unittest.TestCase):
+    """核定表匯出。規則全部核定完畢是目標狀態，此時仍須匯得出表。"""
+
+    def run_export(self, tmp, doc, **extra):
+        rules_path = Path(tmp) / "rules.json"
+        out_path = Path(tmp) / "核定表.html"
+        write(rules_path, doc)
+        write(Path(tmp) / "tests.json", {"tests": []})
+        cmd_export(Namespace(rules=str(rules_path), tests=str(Path(tmp) / "tests.json"),
+                             output=str(out_path), **extra))
+        return out_path
+
+    def test_exports_pending_rules_by_default(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = self.run_export(tmp, rules_doc(), all=False)
+            self.assertIn("extinguisher-threshold", out.read_text(encoding="utf-8"))
+
+    def test_all_exports_a_sheet_even_when_every_rule_is_verified(self):
+        """--all 不看 verified 狀態。全綠時預設匯出會是空的，CI 煙霧測試因此必須帶 --all。"""
+        doc = rules_doc()
+        for rule in doc["rules"]:
+            rule["verified"] = True
+        out = None
+        with tempfile.TemporaryDirectory() as tmp:
+            out = self.run_export(tmp, doc, all=True)
+            text = out.read_text(encoding="utf-8")
+        self.assertTrue(text.strip())
+        self.assertIn("extinguisher-threshold", text)
+        self.assertIn("applicability-article-13", text)
+
+    def test_default_export_writes_nothing_when_every_rule_is_verified(self):
+        """全綠時預設匯出不產檔——這正是 CI 的 test -s 曾經紅燈的原因，行為本身是刻意的。"""
+        doc = rules_doc()
+        for rule in doc["rules"]:
+            rule["verified"] = True
+        with tempfile.TemporaryDirectory() as tmp:
+            out = self.run_export(tmp, doc, all=False)
+            self.assertFalse(out.exists())
 
 
 class ApplyTest(unittest.TestCase):

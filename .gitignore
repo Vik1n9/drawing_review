@@ -1,5 +1,54 @@
-```
-# JSON result files
-governance/*/*/results-*.json
-governance/*/*/rule-discrepancies-*.json
-```
+.DS_Store
+__pycache__/
+*.pyc
+
+# 使用者本機成果（上游不追蹤）——列在此處不只是「不進版控」：
+# git clean -fd 不刪 gitignored 檔案，git checkout／reset 也永遠不會碰它們，
+# 所以這一段本身就是一道防護，擋掉「AI 清乾淨再 pull」對本機訓練成果的破壞。
+# 已經被追蹤的檔案（output/ 現有交付物、training/registry.json）ignore 無效，
+# 只能靠 tools/update_guard.py 的備份——見 CONTRIBUTING.md「更新倉庫的規範」。
+/input/*
+!/input/README.md
+!/input/範例/
+/output/*
+!/output/README.md
+/training/*/
+!/training/inbox/
+/training/inbox/*
+!/training/inbox/.gitkeep
+# 訓練圖譜是**衍生**產物，且落在使用者所有的分區（update_guard 的 training/* → USER）。
+# 上游不出貨它：出貨了就會與使用者自己建的版本互相覆蓋，正是底線 6 要避免的事。
+# 由 tools/training_graph_build.py 從素材重建，只要幾毫秒。
+/training/graph.json
+/practice_notes/active/*.json
+/practice_notes/staging/*.json
+/practice_notes/graph_extractions/*.json
+
+# 本機備份索引與更新暫存（安裝程式與 update_guard 的產物，不進版控）
+/.更新暫存/
+/更新報告-*.txt
+/安裝清單.json
+*.上游新版
+
+# 發佈打包產物（tools/make_release.py 的輸出）
+/dist/
+
+# graphify — 機器相關指標與可重建的抽取快取（不進版控）
+graphify-out/.graphify_python
+graphify-out/.graphify_root
+graphify-out/.needs_update
+**/graphify-out/cache/
+rules/graphify-out/
+# graphify 抽取過程的暫存 sidecar（skill Step 9 會清；保留已納管的 .graphify_labels.json）
+graphify-out/.graphify_detect.json
+graphify-out/.graphify_extract.json
+graphify-out/.graphify_ast.json
+graphify-out/.graphify_semantic*.json
+graphify-out/.graphify_analysis.json
+graphify-out/.graphify_incremental.json
+graphify-out/.graphify_old.json
+graphify-out/.graphify_cached.json
+# 重建的中間產物：rebuild 預設寫這裡，verify 全綠後才以 --commit 覆寫 graph.json
+graphify-out/graph.rebuilt.json
+graphify-out/.graphify_uncached.txt
+graphify-out/.graphify_chunk_*.json

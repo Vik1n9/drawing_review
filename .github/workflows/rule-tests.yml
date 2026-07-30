@@ -85,7 +85,9 @@ jobs:
       - name: 待確認規則清單煙霧測試
         run: python3 tools/verification_sheet.py list --format json
 
+      # 用 --all：不加時 export 只匯出「未核定」的規則，全部核定完畢就什麼都不寫，
+      # 後面的 test -s 必紅。規則全綠是這套系統的目標狀態，不該讓 CI 反過來擋。
       - name: 核定表匯出煙霧測試
         run: |
-          python3 tools/verification_sheet.py export --output /tmp/核定表-ci.html
+          python3 tools/verification_sheet.py export --all --output /tmp/核定表-ci.html
           test -s /tmp/核定表-ci.html

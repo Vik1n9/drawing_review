@@ -1,0 +1,10 @@
+schema_version: 1
+module_path: tests
+title: 工具模組測試套件（tools/* 行為驗證）
+scope:
+    - tests/
+source_files: []
+depends_on: []
+related_to:
+    - path: graphify_out
+    - path: tools/report_generation

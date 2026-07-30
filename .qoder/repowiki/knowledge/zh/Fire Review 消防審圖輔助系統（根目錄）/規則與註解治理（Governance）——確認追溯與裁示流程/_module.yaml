@@ -1,0 +1,9 @@
+schema_version: 1
+module_path: governance
+title: 規則與註解治理（Governance）——確認追溯與裁示流程
+scope:
+    - governance/
+source_files: []
+depends_on: []
+related_to:
+    - path: tools/case_management

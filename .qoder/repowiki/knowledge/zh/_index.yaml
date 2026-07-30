@@ -3,65 +3,97 @@ schema_version: 1
 locale: zh-CN
 branch: main
 nodes_managed: true
-exported_at: "2026-07-30T19:26:22Z"
+exported_at: "2026-07-30T19:49:07Z"
 modules:
+    "":
+        dir_name: Fire Review 消防審圖輔助系統（根目錄）
+        title: Fire Review 消防審圖輔助系統（根目錄）
+        scope:
+            - AGENTS.md
+            - CLAUDE.md
+            - .gitignore
+            - requirements.txt
+            - CONTRIBUTING.md
+            - README.md
+        source_files: []
+        children:
+            - governance
+            - graphify_out
+            - packaging
+            - rules
+            - skills
+            - tests
+            - tools
+        depends_on: []
+        related_to: []
     governance:
-        dir_name: governance
-        title: governance
+        dir_name: 規則與註解治理（Governance）——確認追溯與裁示流程
+        title: 規則與註解治理（Governance）——確認追溯與裁示流程
         scope:
             - governance/
         source_files: []
         children: []
         depends_on: []
-        related_to: []
+        related_to:
+            - path: tools/case_management
     graphify_out:
-        dir_name: graphify_out
-        title: graphify_out
+        dir_name: 消防法規知識圖譜輸出目錄
+        title: 消防法規知識圖譜輸出目錄
         scope:
             - graphify-out/
         source_files: []
         children: []
         depends_on: []
-        related_to: []
+        related_to:
+            - path: rules
+            - path: tests
+            - path: tools/utilities_and_build
     packaging:
-        dir_name: packaging
-        title: packaging
+        dir_name: Windows 自解壓縮安裝包封裝配置
+        title: Windows 自解壓縮安裝包封裝配置
         scope:
             - packaging/
         source_files: []
         children: []
         depends_on: []
-        related_to: []
+        related_to:
+            - path: tools/utilities_and_build
     rules:
-        dir_name: rules
-        title: rules
+        dir_name: 消防法規規則與條文資料庫
+        title: 消防法規規則與條文資料庫
         scope:
             - rules/
         source_files: []
         children: []
         depends_on: []
-        related_to: []
+        related_to:
+            - path: graphify_out
     skills:
-        dir_name: skills
-        title: skills
+        dir_name: 審圖技能與兩階段工作流程
+        title: 審圖技能與兩階段工作流程
         scope:
             - skills/
         source_files: []
         children: []
         depends_on: []
-        related_to: []
+        related_to:
+            - path: tools/case_management
+            - path: tools/checklist_tools
+            - path: tools/report_generation
     tests:
-        dir_name: tests
-        title: tests
+        dir_name: 工具模組測試套件（tools_ 行為驗證）
+        title: 工具模組測試套件（tools/* 行為驗證）
         scope:
             - tests/
         source_files: []
         children: []
         depends_on: []
-        related_to: []
+        related_to:
+            - path: graphify_out
+            - path: tools/report_generation
     tools:
-        dir_name: tools
-        title: tools
+        dir_name: Fire Review 審圖工具集
+        title: Fire Review 審圖工具集
         scope:
             - tools/
         source_files: []
@@ -73,8 +105,8 @@ modules:
         depends_on: []
         related_to: []
     tools/case_management:
-        dir_name: case_management
-        title: case_management
+        dir_name: 案件審查關卡與待確認事項處理工具
+        title: 案件審查關卡與待確認事項處理工具
         scope:
             - tools/case_facts_gate.py
             - tools/pending_review.py
@@ -82,10 +114,12 @@ modules:
         source_files: []
         children: []
         depends_on: []
-        related_to: []
+        related_to:
+            - path: governance
+            - path: skills
     tools/checklist_tools:
-        dir_name: checklist_tools
-        title: checklist_tools
+        dir_name: 消防法條檢核清單產生工具集
+        title: 消防法條檢核清單產生工具集
         scope:
             - tools/article_checklist.py
             - tools/checklist_html.py
@@ -94,10 +128,11 @@ modules:
         source_files: []
         children: []
         depends_on: []
-        related_to: []
+        related_to:
+            - path: skills
     tools/report_generation:
-        dir_name: report_generation
-        title: report_generation
+        dir_name: 審查報告與圖面標註輸出工具
+        title: 審查報告與圖面標註輸出工具
         scope:
             - tools/review_summary_pdf.py
             - tools/stage_report_xlsx.py
@@ -105,10 +140,12 @@ modules:
         source_files: []
         children: []
         depends_on: []
-        related_to: []
+        related_to:
+            - path: skills
+            - path: tests
     tools/utilities_and_build:
-        dir_name: utilities_and_build
-        title: utilities_and_build
+        dir_name: 工具集與建置輔助腳本
+        title: 工具集與建置輔助腳本
         scope:
             - tools/console.py
             - tools/make_sfx.py
@@ -121,4 +158,6 @@ modules:
         source_files: []
         children: []
         depends_on: []
-        related_to: []
+        related_to:
+            - path: graphify_out
+            - path: packaging

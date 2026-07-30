@@ -14,7 +14,7 @@
     "維持現值": "現值正確或屬有意簡化 → 於本檔記明理由，該規則可回填 verified: true",
     "另有更正": "使用者提供不同的正確值／範圍 → 依使用者意見走先紅再綠"
   },
-  "archive_note": "本檔於 2026-07-29 的規則裁示（PR #33，commit ed65245）完成後應由 tools/pending_review.py 封存至本目錄，但該次變更未經 pending_review.py 的 decide／apply 迴路，而是直接刪除本檔，追溯鏈因此斷裂。本檔為原始疑義清單的原樣還原，各 finding 的 status 仍是當時的 pending——**不代表未裁示**，只代表裁示未被工具寫入本檔。實際裁示結果與裁示人記錄於 governance/核定紀錄/results-20260729-pending-review.json，以及各規則檔的 verified_by／verified_date／verification_evidence 欄位。若要恢復逐則裁示紀錄，須由使用者本人重跑 decide 逐則確認決定值，不得由工具或 AI 推定填補。",
+  "archive_note": "本檔於 2026-07-29 的規則裁示（PR #33，commit ed65245）完成後應由 tools/pending_review.py 封存至本目錄，但該次變更未經 pending_review.py 的 decide／apply 迴路，而是直接刪除本檔。本檔為原始疑義清單的原樣還原，各 finding 的 status 仍是當時的 pending——**不代表未裁示**，只代表裁示未被工具寫入本檔。實際裁示結果與裁示人記錄於 governance/核定紀錄/results-20260729-pending-review.json，以及各規則檔的 verified_by／verified_date／verification_evidence 欄位。使用者於 2026-07-30 裁示：規則參數已更正完畢，不再回頭重建逐則裁示紀錄，本檔僅作原始比對依據保存，不再更新。",
   "archived_date": "2026-07-29",
   "findings": [
     {

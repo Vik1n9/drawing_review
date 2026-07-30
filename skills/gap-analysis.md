@@ -112,6 +112,19 @@
 3. 執行：`python3 tools/checklist_html.py --results {輸出目錄}/check_results.json`
 4. 產出的 HTML 維持標準表格格式，逐項打勾（☑／☒／⚪／—），條號深連結到 `rules/regulation-checklist.html` 的條文錨點供對照原文；摘要列顯示「規則未入庫 N 條」
 
+**可選交付物：法條檢核 Excel 與審查摘要報告**
+
+完成上述三項交付物後，可額外產出：
+
+```bash
+# 法條檢核清單 Excel（需 openpyxl）
+python3 tools/review_checklist_xlsx.py --results output/check_results.json
+
+# 審查摘要報告 HTML（列印友善，可存 PDF；零安裝）
+python3 tools/review_summary_pdf.py --case output/case.json --results output/check_results.json \
+    --annotations output/annotations.json  # 可選，加入缺失摘要
+```
+
 ## 重要注意事項
 
 1. **缺口數字必須工具計算**，禁止心算

@@ -363,8 +363,8 @@ class ContractFilesStayLeanTest(unittest.TestCase):
     """常駐契約每個工作階段都會載入，所以只留「載入任何 skill 之前就必須生效的
     底線」與「情境 → 讀哪份文件」的路由；其餘紀律由各階段 skill 於載入時提示。
 
-    `AGENTS.md` 是唯一正本（跨 AI 工具共用），`CLAUDE.md` 只是指向它的指標——
-    兩份「內容一致」的檔案手動同步已證明會漂移。
+    `AGENTS.md` 是唯一正本（跨 AI 工具共用），`CLAUDE.md`、`QWEN.md` 只是指向它的
+    指標——兩份「內容一致」的檔案手動同步已證明會漂移。
     """
 
     CONTRACTS = ("AGENTS.md",)
@@ -380,6 +380,11 @@ class ContractFilesStayLeanTest(unittest.TestCase):
     MAX_CONTRACT_LINES = 30
     MAX_CONTRACT_BYTES = 2500
     MAX_POINTER_LINES = 10
+    MAX_POINTER_BYTES = 600
+
+    # 只讀某一家工具的指示檔。新增一家（GEMINI.md、OPENCODE.md……）就加進來，
+    # 內容一律只寫「正本是 AGENTS.md」加 import。
+    POINTERS = ("CLAUDE.md", "QWEN.md")
 
     def test_contract_stays_under_byte_budget(self):
         """行數擋不住把整段塞進同一行——併看位元組數。"""
@@ -398,16 +403,28 @@ class ContractFilesStayLeanTest(unittest.TestCase):
                 f"{name} 長到 {len(lines)} 行——只有「載入 skill 前就必須生效」"
                 f"的內容才留在常駐契約，其餘移到對應 skill")
 
-    def test_claude_md_is_a_pointer(self):
-        """CLAUDE.md 不得再放一份內容——那正是漂移的來源。"""
-        text = self.read("CLAUDE.md")
-        lines = text.splitlines()
-        self.assertLessEqual(
-            len(lines), self.MAX_POINTER_LINES,
-            f"CLAUDE.md 長到 {len(lines)} 行——正本是 AGENTS.md，這裡只該放指標")
-        self.assertIn("AGENTS.md", text, "CLAUDE.md 沒指向正本 AGENTS.md")
-        self.assertNotIn("## 五條底線", text,
-                         "CLAUDE.md 又複製了一份契約內容，漂移會再度發生")
+    def test_tool_specific_files_are_pointers(self):
+        """工具專屬指示檔不得再放一份內容——那正是漂移的來源。
+
+        不是假設性風險：QWEN.md 曾經被寫成 127 行的完整副本，出生當下就已漂移
+        （副本寫 `output/{案件名}-{日期}/`，正本早已是單一案件平放的 `output/`）。
+        逐節比對式的斷言擋不住這個——條列標題一改字，斷言就永遠是綠的——
+        所以這裡擋的是「篇幅」與「有沒有分節」：指標檔根本不該有 `##` 段落。
+        """
+        for name in self.POINTERS:
+            text = self.read(name)
+            lines = text.splitlines()
+            self.assertLessEqual(
+                len(lines), self.MAX_POINTER_LINES,
+                f"{name} 長到 {len(lines)} 行——正本是 AGENTS.md，這裡只該放指標")
+            self.assertLessEqual(
+                len(text.encode("utf-8")), self.MAX_POINTER_BYTES,
+                f"{name} 超出指標檔的位元組預算——內容該留在正本 AGENTS.md")
+            self.assertIn("AGENTS.md", text, f"{name} 沒指向正本 AGENTS.md")
+            sections = [ln for ln in lines if ln.startswith("## ")]
+            self.assertEqual(
+                [], sections,
+                f"{name} 出現分節標題 {sections}——這是又複製一份契約的徵兆")
 
     # 從常駐契約移出的紀律 → 承接檔案。合取斷言：契約裡不得殘留，承接檔案必須有。
     # 只斷言「承接檔案有」會在寫完當下就是綠的（那些檔案現在就含有這些字），

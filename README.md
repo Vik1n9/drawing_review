@@ -72,6 +72,7 @@ python3 tools/onboarding.py intro    # 只想看操作簡介的話
 | `docs/路線圖.md` | 兩者 | 建置階段狀態、待補文件與待辦 |
 | `AGENTS.md` | AI 代理 | 行為契約的正本（六條底線＋路由），跨 AI 工具共用 |
 | `CLAUDE.md` | Claude Code | 只是指向 `AGENTS.md` 的指標 |
+| `QWEN.md` | Qwen Code | 只是指向 `AGENTS.md` 的指標 |
 | `CONTRIBUTING.md` | 貢獻者 | 角色分工、發佈路線、變更規範、品質底線 |
 | `skills/README.md` | 技術人員 | 兩階段審查工作流程的設計說明 |
 

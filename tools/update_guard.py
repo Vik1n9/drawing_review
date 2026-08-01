@@ -92,7 +92,7 @@ ROOT_FILES = ("待確認事項.md",)
 # 兩份清單合起來要涵蓋整個倉庫：漏掉的就是 unlisted_changes() 要叫出來的。
 UPSTREAM_ZONES = ("tools", "skills", "tests", "docs", ".github", ".claude", "packaging")
 UPSTREAM_ROOT_FILES = ("README.md", "AGENTS.md", "CLAUDE.md", "CONTRIBUTING.md",
-                       "requirements.txt", ".gitignore",
+                       "QWEN.md", "requirements.txt", ".gitignore",
                        # 線2 安裝包放的雙擊入口與說明
                        "開場診斷.bat", "安裝完成-請把這段貼給你的AI.txt")
 

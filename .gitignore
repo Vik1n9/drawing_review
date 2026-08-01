@@ -33,6 +33,9 @@ __pycache__/
 # 發佈打包產物（tools/make_release.py 的輸出）
 /dist/
 
+# Qoder AI 自動產生的知識庫（與 docs/ 重複，不進版控）
+.qoder/
+
 # graphify — 機器相關指標與可重建的抽取快取（不進版控）
 graphify-out/.graphify_python
 graphify-out/.graphify_root

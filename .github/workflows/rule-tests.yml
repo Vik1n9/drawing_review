@@ -77,10 +77,10 @@ jobs:
         run: python3 tools/onboarding.py intro
 
       - name: 示範案件門檻判斷煙霧測試
-        run: python3 tools/fire_code_calc.py check-threshold --case "output/case.json"
+        run: python3 tools/fire_code_calc.py check-threshold --case "tests/fixtures/case.json"
 
       - name: 法典缺口偵測煙霧測試
-        run: python3 tools/fire_code_calc.py check-gap --case "output/case.json"
+        run: python3 tools/fire_code_calc.py check-gap --case "tests/fixtures/case.json"
 
       - name: 待確認規則清單煙霧測試
         run: python3 tools/verification_sheet.py list --format json

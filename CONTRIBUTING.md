@@ -38,11 +38,12 @@ python3 tools/onboarding.py status
 | 層 | 檔案 | 涵蓋範圍 |
 |----|------|---------|
 | 1 | `README.md`「先跑這兩行」與 `docs/使用手冊.md` | 所有工具，以及自己動手貼的使用者 |
-| 2 | `AGENTS.md`（行為契約的正本；`CLAUDE.md` 只是指向它的指標） | Codex、OpenCode、Claude Code 等會讀代理指示檔的工具 |
+| 2 | `AGENTS.md`（行為契約的正本；`CLAUDE.md`、`QWEN.md` 只是指向它的指標） | Codex、OpenCode、Claude Code、Qwen Code 等會讀代理指示檔的工具 |
 | 3 | `.claude/settings.json` 的 SessionStart hook | 只有 Claude Code。這是加分的自動化，不是機制本體 |
 
 實作上有三條規範：
 
+- **工具專屬的指示檔只能是指標。** `CLAUDE.md`、`QWEN.md` 這類「某一家工具才讀」的檔案，一律只寫一句「正本是 `AGENTS.md`」加 `@AGENTS.md`，不得複製契約內容——兩份要手動同步的契約一定會漂移（曾經發生過：複製出去的那份寫成 `output/{案件名}-{日期}/`，正本早已改成單一案件平放的 `output/`）
 - **不要把導引綁在某一家工具的專屬機制上。** 新增前置檢查時，入口一律是 `python3 tools/onboarding.py status`，不要只寫進 hook，也不要只寫進某一份代理指示檔
 - **面向使用者的文字不能只給斜線指令。** `/gap-analysis`、`/train` 這類指令只有 Claude Code 有，其他工具得用自然語言加上 `skills/*.md` 檔名。真要寫斜線指令，只能當附註
 - **新增的安全紅線，三層都要涵蓋。** 只寫進 `.claude/settings.json` 的 `PreToolUse` hook，等於只保護到 Claude Code 使用者；只寫進 `AGENTS.md`，對不讀代理指示檔的工具就無效。所以紅線本體放 `AGENTS.md`（受 30 行／2500 bytes 預算限制，逐條細節移到對應的 skill），程序放 `skills/`，狀態由 `onboarding.py status` 給出，hook 當加分層
